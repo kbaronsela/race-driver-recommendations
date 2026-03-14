@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>המלצות – חיפוש עסקים ובעלי מקצוע</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-dim: #388bfd66;
+      --border: #30363d;
+      --green: #3fb950;
+      --yellow: #d29922;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; }
+    .btn:hover { border-color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-delete { border-color: #f85149; color: #f85149; }
+    .btn-delete:hover { background: rgba(248,81,73,0.15); }
+    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
+    .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; }
+    .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
+    .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+    .field-filters { margin-top: 0.75rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+    .field-filters .btn-filter { font-size: 0.85rem; padding: 0.35rem 0.65rem; }
+    .field-filters .btn-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .list { margin-top: 1rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
+    .card:hover { border-color: var(--accent); }
+    .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card .field { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
+    .card .field:empty { display: none; }
+    .card .note { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .card .phone-wrap { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; }
+    .card .phone:hover { text-decoration: underline; }
+    .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; }
+    .card .phone-actions a { font-size: 0.85rem; color: var(--muted); text-decoration: none; padding: 0.2rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
+    .card .phone-actions a:hover { color: var(--accent); border-color: var(--accent); }
+    .badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 6px; background: var(--yellow); color: #000; margin-right: 0.5rem; }
+    .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
+    .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; }
+    .modal h3 { margin: 0 0 1rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
+    .form-row input, .form-row select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+    .form-row input[type="checkbox"] { width: auto; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .login-wrap input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <h1>המלצות – עסקים ובעלי מקצוע</h1>
+      <div id="loginArea" class="login-wrap hidden">
+        <button type="button" class="btn" id="btnLogin">התחבר</button>
+      </div>
+      <div id="loggedArea" class="hidden">
+        <span class="muted">מחובר</span>
+        <button type="button" class="btn" id="btnLogout">התנתק</button>
+      </div>
+      <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
+    </div>
+    <p class="subtitle">חיפוש חופשי לפי שם, תחום או טלפון</p>
+
+    <div class="search-wrap">
+      <!-- שדה מוסתר כדי למנוע מהדפדפן למלא כאן שם משתמש -->
+      <input type="text" id="search-dummy" tabindex="-1" autocomplete="username" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px" aria-hidden="true">
+      <div class="search-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="q" name="q" placeholder="למשל: אינסטלטור, מספרה, רופא..." autocomplete="search-term">
+      </div>
+      <p class="count" id="count"></p>
+    </div>
+
+    <div id="fieldFilters" class="field-filters hidden"></div>
+
+    <div class="list" id="list"><p class="loading">טוען...</p></div>
+  </div>
+
+  <div id="modalAdd" class="modal hidden">
+    <div class="modal-inner">
+      <h3>הוסף איש קשר</h3>
+      <div class="form-row">
+        <label>שם</label>
+        <input type="text" id="addName" required>
+      </div>
+      <div class="form-row">
+        <label>טלפון</label>
+        <input type="tel" id="addPhone" required>
+      </div>
+      <div class="form-row">
+        <label>תחום עיסוק</label>
+        <select id="addFieldSelect">
+          <!-- filled by JS from fields.json -->
+        </select>
+        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+      </div>
+      <div class="form-row">
+        <label><input type="checkbox" id="addFromMoshav"> מהמושב</label>
+      </div>
+      <div class="form-row">
+        <label>הערה (אופציונלי)</label>
+        <input type="text" id="addNote" placeholder="הערה">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnAddCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnAddSubmit">הוסף</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalLogin" class="modal hidden">
+    <div class="modal-inner">
+      <h3>התחברות</h3>
+      <div class="form-row">
+        <label>משתמש</label>
+        <input type="text" id="loginUserModal" placeholder="משתמש">
+      </div>
+      <div class="form-row">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassModal" placeholder="סיסמה">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnLoginSubmit">התחבר</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = ''; // same origin when served by server
+    let entries = [];
+    let hasEditMode = false;
+    let token = sessionStorage.getItem('token') || '';
+    let fieldsList = [];
+    let selectedField = null;
+
+    async function loadFields() {
+      try {
+        const r = await fetch(API + 'data/fields.json');
+        fieldsList = await r.json();
+      } catch (_) {
+        fieldsList = ['אינסטלטור', 'חשמלאי', 'מדביר', 'מספרה', 'אחר (הזן ידנית)'];
+      }
+      const sel = document.getElementById('addFieldSelect');
+      sel.innerHTML = fieldsList.map(f => `<option value="${escapeHtml(f)}">${escapeHtml(f)}</option>`).join('');
+    }
+
+    async function load() {
+      try {
+        const r = await fetch(API + 'api/entries');
+        const data = await r.json();
+        entries = data.entries || [];
+        hasEditMode = data.has_edit_mode === true;
+        if (hasEditMode) {
+          document.getElementById('loginArea').classList.remove('hidden');
+        } else {
+          document.getElementById('loginArea').classList.add('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+        }
+        if (token) {
+          document.getElementById('loggedArea').classList.remove('hidden');
+          document.getElementById('loginArea').classList.add('hidden');
+        } else {
+          document.getElementById('loggedArea').classList.add('hidden');
+          if (hasEditMode) document.getElementById('loginArea').classList.remove('hidden');
+        }
+        entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+        buildFieldFilters();
+        applyFilters();
+      } catch (e) {
+        const r = await fetch(API + 'data/entries.json').catch(() => null);
+        if (r && r.ok) {
+          entries = await r.json();
+          hasEditMode = false;
+          entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+          buildFieldFilters();
+          applyFilters();
+        } else {
+          document.getElementById('list').innerHTML = '<p class="no-results">לא נמצא קובץ נתונים. הרץ: python3 website/server.py</p>';
+        }
+      }
+    }
+
+    function normalize(s) {
+      if (!s) return '';
+      return String(s).toLowerCase().replace(/[\u0591-\u05C7]/g, '').trim();
+    }
+
+    function matchQuery(entry, q) {
+      if (!q) return true;
+      const nq = normalize(q);
+      const name = normalize(entry.name);
+      const field = normalize(entry.field);
+      const phone = (entry.phone_display || entry.phone || '').replace(/\D/g, '');
+      const filename = normalize(entry.filename || '');
+      const note = normalize(entry.note || '');
+      const searchable = [name, field, filename, note].join(' ');
+      if (searchable.includes(nq)) return true;
+      if (phone && q.replace(/\D/g, '').length >= 2 && phone.includes(q.replace(/\D/g, ''))) return true;
+      const words = nq.split(/\s+/).filter(Boolean);
+      return words.every(w => searchable.includes(w) || (phone && phone.includes(w)));
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      const div = document.createElement('div');
+      div.textContent = String(s);
+      return div.innerHTML;
+    }
+
+    function normKey(entry) {
+      const p = (entry.phone || '').replace(/\D/g, '');
+      return p.slice(-10) || p || entry._key || '';
+    }
+
+    function render(list) {
+      const listEl = document.getElementById('list');
+      if (!list.length) {
+        listEl.innerHTML = '<p class="no-results">אין תוצאות לחיפוש זה.</p>';
+        return;
+      }
+      const canEdit = hasEditMode && token;
+      listEl.innerHTML = list.map(e => {
+        const key = e._key || normKey(e);
+        const field = e.field ? `<div class="field" data-key="${escapeHtml(key)}">${escapeHtml(e.field)}</div>` : '<div class="field" data-key="' + escapeHtml(key) + '"></div>';
+        const phone = e.phone_display || e.phone || '';
+        const phoneDigits = (e.phone || '').replace(/\D/g, '');
+        const tel = phoneDigits ? `tel:${phoneDigits}` : '#';
+        const waNum = phoneDigits ? (phoneDigits.startsWith('972') ? phoneDigits : '972' + phoneDigits.replace(/^0/, '')) : '';
+        const waLink = waNum ? `https://wa.me/${waNum}` : '#';
+        const callWa = phoneDigits ? `<span class="phone-actions"><a href="${tel}">התקשר</a><a href="${waLink}" target="_blank" rel="noopener">וואטסאפ</a></span>` : '';
+        const badge = e.from_moshav ? '<span class="badge">מהמושב</span>' : '';
+        const noteHtml = (e.note || '').trim() ? '<div class="note">' + escapeHtml(e.note) + '</div>' : '';
+        let actions = '';
+        if (canEdit) {
+          actions = `<div class="card-actions">
+            <label><input type="checkbox" class="cb-moshav" data-key="${escapeHtml(key)}" ${e.from_moshav ? 'checked' : ''}> מהמושב</label>
+            <button type="button" class="btn edit-name-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">ערוך שם</button>
+            <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}" data-phone="${escapeHtml((e.phone_display || e.phone || ''))}">ערוך טלפון</button>
+            <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>
+            <button type="button" class="btn edit-note-btn" data-key="${escapeHtml(key)}" data-note="${escapeHtml((e.note || ''))}">ערוך הערה</button>
+            <button type="button" class="btn btn-delete delete-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">מחק</button>
+          </div>`;
+        }
+        return `<article class="card" data-key="${escapeHtml(key)}">
+          <div class="name">${escapeHtml(e.name)}${badge}</div>
+          ${field}
+          <div class="phone-wrap"><a class="phone" href="${tel}">${escapeHtml(phone)}</a>${callWa}</div>
+          ${noteHtml}
+          ${actions}
+        </article>`;
+      }).join('');
+
+      if (canEdit) {
+        listEl.querySelectorAll('.cb-moshav').forEach(cb => {
+          cb.addEventListener('change', function() {
+            patchEntry(this.dataset.key, { from_moshav: this.checked });
+          });
+        });
+        listEl.querySelectorAll('.edit-name-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const name = this.dataset.name || '';
+            const newName = prompt('שם:', name);
+            if (newName !== null && newName.trim() !== '') patchEntry(key, { name: newName.trim() });
+          });
+        });
+        listEl.querySelectorAll('.edit-phone-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const phone = this.dataset.phone || '';
+            const newPhone = prompt('מספר טלפון:', phone);
+            if (newPhone !== null && newPhone.trim() !== '') patchEntry(key, { phone: newPhone.trim() });
+          });
+        });
+        listEl.querySelectorAll('.edit-field-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const field = this.dataset.field || '';
+            const newField = prompt('תחום עיסוק:', field);
+            if (newField !== null) patchEntry(key, { field: newField.trim() });
+          });
+        });
+        listEl.querySelectorAll('.edit-note-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const note = this.dataset.note || '';
+            const newNote = prompt('הערה:', note);
+            if (newNote !== null) patchEntry(key, { note: newNote.trim() });
+          });
+        });
+        listEl.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const name = this.dataset.name || '';
+            if (!confirm('למחוק את "' + name + '"?')) return;
+            deleteEntry(key);
+          });
+        });
+      }
+    }
+
+    async function deleteEntry(key) {
+      if (!token) return;
+      try {
+        const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (r.ok) {
+          entries = entries.filter(e => (e._key || normKey(e)) !== key);
+          applyFilters();
+        }
+      } catch (_) {}
+    }
+
+    async function patchEntry(key, data) {
+      if (!token) return;
+      try {
+        const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify(data)
+        });
+        if (r.ok) {
+          const idx = entries.findIndex(e => (e._key || normKey(e)) === key);
+          if (idx >= 0) {
+            if ('from_moshav' in data) entries[idx].from_moshav = data.from_moshav;
+            if ('field' in data) entries[idx].field = data.field;
+            if ('name' in data) entries[idx].name = data.name;
+            if ('note' in data) entries[idx].note = data.note;
+            if ('phone' in data) {
+              entries[idx].phone = data.phone;
+              entries[idx].phone_display = data.phone;
+              entries[idx]._key = (data.phone || '').replace(/\D/g, '').slice(-10);
+            }
+          }
+          applyFilters();
+        }
+      } catch (_) {}
+    }
+
+    function updateCount(n) {
+      document.getElementById('count').textContent = n + ' רשומות';
+    }
+
+    function buildFieldFilters() {
+      const fields = [...new Set(entries.map(e => (e.field || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'he'));
+      const el = document.getElementById('fieldFilters');
+      if (!fields.length) {
+        el.classList.add('hidden');
+        return;
+      }
+      el.classList.remove('hidden');
+      el.innerHTML = '<button type="button" class="btn btn-filter' + (selectedField === null ? ' active' : '') + '" data-field="">הכל</button>' +
+        fields.map(f => '<button type="button" class="btn btn-filter' + (selectedField === f ? ' active' : '') + '" data-field="' + escapeHtml(f) + '">' + escapeHtml(f) + '</button>').join('');
+      el.querySelectorAll('.btn-filter').forEach(btn => {
+        btn.addEventListener('click', function() {
+          selectedField = this.dataset.field || null;
+          el.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          applyFilters();
+        });
+      });
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('q').value.trim();
+      let filtered = entries;
+      if (selectedField !== null) filtered = filtered.filter(e => (e.field || '').trim() === selectedField);
+      if (q) filtered = filtered.filter(e => matchQuery(e, q));
+      render(filtered);
+      updateCount(filtered.length);
+    }
+
+    document.getElementById('q').addEventListener('input', function() {
+      applyFilters();
+    });
+
+    document.getElementById('btnAdd').addEventListener('click', function() {
+      document.getElementById('addName').value = '';
+      document.getElementById('addPhone').value = '';
+      document.getElementById('addFieldSelect').value = fieldsList[0] || '';
+      document.getElementById('addFieldCustom').value = '';
+      document.getElementById('addFieldCustom').classList.add('hidden');
+      document.getElementById('addFromMoshav').checked = false;
+      document.getElementById('addNote').value = '';
+      document.getElementById('modalAdd').classList.remove('hidden');
+    });
+
+    document.getElementById('addFieldSelect').addEventListener('change', function() {
+      const isOther = (this.value || '').indexOf('אחר') !== -1;
+      document.getElementById('addFieldCustom').classList.toggle('hidden', !isOther);
+      if (!isOther) document.getElementById('addFieldCustom').value = '';
+    });
+
+    document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
+    document.getElementById('btnAddSubmit').addEventListener('click', async () => {
+      const name = document.getElementById('addName').value.trim();
+      const phone = document.getElementById('addPhone').value.trim();
+      let field = document.getElementById('addFieldSelect').value.trim();
+      if ((field || '').indexOf('אחר') !== -1) field = document.getElementById('addFieldCustom').value.trim();
+      const from_moshav = document.getElementById('addFromMoshav').checked;
+      const note = document.getElementById('addNote').value.trim();
+      if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
+      try {
+        const r = await fetch(API + 'api/entries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, field, from_moshav, note })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.ok) {
+          document.getElementById('modalAdd').classList.add('hidden');
+          await load();
+        } else {
+          alert(data.error || 'שגיאה בשמירה');
+        }
+      } catch (e) {
+        alert('שגיאה בחיבור לשרת. הרץ python3 website/server.py');
+      }
+    });
+
+    function bindLoginHandlers() {
+      const btnLogin = document.getElementById('btnLogin');
+      const old = btnLogin._bound;
+      if (old || !hasEditMode) return;
+      btnLogin._bound = true;
+      btnLogin.addEventListener('click', () => document.getElementById('modalLogin').classList.remove('hidden'));
+      document.getElementById('btnLoginCancel').addEventListener('click', () => document.getElementById('modalLogin').classList.add('hidden'));
+      document.getElementById('btnLoginSubmit').addEventListener('click', async () => {
+        const user = document.getElementById('loginUserModal').value.trim();
+        const pass = document.getElementById('loginPassModal').value;
+        const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.token) {
+          token = data.token;
+          sessionStorage.setItem('token', token);
+          document.getElementById('modalLogin').classList.add('hidden');
+          document.getElementById('loggedArea').classList.remove('hidden');
+          load();
+        } else {
+          alert(data.error || 'התחברות נכשלה');
+        }
+      });
+      document.getElementById('btnLogout').addEventListener('click', () => {
+        token = '';
+        sessionStorage.removeItem('token');
+        document.getElementById('loggedArea').classList.add('hidden');
+        load();
+      });
+    }
+
+    loadFields();
+    load().then(() => bindLoginHandlers());
+  </script>
+</body>
+</html>

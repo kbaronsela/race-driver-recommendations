@@ -1,0 +1,13 @@
+# Render Blueprint – deploy from Render dashboard: New > Web Service, connect repo, set Root Directory to "website"
+# Or use this file if your plan supports Blueprint.
+services:
+  - type: web
+    name: recommendations
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: RENDER_USER
+        sync: false
+      - key: RENDER_PASSWORD
+        sync: false

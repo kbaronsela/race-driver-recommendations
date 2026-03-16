@@ -19,9 +19,15 @@ app = Flask(__name__, static_folder=APP_DIR, static_url_path="")
 
 
 def load_config():
-    # Allow auth from environment (e.g. on Render)
-    env_user = os.environ.get("RENDER_USER", "").strip()
-    env_pass = os.environ.get("RENDER_PASSWORD", "").strip()
+    # Allow auth from environment (e.g. on Render or PythonAnywhere)
+    env_user = (
+        os.environ.get("PYTHONANYWHERE_USER", "").strip()
+        or os.environ.get("RENDER_USER", "").strip()
+    )
+    env_pass = (
+        os.environ.get("PYTHONANYWHERE_PASSWORD", "").strip()
+        or os.environ.get("RENDER_PASSWORD", "").strip()
+    )
     if env_user and env_pass:
         h = hashlib.sha256(f"{env_user}:{env_pass}".encode()).hexdigest()
         return {"user": env_user, "password_hash": h}
@@ -74,10 +80,11 @@ def merge_entries():
             continue
         seen_phone.add(key)
         row = dict(e)
-        row["from_moshav"] = from_moshav.get(key) if key else None
+        row["from_moshav"] = from_moshav[key] if (key and key in from_moshav) else row.get("from_moshav", False)
         if key and key in edits:
             row.update(edits[key])
-        row["note"] = notes.get(key, "") or (edits.get(key) or {}).get("note", "")
+        overlay_note = notes.get(key, "") or (edits.get(key) or {}).get("note", "")
+        row["note"] = overlay_note if overlay_note else (row.get("note") or "")
         row["_key"] = norm_phone(row.get("phone")) or key
         result.append(row)
     for e in added:
@@ -91,11 +98,39 @@ def merge_entries():
         row["from_moshav"] = from_moshav.get(key, row.get("from_moshav", False))
         if key in edits:
             row.update(edits[key])
-        row["note"] = notes.get(key, row.get("note", "")) or (edits.get(key) or {}).get("note", "")
+        overlay_note = notes.get(key, "") or (edits.get(key) or {}).get("note", "")
+        row["note"] = overlay_note if overlay_note else (row.get("note") or "")
         row["_key"] = norm_phone(row.get("phone")) or key
         row["_added"] = True
         result.append(row)
     return result
+
+
+def _entry_to_stored(row):
+    """Strip internal keys for writing to entries.json."""
+    return {
+        "name": row.get("name", ""),
+        "phone": row.get("phone_display", row.get("phone", "")),
+        "field": row.get("field", ""),
+        "from_moshav": bool(row.get("from_moshav")),
+        "note": (row.get("note") or "").strip(),
+    }
+
+
+def flush_entries_to_disk():
+    """Write current merged state to entries.json and clear user_data overlay."""
+    merged = merge_entries()
+    stored = [_entry_to_stored(row) for row in merged]
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(ENTRIES_PATH, "w", encoding="utf-8") as f:
+        json.dump(stored, f, ensure_ascii=False, indent=2)
+    ud = load_user_data()
+    ud["added"] = []
+    ud["deleted"] = []
+    ud["edits"] = {}
+    ud["from_moshav"] = {}
+    ud["notes"] = {}
+    save_user_data(ud)
 
 
 def check_auth():
@@ -162,6 +197,7 @@ def add_entry():
     })
     ud["added"] = added
     save_user_data(ud)
+    flush_entries_to_disk()
     return jsonify({"ok": True})
 
 
@@ -194,6 +230,7 @@ def patch_entry(key):
             ed[key]["phone_display"] = new_phone
         ud["edits"] = ed
     save_user_data(ud)
+    flush_entries_to_disk()
     return jsonify({"ok": True})
 
 
@@ -208,6 +245,7 @@ def delete_entry(key):
         deleted_list.append(key)
         ud["deleted"] = deleted_list
         save_user_data(ud)
+        flush_entries_to_disk()
     return jsonify({"ok": True})
 
 

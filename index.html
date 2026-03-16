@@ -3,27 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>המלצות – חיפוש עסקים ובעלי מקצוע</title>
+  <title>המלצות של נהגות מרוצים – עסקים ובעלי מקצוע</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f1419;
-      --surface: #1a2332;
-      --text: #e6edf3;
-      --muted: #8b949e;
-      --accent: #58a6ff;
-      --accent-dim: #388bfd66;
-      --border: #30363d;
-      --green: #3fb950;
-      --yellow: #d29922;
+      --bg: #f0f7ff;
+      --surface: #ffffff;
+      --text: #1a2d4a;
+      --muted: #5a7a9e;
+      --accent: #2563eb;
+      --accent-dim: #3b82f620;
+      --border: #bfdbfe;
+      --green: #16a34a;
+      --yellow: #eab308;
+      --sky: #0ea5e9;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
+    .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
     .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
     .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; }
     .btn:hover { border-color: var(--accent); }
@@ -31,13 +34,21 @@
     .btn-delete { border-color: #f85149; color: #f85149; }
     .btn-delete:hover { background: rgba(248,81,73,0.15); }
     .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
-    .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; }
+    .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    @media (max-width: 768px) {
+      .search-wrap { position: relative; }
+    }
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
     .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
     .field-filters { margin-top: 0.75rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+    /* מוסתר זמנית – הסר את השורה הבאה כדי להציג שוב את רשימת התחומים לסינון */
+    #fieldFilters { display: none !important; }
     .field-filters .btn-filter { font-size: 0.85rem; padding: 0.35rem 0.65rem; }
     .field-filters .btn-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-moshav { margin-top: 0.5rem; }
+    .filter-moshav-label { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
+    .filter-moshav-label:hover { color: var(--text); }
     .list { margin-top: 1rem; }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
     .card:hover { border-color: var(--accent); }
@@ -55,23 +66,77 @@
     .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
     .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
-    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
     .modal h3 { margin: 0 0 1rem; }
     .form-row { margin-bottom: 1rem; }
     .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
-    .form-row input, .form-row select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+    .form-row input, .form-row select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font: inherit; }
     .form-row input[type="checkbox"] { width: auto; }
     .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; }
     .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    .login-wrap input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+    .login-wrap input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); font: inherit; }
     .hidden { display: none !important; }
+
+    /* Responsive: tablets and below */
+    @media (max-width: 768px) {
+      html { width: 100%; overflow-x: hidden; }
+      body { overflow-x: hidden; width: 100%; }
+      .container { padding: 1rem; width: 100%; min-width: 0; }
+      .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .header-logos { gap: 1rem; margin-bottom: 0.75rem; }
+      .logo { height: 56px; max-width: 96px; }
+      .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
+      .top-bar .login-wrap,
+      .top-bar #loggedArea,
+      .top-bar .btn { justify-content: center; }
+      .top-bar #loginArea:not(.hidden) { display: flex !important; min-height: 2.5rem; align-items: center; }
+      .top-bar #loggedArea:not(.hidden) { display: flex !important; min-height: 2.5rem; align-items: center; gap: 0.5rem; }
+      .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+      .search-inner { padding: 0.6rem 0.75rem; }
+      #q { font-size: 1rem; }
+      .card { padding: 0.875rem 1rem; }
+      .card .name { font-size: 1.05rem; }
+      .card-actions { gap: 0.35rem; }
+      .card-actions .btn { padding: 0.45rem 0.65rem; font-size: 0.85rem; }
+      .modal { padding: 0.75rem; align-items: flex-end; }
+      .modal-inner { max-height: 90vh; overflow-y: auto; margin: auto; }
+      .modal-actions { flex-wrap: wrap; }
+      .modal-actions .btn { min-width: 0; flex: 1 1 auto; }
+    }
+
+    /* Responsive: phones */
+    @media (max-width: 480px) {
+      .container { padding: 0.75rem; }
+      h1 { font-size: 1.2rem; }
+      .top-bar { margin-bottom: 0.75rem; }
+      .field-filters .btn-filter { padding: 0.4rem 0.6rem; font-size: 0.8rem; min-height: 2.25rem; }
+      .card { padding: 0.75rem; margin-bottom: 0.5rem; }
+      .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+      .card .phone-actions a { padding: 0.35rem 0.5rem; min-height: 2.25rem; display: inline-flex; align-items: center; }
+      .card-actions { flex-direction: column; align-items: stretch; }
+      .card-actions .btn { width: 100%; }
+      .card-actions label { justify-content: center; }
+      .btn { min-height: 2.5rem; padding: 0.5rem 0.75rem; }
+      .modal-inner { padding: 1.25rem; border-radius: 12px 12px 0 0; }
+      .modal-actions { flex-direction: column; }
+      .modal-actions .btn { width: 100%; }
+    }
+
+    /* Prevent horizontal overflow on small screens */
+    @media (max-width: 768px) {
+      .card .name { word-break: break-word; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="header-logos">
+      <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+      <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+    </div>
     <div class="top-bar">
-      <h1>המלצות – עסקים ובעלי מקצוע</h1>
+      <h1>המלצות של נהגות מרוצים – עסקים ובעלי מקצוע</h1>
       <div id="loginArea" class="login-wrap hidden">
         <button type="button" class="btn" id="btnLogin">התחבר</button>
       </div>
@@ -80,6 +145,7 @@
         <button type="button" class="btn" id="btnLogout">התנתק</button>
       </div>
       <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
+      <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
     </div>
     <p class="subtitle">חיפוש חופשי לפי שם, תחום או טלפון</p>
 
@@ -91,9 +157,12 @@
         <input type="search" id="q" name="q" placeholder="למשל: אינסטלטור, מספרה, רופא..." autocomplete="search-term">
       </div>
       <p class="count" id="count"></p>
+      <div class="filter-moshav">
+        <label class="filter-moshav-label"><input type="checkbox" id="filterFromMoshav"> מהמושב בלבד</label>
+      </div>
     </div>
 
-    <div id="fieldFilters" class="field-filters hidden"></div>
+    <div id="fieldFilters" class="field-filters"></div>
 
     <div class="list" id="list"><p class="loading">טוען...</p></div>
   </div>
@@ -130,6 +199,35 @@
     </div>
   </div>
 
+  <div id="modalEditField" class="modal hidden">
+    <div class="modal-inner">
+      <h3>ערוך תחום</h3>
+      <div class="form-row">
+        <label>תחום עיסוק</label>
+        <select id="editFieldSelect"></select>
+        <input type="text" id="editFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditFieldCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditFieldSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditValue" class="modal hidden">
+    <div class="modal-inner">
+      <h3 id="editValueTitle">ערוך</h3>
+      <div class="form-row">
+        <label id="editValueLabel">ערך</label>
+        <input type="text" id="editValueInput" placeholder="">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditValueCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditValueSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modalLogin" class="modal hidden">
     <div class="modal-inner">
       <h3>התחברות</h3>
@@ -151,18 +249,27 @@
   <script>
     const API = ''; // same origin when served by server
     let entries = [];
+    let baseEntries = [];
     let hasEditMode = false;
     let token = sessionStorage.getItem('token') || '';
     let fieldsList = [];
     let selectedField = null;
+    let filterFromMoshavOnly = false;
+    let editFieldKey = null;
+    let editValueKey = null;
+    let editValueField = null;
 
     async function loadFields() {
       try {
         const r = await fetch(API + 'data/fields.json');
         fieldsList = await r.json();
       } catch (_) {
-        fieldsList = ['אינסטלטור', 'חשמלאי', 'מדביר', 'מספרה', 'אחר (הזן ידנית)'];
+        fieldsList = ['אינסטלציה', 'חשמל', 'הדברה', 'נקיון', 'אזעקה', 'מיזוג', 'מספרה', 'טכנאי מחשבים', 'רפואה', 'טכנאי מכשירי חשמל', 'מוסך', 'אחר (הזן ידנית)'];
       }
+      const otherItems = fieldsList.filter(f => (f || '').indexOf('אחר') !== -1);
+      const rest = fieldsList.filter(f => (f || '').indexOf('אחר') === -1);
+      rest.sort((a, b) => (a || '').localeCompare(b || '', 'he'));
+      fieldsList = rest.concat(otherItems);
       const sel = document.getElementById('addFieldSelect');
       sel.innerHTML = fieldsList.map(f => `<option value="${escapeHtml(f)}">${escapeHtml(f)}</option>`).join('');
     }
@@ -173,34 +280,39 @@
         const data = await r.json();
         entries = data.entries || [];
         hasEditMode = data.has_edit_mode === true;
-        if (hasEditMode) {
-          document.getElementById('loginArea').classList.remove('hidden');
-        } else {
-          document.getElementById('loginArea').classList.add('hidden');
-          document.getElementById('loggedArea').classList.add('hidden');
-        }
         if (token) {
           document.getElementById('loggedArea').classList.remove('hidden');
           document.getElementById('loginArea').classList.add('hidden');
         } else {
+          document.getElementById('loginArea').classList.remove('hidden');
           document.getElementById('loggedArea').classList.add('hidden');
-          if (hasEditMode) document.getElementById('loginArea').classList.remove('hidden');
         }
         entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+        entries.forEach(e => { e._key = e._key || normKey(e); e._serverKey = e._key; });
+        baseEntries = entries.map(e => ({ ...e }));
         buildFieldFilters();
         applyFilters();
       } catch (e) {
         const r = await fetch(API + 'data/entries.json').catch(() => null);
         if (r && r.ok) {
           entries = await r.json();
-          hasEditMode = false;
+          hasEditMode = true;
+          document.getElementById('loginArea').classList.remove('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+          if (token) {
+            document.getElementById('loggedArea').classList.remove('hidden');
+            document.getElementById('loginArea').classList.add('hidden');
+          }
           entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+          entries.forEach(e => { e._key = e._key || normKey(e); e._serverKey = e._key; });
+          baseEntries = entries.map(e => ({ ...e }));
           buildFieldFilters();
           applyFilters();
         } else {
           document.getElementById('list').innerHTML = '<p class="no-results">לא נמצא קובץ נתונים. הרץ: python3 website/server.py</p>';
         }
       }
+      updateSaveButton();
     }
 
     function normalize(s) {
@@ -231,8 +343,9 @@
     }
 
     function normKey(entry) {
-      const p = (entry.phone || '').replace(/\D/g, '');
-      return p.slice(-10) || p || entry._key || '';
+      const raw = (entry && (entry.phone || entry.phone_display || '')) || '';
+      const p = String(raw).replace(/\D/g, '');
+      return p.slice(-10) || p || (entry && entry._key) || '';
     }
 
     function render(list) {
@@ -281,34 +394,24 @@
         });
         listEl.querySelectorAll('.edit-name-btn').forEach(btn => {
           btn.addEventListener('click', function() {
-            const key = this.dataset.key;
-            const name = this.dataset.name || '';
-            const newName = prompt('שם:', name);
-            if (newName !== null && newName.trim() !== '') patchEntry(key, { name: newName.trim() });
+            openEditValueModal(this.dataset.key, 'name', 'ערוך שם', 'שם', this.dataset.name || '', 'text');
           });
         });
         listEl.querySelectorAll('.edit-phone-btn').forEach(btn => {
           btn.addEventListener('click', function() {
-            const key = this.dataset.key;
-            const phone = this.dataset.phone || '';
-            const newPhone = prompt('מספר טלפון:', phone);
-            if (newPhone !== null && newPhone.trim() !== '') patchEntry(key, { phone: newPhone.trim() });
+            openEditValueModal(this.dataset.key, 'phone', 'ערוך טלפון', 'מספר טלפון', this.dataset.phone || '', 'tel');
           });
         });
         listEl.querySelectorAll('.edit-field-btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const key = this.dataset.key;
             const field = this.dataset.field || '';
-            const newField = prompt('תחום עיסוק:', field);
-            if (newField !== null) patchEntry(key, { field: newField.trim() });
+            openEditFieldModal(key, field);
           });
         });
         listEl.querySelectorAll('.edit-note-btn').forEach(btn => {
           btn.addEventListener('click', function() {
-            const key = this.dataset.key;
-            const note = this.dataset.note || '';
-            const newNote = prompt('הערה:', note);
-            if (newNote !== null) patchEntry(key, { note: newNote.trim() });
+            openEditValueModal(this.dataset.key, 'note', 'ערוך הערה', 'הערה', this.dataset.note || '', 'text');
           });
         });
         listEl.querySelectorAll('.delete-btn').forEach(btn => {
@@ -322,48 +425,125 @@
       }
     }
 
-    async function deleteEntry(key) {
+    function deleteEntry(key) {
       if (!token) return;
-      try {
-        const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
-          method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if (r.ok) {
-          entries = entries.filter(e => (e._key || normKey(e)) !== key);
-          applyFilters();
-        }
-      } catch (_) {}
+      entries = entries.filter(e => (e._key || normKey(e)) !== key);
+      applyFilters();
+      updateSaveButton();
     }
 
-    async function patchEntry(key, data) {
+    function patchEntry(key, data) {
       if (!token) return;
-      try {
-        const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify(data)
-        });
-        if (r.ok) {
-          const idx = entries.findIndex(e => (e._key || normKey(e)) === key);
-          if (idx >= 0) {
-            if ('from_moshav' in data) entries[idx].from_moshav = data.from_moshav;
-            if ('field' in data) entries[idx].field = data.field;
-            if ('name' in data) entries[idx].name = data.name;
-            if ('note' in data) entries[idx].note = data.note;
-            if ('phone' in data) {
-              entries[idx].phone = data.phone;
-              entries[idx].phone_display = data.phone;
-              entries[idx]._key = (data.phone || '').replace(/\D/g, '').slice(-10);
-            }
-          }
-          applyFilters();
+      const idx = entries.findIndex(e => (e._key || normKey(e)) === key);
+      if (idx >= 0) {
+        if ('from_moshav' in data) entries[idx].from_moshav = data.from_moshav;
+        if ('field' in data) entries[idx].field = data.field;
+        if ('name' in data) entries[idx].name = data.name;
+        if ('note' in data) entries[idx].note = data.note;
+        if ('phone' in data) {
+          entries[idx].phone = data.phone;
+          entries[idx].phone_display = data.phone;
+          entries[idx]._key = (data.phone || '').replace(/\D/g, '').slice(-10);
         }
-      } catch (_) {}
+      }
+      applyFilters();
+      updateSaveButton();
     }
 
     function updateCount(n) {
       document.getElementById('count').textContent = n + ' רשומות';
+    }
+
+    function updateSaveButton() {
+      const btn = document.getElementById('btnSave');
+      if (hasEditMode && token) {
+        btn.style.display = '';
+        btn.disabled = false;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function entryChanged(entry, baseEntry) {
+      return (entry.name || '') !== (baseEntry.name || '') ||
+        (entry.phone_display || entry.phone || '') !== (baseEntry.phone_display || baseEntry.phone || '') ||
+        (entry.field || '') !== (baseEntry.field || '') ||
+        (entry.note || '') !== (baseEntry.note || '') ||
+        Boolean(entry.from_moshav) !== Boolean(baseEntry.from_moshav);
+    }
+
+    async function saveAllChanges() {
+      const btn = document.getElementById('btnSave');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.textContent = 'שומר...';
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        if (token) {
+          const deletedKeys = baseEntries.map(e => e._serverKey || normKey(e)).filter(sk => sk && !entries.some(e => (e._serverKey || normKey(e)) === sk));
+          for (const key of deletedKeys) {
+            const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
+              method: 'DELETE',
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) {
+              const err = await r.json().catch(() => ({}));
+              throw new Error(err.error || r.statusText || 'delete failed');
+            }
+          }
+        }
+        for (const entry of entries) {
+          const serverKey = entry._serverKey;
+          if (serverKey && token) {
+            const baseEntry = baseEntries.find(b => (b._serverKey || normKey(b)) === serverKey);
+            if (baseEntry && entryChanged(entry, baseEntry)) {
+              const r = await fetch(API + 'api/entries/' + encodeURIComponent(serverKey), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({
+                  name: entry.name,
+                  phone: entry.phone_display || entry.phone,
+                  field: entry.field,
+                  note: entry.note,
+                  from_moshav: entry.from_moshav
+                })
+              });
+              if (!r.ok) {
+                const err = await r.json().catch(() => ({}));
+                throw new Error(err.error || r.statusText || 'patch failed');
+              }
+            }
+          } else if (!serverKey) {
+            const r = await fetch(API + 'api/entries', {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({
+                name: entry.name,
+                phone: entry.phone_display || entry.phone,
+                field: entry.field,
+                note: entry.note,
+                from_moshav: entry.from_moshav
+              })
+            });
+            const data = await r.json().catch(() => ({}));
+            if (!r.ok || !data.ok) throw new Error(data.error || r.statusText || 'add failed');
+          }
+        }
+        await load();
+        btn.textContent = 'נשמר';
+        setTimeout(function() { btn.textContent = 'שמור שינויים'; }, 1500);
+      } catch (e) {
+        const msg = e.message || String(e);
+        if (msg === 'Failed to fetch' || msg.indexOf('NetworkError') !== -1) {
+          alert('לא ניתן להתחבר לשרת. ודא שהאתר נטען דרך השרת (http://localhost:5001) ושהשרת פועל.');
+        } else {
+          alert('שגיאה בשמירה: ' + msg);
+        }
+        btn.textContent = 'שמור שינויים';
+      }
+      btn.disabled = false;
+      updateSaveButton();
     }
 
     function buildFieldFilters() {
@@ -391,9 +571,15 @@
       let filtered = entries;
       if (selectedField !== null) filtered = filtered.filter(e => (e.field || '').trim() === selectedField);
       if (q) filtered = filtered.filter(e => matchQuery(e, q));
+      if (filterFromMoshavOnly) filtered = filtered.filter(e => e.from_moshav === true);
       render(filtered);
       updateCount(filtered.length);
     }
+
+    document.getElementById('filterFromMoshav').addEventListener('change', function() {
+      filterFromMoshavOnly = this.checked;
+      applyFilters();
+    });
 
     document.getElementById('q').addEventListener('input', function() {
       applyFilters();
@@ -408,7 +594,9 @@
       document.getElementById('addFromMoshav').checked = false;
       document.getElementById('addNote').value = '';
       document.getElementById('modalAdd').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('addName').focus(); }, 50);
     });
+    document.getElementById('btnSave').addEventListener('click', saveAllChanges);
 
     document.getElementById('addFieldSelect').addEventListener('change', function() {
       const isOther = (this.value || '').indexOf('אחר') !== -1;
@@ -417,52 +605,183 @@
     });
 
     document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
-    document.getElementById('btnAddSubmit').addEventListener('click', async () => {
-      const name = document.getElementById('addName').value.trim();
-      const phone = document.getElementById('addPhone').value.trim();
-      let field = document.getElementById('addFieldSelect').value.trim();
-      if ((field || '').indexOf('אחר') !== -1) field = document.getElementById('addFieldCustom').value.trim();
-      const from_moshav = document.getElementById('addFromMoshav').checked;
-      const note = document.getElementById('addNote').value.trim();
-      if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
+
+    async function doAddSubmit() {
       try {
-        const r = await fetch(API + 'api/entries', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone, field, from_moshav, note })
-        });
-        const data = await r.json().catch(() => ({}));
-        if (r.ok && data.ok) {
-          document.getElementById('modalAdd').classList.add('hidden');
-          await load();
-        } else {
-          alert(data.error || 'שגיאה בשמירה');
+        const name = document.getElementById('addName').value.trim();
+        const phone = document.getElementById('addPhone').value.trim();
+        const addFieldSelect = document.getElementById('addFieldSelect');
+        let field = (addFieldSelect && addFieldSelect.value) ? addFieldSelect.value.trim() : '';
+        if ((field || '').indexOf('אחר') !== -1) {
+          const custom = document.getElementById('addFieldCustom');
+          field = custom ? custom.value.trim() : '';
         }
-      } catch (e) {
-        alert('שגיאה בחיבור לשרת. הרץ python3 website/server.py');
+        const from_moshav = document.getElementById('addFromMoshav').checked;
+        const note = (document.getElementById('addNote').value || '').trim();
+        if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
+        if (!token) {
+          const r = await fetch(API + 'api/entries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, field, from_moshav, note })
+          });
+          const data = await r.json().catch(() => ({}));
+          if (r.ok && data.ok) {
+            document.getElementById('modalAdd').classList.add('hidden');
+            await load();
+          } else {
+            alert(data.error || 'שגיאה בשמירה');
+          }
+          return;
+        }
+        const key = (phone || '').replace(/\D/g, '').slice(-10) || 'new-' + Date.now();
+        entries.push({ name, phone, phone_display: phone, field, from_moshav, note, _key: key });
+        entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+        document.getElementById('modalAdd').classList.add('hidden');
+        applyFilters();
+        updateSaveButton();
+      } catch (err) {
+        alert('שגיאה: ' + (err.message || err));
+      }
+    }
+
+    document.getElementById('btnAddSubmit').addEventListener('click', function(e) {
+      e.preventDefault();
+      doAddSubmit();
+    });
+    document.getElementById('modalAdd').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnAddCancel').click();
+      } else if (e.key === 'Enter') {
+        if (e.target.id !== 'btnAddCancel') {
+          e.preventDefault();
+          doAddSubmit();
+        }
       }
     });
+
+    function openEditFieldModal(key, currentField) {
+      editFieldKey = key;
+      const sel = document.getElementById('editFieldSelect');
+      const custom = document.getElementById('editFieldCustom');
+      sel.innerHTML = fieldsList.map(f => '<option value="' + escapeHtml(f) + '">' + escapeHtml(f) + '</option>').join('');
+      const inList = fieldsList.indexOf(currentField) !== -1;
+      if (inList) {
+        sel.value = currentField;
+        custom.classList.add('hidden');
+        custom.value = '';
+      } else {
+        const otherOpt = fieldsList.find(f => (f || '').indexOf('אחר') !== -1);
+        sel.value = otherOpt || fieldsList[0] || '';
+        custom.value = currentField;
+        custom.classList.toggle('hidden', !sel.value || (sel.value || '').indexOf('אחר') === -1);
+      }
+      document.getElementById('modalEditField').classList.remove('hidden');
+      setTimeout(function() { sel.focus(); }, 50);
+    }
+
+    document.getElementById('editFieldSelect').addEventListener('change', function() {
+      const isOther = (this.value || '').indexOf('אחר') !== -1;
+      document.getElementById('editFieldCustom').classList.toggle('hidden', !isOther);
+      if (!isOther) document.getElementById('editFieldCustom').value = '';
+    });
+    document.getElementById('btnEditFieldCancel').addEventListener('click', function() {
+      document.getElementById('modalEditField').classList.add('hidden');
+      editFieldKey = null;
+    });
+    document.getElementById('btnEditFieldSubmit').addEventListener('click', function() {
+      if (editFieldKey == null) return;
+      let field = document.getElementById('editFieldSelect').value.trim();
+      if ((field || '').indexOf('אחר') !== -1) field = document.getElementById('editFieldCustom').value.trim();
+      patchEntry(editFieldKey, { field: field });
+      document.getElementById('modalEditField').classList.add('hidden');
+      editFieldKey = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditField').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditFieldCancel').click();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnEditFieldSubmit').click();
+      }
+    });
+
+    function openEditValueModal(key, fieldName, title, label, currentValue, inputType) {
+      editValueKey = key;
+      editValueField = fieldName;
+      document.getElementById('editValueTitle').textContent = title;
+      document.getElementById('editValueLabel').textContent = label;
+      const input = document.getElementById('editValueInput');
+      input.type = inputType || 'text';
+      input.value = currentValue || '';
+      input.placeholder = label;
+      document.getElementById('modalEditValue').classList.remove('hidden');
+      setTimeout(function() { input.focus(); }, 50);
+    }
+
+    document.getElementById('btnEditValueCancel').addEventListener('click', function() {
+      document.getElementById('modalEditValue').classList.add('hidden');
+      editValueKey = null;
+      editValueField = null;
+    });
+    document.getElementById('btnEditValueSubmit').addEventListener('click', function() {
+      if (editValueKey == null || editValueField == null) return;
+      const val = document.getElementById('editValueInput').value.trim();
+      if (editValueField === 'name' && !val) return;
+      if (editValueField === 'phone' && !val) return;
+      const data = {};
+      data[editValueField] = val;
+      patchEntry(editValueKey, data);
+      document.getElementById('modalEditValue').classList.add('hidden');
+      editValueKey = null;
+      editValueField = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditValue').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditValueCancel').click();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnEditValueSubmit').click();
+      }
+    });
+
+    async function doLoginSubmit() {
+      const user = document.getElementById('loginUserModal').value.trim();
+      const pass = document.getElementById('loginPassModal').value;
+      const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.token) {
+        token = data.token;
+        sessionStorage.setItem('token', token);
+        document.getElementById('modalLogin').classList.add('hidden');
+        document.getElementById('loggedArea').classList.remove('hidden');
+        load();
+      } else {
+        alert(data.error || 'התחברות נכשלה');
+      }
+    }
 
     function bindLoginHandlers() {
       const btnLogin = document.getElementById('btnLogin');
       const old = btnLogin._bound;
       if (old || !hasEditMode) return;
       btnLogin._bound = true;
-      btnLogin.addEventListener('click', () => document.getElementById('modalLogin').classList.remove('hidden'));
+      btnLogin.addEventListener('click', () => {
+        document.getElementById('modalLogin').classList.remove('hidden');
+        setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
+      });
       document.getElementById('btnLoginCancel').addEventListener('click', () => document.getElementById('modalLogin').classList.add('hidden'));
-      document.getElementById('btnLoginSubmit').addEventListener('click', async () => {
-        const user = document.getElementById('loginUserModal').value.trim();
-        const pass = document.getElementById('loginPassModal').value;
-        const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
-        const data = await r.json().catch(() => ({}));
-        if (r.ok && data.token) {
-          token = data.token;
-          sessionStorage.setItem('token', token);
-          document.getElementById('modalLogin').classList.add('hidden');
-          document.getElementById('loggedArea').classList.remove('hidden');
-          load();
-        } else {
-          alert(data.error || 'התחברות נכשלה');
+      document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
+      document.getElementById('modalLogin').addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          document.getElementById('btnLoginCancel').click();
+        } else if (e.key === 'Enter') {
+          if (e.target.id !== 'btnLoginCancel') {
+            e.preventDefault();
+            doLoginSubmit();
+          }
         }
       });
       document.getElementById('btnLogout').addEventListener('click', () => {

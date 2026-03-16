@@ -1,0 +1,32 @@
+# Don't commit secrets
+config.json
+.env
+.env.local
+*.env
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary / build
+*.tmp.jpg
+*.log

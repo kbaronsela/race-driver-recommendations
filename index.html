@@ -23,8 +23,11 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
-    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
+    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; }
     .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
+    .header-auth { flex-shrink: 0; }
+    .header-auth .btn { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
     .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
@@ -84,14 +87,15 @@
       body { overflow-x: hidden; width: 100%; }
       .container { padding: 1rem; width: 100%; min-width: 0; }
       .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
-      .header-logos { gap: 1rem; margin-bottom: 0.75rem; }
+      .header-row { margin-bottom: 0.75rem; }
+      .header-logos { gap: 1rem; }
       .logo { height: 56px; max-width: 96px; }
+      .header-auth .btn { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
       .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
-      .top-bar .login-wrap,
-      .top-bar #loggedArea,
-      .top-bar .btn { justify-content: center; }
-      .top-bar #loginArea:not(.hidden) { display: flex !important; min-height: 2.5rem; align-items: center; }
-      .top-bar #loggedArea:not(.hidden) { display: flex !important; min-height: 2.5rem; align-items: center; gap: 0.5rem; }
+      .header-auth .login-wrap,
+      .header-auth #loggedArea { display: flex; align-items: center; gap: 0.35rem; }
+      .header-auth #loginArea:not(.hidden),
+      .header-auth #loggedArea:not(.hidden) { display: flex !important; align-items: center; gap: 0.35rem; }
       .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
       .search-inner { padding: 0.6rem 0.75rem; }
       #q { font-size: 1rem; }
@@ -131,19 +135,23 @@
 </head>
 <body>
   <div class="container">
-    <div class="header-logos">
-      <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
-      <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+    <div class="header-row">
+      <div class="header-logos">
+        <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+        <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+      </div>
+      <div class="header-auth">
+        <div id="loginArea" class="login-wrap hidden">
+          <button type="button" class="btn" id="btnLogin">התחבר</button>
+        </div>
+        <div id="loggedArea" class="hidden">
+          <span class="muted">מחובר</span>
+          <button type="button" class="btn" id="btnLogout">התנתק</button>
+        </div>
+      </div>
     </div>
     <div class="top-bar">
       <h1>המלצות של נהגות מרוצים – עסקים ובעלי מקצוע</h1>
-      <div id="loginArea" class="login-wrap hidden">
-        <button type="button" class="btn" id="btnLogin">התחבר</button>
-      </div>
-      <div id="loggedArea" class="hidden">
-        <span class="muted">מחובר</span>
-        <button type="button" class="btn" id="btnLogout">התנתק</button>
-      </div>
       <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
       <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
     </div>
@@ -619,26 +627,20 @@
         const from_moshav = document.getElementById('addFromMoshav').checked;
         const note = (document.getElementById('addNote').value || '').trim();
         if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
-        if (!token) {
-          const r = await fetch(API + 'api/entries', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, phone, field, from_moshav, note })
-          });
-          const data = await r.json().catch(() => ({}));
-          if (r.ok && data.ok) {
-            document.getElementById('modalAdd').classList.add('hidden');
-            await load();
-          } else {
-            alert(data.error || 'שגיאה בשמירה');
-          }
-          return;
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const r = await fetch(API + 'api/entries', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ name, phone, field, from_moshav, note })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.ok) {
+          document.getElementById('modalAdd').classList.add('hidden');
+          await load();
+        } else {
+          alert(data.error || 'שגיאה בשמירה');
         }
-        const key = (phone || '').replace(/\D/g, '').slice(-10) || 'new-' + Date.now();
-        entries.push({ name, phone, phone_display: phone, field, from_moshav, note, _key: key });
-        entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
-        document.getElementById('modalAdd').classList.add('hidden');
-        applyFilters();
         updateSaveButton();
       } catch (err) {
         alert('שגיאה: ' + (err.message || err));

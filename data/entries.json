@@ -5857,5 +5857,12 @@
     "field": "השכרת ציוד",
     "from_moshav": false,
     "note": ""
+  },
+  {
+    "name": "111",
+    "phone": "11111",
+    "field": "נקיון",
+    "from_moshav": true,
+    "note": "343342"
   }
 ]

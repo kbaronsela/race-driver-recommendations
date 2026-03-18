@@ -1,0 +1,5868 @@
+[
+  {
+    "name": "קטצר מספרה",
+    "phone": "972-974-85858",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי עובד תריסי השרון",
+    "phone": "050-905-0000",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יהודה אלום רענן",
+    "phone": "050-565-2014",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' צביקה רפה",
+    "phone": "097-442-042",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר ירושלמי",
+    "phone": "972-974-25998",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר אבלין וושלר",
+    "phone": "097-671-702",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר שרה וייס � �ורגנשטיין",
+    "phone": "972-974-08733",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מונית בני כפר סבא",
+    "phone": "050-530-8301",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ראן אלומיניום דרך ערן גוטמן",
+    "phone": "052-290-2972",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מחשבים אמיר",
+    "phone": "054-464-3345",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אילן אזעקה",
+    "phone": "054-900-0955",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אליס חן מנקה",
+    "phone": "058-573-0917",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמעון מדביר",
+    "phone": "0 1-‑70-0‑505‑400",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עופרי אזעקה",
+    "phone": "0 5-4‑6-22‑8506",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר טיין",
+    "phone": "054-491-0915",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מקרר תיקון עידו",
+    "phone": "972-974-42587",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ג`סי שחיה בני ציון",
+    "phone": "052-860-1290",
+    "field": "שחייה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדנה שחיה בית ברל",
+    "phone": "0 5-4‑8-02‑8151",
+    "field": "שחייה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי אינסטלטור",
+    "phone": "0 5-0‑5-53‑4091",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צפניה אינסטלטור",
+    "phone": "0 5-4‑5-32‑4345",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ארז כהן מאלף כלבים",
+    "phone": "0 5-2‑4-28‑2433",
+    "field": "אילוף כלבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רשתות תיקונים-ניסים",
+    "phone": "050-786-2173",
+    "field": "רשתות לחלונות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי אפריאט מזגנים טלפון חדש ומעודכן",
+    "phone": "053-665-7377",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רן מונית",
+    "phone": "053-212-0080",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוניות הדר ש� �ה התעופה",
+    "phone": "972-397-11103",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נעם היפה שלי",
+    "phone": "054-998-8502",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לימור מורה",
+    "phone": "050-665-8781",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזגן איתן מזגן",
+    "phone": "054-594-4246",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכל עצמון דודה דרור",
+    "phone": "052-250-9207",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ישראל מורה מתמטיקה",
+    "phone": "052-455-7608",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיתר מורה לאנגלית",
+    "phone": "050-688-2055",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חנן מתקין טפטים - שמנת",
+    "phone": "050-336-3365",
+    "field": "טפטים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טפט",
+    "phone": "052-290-1070",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל מורה להתעמלות",
+    "phone": "054-444-3987",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הובלה אודי  מצבעה",
+    "phone": "054-200-0723",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון מרץ",
+    "phone": "052-428-4509",
+    "field": "גבינות עיזים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי טכנאי מחשבים",
+    "phone": "054-493-7020",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אוהד רז",
+    "phone": "052-370-2277",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אביטל דרור גן חיים",
+    "phone": "052-345-3889",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה וייס",
+    "phone": "972-974-02985",
+    "field": "איטום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גד גלבוע מורה",
+    "phone": "053-223-0872",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריה טכנאי",
+    "phone": "052-289-2404",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מסיבה זה אנחנו דף סוכר",
+    "phone": "077-424-3751",
+    "field": "דף סוכר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תרנגולות רמות",
+    "phone": "054-448-5808",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אברך",
+    "phone": "972-974-21203",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עקי - חשמלאי",
+    "phone": "972-976-01829",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זאב מנקה חלונות",
+    "phone": "054-814-5754",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חאלד חשמלאי (דרך עקי)",
+    "phone": "054-428-3307",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' יהודית רוזנבלום אורטודנטית",
+    "phone": "972-974-81038",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריאל דינבר מרפאה",
+    "phone": "972-989-46767",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוביל רוני",
+    "phone": "052-306-5757",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Avi Tsidki",
+    "phone": "972-974-07555",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיקי מובילים",
+    "phone": "050-687-7458",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלון חולצות",
+    "phone": "052-289-3407",
+    "field": "הדפסה על חולצות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוד עדן חשמלאי תל אביב",
+    "phone": "054-565-7850",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נוירולוג דניאל גוטליב חנקין 6 מגדיאל",
+    "phone": "097-423-547",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד״ר זינגר מנחם אגן ירכיים",
+    "phone": "972-974-81816",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכל רלס מדריכת EMDR",
+    "phone": "052-858-2383",
+    "field": "פסיכולוגיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תופרת-נלי",
+    "phone": "052-331-5437",
+    "field": "תפירה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיה גולי אמא של תמר",
+    "phone": "058-585-4343",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שקד מורה לתופים דולבי",
+    "phone": "053-429-7122",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורה הראל - מורה פרטית ללשון",
+    "phone": "052-233-0318",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונית סגל מס� �ג'",
+    "phone": "052-360-9829",
+    "field": "תפירה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאור מאלף כלבים",
+    "phone": "050-767-6337",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זרד מספרה עמ� �ס",
+    "phone": "972-974-29145",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נועם פרטי מתמטיקה",
+    "phone": "054-758-9644",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורנה כהן-פסיכולוגית",
+    "phone": "054-479-2383",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פסיכולוגית ניקול וולף אבחון פסיכודידקטי",
+    "phone": "052-272-3577",
+    "field": "פסיכולוגיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נועם לוין אופטמטריסט",
+    "phone": "054-302-9339",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סמדר צופית",
+    "phone": "050-556-8098",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמוליק מטפל",
+    "phone": "052-531-1312",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מנעולן רועי כ״ס",
+    "phone": "054-880-8558",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אברהם",
+    "phone": "972-354-08904",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זברו רופאת עור",
+    "phone": "972-974-62010",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אמנון מורה נהיגה",
+    "phone": "050-623-3484",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדסה שטרן",
+    "phone": "972-974-64388",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון סופר דורון",
+    "phone": "050-470-6559",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמית ארטמן",
+    "phone": "052-335-2188",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דליה קיי מורה להוראה מתקנת",
+    "phone": "054-581-1585",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שירלי ארוך",
+    "phone": "050-766-6119",
+    "field": "קונדיטוריה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי מדביר",
+    "phone": "052-389-6660",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאור",
+    "phone": "050-784-3898",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון הנריס קייטרינג",
+    "phone": "050-422-2499",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טכנאי מקררים (גידי) רמי אמקור",
+    "phone": "050-826-2262",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרי סטייל מספרה",
+    "phone": "072-250-6888",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מתקין גדר חשמלית לכלב",
+    "phone": "054-633-6296",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר ספר",
+    "phone": "052-624-6669",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסף שתיווי",
+    "phone": "052-726-5550",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יפתח מורה מתמטיקה",
+    "phone": "054-225-5446",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ז׳קי איש מזגנים תותח",
+    "phone": "054-740-0220",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאור - אזעקות",
+    "phone": "050-268-5399",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מכבי דנט דר גולדשטיין",
+    "phone": "073-281-8000",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר חייציק  רופא אף אוזן גרון הרצליה",
+    "phone": "972-995-71530",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אולנבסקי אאג",
+    "phone": "054-468-9886",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורית פרנקו",
+    "phone": "054-523-8511",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עומר דיטש",
+    "phone": "054-919-5997",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ירדן דברת",
+    "phone": "050-270-4999",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאור אקופאן",
+    "phone": "972-937-30188",
+    "field": "אופניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סגולי יצחק מתקין דלתות",
+    "phone": "050-423-7049",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מירב הגננת",
+    "phone": "052-570-6412",
+    "field": "הדרכת הורים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופא עור דר משיח יעקב",
+    "phone": "972-976-87604",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עופר",
+    "phone": "052-447-0595",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיה מושב",
+    "phone": "050-570-6031",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נדב תיקונים טלפון נייד",
+    "phone": "050-570-7848",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך לי כפר סבא",
+    "phone": "972-976-87459",
+    "field": "מוסך",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רויטל ספיר",
+    "phone": "054-636-2268",
+    "field": "חוג ריקוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי ארוגטי",
+    "phone": "054-793-4646",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד״ר רחימא דוד אף אוזן גרון",
+    "phone": "972-988-55548",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אזעקה-אשר",
+    "phone": "050-539-4860",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אינסטלטור מיניב",
+    "phone": "054-974-0961",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרגא אינסטלטור",
+    "phone": "052-256-9245",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך מאיר כפר סבא מומלץ",
+    "phone": "050-499-8826",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלטים עץ",
+    "phone": "972-974-93701",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לימור פלד",
+    "phone": "054-922-2468",
+    "field": "ייעוץ הנקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלירן טכנאי פלאפון",
+    "phone": "052-480-6951",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניר - חוג קפוארה",
+    "phone": "050-865-6780",
+    "field": "חוג קפוארה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יבגני זויה",
+    "phone": "054-763-7477",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אמנון תצפית",
+    "phone": "054-229-0918",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דליה הוראה מתקנת",
+    "phone": "972-974-01323",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נחום שיימן רואה חשבון",
+    "phone": "054-445-4274",
+    "field": "ראיית חשבון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר שביטה שיניים",
+    "phone": "050-734-5117",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי אזעקות",
+    "phone": "050-845-0017",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון אזעקות",
+    "phone": "050-658-8830",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שושנה מורה לפסנתר",
+    "phone": "050-371-7181",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניסן קסטן אלומיניום",
+    "phone": "052-834-5478",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר יסכה לנדסברג",
+    "phone": "972-974-00871",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר פקטור הלל רופא נשים",
+    "phone": "972-974-87288",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צ'יקו מונית",
+    "phone": "052-230-2202",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר סילביה זלוקוביץ",
+    "phone": "050-626-4640",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר חוזה גובז'נסקי",
+    "phone": "050-582-7451",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Alarm Systems Daren",
+    "phone": "054-479-6531",
+    "field": "מחסני חשמל באיזור התעשייה כ\"ס",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלעד רז אזעקות",
+    "phone": "054-248-1646",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר דן קרת",
+    "phone": "972-976-02066",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר רמי רונצוויג",
+    "phone": "972-974-29326",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוטי חן טכנאי גז",
+    "phone": "054-672-2066",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גולדשטיין קייטרינג",
+    "phone": "052-650-2433",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פביאן טייכר",
+    "phone": "052-608-4618",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ אליקים אלון",
+    "phone": "054-532-2166",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותם טכנאי מחשבים",
+    "phone": "052-665-2288",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זועור מנקה",
+    "phone": "050-912-3360",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אברהם זגג (אורנה)",
+    "phone": "054-498-0068",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פן ליטל",
+    "phone": "054-221-2178",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Johanna Hazan ג'ואנה פיזיותרפיה",
+    "phone": "053-863-3088",
+    "field": "ריפוי בעיסוק",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ענבר חוג ריק� �ד במושב",
+    "phone": "054-532-6744",
+    "field": "חוג ריקוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלחלל דר",
+    "phone": "972-354-99119",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל זילברמן מטפלת שיאצו",
+    "phone": "054-621-6167",
+    "field": "שיאצו",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאה וטרינרית הירוקה",
+    "phone": "972-977-45099",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה ננקין וטרינר",
+    "phone": "052-259-0138",
+    "field": "וטרינריה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Teacher Orit SAFROT",
+    "phone": "054-752-8478",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יבגני ניקיון סלולר",
+    "phone": "052-739-3126",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמש זגג מקלחון",
+    "phone": "053-744-0116",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שוקי טכנאי מקררים",
+    "phone": "052-247-9609",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הילה עוגות",
+    "phone": "054-265-5776",
+    "field": "עוגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חן ותכשיט",
+    "phone": "050-681-5558",
+    "field": "תכשיטים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בלהה וולך קלינאית תקשורת מכבי הגליל 21 כפר סבא",
+    "phone": "054-453-7368",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בר, יניב Up Side Bar",
+    "phone": "054-430-3737",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "באסם נגר",
+    "phone": "050-434-2707",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אסי נגר",
+    "phone": "050-229-0299",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אסתי דוידוביץ רופאת שיניים",
+    "phone": "077-330-6621",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גופר אסף פיזיוטרפיה ליאן",
+    "phone": "052-342-0199",
+    "field": "פיזיותרפיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אינסטלטור סו לטן",
+    "phone": "052-639-9871",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרי בלאו משרד לביטוח",
+    "phone": "972-364-89091",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אנדה דר קנר קיקנזון",
+    "phone": "972-974-10934",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איילת בורנשטיין",
+    "phone": "972-977-66126",
+    "field": "סנכרון ארגוני",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאפייה צליאק הוד השרון סופי",
+    "phone": "053-246-6140",
+    "field": "מאפייה",
+    "from_moshav": false,
+    "note": "צליאק"
+  },
+  {
+    "name": "שישר תיקון מדפסת",
+    "phone": "972-974-31212",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Sigal Liveni",
+    "phone": "050-552-7878",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גדר חכמה פול",
+    "phone": "972-886-50246",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יותם דהאן",
+    "phone": "050-923-5674",
+    "field": "הדרכת טיולים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שבי מנעולן של תמי קומורובסקי",
+    "phone": "054-234-7555",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון אינסטלטור מיניב",
+    "phone": "052-231-7115",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה זיידי צבעי",
+    "phone": "050-656-8645",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון צביעה ושיפוץ",
+    "phone": "050-642-2018",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ע יוגב עזריאלי",
+    "phone": "050-757-1667",
+    "field": "צלם",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון אלומיניום",
+    "phone": "050-540-4396",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבישי עוזר וצבעי",
+    "phone": "053-242-3977",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ראש צעיר מספרה",
+    "phone": "972-974-20221",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אבלין אולין רופאת שיניים. מרפאה ביהוד",
+    "phone": "054-217-7668",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Miguel מיגל Abadi עבדי",
+    "phone": "077-525-3419",
+    "field": "עריכת דין",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדברה טובי",
+    "phone": "018-004-44433",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איל רוי קור - טכנאי מזגנים (מידרג)",
+    "phone": "052-835-8806",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר נוימן רונית",
+    "phone": "972-976-60866",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קרן קוממי לקוחה מכון",
+    "phone": "050-770-3599",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר ג'וק נתן",
+    "phone": "052-368-8894",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמנואל רופא שיניים 1",
+    "phone": "052-551-7113",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דימה פיכמן",
+    "phone": "052-786-5797",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי סופר חשמל",
+    "phone": "050-710-7292",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אייל שקדי",
+    "phone": "054-809-4054",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טל שרם",
+    "phone": "054-652-5256",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלנתן מתקין מזגנים",
+    "phone": "050-946-6696",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עידן הזהב טכנאי מכונות כביסה",
+    "phone": "050-780-9161",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעקב לוגסי",
+    "phone": "054-576-0571",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ולדימיר אינסטלטור",
+    "phone": "054-766-8122",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ברורית לאוב",
+    "phone": "972-894-61249",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איציק שירות 2000 מכונת כביסה",
+    "phone": "052-356-9990",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חיים איש תריסים",
+    "phone": "050-755-7441",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוד בידר",
+    "phone": "052-256-2800",
+    "field": "מכוון פסנתרים;",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר גבאי רופא עור",
+    "phone": "050-531-2354",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזגנים שבתאי",
+    "phone": "050-829-9889",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניקוי ספות",
+    "phone": "972-351-02818",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלמה לרנר חשמלאי",
+    "phone": "050-293-5293",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיטל לוין",
+    "phone": "052-377-1056",
+    "field": "alon shiri& co.",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Ronen Ben Zvi",
+    "phone": "972-367-76754",
+    "field": "עריכת דין",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניר שלום",
+    "phone": "052-552-2461",
+    "field": "עריכת דין",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ענת כרמי",
+    "phone": "052-360-4500",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' מייסם נאסר רופא שיניים",
+    "phone": "054-430-6650",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מתקן תריסים � �א חשמליים על א",
+    "phone": "050-571-1437",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ׳ שיטרית מנהל מח׳ ריאות",
+    "phone": "972-351-14480",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ׳ קרמר ראש מערך ריאות",
+    "phone": "972-393-77141",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר גושן",
+    "phone": "052-332-3808",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר אייל רווה",
+    "phone": "052-334-0248",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אוריאל גלישה",
+    "phone": "054-309-9501",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוני חשמלאי",
+    "phone": "054-660-2094",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רועי קמינסקי נגר רהיטים",
+    "phone": "050-877-5522",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אינסטלטור סולטאן",
+    "phone": "052-839-9871",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיהוץ - אריה",
+    "phone": "054-444-9022",
+    "field": "גיהוץ",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר פלדמן ויקטור אורטופד",
+    "phone": "054-540-1797",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טכנאי תנורים ארז",
+    "phone": "052-832-6607",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נועם גיל מונית",
+    "phone": "052-615-1414",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מונית יוסי - מסיע ילדים",
+    "phone": "050-869-7016",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חגי בר טל",
+    "phone": "054-690-1920",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טירקס אלישמע-דודי",
+    "phone": "054-559-9685",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איימי",
+    "phone": "050-756-5514",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מעברים רויטל",
+    "phone": "054-222-0262",
+    "field": "העברת דירות",
+    "from_moshav": false,
+    "note": "העברת דירות כולל אריזה ופרוק"
+  },
+  {
+    "name": "גיא - אינסטלטור",
+    "phone": "052-233-4027",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מנתח - ד\"ר קוריאנסקי",
+    "phone": "052-426-6365",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדי נפתלי התעמלות קרקע",
+    "phone": "054-435-4251",
+    "field": "חוג התעמלות קרקע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך עטאללה",
+    "phone": "972-979-94594",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פאלח מוסך",
+    "phone": "050-689-6777",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרה סוקול יועצת זוגית",
+    "phone": "972-544-43030",
+    "field": "ייעוץ זוגיות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי - ספר החלקת שיער",
+    "phone": "052-747-2780",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר עובדיה",
+    "phone": "077-777-9222",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נהג מונית אילן",
+    "phone": "052-367-6030",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נתנאל תריסים",
+    "phone": "050-532-9289",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר יעקב משיח",
+    "phone": "097-680-464",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיה הרלינגר",
+    "phone": "052-336-5672",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יהודה מתמטיקה עודד",
+    "phone": "050-875-9578",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רון פון רננים תיקון טלפון",
+    "phone": "972-974-66444",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר מוסברג רונית נירולוגית מדיקל סנטר",
+    "phone": "052-366-8988",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ויקי סיגנל טורס",
+    "phone": "972-393-82255",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יובל כהן מורה לנהיגה",
+    "phone": "054-223-0547",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מסאז' ראובן סלונים. גדוד עברי 10 קומה ב' דירה 8",
+    "phone": "052-557-8117",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ברוש נגר",
+    "phone": "052-377-2500",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ורד יועצת הנקה",
+    "phone": "052-397-4692",
+    "field": "ייעוץ הנקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Bmi אזעקות צחי",
+    "phone": "058-668-5550",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר נעמה סאמט",
+    "phone": "054-458-2224",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אילן טכנאי תנורים גודין",
+    "phone": "052-250-8696",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדר אהרון מועלם",
+    "phone": "054-222-3235",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קרלה אפרתי",
+    "phone": "054-200-6868",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גליה רוזמרין עלומים כפר סבא",
+    "phone": "052-770-0200",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' אורית ושלר",
+    "phone": "972-976-72132",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עידו טכנאי מקררים יצאת צדיק",
+    "phone": "052-259-7223",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר תמר ברקוביץ רופאת משפחה",
+    "phone": "972-979-97008",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אדי הדברה",
+    "phone": "052-444-4446",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי דביר ניקיון",
+    "phone": "052-649-9446",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליטוש עאמר",
+    "phone": "052-300-0131",
+    "field": "ליטוש",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי - אלגרו מזגנים",
+    "phone": "052-244-6141",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מריאלה מורה פרטית",
+    "phone": "054-484-0784",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר. לנדר",
+    "phone": "972-976-03644",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופאת שיניים אתי דיין",
+    "phone": "972-974-03056",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פאדי",
+    "phone": "050-631-6877",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיקי מזגנים(אפרת)",
+    "phone": "052-471-7355",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מלכה פלדמן",
+    "phone": "972-974-81058",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלית סגל",
+    "phone": "052-617-7952",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עידן תיקון טלפונים",
+    "phone": "052-898-9825",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רוית שמיר וילהלם",
+    "phone": "050-456-0554",
+    "field": "דפוס",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר קליין",
+    "phone": "053-748-2705",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפדיית מאיר הוד השרון",
+    "phone": "972-974-01196",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עופר מונד חשמל",
+    "phone": "052-252-6952",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופא אלרגולוג הרשקו אלון",
+    "phone": "972-986-26268",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר ארבל קרדיולוג",
+    "phone": "052-426-6151",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סער מוסך",
+    "phone": "054-216-6545",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר שרה וייס רופאת שיניים רעננה",
+    "phone": "972-974-06336",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי אינסטלטור",
+    "phone": "052-245-4947",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נעמה כרמלי תומר דגן",
+    "phone": "052-331-2634",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר יניב רותם  ( מרים)",
+    "phone": "972-976-63311",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נוית ענבר הברושים 35 קדימה",
+    "phone": "050-297-7779",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חובב טיח צבע",
+    "phone": "054-469-3684",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אפי האינסטלטור",
+    "phone": "052-353-0760",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה ויטרה ניקוי חלונות",
+    "phone": "052-950-7799",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רועי בועז",
+    "phone": "050-832-0914",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד'ר נהרי רופא נשים",
+    "phone": "972-974-06233",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוד לוי מתקין מזגנים נקוי מזגנים (פולג)מומלץ מאיה נהגות",
+    "phone": "053-620-7402",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אריאלה יוקל קלינאית",
+    "phone": "077-910-1510",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צביקה פריק חשמל",
+    "phone": "052-296-9605",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חשמלאי מנחם שוכמן",
+    "phone": "050-523-2297",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופאת שיניים-שרי צור",
+    "phone": "052-437-7747",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טכנאי גז, אילן (מאמישראגז)",
+    "phone": "054-435-4894",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צ'רלי נגר (רשפון)",
+    "phone": "050-381-7283",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר גרויסמן רופאת נשים כפ\"ס",
+    "phone": "972-976-76444",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר מלכה",
+    "phone": "972-976-66530",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אור אברהם מספרה",
+    "phone": "972-988-20212",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מספרה - זיו",
+    "phone": "972-974-15241",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לנסברג רופאת נשים",
+    "phone": "050-327-7469",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ריקי מעסה",
+    "phone": "052-848-4849",
+    "field": "קוסמטיקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דויד אינסטלטור",
+    "phone": "052-250-2873",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר פייר כלי דם",
+    "phone": "054-626-0803",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזגנים איתם",
+    "phone": "050-686-0500",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תומר טכנאי גז",
+    "phone": "054-998-6716",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אבשלום פלסטיקאי",
+    "phone": "053-734-5649",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לירן משכנתאות יועץ",
+    "phone": "052-540-4142",
+    "field": "ייעוץ משכנתאות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי שמואלי",
+    "phone": "052-615-5161",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אולפן הקלטות במה",
+    "phone": "972-974-51163",
+    "field": "אולפן הקלטות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חיאת מנקה",
+    "phone": "052-709-0750",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר דורון  רוזן",
+    "phone": "972-974-64033",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי מורן מורה נהיגה",
+    "phone": "050-527-5703",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אחמד זגג",
+    "phone": "050-528-4718",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זגג יוסי טל",
+    "phone": "972-976-60197",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מדטון מכשירי שמיעה אודיו",
+    "phone": "972-974-47704",
+    "field": "מכשירי שמיעה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מדביר אורי (אגרופלוס הדברות)",
+    "phone": "054-426-3616",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזגנים ניסין",
+    "phone": "050-532-1614",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אשר הדברה ריסוס 450 שח",
+    "phone": "052-275-3889",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שולי אזעקה",
+    "phone": "052-259-8596",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורן מספרה",
+    "phone": "972-974-61725",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קייטרינג ציוד אהוד גודן",
+    "phone": "050-740-4884",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרכז רפואי אל רחמה טירה",
+    "phone": "972-979-38341",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מירב מזכירת נדיר ארבר",
+    "phone": "052-471-1561",
+    "field": "גסטרו;",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מלי עו\"ד פולי ן",
+    "phone": "052-380-3173",
+    "field": "עריכת דין",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זאב מחשבים",
+    "phone": "054-435-5275",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורטופד דר דורון/ זינגר מנחם ארוטופד ילדים",
+    "phone": "053-212-1326",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נעם אריכא",
+    "phone": "052-450-8118",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חורחה קבלן שיפוצים",
+    "phone": "054-483-4535",
+    "field": "קבלן שיפוצים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ישראל מושוביץ רואה חשבון",
+    "phone": "054-497-8118",
+    "field": "ראיית חשבון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותי טלמור-מורה לאנגלית",
+    "phone": "972-974-86919",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סיון (שיננית  דר פורן)",
+    "phone": "050-404-5453",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איציק חורב טכנאי מכונות כביסה ומזגנים",
+    "phone": "050-529-4577",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אייל  אמסלם",
+    "phone": "052-862-0679",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אמילי מנקה(ליבי )",
+    "phone": "054-699-6297",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר איתי ורדי אורולוג",
+    "phone": "054-457-1060",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ננסי מנקה",
+    "phone": "053-528-7195",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גאזי אלומיניום טירה",
+    "phone": "050-558-8682",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסה אלומיניום קמא",
+    "phone": "052-789-3407",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יהודה אזעקה שולי",
+    "phone": "050-236-8957",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נוירולוג ד\"ר קליין",
+    "phone": "057-748-2705",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ביסקוטי קייטרינג וקונדיטוריה",
+    "phone": "972-357-04015",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קייטרינג מונייר בת אל",
+    "phone": "972-363-26032",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לוצי - מדקרת ומסאג׳יסטית",
+    "phone": "050-246-8829",
+    "field": "דיקור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלום מוביל",
+    "phone": "050-596-3640",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאת שיניים- דר' גל וולנשטיין",
+    "phone": "972-977-13407",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלינה גאיה איפור",
+    "phone": "052-454-1747",
+    "field": "איפור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רינת רופאת שיניים",
+    "phone": "050-855-3245",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בנצי חשמלאי",
+    "phone": "054-316-0038",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורטופד דר' שלומי אליאס",
+    "phone": "077-540-4040",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ענת",
+    "phone": "054-771-7259",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אופטומטריסט ד\"ר וונטש ( ריקי, יובל)",
+    "phone": "972-974-06064",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר כלימיאן",
+    "phone": "054-753-9539",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוד חשמלאי",
+    "phone": "052-352-3858",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אינגריד מאפרת",
+    "phone": "052-597-3874",
+    "field": "איפור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלמוג מורה לחשבון עבור מעיין",
+    "phone": "050-954-7068",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רועי שגיא",
+    "phone": "052-359-9596",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רפי חשמלאי",
+    "phone": "050-533-6081",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר פוד",
+    "phone": "018-003-86486",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צחי טכנאי מייבש ומכונות כביסה",
+    "phone": "052-272-2735",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אמיר סוכן ביטוח",
+    "phone": "050-647-2236",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יואב של יותם",
+    "phone": "054-777-6288",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבירם",
+    "phone": "050-327-7253",
+    "field": "תיקון מג'ימיקס",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונית אינסלר ביטוח בריאות אורלי וילנאי",
+    "phone": "054-468-8577",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוני מזגנים",
+    "phone": "054-594-9908",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איטליז עימאד סמארה",
+    "phone": "972-979-30526",
+    "field": "אטליז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מורה נהיגה, רוני (מארז)",
+    "phone": "052-872-5969",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדר אוקונסקי",
+    "phone": "052-845-3331",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Diana Idelman",
+    "phone": "054-696-8706",
+    "field": "אדריכלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיא הספר",
+    "phone": "972-995-72829",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שולה",
+    "phone": "052-328-4854",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עוזרת של קיפרמן, מאיה",
+    "phone": "054-602-7427",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר ויסנברג- מור לאישה",
+    "phone": "972-379-47762",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מנקה הריש מנורית שדה ורבורג",
+    "phone": "055-951-4166",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לילך של נדב",
+    "phone": "054-433-3960",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נעם גיא",
+    "phone": "054-471-0934",
+    "field": "גן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מורה פסנתר דינה",
+    "phone": "050-655-7179",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תפירה בוריס",
+    "phone": "050-458-1983",
+    "field": "תפירה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מלינה עוזרת מנקה",
+    "phone": "052-734-1279",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גגן יגאל דורית",
+    "phone": "050-572-3957",
+    "field": "גגן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבנר גגן וחשמלאי שיכון עליה",
+    "phone": "054-230-3234",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אור המדביר",
+    "phone": "054-245-7714",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאה ד״ר הקסלמן",
+    "phone": "972-974-32525",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "כפיר הדברה",
+    "phone": "052-816-4666",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שורוק נדב",
+    "phone": "052-555-2565",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חשמל האחד",
+    "phone": "052-889-4364",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אמיר אשדות",
+    "phone": "054-250-3630",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Shishi Deri",
+    "phone": "052-538-5757",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לירון - טכנאי רשתות",
+    "phone": "050-880-4735",
+    "field": "טכנאי רשתות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גל ולנשטיין רופאת שיניים",
+    "phone": "052-222-1450",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "כריס מנקה",
+    "phone": "053-495-2621",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבישי הדברה",
+    "phone": "052-549-5454",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ שי שבת אורתופד עמוד שדרה",
+    "phone": "972-995-92988",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יניב כהן",
+    "phone": "050-889-4206",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איש מזגנים עידו",
+    "phone": "052-271-3700",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר שפרן נטע אנדוקרינולוג",
+    "phone": "972-974-51129",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ערן מדביר",
+    "phone": "018-003-83383",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעקב מנצ׳ובסקי",
+    "phone": "050-527-8409",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורית חשבון",
+    "phone": "050-764-3496",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אושרת גני רא� �ת מועצת דרום  השרון",
+    "phone": "050-316-6507",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אקוורל הזמנות",
+    "phone": "055-687-1650",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נעלי ורד רעננה משה",
+    "phone": "972-977-14912",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר לוי פרטי",
+    "phone": "972-997-45929",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ארגזים קרטונים בקליק שמעון",
+    "phone": "053-340-4155",
+    "field": "ארגזים קרטונים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אופיר עקיבא ביטוח פנסיה פיננסים",
+    "phone": "054-769-2566",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה זבולוני -מנעולן ומתקין גדרות",
+    "phone": "052-250-5076",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תמיר מחשבים",
+    "phone": "054-462-9740",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רוברט חשמלאי מדרג",
+    "phone": "058-563-2156",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רחל - מבשלת",
+    "phone": "054-569-9269",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדברה רוני משרד",
+    "phone": "972-396-23544",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ארז ( שאצי)",
+    "phone": "053-786-8657",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אניטה רופאת נשים",
+    "phone": "054-699-6551",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר טטיאנה אייזנברג",
+    "phone": "972-988-68200",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Zachi Printer",
+    "phone": "050-226-7322",
+    "field": "ARAVA",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פסיכוגראטר דר חאג'אז",
+    "phone": "052-294-6152",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון מוקד חום קמינים  סידר לי צנרת",
+    "phone": "972-974-67575",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ריקה שרם",
+    "phone": "052-382-2809",
+    "field": "פסנתר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאור ימיני מקלחונים ועבודות זכוכית",
+    "phone": "054-678-6885",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר רונית אפטייק",
+    "phone": "972-989-83125",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פואד טכנאי",
+    "phone": "050-529-6049",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אינסטלטור רוני מומלץ",
+    "phone": "052-468-7624",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קייטרינג דרור",
+    "phone": "050-530-6152",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זכריה אינסטלטור",
+    "phone": "⁦97-252-2588341⁩",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר חוג מדע ולגו",
+    "phone": "050-345-6708",
+    "field": "שחר חוג מדע ולגו",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איטליז אמנות הבשר",
+    "phone": "972-974-86448",
+    "field": "אטליז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איציק שירי",
+    "phone": "052-502-4449",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדי וולק",
+    "phone": "050-667-8536",
+    "field": "המלצה לאיש גבס טוב (לתקרה)",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שי שקד נפתלי",
+    "phone": "054-560-6042",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסף \\r\\nמוביל",
+    "phone": "052-284-7926",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר דוד עור",
+    "phone": "972-974-43737",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדו אורן",
+    "phone": "054-546-6181",
+    "field": "חוג שחמט",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוטי נתן מקלחונים",
+    "phone": "052-898-5983",
+    "field": "מקלחונים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורי גוזם עצים דרך עודד פז",
+    "phone": "050-462-1484",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Bikes Gal Hasson",
+    "phone": "054-581-0007",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון מקור חום",
+    "phone": "017-005-59595",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלה מרום",
+    "phone": "052-895-8466",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דניאל וייגל",
+    "phone": "972-995-09697",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ישראל נורליאן גוהר",
+    "phone": "050-835-3544",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאור מורה גיטרה",
+    "phone": "054-436-6705",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תהילה - סוכנות לכיש",
+    "phone": "972-894-67460",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אמינות הביטוח ביטוח לאמירויות",
+    "phone": "972-390-48133",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוחמד רצף ממ� �דרג",
+    "phone": "050-246-4562",
+    "field": "ריצוף",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יואב מוביל דרך מושיק",
+    "phone": "052-357-2480",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורדן מאלף",
+    "phone": "054-921-3284",
+    "field": "אילוף כלבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נתנאל עצים",
+    "phone": "052-341-2418",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קרן לפלר",
+    "phone": "052-223-7103",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורית",
+    "phone": "054-397-3567",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לירון ברייר צ",
+    "phone": "054-552-8526",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שוקי דקל",
+    "phone": "050-529-5572",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורנה",
+    "phone": "050-853-0281",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זוהר מזגנים",
+    "phone": "050-858-5812",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דגני יצחק",
+    "phone": "050-581-8828",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יהודית מזכירה של דר שוורץ",
+    "phone": "054-527-2558",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בני פינגר מסגלריה",
+    "phone": "052-245-2625",
+    "field": "בני פינגר מסגלריה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר רמי תמיר",
+    "phone": "052-280-7056",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל מילפלדר",
+    "phone": "052-342-6418",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמעון מקלחון",
+    "phone": "050-885-1554",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורנה קרשטיין",
+    "phone": "054-232-6873",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שימי",
+    "phone": "050-492-9100",
+    "field": "מבט הכלב",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדברה נמלי א� �",
+    "phone": "050-766-6615",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חוג רקמת עמים רבקה בקר",
+    "phone": "054-740-1799",
+    "field": "חוג רקמת עמים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יונתן גוסטבו קייטרינג",
+    "phone": "054-785-5566",
+    "field": "קייטרינג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוביל ניסים מקרר ממי",
+    "phone": "053-752-1613",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הראל סטצקביץ",
+    "phone": "972-974-08877",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר - אשכולות  שדה ורבורג - הדר",
+    "phone": "050-763-3496",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוביל קיסריה",
+    "phone": "050-292-2396",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר אלנובסקי מזכירה",
+    "phone": "054-306-6589",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אופיר טכנאי מחשבים",
+    "phone": "054-463-1218",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמי גיהוץ",
+    "phone": "050-358-6822",
+    "field": "גיהוץ",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל אנגרט שיננית",
+    "phone": "054-673-5371",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר׳ צחי להר - רופא שיניים",
+    "phone": "972-369-51667",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רוי הדברה יתושים",
+    "phone": "054-320-7939",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלום נהג מונית צופית",
+    "phone": "052-773-7070",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סייעת נופר",
+    "phone": "052-642-2228",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אוסמה תיקון תריס חשמלי",
+    "phone": "050-294-0021",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריה מורה נהיגה",
+    "phone": "972-979-25332",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נשאט מזגנים",
+    "phone": "052-848-3343",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמיר קנטרוביץ - חשמלאי",
+    "phone": "054-546-6426",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ספרית שיראל",
+    "phone": "055-664-5585",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בהירה",
+    "phone": "050-678-0298",
+    "field": "תפירה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאה דר' פלדמן",
+    "phone": "051-255-6671",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חשמלאי אלי מאורן הקבלן",
+    "phone": "054-223-8864",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אסף חשמלאי",
+    "phone": "054-305-1978",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד״ר דפנה שפט",
+    "phone": "052-335-9300",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אילה וינברג",
+    "phone": "054-424-8967",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זהר בן דוד אבא בנדה",
+    "phone": "052-539-3221",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמית קפלן",
+    "phone": "054-534-7799",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גמאל מרזבים",
+    "phone": "050-570-5274",
+    "field": "מרזבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי בטש טכנאי מקררים סמסונג",
+    "phone": "050-748-1596",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איציק הכהן רופא שיניים גאי שהם",
+    "phone": "058-587-5000",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בתיה הלוי",
+    "phone": "050-744-7656",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בן פרגולות דרך שאדי",
+    "phone": "050-951-1114",
+    "field": "מסגריה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יובל בר מזגנים",
+    "phone": "054-778-0098",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי שרגא",
+    "phone": "053-752-8104",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיה לוסטיג",
+    "phone": "054-985-2363",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ג'ודי פלא לדבר אנגלית",
+    "phone": "052-460-6791",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר אילנה האס",
+    "phone": "050-556-5650",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תום סולומון  מורה לגיטרה",
+    "phone": "050-725-8399",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאל מסגיסט ממיוגה",
+    "phone": "054-396-7282",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר זיו מזור(פרויודנט)",
+    "phone": "972-974-00336",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צילי עיסוי - מושב",
+    "phone": "052-272-4379",
+    "field": "קוסמטיקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תמונות מיסגור גיל פוסטרס",
+    "phone": "972-974-69906",
+    "field": "מיסגור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל - דר  רם ירון",
+    "phone": "054-214-4455",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טל מתקין כרומגן",
+    "phone": "052-808-8809",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ערן אינסטלטור מידרג",
+    "phone": "050-738-7041",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמי אינסטלטור",
+    "phone": "058-442-3909",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אביב חלפים נורה לתנור סנן מקרר ועוד",
+    "phone": "052-268-4890",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיא לוי- רופא שיניים",
+    "phone": "054-755-3962",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אריאל",
+    "phone": "972-974-49135",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריאנה",
+    "phone": "052-599-9091",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אהרון דכטיאר מנהל סניף כס אוויס",
+    "phone": "050-861-4294",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל - יועצת",
+    "phone": "055-553-0035",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עקא קרלינסקי מורה למתמטיקה",
+    "phone": "⁦97-250-5855904⁩",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותם קבליס תריסים אלומיניום חלונות ורשתות",
+    "phone": "054-696-6867",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר דרורי",
+    "phone": "050-754-1511",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדי ציוני",
+    "phone": "052-608-3530",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוני נקיוני",
+    "phone": "058-790-7080",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי- רפד",
+    "phone": "050-275-3006",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונן קנטי",
+    "phone": "054-432-6370",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורית דורון זיתון מורה פרטית",
+    "phone": "055-666-5251",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדר",
+    "phone": "052-480-9761",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ורד גרימברג תלמה נסיעות",
+    "phone": "052-879-6607",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יואב פרץ אמן חושים",
+    "phone": "054-889-6912",
+    "field": "אמנות חושים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שפריר גפנר חשמלאי",
+    "phone": "052-613-2611",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר קורן ביטוח",
+    "phone": "972-976-50650",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זאב סויבל ביטוח",
+    "phone": "052-285-9783",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' קיש ( ע\"י ע נת אשתו)",
+    "phone": "054-533-9125",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נחמה שופר",
+    "phone": "050-765-2692",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גדי(תריסים)",
+    "phone": "050-538-6793",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר קורנהאוזר (אורטודנט)",
+    "phone": "050-361-6663",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מחשבים- דודו אוןליין",
+    "phone": "972-976-59853",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר דניס סיטרין-רפואת משפחה וילדים",
+    "phone": "053-398-4589",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שי ונוגה  רייניץ",
+    "phone": "052-360-0407",
+    "field": "אטליז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאת בישול טבעוני שו",
+    "phone": "054-234-4268",
+    "field": "בישול",
+    "from_moshav": false,
+    "note": "בישול טבעוני"
+  },
+  {
+    "name": "מוניות הדר נתב\"ג",
+    "phone": "053-230-0387",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדר אמא של לילי חברה של תמרי",
+    "phone": "052-831-2077",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותם - מוביל",
+    "phone": "052-386-9045",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נועה מדקרת",
+    "phone": "052-391-9072",
+    "field": "דיקור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דיאטנית רחל שמש - רעננה- + הפנייה מרכז גירון קומה",
+    "phone": "053-890-8099",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל ניר - משמר השרון",
+    "phone": "052-342-0494",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ירדן הראל",
+    "phone": "050-596-7300",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלומי אביה הדברות",
+    "phone": "052-780-7612",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עומאר צבעי",
+    "phone": "050-250-9753",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורי לביא מזגנים",
+    "phone": "054-438-3025",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלון גיזום",
+    "phone": "052-236-5594",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אודי טכנאי מכונת כביסה",
+    "phone": "054-902-2750",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון תריס חשמלי",
+    "phone": "052-374-3737",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תריסים, אמיר שעשע (יצאת צדיק)",
+    "phone": "050-567-8535",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ציפי מנקה",
+    "phone": "053-925-8211",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תיקון מכונת תפירה לובה ואיגור",
+    "phone": "054-733-8281",
+    "field": "תפירה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מדביר משרד",
+    "phone": "073-256-3563",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רון",
+    "phone": "050-949-5954",
+    "field": "פדיקוריסטית",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שיעורי שחיה-ti",
+    "phone": "972-354-00795",
+    "field": "שחייה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ענת הראל",
+    "phone": "054-246-2907",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איגור - מוביל פסנתרים",
+    "phone": "054-547-9960",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דינה צמות",
+    "phone": "050-378-4360",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרכז רפואי אמודי",
+    "phone": "972-392-00444",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אסא אלון מרפאת שיניים",
+    "phone": "077-460-4618",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיל פסקל מנעולן",
+    "phone": "054-729-8453",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זוארץ חיות אבינועם",
+    "phone": "972-974-82087",
+    "field": "אוכל לחיות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גידי הצבע",
+    "phone": "050-658-5259",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון כץ מורה לנהיגה",
+    "phone": "⁦97-252-8899494⁩",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאת שיניים ערן דולב",
+    "phone": "972-364-85273",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיטל עיצוב עוגות",
+    "phone": "054-440-5955",
+    "field": "Sweetmate;",
+    "from_moshav": false,
+    "note": "עיצוב עוגות"
+  },
+  {
+    "name": "סבון סלק אלון",
+    "phone": "050-637-3800",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריה מורה לנהיגה",
+    "phone": "052-244-6183",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יואב פירסט מורה נהיגה",
+    "phone": "054-972-0125",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חוסאם עבדול חי אלומיניום",
+    "phone": "050-221-9006",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורי שוחמי חבר של שחר",
+    "phone": "052-755-9697",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קיאקים חן כץ",
+    "phone": "054-815-0152",
+    "field": "קיאקים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נימי",
+    "phone": "052-439-8111",
+    "field": "Isis",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סולטן אינסטלטור טל׳ בבית",
+    "phone": "054-773-6277",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמואל שחר - מונית",
+    "phone": "052-585-0850",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזכירה של דר' אולך יעקב, גסטרו",
+    "phone": "053-301-4089",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תומר ניקוי ספות ושטיחים",
+    "phone": "052-483-9474",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלעזר טכנאי מזגנים",
+    "phone": "052-780-0860",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רויטל מורה פרטית לספרות",
+    "phone": "050-216-2330",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יאיר רצון מרוקו",
+    "phone": "052-254-2517",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": "fdsfsffffff"
+  },
+  {
+    "name": "תיקון דייסון בבלי",
+    "phone": "972-360-55892",
+    "field": "תיקון דייסון בבלי",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סרג׳יו פרידמן סוכן נסיעות BNI",
+    "phone": "050-209-0403",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תומר סוכן נסיעות",
+    "phone": "050-300-7604",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה - טכנאי גז",
+    "phone": "052-833-0726",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סועד",
+    "phone": "052-727-3334",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי גלם",
+    "phone": "050-640-3645",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוד בן הרוש",
+    "phone": "054-553-2818",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אילנה כפיר",
+    "phone": "052-500-3090",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונית צבע לשיער- ורבורג",
+    "phone": "052-840-4004",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוטי מקלחונים",
+    "phone": "054-556-1216",
+    "field": "מקלחונים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורלי מנקה",
+    "phone": "054-661-2935",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רפי נהג מונית",
+    "phone": "052-244-7102",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ירון צוהבני - מונית (דרך אהרון חדד)",
+    "phone": "050-599-9941",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איילת ביטוח שרון",
+    "phone": "077-444-0802",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אוהד בכר מדביר",
+    "phone": "052-945-8902",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר ויגלר",
+    "phone": "058-468-1681",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיא צבעי שיפוצניק תל אביב רעננה",
+    "phone": "050-994-6001",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונן דוד שמש",
+    "phone": "052-244-4756",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אוחיון",
+    "phone": "054-615-3265",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איתמר מונית ל-6",
+    "phone": "⁦97-254-4526364⁩",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה המדביר",
+    "phone": "050-835-2222",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריק נדלר חשמלאי",
+    "phone": "052-265-7109",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ספיר סקי סוכנת נסיעות",
+    "phone": "052-481-4260",
+    "field": "נסיעות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר טושינסקי",
+    "phone": "054-479-9284",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שאול עיני",
+    "phone": "052-528-3461",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יורם גניש פיזיותרפיסט",
+    "phone": "052-343-2101",
+    "field": "פיזיותרפיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ציון,כורת עצים(מהרצליה) שליט",
+    "phone": "052-250-0889",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איל רובינשטוק",
+    "phone": "058-406-5363",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דלית מוצרי אלוורה 🌐",
+    "phone": "054-689-1106",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עדן מלמד",
+    "phone": "054-337-6647",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צורי רפד נייד",
+    "phone": "050-783-4545",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סיף עוקלה נקיון ספות - שטיפה",
+    "phone": "052-674-0729",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שיננית פרטית יעל",
+    "phone": "972-976-59667",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוטי - איש מזגנים",
+    "phone": "052-258-9537",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניצן אזעקה מתח נמוך",
+    "phone": "054-477-8165",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דניאל מזגנים",
+    "phone": "052-554-5566",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר ברגר - כירור. פה ולסת הוד השרון אלכסנדר פן 24 , אישי,סלולרי מרפאה,",
+    "phone": "972-974-10569",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טל ארז צבעי",
+    "phone": "052-591-9819",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סמדי פדיקור",
+    "phone": "⁦97-250-5371671⁩",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון יועצת נגישות חברה של מלי",
+    "phone": "052-369-7383",
+    "field": "ייעוץ נגישות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Pizzaparty סרחיו",
+    "phone": "054-450-9051",
+    "field": "Pizzaparty",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "כפיר גולדשטיין",
+    "phone": "052-855-1382",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קובי - טכנאי מכונת כביסה",
+    "phone": "052-591-2000",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלום חן משה",
+    "phone": "050-538-6372",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלמה צבעי משפץ שלי",
+    "phone": "052-222-5424",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הילה מורה לאנגלית",
+    "phone": "054-643-4455",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עידן בג׳רנו חוג אנגלית מושב",
+    "phone": "052-225-6702",
+    "field": "חוג אנגלית",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיה ספיר",
+    "phone": "052-378-7577",
+    "field": "ציפורניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניצה יראל",
+    "phone": "054-661-7072",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכלי אדלר",
+    "phone": "050-564-0005",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרון- סדר בבלאגן- גימלים עסקים קטנים",
+    "phone": "058-669-7405",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נהג מונית ששי מהוהש",
+    "phone": "050-372-5545",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תיקון תכשיטים עמנואל אלי, שלום,דניאל",
+    "phone": "972-976-59119",
+    "field": "תיקון תכשיטים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותם טרכטמן חשמלאי גני עם",
+    "phone": "052-567-9479",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יאיר ניקוי ספות המלצה חן ברייט",
+    "phone": "053-723-1356",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלית תכשיטנית",
+    "phone": "054-900-0129",
+    "field": "תכשיטים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מונית גדולה גם לשדה התעופה אבנר ליאור מנהגת מרוצים.",
+    "phone": "052-299-2555",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ימאמא מנקה",
+    "phone": "050-210-6332",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מנעולן שכפול מפתחות אמיר הראל - מפתח בשרון",
+    "phone": "972-974-11173",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הובלות דביר",
+    "phone": "052-315-3101",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלמה אינסטלטור",
+    "phone": "054-234-5129",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עידן תיקון ממד",
+    "phone": "054-350-3001",
+    "field": "תיקון ממד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורלי רוזנברג",
+    "phone": "054-477-2220",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד״ר שי רופא ילדים עד הבית",
+    "phone": "054-457-9113",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלית מעיין נורדיה בתים",
+    "phone": "052-387-9905",
+    "field": "Galit Maayan Dancing School",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יונתן מידר מודיעין שדה ורבורג",
+    "phone": "054-788-3280",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טלי לבינגר יעוץ עסקי",
+    "phone": "052-521-6216",
+    "field": "ייעוץ עסקי",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טופ סלולר",
+    "phone": "074-702-0050",
+    "field": "סלולר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אחיטוב שחר כנעני",
+    "phone": "050-572-9967",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמואל אחיטוב מלפפונים",
+    "phone": "050-507-2618",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי אטיאס - אזעקה, גילוי אש ועשן",
+    "phone": "052-245-6442",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שמרת מן מורה  למחשבים פרטי",
+    "phone": "050-565-5249",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אדי- בר ניקוי וריפוד בעמ",
+    "phone": "052-453-8866",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צבכר דנה/ מושב",
+    "phone": "054-531-1440",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניר גגן",
+    "phone": "050-887-8858",
+    "field": "גגן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי איש איטום",
+    "phone": "052-482-0344",
+    "field": "איטום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי אזעקות",
+    "phone": "054-943-2610",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר' לויה נסים    עניים",
+    "phone": "972-995-16195",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עירית ארטמן",
+    "phone": "052-415-8517",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "כחלון הובלות",
+    "phone": "054-569-3344",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רצון תיקון כיריים ותנור",
+    "phone": "052-327-1483",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבו יוסוף דגים ווהבי",
+    "phone": "972-976-69030",
+    "field": "דגים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלון שטרן רואה חשבון",
+    "phone": "052-631-5553",
+    "field": "ראיית חשבון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרגא אבי אינסטלטור",
+    "phone": "0 5-7‑7-52‑8104",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונן תותים",
+    "phone": "050-527-0107",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משרד עו\"ד ד\"ר יובל חן (דרכון גרמני)",
+    "phone": "972-499-29990",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי שי עבודה",
+    "phone": "050-362-2999",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שאול  שיפוצים (אבא של אלון)",
+    "phone": "052-375-3188",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אפרת קל (מורה מתמטיקה)",
+    "phone": "052-354-5600",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מאיסר מאפיה טירה",
+    "phone": "050-821-1157",
+    "field": "מאפייה",
+    "from_moshav": false,
+    "note": "בצק לפיתות"
+  },
+  {
+    "name": "מיקי בוידן",
+    "phone": "052-273-9873",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רני אמישרגז",
+    "phone": "050-400-3405",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סרגי מראות",
+    "phone": "054-210-1241",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ברנדון אינסטלטור",
+    "phone": "052-232-0884",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רון וטרינר עד הבית",
+    "phone": "052-272-1428",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רן רובינשטיין",
+    "phone": "054-528-4789",
+    "field": "ע\"ד דיני עבודה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בית המפתח",
+    "phone": "054-481-4011",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך פאדי חשמלאי רכב",
+    "phone": "050-520-0025",
+    "field": "חשמל רכב",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ׳ איתן יניב אף אוזן גרון",
+    "phone": "972-976-03198",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אייל פי סי מחשבים",
+    "phone": "052-363-1499",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אבי תיקון דוד מים",
+    "phone": "050-527-6521",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דניאל בן יעקב",
+    "phone": "058-787-2127",
+    "field": "נגרות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Ron Locksmith רון - מנעולן",
+    "phone": "054-212-2279",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Mrs. צליל",
+    "phone": "052-877-4122",
+    "field": "קלינאות תקשורת",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדברה בני אלמגור",
+    "phone": "050-645-5962",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוטי מורן - טכנאי מחשבים אבא",
+    "phone": "050-576-2155",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רונה אמא של גלי גן עומר",
+    "phone": "054-587-3066",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עודד מוביל דרך רוני בן שמחון עודד הובלה משאית דרך",
+    "phone": "052-525-5758",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיא לרנר",
+    "phone": "054-555-8812",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אסף מתקין חשמל סמיקום בר דוד",
+    "phone": "054-888-4079",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נחמן חשמלאי טל תאורה",
+    "phone": "050-569-8959",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי אלומיניום",
+    "phone": "050-534-3552",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נאסר אלומניום ממוחמד טייבה",
+    "phone": "052-660-2617",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גבי טכנאי גז",
+    "phone": "054-222-8404",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ראשיד נהג מונית",
+    "phone": "052-288-7752",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכאל אזעקה",
+    "phone": "050-780-7099",
+    "field": "אזעקה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ofir אופיר סורגים",
+    "phone": "050-214-1332",
+    "field": "סורגים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Eli Dishwasher",
+    "phone": "052-877-5053",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יעל שלזינגר",
+    "phone": "052-595-7569",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלומית פלד",
+    "phone": "050-901-9133",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מור חומרי נקוי",
+    "phone": "972-976-73870",
+    "field": "חומרי ניקוי",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דפוס חשבוניות ניר דיוורית",
+    "phone": "050-734-4508",
+    "field": "דפוס",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לבדי",
+    "phone": "052-229-0802",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי תריסים",
+    "phone": "053-762-0749",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר מורה לשחיה חתירה הראל",
+    "phone": "054-486-1690",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גיא תיקון ושדרוג מחשבים",
+    "phone": "050-552-3563",
+    "field": "טכנאי מחשבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קובי שירותי הובלה",
+    "phone": "050-566-5552",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר לנדסברג",
+    "phone": "972-352-29633",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיקי דור - מדביר",
+    "phone": "052-387-3342",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מעיין ליכטבלאו",
+    "phone": "054-464-9988",
+    "field": "איפור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלומי מדביר נמלי אש",
+    "phone": "052-331-1528",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עומר מורה לנהיגה גן חיים",
+    "phone": "050-738-8203",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יונתן הובלות דרך מאיה גל",
+    "phone": "054-940-1265",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוביל אולג",
+    "phone": "054-591-6423",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שי הדברת נמל� � אש",
+    "phone": "050-766-6915",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלגול שלי",
+    "phone": "054-913-6851",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מונית אבי נאמן",
+    "phone": "054-521-2005",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קורלי הקטנה💗",
+    "phone": "052-880-7851",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוגה מנאו נעורים",
+    "phone": "054-666-5460",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יהונתן - שורשים ואדמה",
+    "phone": "052-540-5750",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך רביע",
+    "phone": "972-976-57515",
+    "field": "כפר סבא",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Lir Mizrahi Studio",
+    "phone": "972-352-20316",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דורון טכנאי טלרד",
+    "phone": "052-484-1069",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טכנאי מזגנים - איתמר",
+    "phone": "054-979-4395",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טובה מיכאלי",
+    "phone": "050-630-0955",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופא שיניים צוקמן מעליזהDr Tzugman Consultorio",
+    "phone": "972-976-61326",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ד\"ר חן ישראלי - מרפאת מומחיות לשיניים",
+    "phone": "054-786-0077",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סרגיי בראון",
+    "phone": "052-587-1023",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "עמליה מורה ללשון",
+    "phone": "054-543-7929",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "נאדר מציל בית ברל.   ( ציפי)",
+    "phone": "054-651-4384",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אייל ניקוי שטיחים",
+    "phone": "052-540-3352",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שירותים וטרינרים גוש דן מועצה",
+    "phone": "052-538-8631",
+    "field": "שירותים וטרינרים גוש דן מועצה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Benny רשת/תריס",
+    "phone": "052-256-2031",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוניר - מתקן תריסים",
+    "phone": "054-643-8154",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בני חשמלאי",
+    "phone": "052-220-5189",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מקלחונים יואל",
+    "phone": "052-243-0864",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שימי מקלחונים המלצה שחר",
+    "phone": "052-348-6733",
+    "field": "מקלחונים",
+    "from_moshav": false,
+    "note": "מקלחונים"
+  },
+  {
+    "name": "יואב שטרן",
+    "phone": "005-434-54525",
+    "field": "רו\"ח;",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה חשמלאי",
+    "phone": "052-853-0687",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר דולברג פסיכוגאריאטר",
+    "phone": "054-527-0010",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רועי שונם",
+    "phone": "054-247-3102",
+    "field": "איפור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי טל זכוכית",
+    "phone": "054-780-0837",
+    "field": "זגגות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קטלין - מנקה",
+    "phone": "573-022-414056",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זוהר דר הדס רונית אורתודנטיה נתניה",
+    "phone": "050-882-8573",
+    "field": "אורתודנטיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מובילים מהלב חיים",
+    "phone": "054-728-5508",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קשטן אביאל שירות",
+    "phone": "052-317-0011",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "משה - נהג מונית גדולה (אודי)",
+    "phone": "052-889-4303",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "0524415415 מספרה ניידת",
+    "phone": "052-441-5415",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שרית נעים עו\"ד לגבי הדירה",
+    "phone": "050-682-4444",
+    "field": "עריכת דין",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צור ציון גילי חשמלאות רכב",
+    "phone": "972-976-65838",
+    "field": "חשמל רכב",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סתיו ליטוין מורה פרטית חשבון סיני",
+    "phone": "054-230-1541",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאורה זינגר",
+    "phone": "052-277-8815",
+    "field": "ליאורה זינגר",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אודי מזגנים דרך שגית",
+    "phone": "050-576-1885",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר יפעת סוירסקי מזכירה",
+    "phone": "972-988-68201",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מזל ביטוחים ביטוח דירה",
+    "phone": "972-356-00166",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ברוך מנקה תנורים",
+    "phone": "054-470-9573",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יואל כדורסל אדר Cohen",
+    "phone": "050-253-5758",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר טכנאי מכונת כביסה ממדרג",
+    "phone": "054-590-0008",
+    "field": "מכבסה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אודי חשמלאי",
+    "phone": "052-332-2272",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רותם אופניים",
+    "phone": "054-587-9118",
+    "field": "אופניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אריק גולדין",
+    "phone": "050-798-8889",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יניב הדרי מדביר",
+    "phone": "054-458-5771",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר אליעז דמול שרון אנדוקרינולוגית",
+    "phone": "972-374-62250",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדר גבעון",
+    "phone": "054-555-4714",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תריסים, ניר (מהחברה טווינה)",
+    "phone": "050-855-7375",
+    "field": "תריסים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שחר ספרית",
+    "phone": "055-662-3165",
+    "field": "מספרה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורן רחמני",
+    "phone": "052-362-0172",
+    "field": "דיקור",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גרינגרטן משרד",
+    "phone": "972-974-38333",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שביט דוד סןכן ביטוח",
+    "phone": "050-488-8834",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוניס חשמל",
+    "phone": "052-678-1507",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלון הנדימן ושירותי תיקונים",
+    "phone": "054-936-1111",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יאיר חי אל סוכנות ביטוח (טובי)",
+    "phone": "054-490-6040",
+    "field": "ביטוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אביטל מערכות חשמל לרכב הוד השרון",
+    "phone": "052-333-8652",
+    "field": "חשמל רכב",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לירון ספיר וטרינרית",
+    "phone": "054-585-3303",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אופק רופא פדיקור",
+    "phone": "⁦97-250-4447011⁩",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סמדר קסטלנובו",
+    "phone": "050-454-0596",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכל בדש מאלפת כלבים Badash 💫",
+    "phone": "054-700-0172",
+    "field": "אילוף כלבים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חיה גולד",
+    "phone": "054-725-4323",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בתיה פיזיותרפיה ווסתבלרית ורטיגו",
+    "phone": "052-830-2161",
+    "field": "פיזיותרפיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלון ציפורי מורה נהיגה",
+    "phone": "050-233-5400",
+    "field": "נהיגה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קרן שפירא",
+    "phone": "050-200-9595",
+    "field": "סידור ארונות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אלי חשמלאי",
+    "phone": "052-258-6316",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צחי ולנציה טכנאי מדיחים ומקררים",
+    "phone": "052-294-1354",
+    "field": "טכנאי מכשירי חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מוסך טירה",
+    "phone": "054-489-5518",
+    "field": "מוסך",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אביהו מורה לפיזיקה",
+    "phone": "053-621-7891",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניר טכנאי מזגן",
+    "phone": "052-849-6099",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פמלה נאוה אוסטאופטיה קליניקה",
+    "phone": "054-769-3960",
+    "field": "אוסתאופטיה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צח קוזינצקי שמאי דדי שמאי",
+    "phone": "054-319-6444",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "לילך מגשי אירוח צופית Shoval",
+    "phone": "054-882-8183",
+    "field": "מגשי אירוח",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דרור בכר מדביר ומנעולן דרך אמיר ויינברג",
+    "phone": "050-443-3111",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זהר בסטיאנס",
+    "phone": "054-398-8628",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ספא תאיילנדי - דיימונד",
+    "phone": "050-847-0449",
+    "field": "עיסוי",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תום גלס סדנת ראמן",
+    "phone": "054-422-4105",
+    "field": "סדנאות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חיים דגן פלר� � ממד",
+    "phone": "052-279-1042",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טליה תורתי תיקון מקלטים",
+    "phone": "052-444-2814",
+    "field": "תיקון ממד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איגור (אלומיניום משה)",
+    "phone": "050-636-8000",
+    "field": "אלומיניום",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יריב טכנאי מזגנים",
+    "phone": "052-531-1648",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שלומי טכנאי מזגנים אחרון",
+    "phone": "054-777-3775",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Mali Brimer Designer מלי ברימר",
+    "phone": "054-300-2236",
+    "field": "Mali Brimer Designer",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניקולאי, איגור הובלת פסנתרים",
+    "phone": "054-640-0140",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מיכה",
+    "phone": "972-865-81438",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאת שיניים דר אבירם פברי",
+    "phone": "972-974-86868",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "זיו מוביל",
+    "phone": "052-358-6966",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Ivan Good Moving הובלה",
+    "phone": "054-833-9569",
+    "field": "הובלות",
+    "from_moshav": false,
+    "note": "הובלות"
+  },
+  {
+    "name": "אביב מדביר",
+    "phone": "050-871-5143",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "בעין יפה",
+    "phone": "972-977-28555",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אופיר הרוש",
+    "phone": "052-420-4247",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופא עור- פרו׳ ארנון כהן הוד השרון",
+    "phone": "077-805-1280",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ירון שליין טכנאי מזגנים התקנת מזגן אלקטרא",
+    "phone": "050-599-5044",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "doc-tor unprime כללית",
+    "phone": "1(2-34)-5622704",
+    "field": "תורים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דוקתור - תורים זמינים במכבי",
+    "phone": "972-338-22345",
+    "field": "תורים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאת שיניים משרד מנור, וינשטוק",
+    "phone": "972-977-13106",
+    "field": "רפואת שיניים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תריסי עומרי",
+    "phone": "050-369-3437",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אדיר מנעולן",
+    "phone": "052-315-8158",
+    "field": "מנעולן",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "הדברה אקולוגית נווה צדק",
+    "phone": "050-333-0853",
+    "field": "הדברה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "המרפאה הירוקה",
+    "phone": "972-976-62822",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "איתי יפת קבלן שיפוצים",
+    "phone": "054-655-6700",
+    "field": "קבלן שיפוצים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חיים דינצי מונית",
+    "phone": "050-262-4221",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאת שיר וזמר ד\"ר קרן שטרן",
+    "phone": "972-976-22910",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רנקי אהובי הבן של חגית עצמון צבעי",
+    "phone": "052-505-7711",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דימה נהג מונית מצופית לנתב'ג",
+    "phone": "053-224-2622",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "שושי טל מנקה",
+    "phone": "050-771-4454",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "סמדר תורג׳מן אחות של אילנית משה אישתו של מיקי",
+    "phone": "054-443-1847",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר קרן בן ארי מעוז    רופאת עור ( המלצה של לאה) ומלכה",
+    "phone": "972-351-17911",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פבל נהג מונית לנתב\"ג",
+    "phone": "052-624-7146",
+    "field": "מוניות",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "מרפאה עידן",
+    "phone": "054-971-1022",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ברוך חשמלאי",
+    "phone": "054-498-1013",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "רופא עור אסי לוי",
+    "phone": "972-995-10905",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "קרן מורה לפסנתר מגמה",
+    "phone": "054-799-5924",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ניסים לויה",
+    "phone": "972-995-16196",
+    "field": "אינסטלציה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Manana מנקה עוזרת",
+    "phone": "050-492-1200",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ארז וינברג צביעה ושיפוצים",
+    "phone": "054-220-5777",
+    "field": "צבע",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "דר רם ירון -אורטופד כתף",
+    "phone": "053-929-0569",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פייר מורה לת� �פוף אפריקאי",
+    "phone": "052-468-4461",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "אורטופד ד״ר זינגר",
+    "phone": "051-215-4994",
+    "field": "רפואה",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "פרופ' דורון הלפרין",
+    "phone": "054-457-5000",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גדי- טכנאי גז",
+    "phone": "052-487-0007",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "ליאור - טכנאי גז חרוצים",
+    "phone": "054-659-5515",
+    "field": "גז",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "גלי ויסמן",
+    "phone": "054-441-2390",
+    "field": "",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "תמיר מזגנים",
+    "phone": "052-877-0831",
+    "field": "מיזוג",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "צחי פקטור דוד שמש נהגות מירי",
+    "phone": "050-580-0308",
+    "field": "דודים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "טל ניקוי ריפודים ומזגנים",
+    "phone": "055-306-9920",
+    "field": "ריפוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "Ruti Agmon (Pnmz)",
+    "phone": "052-258-4661",
+    "field": "מורים פרטיים",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "חשמלאי  מוסמך סרגיי אברמיאן",
+    "phone": "052-863-1548",
+    "field": "חשמל",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "IDANS, השכרת ציוד, נווה ימין",
+    "phone": "052-560-2602",
+    "field": "השכרת ציוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "יוסי מלכה - שולחנות משחק, פופים, ציוד ארועים",
+    "phone": "050-380-3030",
+    "field": "השכרת ציוד",
+    "from_moshav": false,
+    "note": ""
+  },
+  {
+    "name": "111",
+    "phone": "11111",
+    "field": "נקיון",
+    "from_moshav": true,
+    "note": "343342"
+  }
+]

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attachments).
-Produces JSON: name, phone, field, from_moshav, note.
+Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attachments only).
+Produces JSON: name, phone, field, from_moshav, note. Phone numbers in plain text are ignored.
 
 Usage:
   python scripts/whatsapp_to_recommendations.py [path_to.zip] [--output path.json]
@@ -15,8 +15,6 @@ import json
 import zipfile
 import argparse
 from pathlib import Path
-from collections import defaultdict
-
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_ZIP = r"G:\My Drive\ai\whatsapp test bck.zip"
 DEFAULT_OUT = ROOT / "data" / "whatsapp_recommendations.json"
@@ -29,15 +27,6 @@ CHAT_LINE_RE = re.compile(
 # continuation line (no date) - part of previous message
 # Attachment in chat: "אורית חשבון.vcf (file attached)" or "something.vcf (file attached)"
 VCF_ATTACHED_RE = re.compile(r"(.+?\.vcf)\s*\(file attached\)", re.UNICODE | re.IGNORECASE)
-
-# Israeli mobile: 05x-xxx-xxxx, 05x xxx xxxx, 972-5x-..., +972 50 ...
-PHONE_IN_TEXT_RE = re.compile(
-    r"(?:\+972|972)[\s\-]?5[\s\-]?\d[\s\-]?\d{3}[\s\-]?\d{4}|"
-    r"05[\s\-]?\d[\s\-]?\d{3}[\s\-]?\d{4}|"
-    r"05\d[\s\-]?\d{3}[\s\-]?\d{4}",
-    re.UNICODE,
-)
-REQUEST_INDICATORS = ("מחפש", "מחפשת", "מכיר", "מכירה", "המלצה", "מישהו", "מישהי", "רוצה", "יש למישה", "אשמח להמלצה", "מבקשת המלצה", "צריכה המלצה")
 
 # Israeli phone: 05x, 972 5x, +972-54-..., 972549... normalize to digits only, then to 05x
 def normalize_phone(s):
@@ -329,51 +318,6 @@ def build_note(sender, message_text, context_messages, max_len=350):
     return out[:max_len] + ("..." if len(out) > max_len else "") if out else ""
 
 
-def extract_phones_and_names_from_message(text):
-    """Find Israeli phone numbers in text; for each, try to get a name from surrounding text. Yield (phone, name)."""
-    if not text or not text.strip():
-        return
-    for m in PHONE_IN_TEXT_RE.finditer(text):
-        raw = m.group(0)
-        phone = normalize_phone(raw)
-        if not phone or len(phone) < 9:
-            continue
-        # Name: up to ~40 chars before the number, then clean
-        start = max(0, m.start() - 45)
-        before = text[start:m.start()].strip()
-        # Take last "segment" (after : or newline or comma) or last few words
-        for sep in (":", "\n", ",", ".", ")", "]"):
-            if sep in before:
-                before = before.split(sep)[-1].strip()
-        # Remove "של" prefix (הטלפון של X -> X)
-        before = re.sub(r"^(?:הטלפון|המספר|טל[\.']?)\s+של\s+", "", before, flags=re.IGNORECASE)
-        before = re.sub(r"^של\s+", "", before)
-        before = before.strip()
-        # If it looks like a name (no digits, reasonable length)
-        if before and len(before) <= 35 and not re.search(r"\d{3}", before):
-            name = before
-        else:
-            name = ""
-        yield (phone, name)
-
-
-def find_text_only_recommendations(zip_path, window_before=3):
-    """Scan chat for messages that contain a phone and are preceded by a request. Yield (phone, name, message_text, context)."""
-    messages = list(parse_chat_messages(zip_path))
-    for i in range(1, len(messages)):
-        _, _, text = messages[i]
-        if not PHONE_IN_TEXT_RE.search(text):
-            continue
-        # Check if any of the previous window_before messages looks like a request
-        context = messages[max(0, i - window_before):i]
-        context_text = " ".join(msg[2] for msg in context)
-        if not any(ind in context_text for ind in REQUEST_INDICATORS):
-            continue
-        for phone, name in extract_phones_and_names_from_message(text):
-            if phone:
-                yield (phone, name or "מהצ'אט", text, context)
-
-
 def main():
     parser = argparse.ArgumentParser(description="WhatsApp ZIP to recommendations JSON")
     parser.add_argument("zip_path", nargs="?", default=DEFAULT_ZIP, help="Path to WhatsApp export ZIP")
@@ -430,37 +374,7 @@ def main():
             "from_moshav": from_moshav,
             "note": note,
         })
-    print(f"  Found {len(entries)} recommended contacts from chat attachments", flush=True)
-
-    # Phase 2: contacts mentioned in text (name + phone) without VCF, in recommendation context
-    print("Scanning chat for phone numbers in recommendation context (no VCF)...", flush=True)
-    added_from_text = 0
-    for phone, name, message_text, context in find_text_only_recommendations(zip_path):
-        if phone in seen_phones:
-            continue
-        seen_phones.add(phone)
-        note = message_text[:250].replace("\n", " ") if message_text else ""
-        if not note:
-            for _, _, txt in reversed(context):
-                if any(x in txt for x in REQUEST_INDICATORS):
-                    note = txt[:200].replace("\n", " ")
-                    break
-        field = infer_field_from_text(note)
-        if not field:
-            field = infer_field_from_context(context)
-        name_field = infer_field_from_text(name)
-        if name_field:
-            field = name_field
-        from_moshav = infer_from_moshav(context, message_text)
-        entries.append({
-            "name": name.strip() or "מהצ'אט",
-            "phone": phone,
-            "field": field,
-            "from_moshav": from_moshav,
-            "note": note[:350] if note else "",
-        })
-        added_from_text += 1
-    print(f"  Added {added_from_text} contacts from text only (no VCF)", flush=True)
+    print(f"  Found {len(entries)} recommended contacts from VCF attachments only", flush=True)
 
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(entries, f, ensure_ascii=False, indent=2)

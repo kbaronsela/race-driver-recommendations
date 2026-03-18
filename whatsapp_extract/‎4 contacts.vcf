@@ -1,0 +1,18 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;צח שמאי דדי;;;
+FN:צח שמאי דדי
+TEL;waid=972543196444:+972 54-319-6444
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:שמאי;צח קוזינצקי שמאי דדי;;;
+FN:צח קוזינצקי שמאי דדי שמאי
+item1.TEL;waid=972543196444:+972 54-319-6444
+item1.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:שמאי;צח קוזינצקי שמאי דדי;;;
+FN:צח קוזינצקי שמאי דדי שמאי
+item2.TEL;waid=972543196444:+972 54-319-6444
+item2.X-ABLabel:נייד
+END:VCARD

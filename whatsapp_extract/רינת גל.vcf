@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גל;רינת;;;
+FN:רינת גל
+item1.TEL;waid=972508813806:+972 50-881-3806
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:ringal2@gmail.com
+item2.X-ABLabel:אחר
+END:VCARD

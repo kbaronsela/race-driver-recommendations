@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ויקי;לב;ארי;;
+FN:לב ארי ויקי
+item1.TEL;waid=972543466082:+972 54-346-6082
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:vik1_lev@012.net.il
+item2.X-ABLabel:בית
+item3.ADR:;;79 בן-גוריון;הוד-השרון;;;
+item3.X-ABADR:ac
+item3.X-ABLabel:בית
+END:VCARD

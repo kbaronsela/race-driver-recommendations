@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פרדקין;דר;עקיבא;;
+FN:דר. עקיבא פרדקין
+TEL;type=Work:+972 3-538-5212
+item1.TEL;waid=972547827074:+972 54-782-7074
+item1.X-ABLabel:Mobile
+EMAIL;TYPE=Work:akivaf@clalit.org.il
+item2.EMAIL;type=INTERNET:akivaFr@clalit.org.il
+item2.X-ABLabel:Other
+END:VCARD

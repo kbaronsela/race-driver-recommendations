@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:חשבון;ישראל מושוביץ;רואה;;
+FN:ישראל מושוביץ רואה חשבון
+item1.TEL;waid=972544978118:+972 54-497-8118
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-760-4782
+item2.X-ABLabel:בית
+item3.EMAIL;type=INTERNET:movshoviz@gmail.com
+item3.X-ABLabel:בית
+END:VCARD

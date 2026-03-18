@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:היתאם פרוגה; מזגנים;;;
+FN: מזגנים היתאם פרוגה
+TEL;type=CELL;type=VOICE;waid=972506860500:+972 50-686-0500
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:היתאם פרוגה;מזגנים;;;
+FN:מזגנים היתאם פרוגה
+TEL;waid=972506860500:+972 50-686-0500
+END:VCARD

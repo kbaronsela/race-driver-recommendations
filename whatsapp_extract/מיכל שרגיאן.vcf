@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שרגיאן;מיכל;;;
+FN:מיכל שרגיאן
+item1.TEL;waid=972505654444:+972 50-565-4444
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:michal.shargian@gmail.com
+item2.X-ABLabel:אחר
+item3.EMAIL;type=INTERNET:michal.shargian@gmail.com
+item3.X-ABLabel:אחר
+END:VCARD

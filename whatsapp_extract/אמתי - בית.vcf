@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בית;אמתי;-;;
+FN:אמתי - בית
+item1.TEL:+972 9-742-8949
+item1.X-ABLabel:נייד
+item2.TEL;waid=972502598242:+972 50-259-8242
+item2.X-ABLabel:נייד
+item3.TEL:+972 3-617-9098
+item3.X-ABLabel:פקס בעבודה
+END:VCARD

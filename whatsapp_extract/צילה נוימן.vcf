@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:נוימן;צילה;;;
+FN:צילה נוימן
+TEL;type=CELL;type=VOICE:0 52-343-0340
+item1.EMAIL;type=INTERNET:ti5quick@gmail.com
+item1.X-ABLabel:_$!<Other>!$_
+item2.ADR;type=HOME:;;;שדה ורבורג;;il;Israel
+END:VCARD

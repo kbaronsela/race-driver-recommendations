@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;אבא;;;
+FN:אבא
+item1.TEL;waid=972522680386:+972 52-268-0386
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-741-0822
+item2.X-ABLabel:עבודה
+END:VCARD

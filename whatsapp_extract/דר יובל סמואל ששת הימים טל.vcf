@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:טל;דר יובל סמואל ששת;הימים;;
+FN:דר יובל סמואל ששת הימים טל
+item1.TEL:+972 9-774-5099
+item1.X-ABLabel:בית
+item2.TEL:+972 9-760-4345
+item2.X-ABLabel:OTHER
+END:VCARD

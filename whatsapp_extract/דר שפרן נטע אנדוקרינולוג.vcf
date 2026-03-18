@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אנדוקרינולוג;דר שפרן;נטע;;
+FN:דר שפרן נטע אנדוקרינולוג
+ORG:null
+TITLE:רמבם 82 רעננה
+item1.TEL;waid=97297451129:+972 9-745-1129
+item1.X-ABLabel:בית
+item2.EMAIL;type=INTERNET:097451129@gmail.com
+item2.X-ABLabel:בית
+item3.ADR:;;HaSharon area;;;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:עבודה
+X-WA-BIZ-DESCRIPTION:מרפאת ד"ר נטע שפרן - אנדוקרינולוגית
+X-WA-BIZ-NAME:דר שפרן נטע אנדוקרינולוג
+END:VCARD

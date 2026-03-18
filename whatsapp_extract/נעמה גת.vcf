@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גת;נעמה;;;
+FN:נעמה גת
+item1.TEL;waid=972544414502:+972 54-441-4502
+item1.X-ABLabel:Mobile
+EMAIL;TYPE=Home:naamaga@gmail.com
+item2.ADR;type=Home:;;שדה ורבורג;;;;
+item2.X-ABADR:in
+END:VCARD

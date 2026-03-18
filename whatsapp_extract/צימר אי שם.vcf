@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שם;צימר;אי;;
+FN:צימר אי שם
+item1.TEL;waid=972524260860:+972 52-426-0860
+item1.X-ABLabel:Mobile
+END:VCARD

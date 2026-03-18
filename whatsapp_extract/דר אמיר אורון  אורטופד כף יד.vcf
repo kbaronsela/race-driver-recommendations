@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ד"ר אמיר אורון  אורטופד כף יד;;;;
+FN:ד"ר אמיר אורון  אורטופד כף יד
+item1.TEL;waid=972542427072:+972 54-242-7072
+item1.X-ABLabel:בית
+item2.ADR;type=HOME:;;רמת השרון\r\nבן גוריון 28;;;;Israel
+item2.X-ABADR:il
+END:VCARD

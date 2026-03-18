@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סטמפל;בילי;;;
+FN:בילי סטמפל
+item1.TEL:+972 9-741-5337
+item1.X-ABLabel:בית
+item2.TEL;waid=972546373543:+972 54-637-3543
+item2.X-ABLabel:אחר
+item3.EMAIL;type=INTERNET:biliysp@gmail.com
+item3.X-ABLabel:אחר
+item4.EMAIL;type=INTERNET:biliysp@gmail.com
+item4.X-ABLabel:אחר
+item5.ADR:;;;שדה ורבורג;;;
+item5.X-ABADR:in
+item5.X-ABLabel:אחר
+item6.ADR:;;;שדה ורבורג;;;
+item6.X-ABADR:in
+item6.X-ABLabel:אחר
+END:VCARD

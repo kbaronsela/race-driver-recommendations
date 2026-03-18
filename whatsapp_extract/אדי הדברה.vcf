@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:הדברה;אדי;;;
+FN:אדי הדברה
+item1.TEL;waid=972524444446:+972 52-444-4446
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:editayar@gmail.com
+item2.X-ABLabel:בית
+END:VCARD

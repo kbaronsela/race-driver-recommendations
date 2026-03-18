@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;פרי בלאו;משרד לביטוח;;
+FN:פרי בלאו משרד לביטוח
+item1.TEL:+972 3-648-9091
+item1.X-ABLabel:‏אחר
+item2.TEL:+972 3-648-9082
+item2.X-ABLabel:‏נייד
+item3.TEL:+972 3-648-9092
+item3.X-ABLabel:‏פקס עבודה
+item4.TEL:+972 3-648-9093
+item4.X-ABLabel:‏עבודה
+END:VCARD

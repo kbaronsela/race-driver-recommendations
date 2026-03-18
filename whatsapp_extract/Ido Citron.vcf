@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Citron;Ido;;;
+FN:Ido Citron
+item1.TEL;waid=972504208682:+972 50-420-8682
+item1.X-ABLabel:Mobile
+TEL;type=HOME:+97297731917
+item2.EMAIL;type=INTERNET:Idosirton@gmail.com
+item2.X-ABLabel:INTERNET
+END:VCARD

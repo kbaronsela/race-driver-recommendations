@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:טירה;דגים;האדי;;
+FN:דגים האדי טירה
+ORG: , כיכר 1 שמאחה 200 מטר משמאל 
+TITLE:
+item1.TEL:+972 9-886-6649
+item1.X-ABLabel:נייד
+item2.TEL;waid=972542532666:+972 54-253-2666
+item2.X-ABLabel:נייד
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גלי חו;אילן;;;
+FN:אילן גלי חו
+item1.TEL:+972 9-955-0946
+item1.X-ABLabel:בית
+item2.TEL;waid=972505215142:+972 50-521-5142
+item2.X-ABLabel:נייד
+END:VCARD

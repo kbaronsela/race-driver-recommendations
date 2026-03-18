@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סגלוביץ;זאב אמבטיה;חיים;;
+FN:זאב אמבטיה חיים סגלוביץ
+item1.TEL;waid=972522439700:+972 52-243-9700
+item1.X-ABLabel:נייד
+item2.ADR:;;;;;;Israel
+item2.X-ABADR:
+item2.X-ABLabel:בית
+END:VCARD

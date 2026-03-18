@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;אורניתי;;;
+FN:אורניתי
+item1.TEL;waid=972522565666:+972 52-256-5666
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:ornit.chen@gmail.com
+item2.X-ABLabel:בית
+BDAY;value=date:1974-08-12
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קרת דני;;;;
+FN:קרת דני
+TEL;type=HOME:+97297480639
+TEL;type=CELL;type=VOICE;waid=972508299299:+972 50-829-9299
+item1.EMAIL;type=INTERNET:ddkeret@zahav.net.il
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

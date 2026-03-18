@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Hitech Motors;;;
+FN:Hitech Motors
+ORG:הייטקמוטורס;
+TEL;type=CELL;type=VOICE;waid=972503573348:+972 50-357-3348
+TEL;type=HOME:+972 9-760-2479
+TEL;type=CELL;type=VOICE;waid=972503573349:+972 50-357-3349
+item1.ADR;type=HOME:;;התעשייה 7;;;;Israel
+END:VCARD

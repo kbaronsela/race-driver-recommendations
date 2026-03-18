@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קעקועים;אליאב;;;
+FN:אליאב קעקועים
+item1.TEL:+972 3-540-1020
+item1.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:קעקועים;נעמה;‪;;
+FN:נעמה ‪ קעקועים
+item1.TEL;waid=972544462004:+972 54-446-2004
+item1.X-ABLabel:בית
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:קעקועים;קייסי;;;
+FN:קייסי קעקועים
+item1.TEL;waid=972544514298:+972 54-451-4298
+item1.X-ABLabel:נייד
+END:VCARD

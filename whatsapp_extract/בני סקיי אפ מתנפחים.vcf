@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מתנפחים;בני סקיי;אפ;;
+FN:בני סקיי אפ מתנפחים
+item1.TEL:+972 3-522-8395
+item1.X-ABLabel:‏עבודה
+item2.TEL;waid=972528496141:+972 52-849-6141
+item2.X-ABLabel:‏נייד
+END:VCARD

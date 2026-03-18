@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בן-יעקב;מרים;;;
+FN:מרים בן-יעקב
+item1.TEL:+972 77-916-6488
+item1.X-ABLabel:‏בית
+item2.TEL;waid=972526410101:+972 52-641-0101
+item2.X-ABLabel:‏נייד
+END:VCARD

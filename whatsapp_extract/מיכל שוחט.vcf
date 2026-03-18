@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שוחט;מיכל;;;
+FN:מיכל שוחט
+item1.TEL:+972 9-772-7747
+item1.X-ABLabel:בית
+item2.TEL;waid=972544343506:+972 54-434-3506
+item2.X-ABLabel:נייד
+END:VCARD

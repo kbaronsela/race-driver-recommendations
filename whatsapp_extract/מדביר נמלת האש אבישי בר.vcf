@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בר;מדביר נמלת האש;אבישי;;
+FN:מדביר נמלת האש אבישי בר
+item1.TEL;waid=972525495454:+972 52-549-5454
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:עבודה
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מאירי;רוחיק;;;
+FN:רוחיק מאירי
+TEL;type=CELL;type=VOICE;waid=972522991092:+972 52-299-1092
+EMAIL;type=INTERNET;type=WORK:rochikmeiri@gmail.com
+item1.URL:www.erodor.co.il
+item1.X-ABLabel:_$!<HomePage>!$_
+END:VCARD

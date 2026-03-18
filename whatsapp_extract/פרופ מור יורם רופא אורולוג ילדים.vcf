@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:רופא אורולוג ילדים;פרופ מור יורם;;;
+FN:פרופ מור יורם רופא אורולוג ילדים
+ORG:רמת השרון;
+TEL;type=HOME:+972 53-540-0826
+TEL;type=WORK:+97235400826
+TEL;type=IPHONE;type=CELL;type=VOICE:+97235400826
+TEL;type=WORK;type=FAX:+972 77-540-4826
+item1.ADR;type=HOME:;; רחוב סוקולוב 34;רמת השרון;;;Israel
+END:VCARD

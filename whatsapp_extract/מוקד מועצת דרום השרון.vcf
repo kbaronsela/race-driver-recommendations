@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:השרון;מוקד מועצת;דרום;;
+FN:מוקד מועצת דרום השרון
+item1.TEL:+972 3-900-0677
+item1.X-ABLabel:בית
+item2.TEL:+972 3-900-0629
+item2.X-ABLabel:נייד
+item3.EMAIL;type=INTERNET:moked@dsharon.org.il
+item3.X-ABLabel:בית
+END:VCARD

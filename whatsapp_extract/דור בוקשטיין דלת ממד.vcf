@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ממד;דור בוקשטיין;דלת;;
+FN:דור בוקשטיין דלת ממד
+item1.TEL;waid=972544215000:+972 54-421-5000
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:dor_1806@walla.com
+item2.X-ABLabel:אישי
+item3.ADR:;;;;;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:בית
+END:VCARD

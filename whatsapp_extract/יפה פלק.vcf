@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פלק;יפה;;;
+FN:יפה פלק
+item1.TEL;waid=972544371057:+972 54-437-1057
+item1.X-ABLabel:אחר
+item2.TEL:+972 9-744-5677
+item2.X-ABLabel:נייד
+END:VCARD

@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מנעולן;רוני;אליחי;;
+FN:רוני אליחי מנעולן
+ORG:דרך הרצל אבא
+TITLE:
+item1.TEL;waid=972508507680:+972 50-850-7680
+item1.X-ABLabel:נייד
+item2.TEL;waid=972535432500:+972 53-543-2500
+item2.X-ABLabel:נייד
+END:VCARD

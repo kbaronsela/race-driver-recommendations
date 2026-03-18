@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פורמן;אביב;;;
+FN:אביב פורמן
+item1.TEL;waid=972526548106:+972 52-654-8106
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:עבודה
+item3.ADR:;;;;;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:עבודה
+END:VCARD

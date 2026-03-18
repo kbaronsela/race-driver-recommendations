@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ספר;שחר;;;
+FN:שחר ספר
+ORG:עסק עצמאי
+TITLE:
+item1.TEL;waid=972526246669:+972 52-624-6669
+item1.X-ABLabel:נייד
+item2.ADR:;;;Kfar Saba;HaMerkaz;;Israel
+item2.X-ABADR:
+item2.X-ABLabel:בית
+item3.ADR:;;;Kfar Saba;HaMerkaz;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:בית
+END:VCARD

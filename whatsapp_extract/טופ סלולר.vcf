@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סלולר;טופ;;;
+FN:טופ סלולר
+item1.TEL:+972 74-702-0050
+item1.X-ABLabel:אחר
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:in
+item2.X-ABLabel:בית
+END:VCARD

@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סטס;ניצן;של;;
+FN:ניצן של סטס
+TEL;type=CELL;type=VOICE;waid=972544680000:+972 54-468-0000
+item1.ADR;type=HOME:;;Israel;;;;
+END:VCARD

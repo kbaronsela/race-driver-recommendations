@@ -1,0 +1,16 @@
+BEGIN:VCARD
+VERSION:3.0
+N:כתף;דר רם ירון;-אורטופד;;
+FN:דר רם ירון -אורטופד כתף
+item1.TEL;waid=972539290569:+972 53-929-0569
+item1.X-ABLabel:מיכל
+item2.TEL:+972 53-995-6456
+item2.X-ABLabel:קביעת תור
+item3.TEL:+972 3-995-6456
+item3.X-ABLabel:מרפאה - קביעת תור
+item4.EMAIL;type=INTERNET:dryaron49gmail.com
+item4.X-ABLabel:בית
+item5.ADR:;;הברזל 12 קומה 11 רמת החייל;;;;
+item5.X-ABADR:ac
+item5.X-ABLabel:בית
+END:VCARD

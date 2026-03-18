@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קלינאית;דר אריאלה;יוקל;;
+FN:דר אריאלה יוקל קלינאית
+item1.TEL:+972 77-910-1510
+item1.X-ABLabel:בית
+item2.TEL;waid=972542392414:+972 54-239-2414
+item2.X-ABLabel:נייד
+END:VCARD

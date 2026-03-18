@@ -1,0 +1,45 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;אלכס;;;
+FN:אלכס
+ORG:מציל;
+TEL;type=CELL;type=VOICE;waid=972543065212:+972 54-306-5212
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:;אריאל;סטודנט הידרו;;
+FN:אריאל סטודנט הידרו
+ORG:מציל;
+item1.TEL;waid=972522926855:+972 52-292-6855
+item1.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:;מציל מהפייסבוק;;;
+FN:מציל מהפייסבוק
+TEL;type=HOME;waid=972525426225:+972 52-542-6225
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:במים;שי;;;
+FN:שי במים
+ORG:מציל;
+item2.TEL;waid=972546909412:+972 54-690-9412
+item2.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:הבן של רותה;גיא;;;
+FN:גיא הבן של רותה
+ORG:מציל;
+item3.TEL;waid=972527712221:+972 52-771-2221
+item3.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:לוגסי;יעקב;;;
+FN:יעקב לוגסי
+ORG:מציל;
+TEL;waid=972545760571:+972 54-576-0571
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:רעננה;קים;;;
+FN:קים רעננה
+ORG:מציל;
+TEL;waid=972546644155:+972 54-664-4155
+END:VCARD

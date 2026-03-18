@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ליפשיץ;אלון;;;
+FN:אלון ליפשיץ
+TEL;type=HOME:+972 9-743-8477
+TEL;type=CELL;type=VOICE;waid=972544909707:+972 54-490-9707
+EMAIL;type=INTERNET;type=WORK:alon@audionote.co.il
+END:VCARD

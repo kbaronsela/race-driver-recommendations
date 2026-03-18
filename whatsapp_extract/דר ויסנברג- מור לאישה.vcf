@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:לאישה;דר ויסנברג-;מור;;
+FN:דר ויסנברג- מור לאישה
+item1.TEL:+972 3-794-7762
+item1.X-ABLabel:בית
+item2.TEL:+972 3-794-7763
+item2.X-ABLabel:עבודה
+item3.TEL:+972 3-794-6444
+item3.X-ABLabel:נייד
+END:VCARD

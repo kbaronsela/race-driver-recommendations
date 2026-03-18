@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;מיגל;;;
+FN:מיגל
+item1.TEL;waid=972508668808:+972 50-866-8808
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:abadi12@netvision.net.il
+item2.X-ABLabel:בית
+END:VCARD

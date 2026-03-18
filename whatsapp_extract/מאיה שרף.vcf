@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שרף;מאיה;;;
+FN:מאיה שרף
+item1.TEL;waid=972504455888:+972 50-445-5888
+item1.X-ABLabel:נייד
+item2.ADR:;;;Kfar Saba;HaMerkaz;;Israel
+item2.X-ABADR:
+item2.X-ABLabel:בית
+END:VCARD

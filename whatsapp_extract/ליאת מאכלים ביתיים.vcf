@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מאכלים ביתיים;ליאת;;;
+FN:ליאת מאכלים ביתיים
+BDAY;value=date:1976-09-12
+TEL;type=CELL;type=VOICE;waid=972546898829:+972 54-689-8829
+item2.ADR;type=HOME:;;;Casablanca;;;Morocco
+END:VCARD

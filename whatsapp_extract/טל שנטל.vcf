@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;טל שנטל;;;
+FN:טל שנטל
+TEL;type=CELL;type=VOICE;waid=972528362331:+972 52-836-2331
+TEL;type=HOME:+97299740444
+EMAIL;type=INTERNET;type=HOME:dr@talbiron.co.il
+item1.URL:www.talbiron.co.il
+item1.X-ABLabel:_$!<HomePage>!$_
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ברל;יוסי דפוס;בית;;
+FN:יוסי דפוס בית ברל
+item1.TEL:+972 9-742-3069
+item1.X-ABLabel:עבודה
+item2.TEL;waid=972505319628:+972 50-531-9628
+item2.X-ABLabel:נייד
+END:VCARD

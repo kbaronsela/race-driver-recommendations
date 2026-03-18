@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מורן;ליהי;;;
+FN:ליהי מורן
+item1.TEL;waid=972506500256:+972 50-650-0256
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:lihi.dcevents@gmail.com
+item2.X-ABLabel:אחר
+END:VCARD

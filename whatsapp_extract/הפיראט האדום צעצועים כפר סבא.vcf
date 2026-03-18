@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סבא;הפיראט האדום צעצועים;כפר;;
+FN:הפיראט האדום צעצועים כפר סבא
+item1.TEL;waid=972549966541:+972 54-996-6541
+item1.X-ABLabel:נייד
+item2.ADR:;;4 התע״ש;כפר סבא;;;ישראל
+item2.X-ABADR:il
+item2.X-ABLabel:בית
+X-WA-BIZ-NAME:הפיראט האדום צעצועים כפר סבא
+END:VCARD

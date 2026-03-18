@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Bourbin;Ram;;Dr;
+FN:Dr Ram Bourbin
+item1.TEL;waid=972546718005:+972 54-671-8005
+item1.X-ABLabel:Mobile
+TEL;type=Home:+972 54-849-7470
+END:VCARD

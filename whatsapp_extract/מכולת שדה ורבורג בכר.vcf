@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בכר;מכולת שדה;ורבורג;;
+FN:מכולת שדה ורבורג בכר
+item1.TEL;waid=972558808155:+972 55-880-8155
+item1.X-ABLabel:בית
+item2.TEL:+972 54-543-8373
+item2.X-ABLabel:בית
+END:VCARD

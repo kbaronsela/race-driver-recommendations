@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בז'רנו;שמוליק;;;
+FN:שמוליק בז'רנו
+item1.TEL;waid=972522533536:+972 52-253-3536
+item1.X-ABLabel:Mobile
+item2.ADR;type=Home:;;;ישראל;;;
+item2.X-ABADR:in
+END:VCARD

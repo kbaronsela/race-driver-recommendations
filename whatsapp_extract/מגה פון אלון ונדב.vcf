@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אלון ונדב;מגה פון;;;
+FN:מגה פון אלון ונדב
+TEL:+972 72-312-1234
+TEL:+972 9-833-8333
+TEL;type=HOME;waid=972559336226:+972 55-933-6226
+item1.ADR;type=HOME:;;ויצמן 60 כפר סבא;;;;ישראל
+item1.X-ABADR:il
+END:VCARD

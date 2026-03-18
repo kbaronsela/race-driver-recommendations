@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אביב);אדוה ( שלומי;תל;;
+FN:אדוה ( שלומי תל אביב)
+item1.TEL;waid=972542522551:+972 54-252-2551
+item1.X-ABLabel:אחר
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

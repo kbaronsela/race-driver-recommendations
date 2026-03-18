@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:טרטקובסקי;דינה;;;
+FN:דינה טרטקובסקי
+BDAY;value=date:--07-09
+TEL;type=CELL;type=VOICE;waid=972504349035:+972 50-434-9035
+TEL;type=CELL;type=VOICE;waid=972528010705:+972 52-801-0705
+EMAIL;type=INTERNET;type=HOME:Dincbr900@hotmail.com
+item1.ADR;type=HOME:;;בן גוריון30 כפ״ס;;;;ישראל
+item1.X-ABADR:il
+END:VCARD

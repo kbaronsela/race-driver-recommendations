@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Dentist;Dr;Ella;;
+FN:Dr Ella Dentist
+item1.TEL:+972 9-952-8755
+item1.X-ABLabel:Mobile
+item2.ADR;type=Home:;;קיבוץ גלים;;;;
+item2.X-ABADR:ac
+END:VCARD

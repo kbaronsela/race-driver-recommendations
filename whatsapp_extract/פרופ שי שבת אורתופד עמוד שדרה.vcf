@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אורתופד עמוד שדרה;פרופ שי שבת;;;
+FN:פרופ שי שבת אורתופד עמוד שדרה
+ORG:הרצליה החושלים 8;
+TEL;type=HOME:+972 9-959-2988
+TEL;type=CELL;type=VOICE;waid=972544581605:+972 54-458-1605
+item1.EMAIL;type=INTERNET:Shay.shabat@clalit.org.il
+item1.X-ABLabel:_$!<Other>!$_
+item2.ADR;type=HOME:;;החושלים 8;הרצליה;;;Israel
+item2.X-ABADR:IL
+END:VCARD

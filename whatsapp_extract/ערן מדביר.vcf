@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מדביר;ערן;;;
+FN:ערן מדביר
+item1.TEL:+972 1-800-383-383
+item1.X-ABLabel:נייד
+item2.TEL;waid=972522648703:+972 52-264-8703
+item2.X-ABLabel:נייד
+END:VCARD

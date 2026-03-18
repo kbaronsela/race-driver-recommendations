@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שיינפיין;מעיין;;;
+FN:מעיין שיינפיין
+item1.TEL;waid=972522302100:+972 52-230-2100
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:in
+item2.X-ABLabel:בית
+END:VCARD

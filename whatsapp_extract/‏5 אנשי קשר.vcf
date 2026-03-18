@@ -1,0 +1,34 @@
+BEGIN:VCARD
+VERSION:3.0
+N:(טכנאי מדיח כלים, תנורים, מיבשים, מכונות כביסה);ברוך - עידן הזהב;;;
+FN:ברוך - עידן הזהב (טכנאי מדיח כלים, תנורים, מיבשים, מכונות כביסה)
+X-WA-BIZ-NAME:עידן הזהב
+X-WA-BIZ-DESCRIPTION:עידן הזהב - תיקון מכונת כביסה מדיח תנור מקרר ומייבש
+ORG:מידרג, אורנה ורכובסקי;
+TEL;type=CELL;type=VOICE;waid=972526727468:+972 52-672-7468
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:;יוסי מתקן מכונות כביסה מדיחים;;;
+FN:יוסי מתקן מכונות כביסה מדיחים
+item1.TEL;waid=972505477355:+972 50-547-7355
+item1.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:כביסה דרך נירה שטרן;יוסי  רווח ;;;
+FN:יוסי  רווח  כביסה דרך נירה שטרן
+TEL:+972 9-796-7232
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:תנורים ומדיח;ברוך;;;
+FN:ברוך תנורים ומדיח
+X-WA-BIZ-NAME:עידן הזהב
+X-WA-BIZ-DESCRIPTION:עידן הזהב - תיקון מכונת כביסה מדיח תנור מקרר ומייבש
+TEL;type=CELL;type=VOICE;waid=972526727468:+972 52-672-7468
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:תנורים;ברוך;;;
+FN:ברוך תנורים
+X-WA-BIZ-NAME:עידן הזהב
+X-WA-BIZ-DESCRIPTION:עידן הזהב - תיקון מכונת כביסה מדיח תנור מקרר ומייבש
+TEL;type=CELL;type=VOICE;waid=972526727468:+972 52-672-7468
+END:VCARD

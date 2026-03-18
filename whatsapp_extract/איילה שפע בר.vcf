@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בר;איילה;שפע;;
+FN:איילה שפע בר
+item1.TEL;waid=972546610601:+972 54-661-0601
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:Ayala@aromabar.net
+item2.X-ABLabel:אחר
+item3.EMAIL;type=INTERNET:Ayala@aromabar.net
+item3.X-ABLabel:null
+item4.EMAIL;type=INTERNET:Ayala@aromabar.net
+item4.X-ABLabel:בית
+END:VCARD

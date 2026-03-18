@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:עודד;פלא מרפאה אורתו ווטסאפ;;;
+FN:פלא מרפאה אורתו ווטסאפ עודד
+TEL:+972 77-405-0816
+item1.TEL;waid=972504050899:+972 50-405-0899
+item1.X-ABLabel:ווטסאפ הודעות
+item2.ADR;type=HOME:;;א ד גורדון 27;הוד השרון;;;ישראל
+item2.X-ABADR:IL
+END:VCARD

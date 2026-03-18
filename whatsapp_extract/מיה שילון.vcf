@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שילון;מיה;;;
+FN:מיה שילון
+TEL;type=HOME;waid=972524559269:+972 52-455-9269
+EMAIL;type=INTERNET;type=WORK:mayashilon@gmail.com
+item1.ADR;type=WORK:;;;;;;Israel
+item1.X-ABADR:il
+END:VCARD

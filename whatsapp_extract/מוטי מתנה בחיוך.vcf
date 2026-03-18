@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בחיוך;מוטי;מתנה;;
+FN:מוטי מתנה בחיוך
+item1.TEL:+972 052384702
+item1.X-ABLabel:נייד
+item2.TEL;waid=972523840702:+972 52-384-0702
+item2.X-ABLabel:נייד
+END:VCARD

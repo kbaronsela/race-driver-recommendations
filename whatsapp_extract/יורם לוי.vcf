@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;יורם לוי;;;
+FN:יורם לוי
+ORG:Lalun International ltd;
+TITLE:מנהל תפעול ואדמיניסטרציה
+TEL;waid=972508343013:+972 50-834-3013
+TEL;type=CELL;type=VOICE;waid=972508343013:+972 50-834-3013
+TEL;type=WORK:+972 3-553-5555
+EMAIL;type=INTERNET;type=WORK:yoram@lalun.com
+item1.URL:www.lalun.com
+item1.X-ABLabel:_$!<HomePage>!$_
+END:VCARD

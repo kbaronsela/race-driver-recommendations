@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פיתוח;יניב;;;
+FN:יניב פיתוח
+item1.TEL;waid=972525998057:+972 52-599-8057
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-767-3208
+item2.X-ABLabel:עבודה
+END:VCARD

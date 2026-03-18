@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מורן וויקי;חן הובלות;;;
+FN:חן הובלות מורן וויקי
+item1.TEL;waid=972524557888:+972 52-455-7888
+item1.X-ABLabel:מורן
+item2.TEL;waid=972522527359:+972 52-252-7359
+item2.X-ABLabel:ויקטור
+END:VCARD

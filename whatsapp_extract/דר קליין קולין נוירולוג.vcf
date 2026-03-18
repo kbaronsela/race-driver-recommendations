@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:נוירולוג;דר קליין;קולין;;
+FN:דר קליין קולין נוירולוג
+ORG:רחוב דן 42 כוכב יאיר
+TITLE:
+item1.TEL;waid=972537482705:+972 53-748-2705
+item1.X-ABLabel:בית
+item2.TEL:+972 9-747-1428
+item2.X-ABLabel:בית
+END:VCARD

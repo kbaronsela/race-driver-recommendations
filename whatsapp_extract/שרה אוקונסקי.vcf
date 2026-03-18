@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אוקונסקי;שרה;;;
+FN:שרה אוקונסקי
+item1.TEL:+972 53-221-0409
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:0532210409
+item2.X-ABLabel:אחר
+END:VCARD

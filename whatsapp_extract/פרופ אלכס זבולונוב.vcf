@@ -1,0 +1,23 @@
+BEGIN:VCARD
+VERSION:3.0
+N:זבולונוב;פרופ;אלכס;;
+FN:פרופ אלכס זבולונוב
+ORG:רופא עור
+TITLE:
+item1.TEL:+972 50-444-0189
+item1.X-ABLabel:מזכירה
+item2.TEL;waid=972507905159:+972 50-790-5159
+item2.X-ABLabel:נייד
+item3.TEL:+972 1-801-704-281
+item3.X-ABLabel:בית
+item4.TEL:+972 9-799-7712
+item4.X-ABLabel:עבודה
+item5.EMAIL;type=INTERNET:info@drzvulunov.com
+item5.X-ABLabel:INTERNET
+item6.ADR:;;דרך השרון 8 קומה ב׳;;;;Israel
+item6.X-ABADR:
+item6.X-ABLabel:בית
+item7.ADR:;;שעות קבלה א, ה;16-21;;;Israel
+item7.X-ABADR:
+item7.X-ABLabel:עבודה
+END:VCARD

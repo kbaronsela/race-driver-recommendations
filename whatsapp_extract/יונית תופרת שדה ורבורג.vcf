@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ורבורג;יונית תופרת;שדה;;
+FN:יונית תופרת שדה ורבורג
+item1.TEL:+972 9-745-8273
+item1.X-ABLabel:בית
+item2.TEL;waid=972523897821:+972 52-389-7821
+item2.X-ABLabel:נייד
+END:VCARD

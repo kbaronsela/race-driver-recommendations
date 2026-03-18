@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:כהן;עינת;;;
+FN:עינת כהן
+item1.TEL:+972 54-523-7696
+item1.X-ABLabel:Mobile
+TEL;type=Home:+972 9-743-7696
+END:VCARD

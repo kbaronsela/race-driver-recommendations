@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ורבורג;יפעת אלמגור-;שדה;;
+FN:יפעת אלמגור- שדה ורבורג
+item1.TEL:+972 9-748-2787
+item1.X-ABLabel:בית
+item2.TEL;waid=972528373570:+972 52-837-3570
+item2.X-ABLabel:ראשי
+item3.EMAIL;type=INTERNET:almagoryifat@gmail.com
+item3.X-ABLabel:אחר
+END:VCARD

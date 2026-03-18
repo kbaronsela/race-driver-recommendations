@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:חשמל;אבי;סופר;;
+FN:אבי סופר חשמל
+ORG:אברם 
+TITLE:
+item1.TEL;waid=972507107292:+972 50-710-7292
+item1.X-ABLabel:בית
+item2.TEL:+972 50-750-3800
+item2.X-ABLabel:בית
+END:VCARD

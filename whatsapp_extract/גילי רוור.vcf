@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:רוור;גילי;;;
+FN:גילי רוור
+item1.TEL;waid=972524850080:+972 52-485-0080
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-745-5181
+item2.X-ABLabel:בית
+END:VCARD

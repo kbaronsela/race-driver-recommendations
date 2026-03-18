@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גסטרו;דר. גיא;רוזנר;;
+FN:דר. גיא רוזנר גסטרו
+item1.TEL;waid=972527360435:+972 52-736-0435
+item1.X-ABLabel:נייד
+item2.TEL:+972 3-535-2271
+item2.X-ABLabel:עבודה
+END:VCARD

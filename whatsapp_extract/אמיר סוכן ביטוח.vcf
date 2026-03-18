@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ביטוח;אמיר;סוכן;;
+FN:אמיר סוכן ביטוח
+item1.TEL;waid=972506472236:+972 50-647-2236
+item1.X-ABLabel:נייד
+X-WA-BIZ-DESCRIPTION:סוכן ביטוח
+X-WA-BIZ-NAME:אמיר סוכן ביטוח
+END:VCARD

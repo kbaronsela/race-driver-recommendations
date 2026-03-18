@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גיל;נהג מונית;נעם;;
+FN:נהג מונית נעם גיל
+item1.TEL:+972 50-574-2871
+item1.X-ABLabel:נייד
+item2.TEL;waid=972526151414:+972 52-615-1414
+item2.X-ABLabel:נייד
+END:VCARD

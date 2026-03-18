@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מזכירה;ד"ר רם;בורבין;;
+FN:ד"ר רם בורבין מזכירה
+item1.TEL:+972 54-230-0130
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:doctorburvin@gmail.com
+item2.X-ABLabel:בית
+END:VCARD

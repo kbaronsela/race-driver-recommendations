@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אבי רבינוביץ;;;;
+FN:אבי רבינוביץ
+ORG:שיפוצים ותיקונים
+TITLE:
+item1.TEL:+972 52-749-4446
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:avirabinovich6@gmail.com
+item2.X-ABLabel:אחר
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ספינזי;יוסי;;;
+FN:יוסי ספינזי
+item1.TEL;waid=972526148612:+972 52-614-8612
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:Yossi@outmind.co.il
+item2.X-ABLabel:עבודה
+END:VCARD

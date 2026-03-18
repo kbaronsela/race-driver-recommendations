@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Direct Lab Computers;;;
+FN:Direct Lab Computers
+item1.TEL:+972 9-766-4014
+item1.X-ABLabel:נייד
+item2.TEL:+972 1-800-551-155
+item2.X-ABLabel:אחר
+END:VCARD

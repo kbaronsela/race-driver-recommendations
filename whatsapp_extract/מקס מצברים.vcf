@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מצברים;מקס;;;
+FN:מקס מצברים
+item1.TEL;waid=972528925287:+972 52-892-5287
+item1.X-ABLabel:‏נייד
+item2.TEL:+972 52-996-2929
+item2.X-ABLabel:‏עבודה
+END:VCARD

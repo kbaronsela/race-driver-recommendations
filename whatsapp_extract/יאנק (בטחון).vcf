@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:(בטחון);יאנק;;;
+FN:יאנק (בטחון)
+TEL;type=CELL;type=VOICE;waid=972537723871:+972 53-772-3871
+item1.TEL:+972 52-221-2602
+item1.X-ABLabel:פרטי
+END:VCARD

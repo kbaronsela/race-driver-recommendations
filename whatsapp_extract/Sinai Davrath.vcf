@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Davrath;Sinai;;;
+FN:Sinai Davrath
+item1.TEL:+972 9-767-5152
+item1.X-ABLabel:Other
+item2.TEL;waid=972525875858:+972 52-587-5858
+item2.X-ABLabel:Mobile
+END:VCARD

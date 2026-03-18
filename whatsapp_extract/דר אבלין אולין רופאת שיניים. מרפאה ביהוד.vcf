@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ביהוד;דר אבלין אולין רופאת שיניים.;מרפאה;;
+FN:דר אבלין אולין רופאת שיניים. מרפאה ביהוד
+item1.TEL;waid=972542177668:+972 54-217-7668
+item1.X-ABLabel:‏עבודה
+item2.TEL:+972 3-632-3892
+item2.X-ABLabel:‏נייד
+item3.ADR:;;בית אפריקה ישראל דרך החורש 4 קרית ביונים יהוד;;;;
+item3.X-ABADR:in
+item3.X-ABLabel:‏בית
+END:VCARD

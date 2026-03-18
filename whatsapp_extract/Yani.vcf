@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Yani;;;
+FN:Yani
+TEL;type=CELL;type=VOICE;waid=972526738373:+972 52-673-8373
+EMAIL;type=INTERNET;type=HOME:yani Davrat @gmail.com
+item1.ADR;type=HOME:;;;;;;Israel
+item1.X-ABADR:il
+END:VCARD

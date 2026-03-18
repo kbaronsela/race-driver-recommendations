@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פזיומנטאלי;גגדעון;מטפל;;
+FN:גגדעון מטפל פזיומנטאלי
+item1.TEL;waid=972522459111:+972 52-245-9111
+item1.X-ABLabel:נייד
+item2.URL:segallgideon@gmail.com
+item2.X-ABLabel:OTHER
+item3.URL:segallgideon@gmail.com
+item3.X-ABLabel:HOMEPAGE
+item4.EMAIL;type=INTERNET:segallgideon@gmail.com
+item4.X-ABLabel:בית
+item5.EMAIL;type=INTERNET:segallgideon@gmail.com
+item5.X-ABLabel:בית
+END:VCARD

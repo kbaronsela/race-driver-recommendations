@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קלינאית;איריס;;;
+FN:איריס שכטר
+item1.TEL;waid=972545563459:+972 54-556-3459
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:irissw@gmail.com
+item2.X-ABLabel:אחר
+END:VCARD

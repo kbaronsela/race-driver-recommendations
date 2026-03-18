@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;מרפאה עידן;;;
+FN:מרפאה עידן
+X-WA-BIZ-NAME:Dr idan Bar Mendelson
+X-WA-BIZ-DESCRIPTION:מרפאת השיניים של ד״ר עידן בר מנדלסון
+ORG:Dr idan Bar Mendelson;
+TEL;type=CELL;type=VOICE;waid=972549711022:+972 54-971-1022
+END:VCARD

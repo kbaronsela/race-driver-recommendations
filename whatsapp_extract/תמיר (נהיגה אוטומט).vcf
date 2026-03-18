@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אוטומט);תמיר;(נהיגה;;
+FN:תמיר (נהיגה אוטומט)
+item1.TEL;waid=972523575792:+972 52-357-5792
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:in
+item2.X-ABLabel:בית
+END:VCARD

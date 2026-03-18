@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סיוון;קליפ;;;
+FN:קליפ סיוון
+item1.TEL;waid=972549775656:+972 54-977-5656
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:      6      2       12    
+item2.X-ABLabel:בית
+END:VCARD

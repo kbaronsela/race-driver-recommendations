@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:דר;איתן;;;
+FN:איתן דר
+item1.TEL;waid=972542530300:+972 54-253-0300
+item1.X-ABLabel:נייד
+item2.ADR:;;הזויתן 26 תל מונד;;;;
+item2.X-ABADR:in
+item2.X-ABLabel:בית
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Shirly;;;
+FN:Shirly
+item1.TEL;waid=972525955957:+972 52-595-5957
+item1.X-ABLabel:Mobile
+item2.ADR;type=Home:;;Unknown Address;Giv'atayim;Tel Aviv;;
+item2.X-ABADR:ac
+END:VCARD

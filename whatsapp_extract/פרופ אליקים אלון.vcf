@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;פרופ אליקים אלון;;;
+FN:פרופ אליקים אלון
+ORG:אנדוקרינולוג;
+TEL;type=CELL;type=VOICE;waid=972545322166:+972 54-532-2166
+TEL;type=WORK:+97297471596
+item1.ADR;type=HOME:;;הר מירון 11 כפס;;;;Israel
+END:VCARD

@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סלוצקי;חלי;;;
+FN:חלי סלוצקי
+item1.TEL;waid=972502419949:+972 50-241-9949
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-746-5494
+item2.X-ABLabel:בית
+item3.EMAIL;type=INTERNET:chelislutzky@gmail.com
+item3.X-ABLabel:בית
+END:VCARD

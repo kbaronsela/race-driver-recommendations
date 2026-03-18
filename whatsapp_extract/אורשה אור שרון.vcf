@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שרון;אורשה;אור;;
+FN:אורשה אור שרון
+ORG:מדריך
+TITLE:
+item1.TEL;waid=972534241140:+972 53-424-1140
+item1.X-ABLabel:Mobile
+EMAIL;TYPE=Work:orshaguide@gmail.com
+END:VCARD

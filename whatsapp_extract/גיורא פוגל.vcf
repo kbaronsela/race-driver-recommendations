@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פוגל;גיורא;;;
+FN:גיורא פוגל
+item1.TEL;waid=972544810492:+972 54-481-0492
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-771-3327
+item2.X-ABLabel:בית
+item3.EMAIL;type=INTERNET:giora@fogel.cc
+item3.X-ABLabel:בית
+item4.EMAIL;type=INTERNET:giora@fogel.cc
+item4.X-ABLabel:בית
+END:VCARD

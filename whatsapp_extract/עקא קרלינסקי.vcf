@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קרלינסקי;עקא;;;
+FN:עקא קרלינסקי
+TEL;type=CELL;type=VOICE;waid=972505855904:+972 50-585-5904
+TEL;type=HOME:+97297646596
+item1.EMAIL;type=INTERNET:akakt@walla.com
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

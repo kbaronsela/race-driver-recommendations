@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Shishi Deri;;;
+FN:Shishi Deri
+item1.TEL;waid=972525385757:+972 52-538-5757
+item1.X-ABLabel:Mobile
+item2.ADR;type=Home:;;Unknown Address;Almagor;HaZafon;;
+item2.X-ABADR:ac
+END:VCARD

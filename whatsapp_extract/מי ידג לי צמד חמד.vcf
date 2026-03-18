@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:צמד חמד;מי ידג לי;;;
+FN:מי ידג לי צמד חמד
+X-WA-BIZ-NAME:צמד חמד
+X-WA-BIZ-DESCRIPTION:מספרה, מזון וציוד לבעלי חיים
+ORG:עודד;
+TEL;waid=972559494847:+972 55-949-4847
+TEL;type=WORK:+972 9-767-0750
+TEL;type=CELL;type=VOICE:+972 9-767-0694
+END:VCARD

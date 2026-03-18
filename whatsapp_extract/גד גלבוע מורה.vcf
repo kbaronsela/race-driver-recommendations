@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גלבוע מורה;גד;;;
+FN:גד גלבוע מורה
+item1.TEL;waid=972532230872:+972 53-223-0872
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:gadipoo@gmail.com
+item2.X-ABLabel:בית
+END:VCARD

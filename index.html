@@ -44,12 +44,10 @@
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
     .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
-    .field-filters { margin-top: 0.75rem; margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
-    /* מוסתר זמנית – הסר את השורה הבאה כדי להציג שוב את רשימת התחומים לסינון */
-    #fieldFilters { display: none !important; }
-    .field-filters .btn-filter { font-size: 0.85rem; padding: 0.35rem 0.65rem; }
-    .field-filters .btn-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .filter-moshav { margin-top: 0.5rem; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+    .filter-field-label { color: var(--muted); font-size: 0.9rem; }
+    .filter-field-select { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 140px; }
+    .filter-moshav { margin-top: 0; }
     .filter-moshav-label { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
     .filter-moshav-label:hover { color: var(--text); }
     .list { margin-top: 1rem; }
@@ -114,7 +112,6 @@
       .container { padding: 0.75rem; }
       h1 { font-size: 1.2rem; }
       .top-bar { margin-bottom: 0.75rem; }
-      .field-filters .btn-filter { padding: 0.4rem 0.6rem; font-size: 0.8rem; min-height: 2.25rem; }
       .card { padding: 0.75rem; margin-bottom: 0.5rem; }
       .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
       .card .phone-actions a { padding: 0.35rem 0.5rem; min-height: 2.25rem; display: inline-flex; align-items: center; }
@@ -165,12 +162,15 @@
         <input type="search" id="q" name="q" placeholder="למשל: אינסטלטור, מספרה, רופא..." autocomplete="search-term">
       </div>
       <p class="count" id="count"></p>
-      <div class="filter-moshav">
+      <div class="filter-row">
+        <label class="filter-field-label">תחום:</label>
+        <select id="fieldFilterSelect" class="filter-field-select" aria-label="סינון לפי תחום">
+          <option value="">הכל</option>
+          <!-- options filled by JS from entries -->
+        </select>
         <label class="filter-moshav-label"><input type="checkbox" id="filterFromMoshav"> מהמושב בלבד</label>
       </div>
     </div>
-
-    <div id="fieldFilters" class="field-filters"></div>
 
     <div class="list" id="list"><p class="loading">טוען...</p></div>
   </div>
@@ -556,22 +556,10 @@
 
     function buildFieldFilters() {
       const fields = [...new Set(entries.map(e => (e.field || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'he'));
-      const el = document.getElementById('fieldFilters');
-      if (!fields.length) {
-        el.classList.add('hidden');
-        return;
-      }
-      el.classList.remove('hidden');
-      el.innerHTML = '<button type="button" class="btn btn-filter' + (selectedField === null ? ' active' : '') + '" data-field="">הכל</button>' +
-        fields.map(f => '<button type="button" class="btn btn-filter' + (selectedField === f ? ' active' : '') + '" data-field="' + escapeHtml(f) + '">' + escapeHtml(f) + '</button>').join('');
-      el.querySelectorAll('.btn-filter').forEach(btn => {
-        btn.addEventListener('click', function() {
-          selectedField = this.dataset.field || null;
-          el.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          applyFilters();
-        });
-      });
+      const sel = document.getElementById('fieldFilterSelect');
+      if (!sel) return;
+      const currentVal = selectedField === null ? '' : selectedField;
+      sel.innerHTML = '<option value="">הכל</option>' + fields.map(f => '<option value="' + escapeHtml(f) + '"' + (f === currentVal ? ' selected' : '') + '>' + escapeHtml(f) + '</option>').join('');
     }
 
     function applyFilters() {
@@ -583,6 +571,11 @@
       render(filtered);
       updateCount(filtered.length);
     }
+
+    document.getElementById('fieldFilterSelect').addEventListener('change', function() {
+      selectedField = (this.value || '').trim() || null;
+      applyFilters();
+    });
 
     document.getElementById('filterFromMoshav').addEventListener('change', function() {
       filterFromMoshavOnly = this.checked;
@@ -627,6 +620,11 @@
         const from_moshav = document.getElementById('addFromMoshav').checked;
         const note = (document.getElementById('addNote').value || '').trim();
         if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
+        const newKey = (phone || '').replace(/\D/g, '').slice(-10);
+        if (newKey && entries.some(e => (e._key || normKey(e)) === newKey)) {
+          alert('מספר הטלפון כבר קיים ברשימת אנשי הקשר.');
+          return;
+        }
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = 'Bearer ' + token;
         const r = await fetch(API + 'api/entries', {

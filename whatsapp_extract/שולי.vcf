@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;שולי;;;
+FN:שולי
+TEL;type=Work:+972 9-760-2576
+item1.ADR;type=Home:;;בורכוב 18 רעננה;;;;
+item1.X-ABADR:ac
+item2.ADR;type=Home:;;בורכוב 18 רעננה;;;;
+item2.X-ABADR:ac
+END:VCARD

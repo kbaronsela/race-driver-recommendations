@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אאג;דר אולינובסקי דוד;;;
+FN:דר אולינובסקי דוד אאג
+TEL;type=CELL;type=VOICE;waid=972544689886:+972 54-468-9886
+EMAIL;type=INTERNET;type=HOME:ulanovski@yahoo.com
+item1.ADR;type=WORK:;;24 ויצמן;כפר סבא;;;Israel
+END:VCARD

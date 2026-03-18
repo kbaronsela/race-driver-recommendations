@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ניצן;עינת;משעל;;
+FN:עינת משעל ניצן
+item1.TEL;waid=972525694666:+972 52-569-4666
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:einat@play-back.co.il
+item2.X-ABLabel:null
+END:VCARD

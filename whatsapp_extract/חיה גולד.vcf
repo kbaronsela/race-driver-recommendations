@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:חיה גולד;;;;
+FN:חיה גולד
+TEL;type=CELL;type=VOICE;waid=972547254323:+972 54-725-4323
+TEL;type=OTHER;type=VOICE:+97297464812
+EMAIL;type=INTERNET;type=HOME:hayagoldart@gmail.com
+item1.ADR;type=HOME:;;אשכול 13 הוד השרון;;;;Israel
+item1.X-ABADR:il
+END:VCARD

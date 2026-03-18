@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:לוין;מיטל;;;
+FN:מיטל לוין
+ORG:alon shiri& co.
+TITLE:
+item1.TEL;waid=972523771056:+972 52-377-1056
+item1.X-ABLabel:נייד
+item2.TEL:+972 72-234-5715
+item2.X-ABLabel:בית
+item3.EMAIL;type=INTERNET:Meital@malkalaw.co.il
+item3.X-ABLabel:בית
+END:VCARD

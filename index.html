@@ -56,13 +56,16 @@
     .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card .field { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .field:empty { display: none; }
-    .card .note { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
     .card .phone-wrap { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; }
     .card .phone:hover { text-decoration: underline; }
-    .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; }
+    .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
     .card .phone-actions a { font-size: 0.85rem; color: var(--muted); text-decoration: none; padding: 0.2rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); }
     .card .phone-actions a:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-actions .save-contact-btn { font-size: 0.85rem; color: var(--muted); padding: 0.2rem 0.4rem; border-radius: 4px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font: inherit; }
+    .card .phone-actions .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
     .badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 6px; background: var(--yellow); color: #000; margin-right: 0.5rem; }
     .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
@@ -114,7 +117,8 @@
       .top-bar { margin-bottom: 0.75rem; }
       .card { padding: 0.75rem; margin-bottom: 0.5rem; }
       .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
-      .card .phone-actions a { padding: 0.35rem 0.5rem; min-height: 2.25rem; display: inline-flex; align-items: center; }
+      .card .phone-actions a,
+      .card .phone-actions .save-contact-btn { padding: 0.35rem 0.5rem; min-height: 2.25rem; display: inline-flex; align-items: center; }
       .card-actions { flex-direction: column; align-items: stretch; }
       .card-actions .btn { width: 100%; }
       .card-actions label { justify-content: center; }
@@ -197,8 +201,8 @@
         <label><input type="checkbox" id="addFromMoshav"> מהמושב</label>
       </div>
       <div class="form-row">
-        <label>הערה (אופציונלי)</label>
-        <input type="text" id="addNote" placeholder="הערה">
+        <label>מידע נוסף (אופציונלי)</label>
+        <input type="text" id="addExtraInfo" placeholder="מידע נוסף">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn" id="btnAddCancel">ביטול</button>
@@ -282,11 +286,16 @@
       sel.innerHTML = fieldsList.map(f => `<option value="${escapeHtml(f)}">${escapeHtml(f)}</option>`).join('');
     }
 
+    function stripInternalNote(list) {
+      (list || []).forEach(function(e) { delete e.note; });
+    }
+
     async function load() {
       try {
         const r = await fetch(API + 'api/entries');
         const data = await r.json();
         entries = data.entries || [];
+        stripInternalNote(entries);
         hasEditMode = data.has_edit_mode === true;
         if (token) {
           document.getElementById('loggedArea').classList.remove('hidden');
@@ -304,6 +313,7 @@
         const r = await fetch(API + 'data/entries.json').catch(() => null);
         if (r && r.ok) {
           entries = await r.json();
+          stripInternalNote(entries);
           hasEditMode = true;
           document.getElementById('loginArea').classList.remove('hidden');
           document.getElementById('loggedArea').classList.add('hidden');
@@ -335,8 +345,8 @@
       const field = normalize(entry.field);
       const phone = (entry.phone_display || entry.phone || '').replace(/\D/g, '');
       const filename = normalize(entry.filename || '');
-      const note = normalize(entry.note || '');
-      const searchable = [name, field, filename, note].join(' ');
+      const extraInfo = normalize(entry.extra_info || '');
+      const searchable = [name, field, filename, extraInfo].join(' ');
       if (searchable.includes(nq)) return true;
       if (phone && q.replace(/\D/g, '').length >= 2 && phone.includes(q.replace(/\D/g, ''))) return true;
       const words = nq.split(/\s+/).filter(Boolean);
@@ -348,6 +358,49 @@
       const div = document.createElement('div');
       div.textContent = String(s);
       return div.innerHTML;
+    }
+
+    function escapeAttr(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;');
+    }
+
+    function escapeVcfValue(s) {
+      return String(s || '')
+        .replace(/\\/g, '\\\\')
+        .replace(/\r?\n/g, '\\n')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,');
+    }
+
+    function saveContactToDevice(btn) {
+      const name = (btn.dataset.name || '').trim() || 'איש קשר';
+      const tel = (btn.dataset.tel || '').trim();
+      const field = (btn.dataset.field || '').trim();
+      const extraInfo = (btn.dataset.extraInfo || '').trim();
+      if (!tel) {
+        alert('אין מספר טלפון לשמירה');
+        return;
+      }
+      const lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + escapeVcfValue(name), 'TEL;TYPE=CELL:' + escapeVcfValue(tel)];
+      if (field) lines.push('TITLE:' + escapeVcfValue(field));
+      if (extraInfo) lines.push('X-EXTRA-INFO:' + escapeVcfValue(extraInfo));
+      lines.push('END:VCARD');
+      const vcard = lines.join('\r\n');
+      const blob = new Blob(['\ufeff' + vcard], { type: 'text/vcard;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const safeName = name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact';
+      a.download = safeName + '.vcf';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     function normKey(entry) {
@@ -371,9 +424,12 @@
         const tel = phoneDigits ? `tel:${phoneDigits}` : '#';
         const waNum = phoneDigits ? (phoneDigits.startsWith('972') ? phoneDigits : '972' + phoneDigits.replace(/^0/, '')) : '';
         const waLink = waNum ? `https://wa.me/${waNum}` : '#';
-        const callWa = phoneDigits ? `<span class="phone-actions"><a href="${tel}">התקשר</a><a href="${waLink}" target="_blank" rel="noopener">וואטסאפ</a></span>` : '';
+        const intlTel = waNum ? ('+' + waNum) : ('+' + phoneDigits);
+        const extraForVcf = String((e.extra_info != null ? e.extra_info : '') || '').trim().slice(0, 2000);
+        const saveBtn = phoneDigits ? `<button type="button" class="save-contact-btn" data-name="${escapeAttr(e.name || '')}" data-tel="${escapeAttr(intlTel)}" data-field="${escapeAttr((e.field || '').trim())}" data-extra-info="${escapeAttr(extraForVcf)}">שמור איש קשר</button>` : '';
+        const callWa = phoneDigits ? `<span class="phone-actions"><a href="${tel}">התקשר</a><a href="${waLink}" target="_blank" rel="noopener">וואטסאפ</a>${saveBtn}</span>` : '';
         const badge = e.from_moshav ? '<span class="badge">מהמושב</span>' : '';
-        const noteHtml = (e.note || '').trim() ? '<div class="note">' + escapeHtml(e.note) + '</div>' : '';
+        const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
         let actions = '';
         if (canEdit) {
           actions = `<div class="card-actions">
@@ -381,7 +437,7 @@
             <button type="button" class="btn edit-name-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">ערוך שם</button>
             <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}" data-phone="${escapeHtml((e.phone_display || e.phone || ''))}">ערוך טלפון</button>
             <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>
-            <button type="button" class="btn edit-note-btn" data-key="${escapeHtml(key)}" data-note="${escapeHtml((e.note || ''))}">ערוך הערה</button>
+            <button type="button" class="btn edit-extra-info-btn" data-key="${escapeHtml(key)}" data-extra-info="${escapeHtml((e.extra_info || ''))}">ערוך מידע נוסף</button>
             <button type="button" class="btn btn-delete delete-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">מחק</button>
           </div>`;
         }
@@ -389,10 +445,14 @@
           <div class="name">${escapeHtml(e.name)}${badge}</div>
           ${field}
           <div class="phone-wrap"><a class="phone" href="${tel}">${escapeHtml(phone)}</a>${callWa}</div>
-          ${noteHtml}
+          ${extraInfoHtml}
           ${actions}
         </article>`;
       }).join('');
+
+      listEl.querySelectorAll('.save-contact-btn').forEach(btn => {
+        btn.addEventListener('click', function() { saveContactToDevice(this); });
+      });
 
       if (canEdit) {
         listEl.querySelectorAll('.cb-moshav').forEach(cb => {
@@ -417,9 +477,9 @@
             openEditFieldModal(key, field);
           });
         });
-        listEl.querySelectorAll('.edit-note-btn').forEach(btn => {
+        listEl.querySelectorAll('.edit-extra-info-btn').forEach(btn => {
           btn.addEventListener('click', function() {
-            openEditValueModal(this.dataset.key, 'note', 'ערוך הערה', 'הערה', this.dataset.note || '', 'text');
+            openEditValueModal(this.dataset.key, 'extra_info', 'ערוך מידע נוסף', 'מידע נוסף', this.dataset.extraInfo || '', 'text');
           });
         });
         listEl.querySelectorAll('.delete-btn').forEach(btn => {
@@ -447,7 +507,7 @@
         if ('from_moshav' in data) entries[idx].from_moshav = data.from_moshav;
         if ('field' in data) entries[idx].field = data.field;
         if ('name' in data) entries[idx].name = data.name;
-        if ('note' in data) entries[idx].note = data.note;
+        if ('extra_info' in data) entries[idx].extra_info = data.extra_info;
         if ('phone' in data) {
           entries[idx].phone = data.phone;
           entries[idx].phone_display = data.phone;
@@ -476,7 +536,7 @@
       return (entry.name || '') !== (baseEntry.name || '') ||
         (entry.phone_display || entry.phone || '') !== (baseEntry.phone_display || baseEntry.phone || '') ||
         (entry.field || '') !== (baseEntry.field || '') ||
-        (entry.note || '') !== (baseEntry.note || '') ||
+        (entry.extra_info || '') !== (baseEntry.extra_info || '') ||
         Boolean(entry.from_moshav) !== Boolean(baseEntry.from_moshav);
     }
 
@@ -513,7 +573,7 @@
                   name: entry.name,
                   phone: entry.phone_display || entry.phone,
                   field: entry.field,
-                  note: entry.note,
+                  extra_info: entry.extra_info || '',
                   from_moshav: entry.from_moshav
                 })
               });
@@ -530,7 +590,7 @@
                 name: entry.name,
                 phone: entry.phone_display || entry.phone,
                 field: entry.field,
-                note: entry.note,
+                extra_info: entry.extra_info || '',
                 from_moshav: entry.from_moshav
               })
             });
@@ -593,7 +653,7 @@
       document.getElementById('addFieldCustom').value = '';
       document.getElementById('addFieldCustom').classList.add('hidden');
       document.getElementById('addFromMoshav').checked = false;
-      document.getElementById('addNote').value = '';
+      document.getElementById('addExtraInfo').value = '';
       document.getElementById('modalAdd').classList.remove('hidden');
       setTimeout(function() { document.getElementById('addName').focus(); }, 50);
     });
@@ -618,7 +678,7 @@
           field = custom ? custom.value.trim() : '';
         }
         const from_moshav = document.getElementById('addFromMoshav').checked;
-        const note = (document.getElementById('addNote').value || '').trim();
+        const extra_info = (document.getElementById('addExtraInfo').value || '').trim();
         if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
         const newKey = (phone || '').replace(/\D/g, '').slice(-10);
         if (newKey && entries.some(e => (e._key || normKey(e)) === newKey)) {
@@ -630,7 +690,7 @@
         const r = await fetch(API + 'api/entries', {
           method: 'POST',
           headers: headers,
-          body: JSON.stringify({ name, phone, field, from_moshav, note })
+          body: JSON.stringify({ name, phone, field, from_moshav, extra_info })
         });
         const data = await r.json().catch(() => ({}));
         if (r.ok && data.ok) {

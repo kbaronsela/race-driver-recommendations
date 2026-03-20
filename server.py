@@ -114,6 +114,7 @@ def _entry_to_stored(row):
         "field": row.get("field", ""),
         "from_moshav": bool(row.get("from_moshav")),
         "note": (row.get("note") or "").strip(),
+        "extra_info": (row.get("extra_info") or "").strip(),
     }
 
 
@@ -167,12 +168,21 @@ def login():
     return jsonify({"ok": True, "token": token})
 
 
+def entry_for_client(row):
+    """Copy of row for API; note is internal (import) only, not exposed to the web UI."""
+    d = dict(row)
+    d.pop("note", None)
+    return d
+
+
 @app.route("/api/entries", methods=["GET"])
 def get_entries():
     entries = merge_entries()
     config = load_config()
     has_edit_mode = bool(config.get("password_hash"))
-    return jsonify({"entries": entries, "has_edit_mode": has_edit_mode})
+    return jsonify(
+        {"entries": [entry_for_client(e) for e in entries], "has_edit_mode": has_edit_mode}
+    )
 
 
 @app.route("/api/entries", methods=["POST"])
@@ -182,7 +192,8 @@ def add_entry():
     phone = (data.get("phone") or "").strip()
     field = (data.get("field") or "").strip()
     from_moshav = bool(data.get("from_moshav"))
-    note = (data.get("note") or "").strip()
+    # note is internal only; not accepted from the web UI
+    extra_info = (data.get("extra_info") or "").strip()
     if not name or not phone:
         return jsonify({"ok": False, "error": "נא למלא שם ומספר טלפון"}), 400
     ud = load_user_data()
@@ -193,7 +204,8 @@ def add_entry():
         "phone_display": phone,
         "field": field,
         "from_moshav": from_moshav,
-        "note": note,
+        "note": "",
+        "extra_info": extra_info,
     })
     ud["added"] = added
     save_user_data(ud)
@@ -212,11 +224,8 @@ def patch_entry(key):
         fm = ud.get("from_moshav", {})
         fm[key] = bool(data["from_moshav"])
         ud["from_moshav"] = fm
-    if "note" in data:
-        no = ud.get("notes", {})
-        no[key] = (data.get("note") or "").strip()
-        ud["notes"] = no
-    if "field" in data or "name" in data or "phone" in data:
+    # note is not updated via API (internal / import only)
+    if "field" in data or "name" in data or "phone" in data or "extra_info" in data:
         ed = ud.get("edits", {})
         if key not in ed:
             ed[key] = {}
@@ -228,6 +237,8 @@ def patch_entry(key):
             new_phone = (data.get("phone") or "").strip()
             ed[key]["phone"] = new_phone
             ed[key]["phone_display"] = new_phone
+        if "extra_info" in data:
+            ed[key]["extra_info"] = (data.get("extra_info") or "").strip()
         ud["edits"] = ed
     save_user_data(ud)
     flush_entries_to_disk()

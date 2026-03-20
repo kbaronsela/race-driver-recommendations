@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generate a standalone HTML file to view whatsapp_recommendations.json."""
+"""Generate a standalone HTML file to view entries.json (recommended contacts)."""
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-JSON_PATH = ROOT / "data" / "whatsapp_recommendations.json"
+JSON_PATH = ROOT / "data" / "entries.json"
 OUT_PATH = ROOT / "view_recommendations.html"
 
 
@@ -48,7 +48,7 @@ def main():
 <body>
   <h1>אנשי קשר מומלצים (וואטסאפ)</h1>
   <div class="toolbar">
-    <input type="text" id="search" placeholder="חיפוש בשם, טלפון, תחום או הערה..." aria-label="חיפוש">
+    <input type="text" id="search" placeholder="חיפוש בשם, טלפון, תחום, מידע נוסף או הערה..." aria-label="חיפוש">
     <select id="fieldFilter">
       <option value="">כל התחומים</option>
     </select>
@@ -61,6 +61,7 @@ def main():
           <th>שם</th>
           <th>טלפון</th>
           <th>תחום</th>
+          <th>מידע נוסף</th>
           <th>מהמושב</th>
           <th>הערה</th>
         </tr>
@@ -76,6 +77,10 @@ def main():
     const countEl = document.getElementById('count');
 
     const fields = [...new Set(data.map(r => r.field || '').filter(Boolean))].sort();
+    const noFieldOpt = document.createElement('option');
+    noFieldOpt.value = '__no_field__';
+    noFieldOpt.textContent = 'ללא תחום';
+    fieldFilter.appendChild(noFieldOpt);
     fields.forEach(f => {
       const opt = document.createElement('option');
       opt.value = f;
@@ -89,12 +94,14 @@ def main():
         const tel = phone ? 'tel:+972' + (phone.startsWith('0') ? phone.slice(1) : phone) : '';
         const name = escapeHtml(r.name || '');
         const field = escapeHtml(r.field || '');
+        const extra = escapeHtml(r['extra_info'] || '');
         const note = escapeHtml((r.note || '').slice(0, 400)) + ((r.note || '').length > 400 ? '…' : '');
         const moshav = r.from_moshav ? '<span class="moshav">מהמושב</span>' : '';
         return `<tr>
           <td>${name}</td>
           <td class="phone">${tel ? `<a href="${tel}">${escapeHtml(r.phone)}</a>` : escapeHtml(r.phone)}</td>
           <td class="field ${!r.field ? 'empty' : ''}">${field || '—'}</td>
+          <td class="field ${!r['extra_info'] ? 'empty' : ''}">${extra || '—'}</td>
           <td>${moshav}</td>
           <td class="note">${note || '—'}</td>
         </tr>`;
@@ -112,11 +119,17 @@ def main():
       const q = (searchEl.value || '').trim().toLowerCase();
       const fieldVal = fieldFilter.value;
       const rows = data.filter(r => {
-        const matchField = !fieldVal || (r.field || '') === fieldVal;
+        const matchField = !fieldVal ? true : (fieldVal === '__no_field__' ? !(r.field && r.field.trim()) : (r.field || '') === fieldVal);
         if (!matchField) return false;
         if (!q) return true;
-        const text = [r.name, r.phone, r.field, r.note].filter(Boolean).join(' ').toLowerCase();
-        return text.includes(q);
+        const haystack = [
+          r.name || '',
+          r.phone || '',
+          r.field || '',
+          String(r['extra_info'] ?? ''),
+          r.note || ''
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
       });
       render(rows);
     }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Set field to 'נקיון' for all contacts whose field is related to cleaning."""
+"""Set field to 'ניקיון' for all contacts whose field is related to cleaning."""
 import json
 import sys
 from pathlib import Path
@@ -8,8 +8,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ENTRIES_PATH = ROOT / "data" / "entries.json"
 
-# Target field and terms that indicate the contact is related to נקיון (cleaning)
-TARGET_FIELD = "נקיון"
+# Target field and terms that indicate the contact is related to ניקיון (cleaning)
+TARGET_FIELD = "ניקיון"
 NIQIYON_KEYWORDS = ("נקיון", "ניקיון", "מנקה", "מנקים", "ניקוי")
 
 

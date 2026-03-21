@@ -7,9 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
   <style>
     :root {
-      --bg: #f0f7ff;
+      --bg: #f0f4fb;
       --surface: #ffffff;
       --text: #1a2d4a;
       --muted: #5a7a9e;
@@ -17,16 +18,7 @@
       --accent-dim: #3b82f620;
       --border: #bfdbfe;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
-    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 1.25rem; margin-bottom: 1rem; }
-    .header-logos-wrap { flex: 1 1 auto; display: flex; justify-content: center; align-items: center; min-width: 0; }
-    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; }
-    .nav-home { flex-shrink: 0; align-self: center; }
-    .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
-    .header-auth { flex-shrink: 0; }
-    .header-auth .btn { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
     .muted { color: var(--muted); }
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     h1 { font-size: 1.75rem; font-weight: 700; margin: 0; flex: 1; letter-spacing: -0.02em; }
@@ -70,13 +62,9 @@
     @media (max-width: 768px) {
       .search-wrap { position: relative; }
       .container { padding: 1rem; }
-      .header-row { flex-direction: column; align-items: stretch; }
-      .nav-home { align-self: start; order: -1; }
-      .header-logos-wrap { order: 0; justify-content: center; width: 100%; }
-      .header-auth { width: 100%; display: flex; justify-content: center; flex-wrap: wrap; order: 1; }
+      .header-row { margin-bottom: 0.75rem; }
       .top-bar { flex-direction: column; align-items: stretch; }
       h1 { font-size: 1.35rem; text-align: center; }
-      .logo { height: 56px; max-width: 96px; }
       .card-actions { flex-direction: column; align-items: stretch; }
       .card-actions .btn { width: 100%; }
       .modal { align-items: flex-end; }
@@ -86,22 +74,33 @@
   </style>
 </head>
 <body>
+  <div class="site-shell">
+    <aside class="site-sidebar" aria-label="ניווט ראשי">
+      <div class="site-sidebar-brand">ניווט</div>
+      <nav class="site-sidebar-nav">
+        <a href="index.html">דף הבית</a>
+        <a href="professionals.html">המלצות על בעלי מקצוע</a>
+        <a href="restaurants.html" class="is-current" aria-current="page">המלצות על מסעדות</a>
+      </nav>
+      <div class="site-sidebar-footer">
+        <div class="sidebar-auth">
+          <div id="loginArea" class="login-wrap hidden">
+            <button type="button" class="btn" id="btnLogin">התחבר</button>
+          </div>
+          <div id="loggedArea" class="logged-row hidden">
+            <span class="muted">מחובר</span>
+            <button type="button" class="btn" id="btnLogout">התנתק</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="site-main">
   <div class="container">
     <div class="header-row">
-      <a href="index.html" class="btn nav-home">דף הבית</a>
       <div class="header-logos-wrap">
         <div class="header-logos">
           <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
           <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo" onerror="this.style.display='none'">
-        </div>
-      </div>
-      <div class="header-auth">
-        <div id="loginArea" class="login-wrap hidden">
-          <button type="button" class="btn" id="btnLogin">התחבר</button>
-        </div>
-        <div id="loggedArea" class="hidden">
-          <span class="muted">מחובר</span>
-          <button type="button" class="btn" id="btnLogout">התנתק</button>
         </div>
       </div>
     </div>
@@ -127,6 +126,8 @@
     </div>
 
     <div class="list" id="list"><p class="loading">טוען…</p></div>
+  </div>
+    </main>
   </div>
 
   <div id="modalRestaurant" class="modal hidden">
@@ -477,8 +478,8 @@
         const data = await r.json();
         restaurants = data.restaurants || [];
         hasEditMode = data.has_edit_mode === true;
-        const authEl = document.querySelector('.header-auth');
-        if (authEl) authEl.style.display = hasEditMode ? '' : 'none';
+        const foot = document.querySelector('.site-sidebar-footer');
+        if (foot) foot.style.display = hasEditMode ? '' : 'none';
         if (!hasEditMode) {
           document.getElementById('loginArea').classList.add('hidden');
           document.getElementById('loggedArea').classList.add('hidden');
@@ -500,8 +501,8 @@
           if (r2.ok) {
             restaurants = await r2.json();
             hasEditMode = false;
-            const authEl2 = document.querySelector('.header-auth');
-            if (authEl2) authEl2.style.display = 'none';
+            const foot2 = document.querySelector('.site-sidebar-footer');
+            if (foot2) foot2.style.display = 'none';
             document.getElementById('loginArea').classList.add('hidden');
             document.getElementById('loggedArea').classList.add('hidden');
             restaurants.forEach(function(x) { x._serverKey = x.id; });

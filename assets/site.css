@@ -81,6 +81,12 @@ body {
   color: #fff;
 }
 
+.site-sidebar-nav a .nav-emoji {
+  flex-shrink: 0;
+  font-size: 1.15em;
+  line-height: 1;
+}
+
 .site-sidebar-footer {
   margin-top: auto;
   padding: 1rem 0.75rem 1.25rem;

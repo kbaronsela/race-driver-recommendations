@@ -39,7 +39,7 @@ def main():
     tr:hover { background: #f8f9fa; }
     .phone a { color: #2980b9; text-decoration: none; }
     .phone a:hover { text-decoration: underline; }
-    .moshav { background: #d4edda; color: #155724; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+    .moshav-star { color: #ea580c; font-size: 1rem; }
     .note { max-width: 320px; font-size: 0.9rem; color: #444; white-space: pre-wrap; word-break: break-word; }
     .field { font-weight: 500; color: #2c3e50; }
     .empty { color: #999; }
@@ -62,7 +62,7 @@ def main():
           <th>טלפון</th>
           <th>תחום</th>
           <th>מידע נוסף</th>
-          <th>מהמושב</th>
+          <th title="מהמושב"><span class="moshav-star" aria-hidden="true">★</span></th>
           <th>הערה</th>
         </tr>
       </thead>
@@ -107,7 +107,7 @@ def main():
         const field = escapeHtml(r.field || '');
         const extra = escapeHtml(r['extra_info'] || '');
         const note = escapeHtml((r.note || '').slice(0, 400)) + ((r.note || '').length > 400 ? '…' : '');
-        const moshav = r.from_moshav ? '<span class="moshav">מהמושב</span>' : '';
+        const moshav = r.from_moshav ? '<span class="moshav-star" role="img" aria-label="מהמושב" title="מהמושב">★</span>' : '';
         return `<tr>
           <td>${name}</td>
           <td class="phone">${formatPhoneLinks(r)}</td>

@@ -26,19 +26,30 @@
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
     .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .search-wrap > .subtitle { margin-top: 0; margin-bottom: 0.4rem; line-height: 1.45; }
     .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; text-decoration: none; display: inline-block; }
     .btn:hover { border-color: var(--accent); }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn-delete { border-color: #f85149; color: #f85149; }
     .btn-delete:hover { background: rgba(248,81,73,0.15); }
     .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
+    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0 0 1rem; z-index: 10; }
     .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
-    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.75rem; }
     .filter-field-label { color: var(--muted); font-size: 0.9rem; }
-    #typeFilterSelect { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 160px; }
+    .filter-field-select { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 140px; }
+    .field-combobox { position: relative; display: inline-block; min-width: 140px; vertical-align: middle; }
+    .field-combobox .field-combobox-input { width: 100%; min-width: min(100%, 12rem); box-sizing: border-box; }
+    .field-combobox-list {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 200; max-height: 240px; overflow-y: auto;
+      margin: 2px 0 0; padding: 0.25rem 0; list-style: none; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+    }
+    .field-combobox-option { padding: 0.5rem 0.85rem; cursor: pointer; font-size: 0.95rem; }
+    .field-combobox-option:hover,
+    .field-combobox-option.is-active { background: var(--accent-dim); }
     .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
     .list { margin-top: 1rem; }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
@@ -113,6 +124,7 @@
       .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
       .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
       .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+      .search-wrap > .subtitle { margin-bottom: 0.35rem; }
       .search-inner { padding: 0.6rem 0.75rem; }
       #q { font-size: 1rem; }
       .card { padding: 0.875rem 1rem; }
@@ -173,19 +185,21 @@
     <div class="top-bar">
       <h1>מסעדות מומלצות</h1>
       <button type="button" class="btn btn-primary hidden" id="btnAdd">הוסף מסעדה</button>
+      <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
     </div>
-    <p class="subtitle">חיפוש לפי שם, סוג מסעדה, מיקום או מידע נוסף</p>
-
     <div class="search-wrap">
+      <p class="subtitle">חיפוש לפי שם, סוג מסעדה, מיקום או מידע נוסף</p>
       <div class="search-inner">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="search" id="q" name="q" placeholder="למשל: איטלקית, רעננה, פיצה…" autocomplete="off" aria-label="חיפוש במסעדות">
       </div>
       <div class="filter-row">
-        <label class="filter-field-label" for="typeFilterSelect">סוג מסעדה:</label>
-        <select id="typeFilterSelect" aria-label="סינון לפי סוג מסעדה">
-          <option value="">הכל</option>
-        </select>
+        <label class="filter-field-label" for="typeFilterInput">סוג מסעדה:</label>
+        <div class="field-combobox filter-field-combobox">
+          <input type="text" id="typeFilterInput" class="filter-field-select field-combobox-input" autocomplete="off"
+            aria-label="סינון לפי סוג מסעדה" role="combobox" aria-expanded="false" aria-controls="typeFilterList" aria-autocomplete="list">
+          <ul id="typeFilterList" class="field-combobox-list hidden" role="listbox"></ul>
+        </div>
       </div>
       <p class="count" id="count" role="status" aria-live="polite"></p>
     </div>
@@ -249,6 +263,7 @@
     /** גלובוס + טקסט — קישור לאתר המסעדה */
     var REST_SITE_ICON_SVG = '<svg class="rest-site-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2.5" x2="12" y2="21.5"/></svg>';
     let restaurants = [];
+    let baseRestaurants = [];
     let selectedType = null;
     let hasEditMode = false;
     let token = sessionStorage.getItem('token') || '';
@@ -289,15 +304,184 @@
       return parts.some(function(p) { return p && p.includes(nq); });
     }
 
+    let typeFilterChoices = [];
+    let typeFilterCombobox = null;
+
+    /**
+     * קומבובוקס סינון — אותה לוגיקה כמו «תחום» בבעלי מקצוע (הקלדה מסננת, חצים, Enter, הכל).
+     */
+    function createFieldCombobox(options) {
+      const input = options.input;
+      const listEl = options.listEl;
+      const wrap = input.closest('.field-combobox');
+      const getSource = options.getSource;
+      const allOptionLabel = options.allOptionLabel;
+      let committed = options.initialCommitted !== undefined ? options.initialCommitted : (allOptionLabel ? null : (getSource()[0] || ''));
+      let highlightIdx = -1;
+
+      function visibleRows() {
+        const q = (input.value || '').trim();
+        const qn = normalize(q);
+        const matches = function(text) { return !q || normalize(text).includes(qn); };
+        const items = getSource().slice();
+        const filtered = items.filter(function(it) { return matches(it); });
+        const rows = [];
+        if (allOptionLabel && matches(allOptionLabel)) {
+          rows.push({ v: '', lab: allOptionLabel });
+        }
+        filtered.forEach(function(it) { rows.push({ v: it, lab: it }); });
+        return rows;
+      }
+
+      function hideList() {
+        listEl.classList.add('hidden');
+        listEl.innerHTML = '';
+        highlightIdx = -1;
+        input.setAttribute('aria-expanded', 'false');
+      }
+
+      function renderList() {
+        const rows = visibleRows();
+        if (!rows.length) {
+          listEl.innerHTML = '';
+          listEl.classList.add('hidden');
+          input.setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (highlightIdx < 0) highlightIdx = 0;
+        if (highlightIdx >= rows.length) highlightIdx = rows.length - 1;
+        listEl.innerHTML = rows.map(function(r, i) {
+          return '<li role="option" class="field-combobox-option' + (i === highlightIdx ? ' is-active' : '') + '" data-value="' + escapeAttr(r.v) + '">' + escapeHtml(r.lab) + '</li>';
+        }).join('');
+        listEl.classList.remove('hidden');
+        input.setAttribute('aria-expanded', 'true');
+      }
+
+      function showList() {
+        renderList();
+      }
+
+      function syncFromCommitted() {
+        if (allOptionLabel) {
+          input.value = (committed == null || committed === '') ? '' : committed;
+        } else {
+          input.value = committed || '';
+        }
+        hideList();
+      }
+
+      function commitFromRow(row) {
+        if (allOptionLabel && row.v === '') {
+          committed = null;
+          input.value = '';
+        } else {
+          committed = row.v;
+          input.value = row.v;
+        }
+        hideList();
+        if (options.onChange) options.onChange(committed);
+      }
+
+      input.addEventListener('input', function() {
+        highlightIdx = 0;
+        showList();
+      });
+
+      input.addEventListener('focus', function() {
+        highlightIdx = 0;
+        showList();
+      });
+
+      input.addEventListener('blur', function() {
+        setTimeout(function() {
+          if (wrap.contains(document.activeElement)) return;
+          hideList();
+          syncFromCommitted();
+        }, 200);
+      });
+
+      listEl.addEventListener('mousedown', function(e) {
+        const li = e.target.closest('.field-combobox-option');
+        if (!li) return;
+        e.preventDefault();
+        const raw = li.getAttribute('data-value');
+        const want = raw === null || raw === undefined ? '' : raw;
+        const rows = visibleRows();
+        const hit = rows.find(function(r) { return r.v === want; });
+        if (hit) commitFromRow(hit);
+      });
+
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (listEl.classList.contains('hidden')) showList();
+          const r2 = visibleRows();
+          if (!r2.length) return;
+          highlightIdx = Math.min(highlightIdx + 1, r2.length - 1);
+          renderList();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (listEl.classList.contains('hidden')) showList();
+          const r2 = visibleRows();
+          if (!r2.length) return;
+          highlightIdx = Math.max(highlightIdx - 1, 0);
+          renderList();
+        } else if (e.key === 'Enter') {
+          const rEnter = visibleRows();
+          if (!listEl.classList.contains('hidden') && rEnter.length && highlightIdx >= 0 && highlightIdx < rEnter.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            commitFromRow(rEnter[highlightIdx]);
+          }
+        } else if (e.key === 'Escape') {
+          if (!listEl.classList.contains('hidden')) {
+            e.preventDefault();
+            e.stopPropagation();
+            hideList();
+            syncFromCommitted();
+          }
+        }
+      });
+
+      document.addEventListener('mousedown', function docTypeComboClose(ev) {
+        if (!wrap.contains(ev.target)) hideList();
+      });
+
+      return {
+        syncFromCommitted: syncFromCommitted,
+        setCommittedExternal: function(c, silent) {
+          committed = c;
+          syncFromCommitted();
+          if (!silent && options.onChange) options.onChange(committed);
+        },
+        getValue: function() { return committed; },
+        isListOpen: function() { return !listEl.classList.contains('hidden'); }
+      };
+    }
+
+    function initTypeFilterCombobox() {
+      if (typeFilterCombobox) return;
+      typeFilterCombobox = createFieldCombobox({
+        input: document.getElementById('typeFilterInput'),
+        listEl: document.getElementById('typeFilterList'),
+        getSource: function() { return typeFilterChoices; },
+        allOptionLabel: 'הכל',
+        initialCommitted: null,
+        onChange: function(val) {
+          selectedType = (val == null || val === '') ? null : val;
+          applyFilters();
+        }
+      });
+    }
+
     function buildTypeFilter() {
-      const types = [...new Set(restaurants.map(function(r) { return (r.restaurant_type || '').trim(); }).filter(Boolean))].sort(function(a, b) { return a.localeCompare(b, 'he'); });
-      const sel = document.getElementById('typeFilterSelect');
-      const keep = selectedType && types.indexOf(selectedType) !== -1 ? selectedType : '';
-      sel.innerHTML = '<option value="">הכל</option>' + types.map(function(t) {
-        return '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>';
-      }).join('');
-      sel.value = keep;
-      selectedType = keep || null;
+      typeFilterChoices = [...new Set(restaurants.map(function(r) { return (r.restaurant_type || '').trim(); }).filter(Boolean))].sort(function(a, b) { return a.localeCompare(b, 'he'); });
+      if (selectedType && typeFilterChoices.indexOf(selectedType) === -1) {
+        selectedType = null;
+      }
+      if (typeFilterCombobox) {
+        typeFilterCombobox.setCommittedExternal(selectedType, true);
+      }
     }
 
     function updateCount(n) {
@@ -307,11 +491,47 @@
 
     function updateSaveButton() {
       const btnAdd = document.getElementById('btnAdd');
+      const btnSave = document.getElementById('btnSave');
       if (hasEditMode) {
         btnAdd.classList.remove('hidden');
       } else {
         btnAdd.classList.add('hidden');
       }
+      if (hasEditMode && token) {
+        btnSave.style.display = '';
+        btnSave.disabled = false;
+      } else {
+        btnSave.style.display = 'none';
+      }
+    }
+
+    function restaurantKey(r) {
+      return String(r._serverKey || r.id || '');
+    }
+
+    function restaurantChanged(a, b) {
+      return (a.name || '') !== (b.name || '') ||
+        (a.restaurant_type || '') !== (b.restaurant_type || '') ||
+        (a.location || '') !== (b.location || '') ||
+        (a.extra_info || '') !== (b.extra_info || '') ||
+        String(a.website || '').trim() !== String(b.website || '').trim();
+    }
+
+    function patchRestaurant(rid, data) {
+      if (!token) return;
+      const id = String(rid);
+      const idx = restaurants.findIndex(function(r) { return restaurantKey(r) === id; });
+      if (idx < 0) return;
+      const row = restaurants[idx];
+      if ('name' in data) row.name = data.name;
+      if ('restaurant_type' in data) row.restaurant_type = data.restaurant_type;
+      if ('location' in data) row.location = data.location;
+      if ('extra_info' in data) row.extra_info = data.extra_info;
+      if ('website' in data) row.website = data.website;
+      restaurants.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'he'); });
+      buildTypeFilter();
+      applyFilters();
+      updateSaveButton();
     }
 
     function openAddRestaurantFlow() {
@@ -377,25 +597,15 @@
       updateCount(filtered.length);
     }
 
-    async function deleteRestaurant(rid, displayName) {
+    function deleteRestaurant(rid, displayName) {
       if (!token) return;
       const label = (displayName || '').trim() || 'מסעדה זו';
       if (!confirm('למחוק את "' + label + '"?')) return;
       const id = String(rid);
-      try {
-        const r = await fetch(API + 'api/restaurants/' + encodeURIComponent(id), {
-          method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if (!r.ok) {
-          const err = await r.json().catch(function() { return {}; });
-          alert(err.error || 'מחיקה נכשלה');
-          return;
-        }
-        await load();
-      } catch (e) {
-        alert('שגיאה: ' + (e.message || e));
-      }
+      restaurants = restaurants.filter(function(r) { return restaurantKey(r) !== id; });
+      buildTypeFilter();
+      applyFilters();
+      updateSaveButton();
     }
 
     function openAddRestaurantModal() {
@@ -460,28 +670,74 @@
         return;
       }
       if (!token) { alert('נדרשת התחברות'); return; }
+      patchRestaurant(editId, {
+        name: name,
+        restaurant_type: restaurant_type || '',
+        location: location || '',
+        extra_info: extra_info,
+        website: website || ''
+      });
+      closeRestaurantModal();
+    }
+
+    async function saveAllChanges() {
+      const btn = document.getElementById('btnSave');
+      if (!btn || !token) return;
+      btn.disabled = true;
+      btn.textContent = 'שומר...';
       try {
-        const r = await fetch(API + 'api/restaurants/' + encodeURIComponent(editId), {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({
-            name,
-            restaurant_type: restaurant_type || '',
-            location: location || '',
-            extra_info,
-            website: website || ''
-          })
+        const deletedIds = baseRestaurants.map(function(b) { return restaurantKey(b); }).filter(function(sk) {
+          return sk && !restaurants.some(function(r) { return restaurantKey(r) === sk; });
         });
-        const errBody = await r.json().catch(function() { return {}; });
-        if (!r.ok) {
-          alert(errBody.error || 'שגיאה בשמירה');
-          return;
+        for (var i = 0; i < deletedIds.length; i++) {
+          var rid = deletedIds[i];
+          var rDel = await fetch(API + 'api/restaurants/' + encodeURIComponent(rid), {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          if (!rDel.ok) {
+            var errDel = await rDel.json().catch(function() { return {}; });
+            throw new Error(errDel.error || rDel.statusText || 'delete failed');
+          }
         }
-        closeRestaurantModal();
+        for (var j = 0; j < restaurants.length; j++) {
+          var entry = restaurants[j];
+          var serverKey = restaurantKey(entry);
+          if (!serverKey) continue;
+          var baseEntry = baseRestaurants.find(function(b) { return restaurantKey(b) === serverKey; });
+          if (baseEntry && restaurantChanged(entry, baseEntry)) {
+            var rPatch = await fetch(API + 'api/restaurants/' + encodeURIComponent(serverKey), {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+              body: JSON.stringify({
+                name: entry.name,
+                restaurant_type: entry.restaurant_type || '',
+                location: entry.location || '',
+                note: entry.note || '',
+                extra_info: entry.extra_info || '',
+                website: String(entry.website || '').trim()
+              })
+            });
+            if (!rPatch.ok) {
+              var errPatch = await rPatch.json().catch(function() { return {}; });
+              throw new Error(errPatch.error || rPatch.statusText || 'patch failed');
+            }
+          }
+        }
         await load();
+        btn.textContent = 'נשמר';
+        setTimeout(function() { btn.textContent = 'שמור שינויים'; }, 1500);
       } catch (e) {
-        alert('שגיאה: ' + (e.message || e));
+        var msg = e.message || String(e);
+        if (msg === 'Failed to fetch' || msg.indexOf('NetworkError') !== -1) {
+          alert('לא ניתן להתחבר לשרת. ודא שהאתר נטען דרך השרת.');
+        } else {
+          alert('שגיאה בשמירה: ' + msg);
+        }
+        btn.textContent = 'שמור שינויים';
       }
+      btn.disabled = false;
+      updateSaveButton();
     }
 
     async function load() {
@@ -504,6 +760,7 @@
         }
         restaurants.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'he'); });
         restaurants.forEach(function(x) { x._serverKey = x.id; });
+        baseRestaurants = restaurants.map(function(x) { return Object.assign({}, x); });
         buildTypeFilter();
         applyFilters();
       } catch (e) {
@@ -517,6 +774,7 @@
             document.getElementById('loginArea').classList.add('hidden');
             document.getElementById('loggedArea').classList.add('hidden');
             restaurants.forEach(function(x) { x._serverKey = x.id; });
+            baseRestaurants = restaurants.map(function(x) { return Object.assign({}, x); });
             buildTypeFilter();
             applyFilters();
           } else throw new Error('no data');
@@ -528,14 +786,10 @@
       updateSaveButton();
     }
 
-    document.getElementById('typeFilterSelect').addEventListener('change', function() {
-      const v = (this.value || '').trim();
-      selectedType = v || null;
-      applyFilters();
-    });
     document.getElementById('q').addEventListener('input', applyFilters);
 
     document.getElementById('btnAdd').addEventListener('click', openAddRestaurantFlow);
+    document.getElementById('btnSave').addEventListener('click', saveAllChanges);
     document.getElementById('btnRestaurantCancel').addEventListener('click', closeRestaurantModal);
     document.getElementById('btnRestaurantSubmit').addEventListener('click', function(e) {
       e.preventDefault();
@@ -598,6 +852,7 @@
       });
     }
 
+    initTypeFilterCombobox();
     load().then(function() { bindLoginHandlers(); });
   </script>
 </body>

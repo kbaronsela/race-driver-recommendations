@@ -28,19 +28,20 @@
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
     .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .search-wrap > .subtitle { margin-top: 0; margin-bottom: 0.4rem; line-height: 1.45; }
     .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; }
     .btn:hover { border-color: var(--accent); }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn-delete { border-color: #f85149; color: #f85149; }
     .btn-delete:hover { background: rgba(248,81,73,0.15); }
-    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
+    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0 0 1rem; z-index: 10; }
     .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
     @media (max-width: 768px) {
       .search-wrap { position: relative; }
     }
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
-    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.75rem; }
     .filter-field-label { color: var(--muted); font-size: 0.9rem; }
     .filter-field-select { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 140px; }
     .field-combobox { position: relative; display: inline-block; min-width: 140px; vertical-align: middle; }
@@ -179,6 +180,7 @@
       .header-logos { gap: 1rem; }
       .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
       .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+      .search-wrap > .subtitle { margin-bottom: 0.35rem; }
       .search-inner { padding: 0.6rem 0.75rem; }
       #q { font-size: 1rem; }
       .card { padding: 0.875rem 1rem; }
@@ -261,9 +263,8 @@
       <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
       <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
     </div>
-    <p class="subtitle">חיפוש חופשי לפי שם, תחום או טלפון</p>
-
     <div class="search-wrap">
+      <p class="subtitle">חיפוש חופשי לפי שם, תחום או טלפון</p>
       <!-- שדה מוסתר כדי למנוע מהדפדפן למלא כאן שם משתמש -->
       <input type="text" id="search-dummy" tabindex="-1" autocomplete="username" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px" aria-hidden="true">
       <div class="search-inner">

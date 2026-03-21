@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מסעדות מומלצות</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 1rem; background: #f5f5f5; }
+    h1 { margin: 0 0 1rem; font-size: 1.5rem; }
+    .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+    #search { flex: 1; min-width: 200px; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+    #typeFilter { padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; min-width: 160px; }
+    .count { color: #666; font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    th, td { padding: 0.6rem 0.75rem; text-align: right; border-bottom: 1px solid #eee; vertical-align: top; }
+    th { background: #2c3e50; color: #fff; font-weight: 600; }
+    tr:hover { background: #f8f9fa; }
+    .note { max-width: 380px; font-size: 0.9rem; color: #444; white-space: pre-wrap; word-break: break-word; }
+    .type { font-weight: 500; color: #2c3e50; }
+    .loc { font-size: 0.95rem; color: #333; max-width: 220px; word-break: break-word; }
+    .web { font-size: 0.85rem; max-width: 200px; word-break: break-all; }
+    .web a { color: #1a5fb4; }
+    .empty { color: #999; }
+    .hint { color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>מסעדות מומלצות (מקומי)</h1>
+  <p class="hint">הנתונים מוטמעים בקובץ — אפשר לפתוח ישירות מהדיסק (כמו <code>view_recommendations.html</code>). לעדכון הקובץ אחרי שינוי JSON: <code>python scripts/build_view_restaurants.py</code></p>
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="חיפוש בשם, סוג, מיקום, הערה או מידע נוסף..." aria-label="חיפוש">
+    <select id="typeFilter">
+      <option value="">כל הסוגים</option>
+    </select>
+    <span class="count" id="count"></span>
+  </div>
+  <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>שם</th>
+          <th>סוג</th>
+          <th>מיקום</th>
+          <th>אתר</th>
+          <th>הערה</th>
+          <th>מידע נוסף</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <script>
+
+    const data = [{"id":"r-ace0e8b8bbd4","name":"bibo vino","restaurant_type":"יין ואוכל","location":"לא צוין","note":"סיגל ראב · 28/03/2017","extra_info":"הוזכר בשאלה לקבוצה; לבדוק עדכונים.","website":""},{"id":"r-ea397e8489fb","name":"PE PE","restaurant_type":"מעדנייה","location":"קניון הירוקה","note":"גילי דואר · 21/04/2016","extra_info":"לכבד עוף / מעדנייה.","website":""},{"id":"r-5050aa0891b1","name":"Sins","restaurant_type":"דגים ופירות ים","location":"כפר עזה (עוטף)","note":"טלפון בפרסום: 052-2765312 · 07/2018","extra_info":"מתוך רשימת העוטף.","website":""},{"id":"r-0fdb01757e37","name":"Zink","restaurant_type":"מסעדה","location":"יהוד","note":"יהודית אשל · 01/07/2018","extra_info":"נחמד באזור.","website":"https://zinc.co.il/"},{"id":"r-a4308c2500cb","name":"אבו חסן (טירה)","restaurant_type":"חומוס / מזרח תיכוני","location":"טירה","note":"דנה אידו · 17/06/2018","extra_info":"הוזכר בהקשר מסעדה מקומית.","website":""},{"id":"r-7a1a26e8ceba","name":"אדמה","restaurant_type":"מסעדה","location":"זכרון יעקב","note":"+972 52-773-0585 · 24/08/2016 | מיכל סטפק · 09/08/2017","extra_info":"הומלצה יחד עם ביסטרו דה כרמל וקפה נילי לארוחות בזכרון. | הוצעה למסעדה פתוחה בשבת למשפחה גדולה.","website":""},{"id":"r-b68234836dd2","name":"אורנה ואלה / רביבה וסיליה","restaurant_type":"בית קפה","location":"שינקין / האזור","note":"+1 (415) 867-4079 · 19/01/2017","extra_info":"הוזכרו בהקשר ארוחת בוקר.","website":""},{"id":"r-215be129b9bf","name":"אושי אושי","restaurant_type":"סושי","location":"קניון הירוקה, כפר סבא","note":"ציפי שקד · 27/08/2016","extra_info":"סושי טעים; כשר, סגור בשבת.","website":"https://www.oshioshi.co.il/"},{"id":"r-5bfe17ac75d1","name":"איוטאיה","restaurant_type":"תאילנדית","location":"הוד השרון","note":"שני פולק · 24/05/2018","extra_info":"מסעדה תאילנדית מעולה.","website":""},{"id":"r-485b5641ad35","name":"אייזיס","restaurant_type":"בירה נגבית מבשלת בוטיק","location":"דקל","note":"טלפון בפרסום: 054-6428598","extra_info":"רשימת עסקי מזון מהעוטף שהופצה בקבוצה (יולי 2018).","website":"https://www.isisbeer.co.il/"},{"id":"r-f1196de9a41c","name":"אלבית (Albait)","restaurant_type":"מסעדה","location":"בית שאן–אזור","note":"+972 54-223-0180 · 09/08/2017","extra_info":"לינק הופץ בשרשור מסעדות ליד ניר דוד.","website":"https://albait.co.il/"},{"id":"r-aa3c634c4132","name":"אלבמה","restaurant_type":"מסעדת בשרים מעושנים","location":"נתניה","note":"הודעה מועברת · לפי שרשור 2018","extra_info":"קשה להזמין; הופיעה הזמנה להעברת מקום בקבוצה.","website":""},{"id":"r-b3f728f8de85","name":"אנגוס","restaurant_type":"מסעדת בשרים","location":"חיפה","note":"איילה בר · 09/08/2017","extra_info":"הוצע ליד ניר דוד / אזור הצפון.","website":""},{"id":"r-9be66e0acb88","name":"אצל פפו בכרם","restaurant_type":"יקב וגלריה","location":"אור הנר (עוטף)","note":"טלפון בפרסום: 050-7200426 · 07/2018","extra_info":"לא מסעדה קלאסית — יקב עם אירוח.","website":""},{"id":"r-2caa20dca574","name":"באגסי","restaurant_type":"בראנץ'","location":"פלורנטין, תל אביב","note":"חני דינור · 09/04/2018","extra_info":"ארגון בראנץ' לקבוצה; דברו בפרטי.","website":""},{"id":"r-08b07539ab23","name":"בופה (אזור תעשייה כפר סבא)","restaurant_type":"אוכל מוכן / עמותה","location":"כפר סבא","note":"+972 52-892-9144 · 05/04/2017","extra_info":"אוכל טעים; תורמים שאריות — לבדוק שעות לפני חג.","website":""},{"id":"r-2f07711f166d","name":"בוקה","restaurant_type":"מסעדה","location":"אחד העם, תל אביב","note":"אסנת פלג, דנה הראל · 19/01/2017","extra_info":"מעולה לדעת דנה.","website":"https://www.bucke-cafe.com/"},{"id":"r-b693817233ec","name":"ביסטרו דה כרמל","restaurant_type":"ביסטרו / חלבי כשר","location":"זכרון יעקב","note":"+972 52-773-0585 · 24/08/2016","extra_info":"ארוחת בוקר עסקית חלבית כשרה צפונה מהמושב.","website":"https://www.bistrodecarmel.co.il/"},{"id":"r-8df91a3a678e","name":"בית ליבנה","restaurant_type":"ארוחות גורמה כפריות","location":"עין הבשור (עוטף)","note":"טלפון בפרסום: 052-8284-152 · 07/2018","extra_info":"ארוחות בבית כפרי.","website":""},{"id":"r-6b133b396cd1","name":"בן זגר","restaurant_type":"אירועי בר אקטיבי | בר לאירועים","location":"מפלסים | מפלסים (עוטף)","note":"טלפון בפרסום: 052-2768663 | טלפון בפרסום: 052-2768663 · 07/2018","extra_info":"רשימת עסקי מזון מהעוטף שהופצה בקבוצה (יולי 2018). | אירועי בר.","website":""},{"id":"r-3b235dd63383","name":"בנדיקט","restaurant_type":"ארוחת בוקר","location":"תל אביב","note":"מאיה אהרוני, דנה הראל · 19/01/2017","extra_info":"פופולרי; חלק מהחברות מציינות עומס/מיושן.","website":"https://www.benedict.co.il/"},{"id":"r-df522a9b94ab","name":"בני ציון","restaurant_type":"מכולת / מעדנייה","location":"אזור השרון","note":"מיה דקל · 21/04/2016","extra_info":"כבדי עוף ומעדניות.","website":""},{"id":"r-499d5a8130b8","name":"בר אסייתי","restaurant_type":"אסייתית","location":"רחוב הבנים, הוד השרון","note":"אביבית וינברג · 26/09/2018","extra_info":"נהדרת לדעת אביבית.","website":"https://www.asiandeli.co.il/"},{"id":"r-c9c0347fabce","name":"ג'וז ודניאל","restaurant_type":"מסעדה | מסעדה + בית קפה","location":"תל יצחק (ליד צופית) | תל יצחק","note":"דיקלה אלמגור, איילה בר · 24/08/2016 | +972 50-555-9156 · 23/12/2018","extra_info":"מסעדה מעולה, יפה וכייפית; מומלץ להזמין מקום מראש. | קפה וארוחות בוקר; לבוא רעבים לדעת הממליצה.","website":"https://www.goujeanddaniel.co.il/"},{"id":"r-457c35a31595","name":"גוהר","restaurant_type":"פרסית","location":"אזור התעשייה כפר סבא","note":"סיגל ראב · 05/04/2017","extra_info":"טעים מאוד; להזמין מראש. טלפון בצ'אט: 09-7664533.","website":""},{"id":"r-6369ab8352c8","name":"גלידה יונק","restaurant_type":"מסעדה רומנית","location":"קבוץ גלויות 29, חיפה (ליד שוק הפשפשים)","note":"שרה בוגן · 14/12/2018","extra_info":"מומלצת לחיפה מול המושבה/נמל.","website":"https://www.glida.com/"},{"id":"r-c83a685b176b","name":"גלריה הביתית (שף פרטי)","restaurant_type":"אירוח פרטי / מטבח שף","location":"גבעתיים","note":"עינת שיין · 24/05/2016","extra_info":"שף פרטי בגבעתיים; פרטים בפרטי לפי עינת שיין.","website":""},{"id":"r-a7b329950f79","name":"גמני","restaurant_type":"בית קפה / בראנץ'","location":"רחוב רוטשילד, תל אביב","note":"אורנה ורכובסקי · 19/01/2017","extra_info":"המלצה לארוחת בוקר.","website":""},{"id":"r-2757723cf473","name":"דג דגן (dagdagan)","restaurant_type":"מסעדת דגים","location":"קיבוץ חפציבה","note":"ציפי שקד · 09/08/2017 · dagdagan.co.il","extra_info":"דגים מעולה, אזור משחקים; פתוח בשבת לפי ציפי.","website":""},{"id":"r-5a6c67e40bc3","name":"דלאל","restaurant_type":"מסעדה / בראנץ'","location":"נווה צדק, תל אביב","note":"חלי סלוצקי לוינטל · 19/01/2017","extra_info":"בין ההמלצות החזקות לארוחת בוקר.","website":"https://dallal.co.il/"},{"id":"r-2d1042e0e02c","name":"האחים","restaurant_type":"מסעדה","location":"תל אביב | אבן גבירול, תל אביב","note":"דנה הראל · 19/01/2017 | עליזה ולטר · 02/06/2018","extra_info":"בראנץ' בשישי (הוזכר ליד משייה במלון מנדליי). | מיוחדת לדעת עליזה ולטר.","website":"https://haachim.co.il/"},{"id":"r-fe515e1fb7f2","name":"הדסון","restaurant_type":"סטייקים / בשרים","location":"רחוב הברזל, תל אביב","note":"אריאלה איטקיס · 02/06/2018","extra_info":"פתוחה בשבת; סטייקים.","website":"https://hudson-tlv.com/"},{"id":"r-7d8f96ee8cca","name":"הלב הרחב","restaurant_type":"מזרחי / ביסטרו","location":"אילת, מול הקניון","note":"חלי סלוצקי לוינטל, עינת שיין · 01/07/2018","extra_info":"עיצוב ביסטרו; יש לבדוק אם נפתח מחדש אחרי שרפה (צוין בצ'אט).","website":"https://halev-harahav.co.il/"},{"id":"r-af1743c3c940","name":"המקדש","restaurant_type":"בשרים","location":"אושילנד","note":"אסנת ורדי · 11/06/2018","extra_info":"מסעדת בשרים חדשה; מקורות חברות.","website":""},{"id":"r-12cca9af282d","name":"הניסים של השף","restaurant_type":"שף פרטי / ארוחות","location":"צוחר (עוטף)","note":"טלפון בפרסום: 052-4329-599 · 07/2018","extra_info":"ארוחות גורמה בבית פרטי.","website":""},{"id":"r-a39146c5e4d6","name":"חומוס מלול ובלאדי","restaurant_type":"חומוס","location":"אבו חסן יפו — ליד מאפייה","note":"ציפי שקד · 18/09/2016","extra_info":"לא במסעדה עצמה; אחרי הכיכר השנייה ימינה.","website":""},{"id":"r-f6fcfd623227","name":"טאטי","restaurant_type":"מסעדה","location":"יהוד","note":"מרים בן יעקב · 01/07/2018","extra_info":"המלצה לאזור יהוד.","website":""},{"id":"r-996e11cb28ee","name":"לחם יין","restaurant_type":"מסעדה / בר","location":"יהוד","note":"יהודית אשל · 01/10/2018","extra_info":"בין המסעדות שצוינו ליד אסתר וזינק.","website":"https://www.lechemyain.co.il/"},{"id":"r-a63259cb3b0e","name":"מונטיפיורי (יקב)","restaurant_type":"יקב ומסעדה","location":"יקב מונטיפיורי","note":"+972 54-450-7710 · 17/04/2018","extra_info":"יקב; המסעדה הוזכרה כ״מטרפת״.","website":"https://www.montefiorewines.net/"},{"id":"r-62aa2ded6eea","name":"מוריס","restaurant_type":"מסעדת בשרים","location":"שוק מחנה יהודה, ירושלים","note":"+972 52-487-5558 · 28/08/2017","extra_info":"אותנטי בשוק.","website":"https://en.machne.co.il/category/morris"},{"id":"r-99548ad5ebc5","name":"מידס","restaurant_type":"ברזילאית","location":"ברור חיל (עוטף)","note":"טלפון בפרסום: 054-6744197 · 07/2018","extra_info":"מתוך רשימת העוטף.","website":""},{"id":"r-6f22b2932fd0","name":"מיט בר","restaurant_type":"בשרים","location":"הרצליה","note":"מורן חן · 11/06/2018","extra_info":"טעים בטירוף; אווירה נעימה בערב.","website":"https://www.meatbar.co.il/"},{"id":"r-0d72d31cad14","name":"מיתוס","restaurant_type":"מסעדה / דוכן","location":"תל אביב; דוכן רמת החייל (שישי)","note":"דנה הראל · 18/01/2017","extra_info":"אוכל כשר טרי; דוכן בשישי ברמת החייל.","website":"https://meatos.co.il/"},{"id":"r-fba22dfc8edc","name":"מל ומישל","restaurant_type":"איטלקית","location":"תל אביב","note":"מירי יעקובי · 24/05/2016","extra_info":"רומנטית, איטלקית וטעימה — הומלצה להצעת נישואין (לא כשר).","website":""},{"id":"r-4e7a4f1465d8","name":"מלון מונטיפיורי","restaurant_type":"מלון / מסעדה","location":"תל אביב","note":"אורנה ורכובסקי · 19/01/2017","extra_info":"ארוחת בוקר שווה לדעת אורנה.","website":"https://www.montefiore.co.il/"},{"id":"r-8d583ffa8912","name":"מנטה ריי","restaurant_type":"מסעדה","location":"על הים (תל אביב–יפו)","note":"דנה הראל · 19/01/2017","extra_info":"הוזכר בהקשר ארוחת בוקר.","website":"https://www.mantaray.co.il/"},{"id":"r-b5bb789bd29c","name":"מנסורה","restaurant_type":"שף / מטבח ערבי","location":"יפו","note":"+972 54-447-0034 · 27/07/2019","extra_info":"שף מצוין, יוצאי השילה.","website":""},{"id":"r-79f312f39a39","name":"מסעדה טבעונית (ויצמן)","restaurant_type":"טבעונית","location":"כפר סבא — רחוב ויצמן מול העירייה","note":"ליאת ריקליס אורן · 24/10/2017","extra_info":"מקסימה בחוץ עם עציצים, אוכל מעולה.","website":"https://www.tevahaochel.online/"},{"id":"r-df37cc697c2a","name":"מסעדת אסתר","restaurant_type":"מסעדה","location":"יהוד","note":"שירלי רייכמן · 01/07/2018","extra_info":"מקסימה וטעימה.","website":"https://www.ester-rest.co.il/"},{"id":"r-49d1f04ed40a","name":"מסעדת הארזים","restaurant_type":"לבנונית","location":"ליד נהריה","note":"תמי בנארצי · 06/10/2017","extra_info":"מזרחית עממית; ליד נהריה.","website":""},{"id":"r-08ba9fdb7e54","name":"מסעדת מחנה יהודה / מחניודה","restaurant_type":"מסעדה","location":"ירושלים / השוק","note":"מירב ערן · 21/03/2019","extra_info":"מצוינת לדעת חברות; קשור לאסף גרניט.","website":"https://www.machneyuda.co.il/"},{"id":"r-4030c770059e","name":"משייה (מלון מנדליי)","restaurant_type":"מסעדה","location":"רוטשילד 12, תל אביב","note":"דנה הראל · 19/01/2017","extra_info":"ארוחות בוקר.","website":"https://www.mashya.co.il/"},{"id":"r-33f330b905ad","name":"נונו","restaurant_type":"מסעדה","location":"הוד השרון","note":"עינת שיין · 24/08/2016","extra_info":"הומלצה לעומת ג'וז ודניאל.","website":"https://nonomimi.com/"},{"id":"r-1b49f5ecd46b","name":"נורמן","restaurant_type":"בית קפה / בראנץ'","location":"רחוב מונטיפיורי, תל אביב","note":"חלי סלוצקי לוינטל · 19/01/2017","extra_info":"הומלץ על ידי מירי יעקובי וחלי.","website":"https://www.thenorman.com/he/"},{"id":"r-488ef0669207","name":"נישי","restaurant_type":"אסייתית","location":"מלון ווסט, נתניה","note":"שרה בוגן · 26/03/2019","extra_info":"מדהימה לדעת שרה בוגן.","website":"https://nishi.co.il/"},{"id":"r-b7cfdc624837","name":"סושימוטו","restaurant_type":"סושי","location":"ניר עם (עוטף)","note":"טלפון בפרסום: 050-6722297 · 07/2018","extra_info":"מתוך רשימת העוטף בצ'אט.","website":""},{"id":"r-e755ad0ed14c","name":"סיאטרה / סאן","restaurant_type":"מסעדה","location":"בי אנד סאן, תל אביב","note":"מאיה גולי · 19/01/2017","extra_info":"מאיה גולי ממליצה.","website":""},{"id":"r-c2597ac3ab08","name":"עזורה / פתיליות","restaurant_type":"מסעדה","location":"שוק מחנה יהודה","note":"דנה הראל · 28/08/2017","extra_info":"טעים וזול לדעת דנה הראל.","website":""},{"id":"r-14be5a8add3c","name":"עליזה — קוסקוס","restaurant_type":"קוסקוס ביתי / הזמנה","location":"לפי אתר","note":"הילה רבינוביץ אוקונסקי · 24/08/2016 · alizascouscous.com","extra_info":"קוסקוס לשישי; לינק לתפריט בהודעה.","website":""},{"id":"r-d86dc683db95","name":"פועה","restaurant_type":"מסעדה","location":"שוק הפשפשים, תל אביב","note":"+972 52-633-3776 · 19/01/2017","extra_info":"ארוחת בוקר.","website":""},{"id":"r-db6b3c5d21e5","name":"פטגוניה","restaurant_type":"מסעדה","location":"אור הנר (עוטף)","note":"טלפון בפרסום: 050-6846728 · 07/2018","extra_info":"מתוך רשימת העוטף.","website":""},{"id":"r-85261f049e02","name":"פיאנו / זיגי","restaurant_type":"פיצה","location":"משלוחים למושב","note":"שרון גולן · 2020","extra_info":"הוזכרו בהקשר פיצה למושב.","website":""},{"id":"r-5c96acdfd753","name":"פלאפל נייד","restaurant_type":"דוכני פלאפל באירועים | פלאפל לאירועים","location":"ברור חיל | ברור חיל (עוטף)","note":"טלפון בפרסום: 052-6510506 | טלפון בפרסום: 052-6510506 · 07/2018","extra_info":"רשימת עסקי מזון מהעוטף שהופצה בקבוצה (יולי 2018). | דוכני פלאפל לאירועים.","website":""},{"id":"r-438c5db4cd25","name":"פסטה וזהו","restaurant_type":"פסטה / מסעדה","location":"יכיני (עוטף)","note":"טלפון בפרסום: 054-3136321 · 07/2018","extra_info":"מתוך רשימת העוטף.","website":""},{"id":"r-8dab13f1f4bd","name":"צל תמר","restaurant_type":"מסעדה","location":"אגדות יעקב / אשדות יעקב","note":"תמי בנארצי · 09/08/2017","extra_info":"מעולה לילדים ואוכל; לבדוק שעות שבת לפי שרשור.","website":""},{"id":"r-f3c83e1bc740","name":"קוביה","restaurant_type":"אוכל ערבי / אסלית","location":"יפו העתיקה","note":"ריקי הורן · 27/07/2019","extra_info":"טובה לאורחים מחו״ל.","website":""},{"id":"r-3b0ee0ca5faf","name":"קזן","restaurant_type":"מסעדה כשרה","location":"רעננה","note":"רותה לאור · 02/11/2017","extra_info":"כמעט כל המסעדות ברעננה כשרות; קזן חדשה וטובה.","website":"https://kazan.co.il/"},{"id":"r-4d5aa8f95054","name":"קיסו","restaurant_type":"אסייתית","location":"קרית אונו","note":"אביבית וינברג · 01/07/2018","extra_info":"שווה לדעת אביבית.","website":"https://ki-su.co.il/"},{"id":"r-ff7d04dcd3ad","name":"קפה אוגוסט (לשעבר ג'ו)","restaurant_type":"בית קפה + משלוחים","location":"צופית / סביבה","note":"הודעות 2020","extra_info":"משלוחי מנות בבית בתקופת קורונה; מומלץ בקבוצה.","website":""},{"id":"r-3936f4b2b937","name":"קפה נואר","restaurant_type":"בית קפה","location":"נחמני, תל אביב","note":"דנה הראל · 19/01/2017","extra_info":"אין ארוחות בוקר — פותחים בצהריים (תיקון לדנה הראל).","website":"https://www.cafenoir.co.il/"},{"id":"r-e97d00665324","name":"קפה נילי","restaurant_type":"בית קפה","location":"זכרון יעקב","note":"+972 52-773-0585 · 24/08/2016","extra_info":"באותו שרשור המלצות לזכרון.","website":"https://www.nili-rest.co.il/"},{"id":"r-9f2e9025cc61","name":"ריבר","restaurant_type":"סושי / אוכל אסייתי","location":"שכונה B, הירוקה כפר סבא","note":"ציפי שקד · 27/08/2016","extra_info":"סושי טעים; פתוח בשבת, לא כשר.","website":"https://www.river-bar.co.il/"},{"id":"r-e90e6cf17275","name":"שגב (הרצליה)","restaurant_type":"מסעדה","location":"הרצליה","note":"שרשור · 05/2018","extra_info":"מסעדה מעולה — ציטוט מתוך שיחה בקבוצה.","website":"https://www.segevchef.com/"},{"id":"r-c2959f103f17","name":"שוק העיר (מגדל B)","restaurant_type":"שוק / אוכל","location":"תל אביב","note":"שרון גולן · 21/04/2016","extra_info":"פחות עמוס, הרבה אוכל.","website":""},{"id":"r-37561d5e2b53","name":"שוק מחנה יהודה (מוריס ועוד)","restaurant_type":"שוק ומסעדות","location":"ירושלים","note":"ענבל יבין פרטל · 28/08/2017","extra_info":"מסעדות אותנטיות בשוק.","website":"https://www.machne.co.il/"},{"id":"r-3dc63b4369ff","name":"תיאו","restaurant_type":"מסעדה","location":"רעננה","note":"דיאנה אידלמן · 29/05/2017","extra_info":"נשאלה חוות דעת בקבוצה.","website":""}];
+    const tbody = document.getElementById('tbody');
+    const searchEl = document.getElementById('search');
+    const typeFilter = document.getElementById('typeFilter');
+    const countEl = document.getElementById('count');
+
+    const types = [...new Set(data.map(r => (r.restaurant_type || '').trim()).filter(Boolean))].sort((a,b) => a.localeCompare(b, 'he'));
+    const noTypeOpt = document.createElement('option');
+    noTypeOpt.value = '__no_type__';
+    noTypeOpt.textContent = 'ללא סוג';
+    typeFilter.appendChild(noTypeOpt);
+    types.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t;
+      opt.textContent = t;
+      typeFilter.appendChild(opt);
+    });
+
+    function render(rows) {
+      tbody.innerHTML = rows.map(r => {
+        const name = escapeHtml(r.name || '');
+        const typ = escapeHtml((r.restaurant_type || '').trim());
+        const loc = escapeHtml((r.location || '').trim());
+        const web = (r.website || '').trim();
+        const webCell = web
+          ? '<a href="' + escapeAttr(web) + '" rel="noopener noreferrer" target="_blank">' + escapeHtml(web) + '</a>'
+          : '<span class="empty">—</span>';
+        const note = escapeHtml((r.note || '').slice(0, 300)) + ((r.note || '').length > 300 ? '…' : '');
+        const extra = escapeHtml((r.extra_info || '').slice(0, 500)) + ((r.extra_info || '').length > 500 ? '…' : '');
+        return '<tr>' +
+          '<td>' + (name || '—') + '</td>' +
+          '<td class="type' + (!typ ? ' empty' : '') + '">' + (typ || '—') + '</td>' +
+          '<td class="loc' + (!loc ? ' empty' : '') + '">' + (loc || '—') + '</td>' +
+          '<td class="web">' + webCell + '</td>' +
+          '<td class="note">' + (extra || '—') + '</td>' +
+          '<td class="note">' + (note || '—') + '</td>' +
+          '</tr>';
+      }).join('');
+      countEl.textContent = rows.length + ' מתוך ' + data.length;
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function escapeAttr(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+
+    function filterRows() {
+      const q = (searchEl.value || '').trim().toLowerCase();
+      const typeVal = typeFilter.value;
+      const rows = data.filter(r => {
+        const rt = (r.restaurant_type || '').trim();
+        const matchType = !typeVal ? true : (typeVal === '__no_type__' ? !rt : rt === typeVal);
+        if (!matchType) return false;
+        if (!q) return true;
+        const haystack = [
+          r.name || '',
+          rt,
+          r.location || '',
+          r.note || '',
+          String(r.extra_info ?? ''),
+          String(r.website ?? '')
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
+      });
+      render(rows);
+    }
+
+    searchEl.addEventListener('input', filterRows);
+    searchEl.addEventListener('keyup', filterRows);
+    typeFilter.addEventListener('change', filterRows);
+    filterRows();
+
+  </script>
+</body>
+</html>

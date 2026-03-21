@@ -23,8 +23,11 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
-    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 1.25rem; margin-bottom: 1rem; }
+    .header-brand { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 1.25rem; flex: 1 1 auto; min-width: 0; }
     .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; }
+    a.btn { text-decoration: none; color: inherit; }
+    .nav-home { flex-shrink: 0; align-self: center; }
     .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
     .header-auth { flex-shrink: 0; }
     .header-auth .btn { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
@@ -169,7 +172,9 @@
       body { overflow-x: hidden; width: 100%; }
       .container { padding: 1rem; width: 100%; min-width: 0; }
       .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
-      .header-row { margin-bottom: 0.75rem; }
+      .header-row { margin-bottom: 0.75rem; justify-content: center; }
+      .header-brand { flex: 1 1 100%; justify-content: center; order: -1; }
+      .header-auth { width: 100%; display: flex; justify-content: center; flex-wrap: wrap; }
       .header-logos { gap: 1rem; }
       .logo { height: 56px; max-width: 96px; }
       .header-auth .btn { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
@@ -226,9 +231,12 @@
 <body>
   <div class="container">
     <div class="header-row">
-      <div class="header-logos">
-        <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
-        <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+      <div class="header-brand">
+        <a href="index.html" class="btn nav-home" id="navHome">דף הבית</a>
+        <div class="header-logos">
+          <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+          <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+        </div>
       </div>
       <div class="header-auth">
         <div id="loginArea" class="login-wrap hidden">
@@ -241,7 +249,6 @@
       </div>
     </div>
     <div class="top-bar">
-      <a href="index.html" class="btn" id="navHome" style="flex-shrink:0;">דף הבית</a>
       <h1>עסקים ובעלי מקצוע</h1>
       <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
       <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>

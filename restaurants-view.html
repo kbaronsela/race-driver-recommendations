@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מסעדות — תצוגה נוחה</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f8fc;
+      --surface: #ffffff;
+      --text: #152238;
+      --muted: #5c6d82;
+      --accent: #0d6efd;
+      --accent-soft: #e8f1ff;
+      --border: #d3e2f0;
+      --shadow: 0 4px 24px rgba(21, 34, 56, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Heebo', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 3rem;
+    }
+    header {
+      margin-bottom: 1.5rem;
+    }
+    header h1 {
+      font-size: clamp(1.5rem, 4vw, 1.85rem);
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    header .sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .nav-links a:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(180deg, var(--bg) 88%, transparent);
+      padding: 0.5rem 0 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.65rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .search-row:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.18);
+    }
+    #q {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      font-size: 1.05rem;
+      outline: none;
+      color: var(--text);
+    }
+    #q::placeholder { color: #9aa8b8; }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .filters label { color: var(--muted); font-size: 0.9rem; }
+    #typeFilter {
+      padding: 0.45rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font: inherit;
+      font-size: 0.9rem;
+      min-width: 200px;
+      color: var(--text);
+    }
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 0.65rem;
+    }
+    .err {
+      background: #fff4f4;
+      border: 1px solid #f5c2c7;
+      color: #842029;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    article.card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.15rem 1.35rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    article.card:hover {
+      border-color: #a8c4eb;
+      box-shadow: var(--shadow);
+    }
+    .card-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .card h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    .loc {
+      margin: 0.35rem 0 0;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .loc .k {
+      color: var(--muted);
+      font-weight: 600;
+      margin-inline-end: 0.35rem;
+    }
+    .note {
+      margin-top: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      background: #f8fafc;
+      border-radius: 10px;
+      border-inline-end: 4px solid var(--accent);
+      font-size: 0.92rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .note .k { font-weight: 600; color: var(--muted); display: block; margin-bottom: 0.25rem; font-size: 0.85rem; }
+    .extra {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      word-break: break-word;
+    }
+    .extra .k { font-weight: 600; color: #7a8a9c; margin-inline-end: 0.35rem; }
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 2.5rem 1rem;
+    }
+    @media (min-width: 640px) {
+      .wrap { padding-inline: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>מסעדות מומלצות</h1>
+      <p class="sub">תצוגה לקריאה נוחה — חיפוש וסינון לפי סוג. הנתונים מגיעים מ־<code style="font-size:0.88em;">data/restaurants.json</code></p>
+      <nav class="nav-links" aria-label="ניווט">
+        <a href="index.html">דף הבית</a>
+        <a href="restaurants.html">עריכה (באתר עם התחברות)</a>
+      </nav>
+    </header>
+
+    <div class="toolbar">
+      <div class="search-row" role="search">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="q" placeholder="חיפוש בשם, סוג, מיקום, הערה או מידע נוסף…" autocomplete="off" aria-label="חיפוש">
+      </div>
+      <div class="filters">
+        <label for="typeFilter">סוג מסעדה</label>
+        <select id="typeFilter" aria-label="סינון לפי סוג">
+          <option value="">הכל</option>
+        </select>
+      </div>
+      <p class="meta" id="count" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="error" class="err hidden" role="alert"></div>
+    <div id="list" class="grid" aria-live="polite"></div>
+  </div>
+
+  <script>
+    (function () {
+      var restaurants = [];
+      var qEl = document.getElementById('q');
+      var typeEl = document.getElementById('typeFilter');
+      var listEl = document.getElementById('list');
+      var countEl = document.getElementById('count');
+      var errEl = document.getElementById('error');
+
+      function escapeHtml(s) {
+        if (s == null || s === '') return '';
+        var d = document.createElement('div');
+        d.textContent = String(s);
+        return d.innerHTML;
+      }
+
+      function normalize(s) {
+        return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+      }
+
+      function matches(r, q, typeVal) {
+        if (typeVal && (r.restaurant_type || '').trim() !== typeVal) return false;
+        if (!q) return true;
+        var hay = normalize([
+          r.name, r.restaurant_type, r.location, r.note, r.extra_info
+        ].join(' '));
+        return hay.indexOf(q) !== -1;
+      }
+
+      function render() {
+        var q = normalize(qEl.value);
+        var typeVal = (typeEl.value || '').trim();
+        var filtered = restaurants.filter(function (r) { return matches(r, q, typeVal); });
+        countEl.textContent = filtered.length === restaurants.length
+          ? 'מוצגות ' + restaurants.length + ' מסעדות'
+          : 'מוצגות ' + filtered.length + ' מתוך ' + restaurants.length;
+        if (!filtered.length) {
+          listEl.innerHTML = '<p class="empty">לא נמצאו תוצאות. נסו לשנות את החיפוש או הסינון.</p>';
+          return;
+        }
+        listEl.innerHTML = filtered.map(function (r) {
+          var type = escapeHtml((r.restaurant_type || '').trim());
+          var loc = escapeHtml((r.location || '').trim());
+          var note = escapeHtml((r.note || '').trim());
+          var extra = escapeHtml((r.extra_info || '').trim());
+          return (
+            '<article class="card">' +
+              '<div class="card-top">' +
+                '<h2>' + escapeHtml(r.name || '') + '</h2>' +
+                (type ? '<span class="badge">' + type + '</span>' : '') +
+              '</div>' +
+              (loc ? '<p class="loc"><span class="k">מיקום</span>' + loc + '</p>' : '') +
+              (extra ? '<p class="extra"><span class="k">הערה</span>' + extra + '</p>' : '') +
+              (note ? '<div class="note"><span class="k">מידע נוסף</span>' + note.replace(/\|/g, ' · ') + '</div>' : '') +
+            '</article>'
+          );
+        }).join('');
+      }
+
+      function fillTypes() {
+        var types = {};
+        restaurants.forEach(function (r) {
+          var t = (r.restaurant_type || '').trim();
+          if (t) types[t] = true;
+        });
+        var sorted = Object.keys(types).sort(function (a, b) { return a.localeCompare(b, 'he'); });
+        var cur = typeEl.value;
+        typeEl.innerHTML = '<option value="">הכל</option>' +
+          sorted.map(function (t) {
+            return '<option value="' + escapeHtml(t).replace(/"/g, '&quot;') + '">' + escapeHtml(t) + '</option>';
+          }).join('');
+        if (sorted.indexOf(cur) !== -1) typeEl.value = cur;
+      }
+
+      qEl.addEventListener('input', render);
+      typeEl.addEventListener('change', render);
+
+      fetch('data/restaurants.json', { credentials: 'same-origin' })
+        .then(function (res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          if (!Array.isArray(data)) throw new Error('פורמט לא צפוי');
+          restaurants = data.slice().sort(function (a, b) {
+            return String(a.name || '').localeCompare(String(b.name || ''), 'he');
+          });
+          errEl.classList.add('hidden');
+          fillTypes();
+          render();
+        })
+        .catch(function (e) {
+          errEl.classList.remove('hidden');
+          errEl.innerHTML =
+            '<strong>לא ניתן לטעון את הרשימה.</strong><br>' +
+            'פתחו את הדף דרך השרת המקומי: <code>python server.py</code> ואז גלשו ל־' +
+            '<code>/restaurants-view.html</code> (פתיחה כקובץ ישיר מהדיסק לרוב חוסמת טעינת JSON).<br>' +
+            '<small style="opacity:0.85">' + escapeHtml(String(e.message || e)) + '</small>';
+          countEl.textContent = '';
+          listEl.innerHTML = '';
+        });
+    })();
+  </script>
+</body>
+</html>

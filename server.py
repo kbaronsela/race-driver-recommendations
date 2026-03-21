@@ -351,6 +351,7 @@ def add_restaurant():
         "location": (data.get("location") or "").strip(),
         "note": (data.get("note") or "").strip(),
         "extra_info": (data.get("extra_info") or "").strip(),
+        "website": (data.get("website") or "").strip(),
     }
     rows.append(row)
     save_restaurants(rows)
@@ -368,7 +369,7 @@ def patch_restaurant(rid):
     if idx < 0:
         return jsonify({"ok": False, "error": "לא נמצא"}), 404
     row = rows[idx]
-    for key in ("name", "restaurant_type", "location", "note", "extra_info"):
+    for key in ("name", "restaurant_type", "location", "note", "extra_info", "website"):
         if key in data:
             row[key] = (data.get(key) or "").strip() if isinstance(data.get(key), str) else str(data.get(key) or "")
     if not (row.get("name") or "").strip():

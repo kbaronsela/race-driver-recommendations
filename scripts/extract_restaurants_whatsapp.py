@@ -5,12 +5,21 @@ Extract restaurant recommendations from WhatsApp export.
 1) Structured block >>> מסעדות ומוצרי מזון (עסקים בעוטף).
 2) Curated entries manually traced from group threads (names, types, locations, notes).
 
-Output: data/restaurants.json — id, name, restaurant_type, location, note, extra_info.
+Pipeline for data/restaurants.json:
+  raw entries → איחוד שם מדויק (שורה אחת לכל name) → איחוד כפולים (מפתח merge)
+  → מילוי website מ־restaurant_websites → כתיבה ל־JSON → build_view_restaurants.py
+
+Output fields: id, name, restaurant_type, location, note, extra_info, website.
+בקובץ: ``note`` = שורת מקור/תאריך; ``extra_info`` = טקסט ההמלצה (החלפה יחסית לסכימה הראשונית של הפרויקט).
 """
 import hashlib
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
+
+from restaurant_websites import assign_websites
 
 ROOT = Path(__file__).resolve().parent.parent
 CHAT = ROOT / "whatsapp_extract" / "WhatsApp Chat with נהגת מרוצים.txt"
@@ -19,6 +28,102 @@ OUT = ROOT / "data" / "restaurants.json"
 
 def slug_id(s: str) -> str:
     return "r-" + hashlib.sha256(s.encode("utf-8")).hexdigest()[:12]
+
+
+def strip_trailing_paren(name: str) -> str:
+    return re.sub(r"\s*\([^)]*\)\s*$", "", (name or "").strip()).strip()
+
+
+# שם ראשון לפני " — " שמאחד למסעדה אחת (למשל בן זגר)
+_EM_DASH_CANONICAL_PREFIXES = frozenset({"בן זגר"})
+# שם ראשון לפני " / " שמאחד (למשל ג'וז ודניאל / גלריה אלמוג)
+_SLASH_CANONICAL_PREFIXES = frozenset({"ג'וז ודניאל"})
+
+
+def restaurant_merge_key(name: str) -> str:
+    """מפתח איחוד לאותה מסעדה (אדמה ≈ אדמה (זיכרון), פלאפל נייד ≈ פלאפל נייד (דוכנים))."""
+    n = (name or "").strip()
+    if not n:
+        return ""
+    if " — " in n:
+        first, _ = n.split(" — ", 1)
+        first = first.strip()
+        if first in _EM_DASH_CANONICAL_PREFIXES:
+            return first.lower()
+    if " / " in n:
+        first, _ = n.split(" / ", 1)
+        first = first.strip()
+        if first in _SLASH_CANONICAL_PREFIXES:
+            return first.lower()
+    return strip_trailing_paren(n).lower()
+
+
+def _display_name_score(n: str) -> tuple:
+    """נמוך = עדיף לשם התצוגה המאוחד."""
+    n = n or ""
+    pen = 0
+    if re.search(r"\([^)]+\)\s*$", n.strip()):
+        pen += 10
+    if " — " in n:
+        pen += 5
+    return (pen, len(n), n)
+
+
+def _uniq_join(parts: list[str], sep: str = " | ") -> str:
+    seen: set[str] = set()
+    out: list[str] = []
+    for p in parts:
+        p = (p or "").strip()
+        if p and p not in seen:
+            seen.add(p)
+            out.append(p)
+    return sep.join(out)
+
+
+def merge_restaurant_entries(entries: list[dict]) -> list[dict]:
+    groups: dict[str, list[dict]] = {}
+    for e in entries:
+        k = restaurant_merge_key(e.get("name", ""))
+        if not k:
+            k = (e.get("name") or "").strip().lower()
+        groups.setdefault(k, []).append(e)
+
+    merged: list[dict] = []
+    for k, grp in groups.items():
+        if len(grp) == 1:
+            merged.append(dict(grp[0]))
+            continue
+        names = [g["name"] for g in grp]
+        display = min(names, key=lambda n: _display_name_score(n))
+        types = _uniq_join([g.get("restaurant_type") or "" for g in grp])
+        locs = _uniq_join([g.get("location") or "" for g in grp])
+        notes = _uniq_join([g.get("note") or "" for g in grp])
+        extras = _uniq_join([g.get("extra_info") or "" for g in grp])
+        merged.append(
+            {
+                "id": slug_id("merged:" + k + display),
+                "name": display,
+                "restaurant_type": types[:200] if len(types) > 200 else types,
+                "location": locs[:250] if len(locs) > 250 else locs,
+                "note": notes[:400] + ("..." if len(notes) > 400 else ""),
+                "extra_info": extras[:600] + ("..." if len(extras) > 600 else ""),
+            }
+        )
+    return merged
+
+
+def dedupe_merge_and_assign_websites(entries: list[dict]) -> list[dict]:
+    """
+    איחוד כפולים: קודם כפילויות בשם מדויק, אחר כך איחוד לפי restaurant_merge_key,
+    ואז שדה website לפי השם הסופי.
+    """
+    by_exact: dict[str, dict] = {}
+    for e in entries:
+        by_exact[e["name"].strip().lower()] = e
+    deduped = list(by_exact.values())
+    merged = merge_restaurant_entries(deduped)
+    assign_websites(merged, log_hints=True)
+    return merged
 
 
 def normalize_spaces(s: str) -> str:
@@ -81,14 +186,14 @@ def extract_gaza_food_block(text: str) -> list[dict]:
                 "name": name[:120],
                 "restaurant_type": rtype[:150],
                 "location": loc[:200],
-                "note": "רשימת עסקי מזון מהעוטף שהופצה בקבוצה (יולי 2018).",
-                "extra_info": (f"טלפון בפרסום: {phone}" if phone else "")[:250],
+                "note": (f"טלפון בפרסום: {phone}" if phone else "")[:250],
+                "extra_info": "רשימת עסקי מזון מהעוטף שהופצה בקבוצה (יולי 2018).",
             }
         )
     return items
 
 
-# המלצות שזוהו בשרשורים בקבוצת וואטסאפ «נהגת מרוצים» (שם, סוג, מיקום, הערה, מידע נוסף)
+# המלצות מזוהות בשרשורים (שם, סוג, מיקום, טקסט המלצה → extra_info, שורת מקור → note)
 CURATED = [
     ("מל ומישל", "איטלקית", "תל אביב", "רומנטית, איטלקית וטעימה — הומלצה להצעת נישואין (לא כשר).", "מירי יעקובי · 24/05/2016"),
     ("גלריה הביתית (שף פרטי)", "אירוח פרטי / מטבח שף", "גבעתיים", "שף פרטי בגבעתיים; פרטים בפרטי לפי עינת שיין.", "עינת שיין · 24/05/2016"),
@@ -177,27 +282,29 @@ def main():
         return 1
     text = CHAT.read_text(encoding="utf-8", errors="replace")
     entries = extract_gaza_food_block(text)
-    for name, rtype, loc, note, extra in CURATED:
+    for name, rtype, loc, recommendation, source_line in CURATED:
         entries.append(
             {
                 "id": slug_id("curated:" + name + loc),
                 "name": name,
                 "restaurant_type": rtype,
                 "location": loc,
-                "note": note,
-                "extra_info": extra,
+                "note": source_line,
+                "extra_info": recommendation,
             }
         )
-    # Dedupe by name (keep last — curated overrides generic עוטף row when same name)
-    by_name: dict[str, dict] = {}
-    for e in entries:
-        by_name[e["name"].strip().lower()] = e
-    uniq = list(by_name.values())
+    uniq = dedupe_merge_and_assign_websites(entries)
     uniq.sort(key=lambda x: (x["name"] or "").lower())
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(uniq, f, ensure_ascii=False, indent=2)
-    print(f"Wrote {len(uniq)} entries to {OUT}")
+    filled = sum(1 for r in uniq if (r.get("website") or "").strip())
+    print(f"Wrote {len(uniq)} entries to {OUT} ({filled} with website)")
+    build_script = ROOT / "scripts" / "build_view_restaurants.py"
+    if build_script.exists():
+        r = subprocess.run([sys.executable, str(build_script)], cwd=str(ROOT))
+        if r.returncode != 0:
+            print("Warning: build_view_restaurants.py failed", flush=True)
     return 0
 
 

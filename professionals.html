@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>עסקים ובעלי מקצוע – המלצות נהגות מרוצים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f7ff;
+      --surface: #ffffff;
+      --text: #1a2d4a;
+      --muted: #5a7a9e;
+      --accent: #2563eb;
+      --accent-dim: #3b82f620;
+      --border: #bfdbfe;
+      --green: #16a34a;
+      --yellow: #eab308;
+      --sky: #0ea5e9;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; }
+    .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
+    .header-auth { flex-shrink: 0; }
+    .header-auth .btn { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
+    .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; }
+    .btn:hover { border-color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-delete { border-color: #f85149; color: #f85149; }
+    .btn-delete:hover { background: rgba(248,81,73,0.15); }
+    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
+    .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    @media (max-width: 768px) {
+      .search-wrap { position: relative; }
+    }
+    .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+    .filter-field-label { color: var(--muted); font-size: 0.9rem; }
+    .filter-field-select { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 140px; }
+    .field-combobox { position: relative; display: inline-block; min-width: 140px; vertical-align: middle; }
+    .field-combobox .field-combobox-input { width: 100%; min-width: min(100%, 12rem); box-sizing: border-box; }
+    .modal-field-combobox { width: 100%; min-width: 0; }
+    .modal-field-combobox .field-combobox-input { width: 100%; }
+    .field-combobox-list {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 200; max-height: 240px; overflow-y: auto;
+      margin: 2px 0 0; padding: 0.25rem 0; list-style: none; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+    }
+    .field-combobox-option { padding: 0.5rem 0.85rem; cursor: pointer; font-size: 0.95rem; }
+    .field-combobox-option:hover,
+    .field-combobox-option.is-active { background: var(--accent-dim); }
+    .filter-moshav { margin-top: 0; }
+    .filter-moshav-label { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
+    .filter-moshav-label:hover { color: var(--text); }
+    .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
+    .list { margin-top: 1rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
+    .card:hover { border-color: var(--accent); }
+    .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card .name .name-contact-actions { flex-shrink: 0; }
+    .card .field { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
+    .card .field:empty { display: none; }
+    .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
+    .card .phone-wrap { display: flex; align-items: flex-start; gap: 0.5rem; flex-wrap: wrap; flex-direction: column; }
+    .card .phone-lines { display: flex; flex-direction: column; gap: 0.45rem; width: 100%; }
+    .card .phone-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+    .card .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; }
+    .card .phone:hover { text-decoration: underline; }
+    .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
+    .card .phone-actions a,
+    .card .phone-actions .save-contact-btn,
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn {
+      font-size: 0.85rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .card .phone-actions a,
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn { text-decoration: none; }
+    .card .phone-actions a:hover,
+    .card .phone-actions button.pick-call-btn:hover,
+    .card .phone-actions button.pick-wa-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn {
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .card .phone-actions .save-contact-btn {
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--surface);
+      cursor: pointer;
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .card .phone-actions .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-wrap > .save-contact-btn {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--surface);
+      cursor: pointer;
+      margin-inline-end: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .card .phone-wrap > .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 6px; background: var(--yellow); color: #000; margin-right: 0.5rem; }
+    .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
+    .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
+    .modal-inner.modal-pick-phone { max-width: 420px; }
+    .pick-phone-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0 0; max-height: min(55vh, 320px); overflow-y: auto; }
+    .pick-phone-item {
+      display: block; width: 100%; text-align: right; padding: 0.65rem 0.85rem; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; color: var(--text); font: inherit; cursor: pointer;
+      text-decoration: none; box-sizing: border-box;
+    }
+    .pick-phone-item:hover { border-color: var(--accent); color: var(--accent); }
+    .pick-phone-item.muted { cursor: default; opacity: 0.65; border-style: dashed; }
+    .pick-phone-item.muted:hover { border-color: var(--border); color: var(--muted); }
+    .pick-phone-item .pick-phone-label { font-weight: 600; display: block; }
+    .pick-phone-item .pick-phone-hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .modal h3 { margin: 0 0 1rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
+    .form-row input, .form-row select, .form-row .field-combobox-input { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font: inherit; box-sizing: border-box; }
+    .form-row input[type="checkbox"] { width: auto; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .login-wrap input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); font: inherit; }
+    .hidden { display: none !important; }
+
+    /* Responsive: tablets and below */
+    @media (max-width: 768px) {
+      html { width: 100%; overflow-x: hidden; }
+      body { overflow-x: hidden; width: 100%; }
+      .container { padding: 1rem; width: 100%; min-width: 0; }
+      .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .header-row { margin-bottom: 0.75rem; }
+      .header-logos { gap: 1rem; }
+      .logo { height: 56px; max-width: 96px; }
+      .header-auth .btn { font-size: 0.75rem; padding: 0.3rem 0.5rem; }
+      .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
+      .header-auth .login-wrap,
+      .header-auth #loggedArea { display: flex; align-items: center; gap: 0.35rem; }
+      .header-auth #loginArea:not(.hidden),
+      .header-auth #loggedArea:not(.hidden) { display: flex !important; align-items: center; gap: 0.35rem; }
+      .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+      .search-inner { padding: 0.6rem 0.75rem; }
+      #q { font-size: 1rem; }
+      .card { padding: 0.875rem 1rem; }
+      .card .name { font-size: 1.05rem; }
+      .card-actions { gap: 0.35rem; }
+      .card-actions .btn { padding: 0.45rem 0.65rem; font-size: 0.85rem; }
+      .modal { padding: 0.75rem; align-items: flex-end; }
+      .modal-inner { max-height: 90vh; overflow-y: auto; margin: auto; }
+      .modal-actions { flex-wrap: wrap; }
+      .modal-actions .btn { min-width: 0; flex: 1 1 auto; }
+    }
+
+    /* Responsive: phones */
+    @media (max-width: 480px) {
+      .container { padding: 0.75rem; }
+      h1 { font-size: 1.2rem; }
+      .top-bar { margin-bottom: 0.75rem; }
+      .card { padding: 0.75rem; margin-bottom: 0.5rem; }
+      .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+      .card .phone-actions a,
+      .card .phone-actions button.pick-call-btn,
+      .card .phone-actions button.pick-wa-btn,
+      .card .phone-actions .save-contact-btn,
+      .card .phone-wrap > .save-contact-btn {
+        padding: 0.35rem 0.5rem;
+        min-height: 2.25rem;
+        font-size: 0.85rem;
+        line-height: 1.2;
+      }
+      .card-actions { flex-direction: column; align-items: stretch; }
+      .card-actions .btn { width: 100%; }
+      .card-actions label { justify-content: center; }
+      .btn { min-height: 2.5rem; padding: 0.5rem 0.75rem; }
+      .modal-inner { padding: 1.25rem; border-radius: 12px 12px 0 0; }
+      .modal-actions { flex-direction: column; }
+      .modal-actions .btn { width: 100%; }
+    }
+
+    /* Prevent horizontal overflow on small screens */
+    @media (max-width: 768px) {
+      .card .name { word-break: break-word; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-row">
+      <div class="header-logos">
+        <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+        <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+      </div>
+      <div class="header-auth">
+        <div id="loginArea" class="login-wrap hidden">
+          <button type="button" class="btn" id="btnLogin">התחבר</button>
+        </div>
+        <div id="loggedArea" class="hidden">
+          <span class="muted">מחובר</span>
+          <button type="button" class="btn" id="btnLogout">התנתק</button>
+        </div>
+      </div>
+    </div>
+    <div class="top-bar">
+      <a href="index.html" class="btn" id="navHome" style="flex-shrink:0;">דף הבית</a>
+      <h1>עסקים ובעלי מקצוע</h1>
+      <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
+      <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
+    </div>
+    <p class="subtitle">חיפוש חופשי לפי שם, תחום או טלפון</p>
+
+    <div class="search-wrap">
+      <!-- שדה מוסתר כדי למנוע מהדפדפן למלא כאן שם משתמש -->
+      <input type="text" id="search-dummy" tabindex="-1" autocomplete="username" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px" aria-hidden="true">
+      <div class="search-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="q" name="q" placeholder="למשל: אינסטלטור, מספרה, רופא..." autocomplete="search-term">
+      </div>
+      <div class="filter-row">
+        <label class="filter-field-label" for="fieldFilterInput">תחום:</label>
+        <div class="field-combobox filter-field-combobox">
+          <input type="text" id="fieldFilterInput" class="filter-field-select field-combobox-input" autocomplete="off"
+            aria-label="סינון לפי תחום" role="combobox" aria-expanded="false" aria-controls="fieldFilterList" aria-autocomplete="list">
+          <ul id="fieldFilterList" class="field-combobox-list hidden" role="listbox"></ul>
+        </div>
+        <label class="filter-moshav-label"><input type="checkbox" id="filterFromMoshav"> מהמושב בלבד</label>
+      </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="list" id="list"><p class="loading">טוען...</p></div>
+  </div>
+
+  <div id="modalAdd" class="modal hidden">
+    <div class="modal-inner">
+      <h3>הוסף איש קשר</h3>
+      <div class="form-row">
+        <label>שם</label>
+        <input type="text" id="addName" required>
+      </div>
+      <div class="form-row">
+        <label for="addPhonesTextarea">טלפון (שורה לכל מספר)</label>
+        <p class="modal-hint" style="margin:0 0 0.35rem;font-size:0.9rem;opacity:0.85;">השורה הראשית היא המספר הראשי לזיהוי כפילויות.</p>
+        <textarea id="addPhonesTextarea" rows="4" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
+      </div>
+      <div class="form-row">
+        <label for="addFieldInput">תחום עיסוק</label>
+        <div class="field-combobox modal-field-combobox">
+          <input type="text" id="addFieldInput" class="field-combobox-input" autocomplete="off"
+            placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list">
+          <ul id="addFieldList" class="field-combobox-list hidden" role="listbox"></ul>
+        </div>
+        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+      </div>
+      <div class="form-row">
+        <label><input type="checkbox" id="addFromMoshav"> מהמושב</label>
+      </div>
+      <div class="form-row">
+        <label>מידע נוסף (אופציונלי)</label>
+        <input type="text" id="addExtraInfo" placeholder="מידע נוסף">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnAddCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnAddSubmit">הוסף</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditField" class="modal hidden">
+    <div class="modal-inner">
+      <h3>ערוך תחום</h3>
+      <div class="form-row">
+        <label for="editFieldInput">תחום עיסוק</label>
+        <div class="field-combobox modal-field-combobox">
+          <input type="text" id="editFieldInput" class="field-combobox-input" autocomplete="off"
+            placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="editFieldList" role="combobox" aria-autocomplete="list">
+          <ul id="editFieldList" class="field-combobox-list hidden" role="listbox"></ul>
+        </div>
+        <input type="text" id="editFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditFieldCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditFieldSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditValue" class="modal hidden">
+    <div class="modal-inner">
+      <h3 id="editValueTitle">ערוך</h3>
+      <div class="form-row">
+        <label id="editValueLabel">ערך</label>
+        <input type="text" id="editValueInput" placeholder="">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditValueCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditValueSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditPhones" class="modal hidden">
+    <div class="modal-inner">
+      <h3>ערוך טלפון</h3>
+      <p class="modal-hint" style="margin:0 0 0.5rem;font-size:0.9rem;opacity:0.85;">מספר אחד בכל שורה. השורה הראשונה היא המספר הראשי.</p>
+      <div class="form-row">
+        <label for="editPhonesTextarea">מספרי טלפון</label>
+        <textarea id="editPhonesTextarea" rows="6" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditPhonesCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditPhonesSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalPickPhone" class="modal hidden">
+    <div class="modal-inner modal-pick-phone">
+      <h3 id="pickPhoneTitle">בחר מספר</h3>
+      <div id="pickPhoneList" class="pick-phone-list"></div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button type="button" class="btn" id="btnPickPhoneCancel">סגור</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalSaveContact" class="modal hidden">
+    <div class="modal-inner" style="max-width:420px;">
+      <h3 id="saveContactHeading">שמירת איש קשר</h3>
+      <p class="modal-hint" id="saveContactHint" style="margin:0 0 1rem;font-size:0.92rem;line-height:1.45;opacity:0.9;">
+        <strong>שיתוף:</strong> בתפריט שנפתח לרוב מופיעה אפשרות כמו «אנשי קשר», «הוסף לאנשי קשר» או «שמירה לקבצים» — בחרו לפי המכשיר.<br><br>
+        <strong>הורדה:</strong> נשמר קובץ ‎.vcf — פותחים אותו (מההורדות או מ«קבצים») ובוחרים ייבוא לאנשי קשר.
+      </p>
+      <div class="form-row" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0;">
+        <button type="button" class="btn btn-primary" id="btnSaveContactShare">פתיחת תפריט שיתוף</button>
+        <button type="button" class="btn" id="btnSaveContactDownload">הורדת קובץ ‎.vcf</button>
+      </div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button type="button" class="btn" id="btnSaveContactClose">סגור</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalLogin" class="modal hidden">
+    <div class="modal-inner">
+      <h3>התחברות</h3>
+      <div class="form-row">
+        <label>משתמש</label>
+        <input type="text" id="loginUserModal" placeholder="משתמש">
+      </div>
+      <div class="form-row">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassModal" placeholder="סיסמה">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnLoginSubmit">התחבר</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = ''; // same origin when served by server
+    let entries = [];
+    let baseEntries = [];
+    let hasEditMode = false;
+    let token = sessionStorage.getItem('token') || '';
+    let fieldsList = [];
+    let filterFieldChoices = [];
+    let fieldFilterCombobox = null;
+    let addFieldCombobox = null;
+    let editFieldCombobox = null;
+    let selectedField = null;
+    let filterFromMoshavOnly = false;
+    let editFieldKey = null;
+    let editValueKey = null;
+    let editValueField = null;
+    let editPhonesKey = null;
+
+    async function loadFields() {
+      try {
+        const r = await fetch(API + 'data/fields.json');
+        fieldsList = await r.json();
+      } catch (_) {
+        fieldsList = ['אינסטלציה', 'חשמל', 'הדברה', 'נקיון', 'אזעקה', 'מיזוג', 'מספרה', 'טכנאי מחשבים', 'רפואה', 'טכנאי מכשירי חשמל', 'מוסך', 'אחר (הזן ידנית)'];
+      }
+      const otherItems = fieldsList.filter(f => (f || '').indexOf('אחר') !== -1);
+      const rest = fieldsList.filter(f => (f || '').indexOf('אחר') === -1);
+      rest.sort((a, b) => (a || '').localeCompare(b || '', 'he'));
+      fieldsList = rest.concat(otherItems);
+    }
+
+    /**
+     * קומבובוקס תחום: הקלדה מסננת את הרשימה (normalize כמו בחיפוש).
+     */
+    function createFieldCombobox(options) {
+      const input = options.input;
+      const listEl = options.listEl;
+      const wrap = input.closest('.field-combobox');
+      const getSource = options.getSource;
+      const allOptionLabel = options.allOptionLabel;
+      let committed = options.initialCommitted !== undefined ? options.initialCommitted : (allOptionLabel ? null : (getSource()[0] || ''));
+      let highlightIdx = -1;
+
+      function visibleRows() {
+        const q = (input.value || '').trim();
+        const qn = normalize(q);
+        const matches = function(text) { return !q || normalize(text).includes(qn); };
+        const items = getSource().slice();
+        const filtered = items.filter(function(it) { return matches(it); });
+        const rows = [];
+        if (allOptionLabel && matches(allOptionLabel)) {
+          rows.push({ v: '', lab: allOptionLabel });
+        }
+        filtered.forEach(function(it) { rows.push({ v: it, lab: it }); });
+        return rows;
+      }
+
+      function hideList() {
+        listEl.classList.add('hidden');
+        listEl.innerHTML = '';
+        highlightIdx = -1;
+        input.setAttribute('aria-expanded', 'false');
+      }
+
+      function renderList() {
+        const rows = visibleRows();
+        if (!rows.length) {
+          listEl.innerHTML = '';
+          listEl.classList.add('hidden');
+          input.setAttribute('aria-expanded', 'false');
+          return;
+        }
+        if (highlightIdx < 0) highlightIdx = 0;
+        if (highlightIdx >= rows.length) highlightIdx = rows.length - 1;
+        listEl.innerHTML = rows.map(function(r, i) {
+          return '<li role="option" class="field-combobox-option' + (i === highlightIdx ? ' is-active' : '') + '" data-value="' + escapeAttr(r.v) + '">' + escapeHtml(r.lab) + '</li>';
+        }).join('');
+        listEl.classList.remove('hidden');
+        input.setAttribute('aria-expanded', 'true');
+      }
+
+      function showList() {
+        renderList();
+      }
+
+      function syncFromCommitted() {
+        if (allOptionLabel) {
+          input.value = (committed == null || committed === '') ? '' : committed;
+        } else {
+          input.value = committed || '';
+        }
+        hideList();
+      }
+
+      function commitFromRow(row) {
+        if (allOptionLabel && row.v === '') {
+          committed = null;
+          input.value = '';
+        } else {
+          committed = row.v;
+          input.value = row.v;
+        }
+        hideList();
+        if (options.onChange) options.onChange(committed);
+      }
+
+      input.addEventListener('input', function() {
+        highlightIdx = 0;
+        showList();
+      });
+
+      input.addEventListener('focus', function() {
+        highlightIdx = 0;
+        showList();
+      });
+
+      input.addEventListener('blur', function() {
+        setTimeout(function() {
+          if (wrap.contains(document.activeElement)) return;
+          hideList();
+          syncFromCommitted();
+        }, 200);
+      });
+
+      listEl.addEventListener('mousedown', function(e) {
+        const li = e.target.closest('.field-combobox-option');
+        if (!li) return;
+        e.preventDefault();
+        const raw = li.getAttribute('data-value');
+        const want = raw === null || raw === undefined ? '' : raw;
+        const rows = visibleRows();
+        const hit = rows.find(function(r) { return r.v === want; });
+        if (hit) commitFromRow(hit);
+      });
+
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (listEl.classList.contains('hidden')) showList();
+          const r2 = visibleRows();
+          if (!r2.length) return;
+          highlightIdx = Math.min(highlightIdx + 1, r2.length - 1);
+          renderList();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (listEl.classList.contains('hidden')) showList();
+          const r2 = visibleRows();
+          if (!r2.length) return;
+          highlightIdx = Math.max(highlightIdx - 1, 0);
+          renderList();
+        } else if (e.key === 'Enter') {
+          const rEnter = visibleRows();
+          if (!listEl.classList.contains('hidden') && rEnter.length && highlightIdx >= 0 && highlightIdx < rEnter.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            commitFromRow(rEnter[highlightIdx]);
+          }
+        } else if (e.key === 'Escape') {
+          if (!listEl.classList.contains('hidden')) {
+            e.preventDefault();
+            e.stopPropagation();
+            hideList();
+            syncFromCommitted();
+          }
+        }
+      });
+
+      document.addEventListener('mousedown', function docFieldComboClose(ev) {
+        if (!wrap.contains(ev.target)) hideList();
+      });
+
+      return {
+        syncFromCommitted: syncFromCommitted,
+        /** silent=true: לא קוראים ל-onChange (פתיחת מודל ללא שינוי שדה מותאם) */
+        setCommittedExternal: function(c, silent) {
+          committed = c;
+          syncFromCommitted();
+          if (!silent && options.onChange) options.onChange(committed);
+        },
+        getValue: function() { return committed; },
+        isListOpen: function() { return !listEl.classList.contains('hidden'); }
+      };
+    }
+
+    function initFieldComboboxes() {
+      if (fieldFilterCombobox) return;
+      fieldFilterCombobox = createFieldCombobox({
+        input: document.getElementById('fieldFilterInput'),
+        listEl: document.getElementById('fieldFilterList'),
+        getSource: function() { return filterFieldChoices; },
+        allOptionLabel: 'הכל',
+        initialCommitted: null,
+        onChange: function(val) {
+          selectedField = (val == null || val === '') ? null : val;
+          applyFilters();
+        }
+      });
+      addFieldCombobox = createFieldCombobox({
+        input: document.getElementById('addFieldInput'),
+        listEl: document.getElementById('addFieldList'),
+        getSource: function() { return fieldsList; },
+        allOptionLabel: null,
+        initialCommitted: fieldsList[0] || '',
+        onChange: function(val) {
+          const v = val || '';
+          const isOther = v.indexOf('אחר') !== -1;
+          const custom = document.getElementById('addFieldCustom');
+          custom.classList.toggle('hidden', !isOther);
+          if (!isOther) custom.value = '';
+        }
+      });
+      editFieldCombobox = createFieldCombobox({
+        input: document.getElementById('editFieldInput'),
+        listEl: document.getElementById('editFieldList'),
+        getSource: function() { return fieldsList; },
+        allOptionLabel: null,
+        initialCommitted: fieldsList[0] || '',
+        onChange: function(val) {
+          const v = val || '';
+          const isOther = v.indexOf('אחר') !== -1;
+          const custom = document.getElementById('editFieldCustom');
+          custom.classList.toggle('hidden', !isOther);
+          if (!isOther) custom.value = '';
+        }
+      });
+    }
+
+    function stripInternalNote(list) {
+      (list || []).forEach(function(e) { delete e.note; });
+    }
+
+    async function load() {
+      try {
+        const r = await fetch(API + 'api/entries');
+        const data = await r.json();
+        entries = data.entries || [];
+        stripInternalNote(entries);
+        hasEditMode = data.has_edit_mode === true;
+        if (token) {
+          document.getElementById('loggedArea').classList.remove('hidden');
+          document.getElementById('loginArea').classList.add('hidden');
+        } else {
+          document.getElementById('loginArea').classList.remove('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+        }
+        entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+        entries.forEach(e => { e._key = e._key || normKey(e); e._serverKey = e._key; });
+        baseEntries = entries.map(e => ({ ...e }));
+        buildFieldFilters();
+        applyFilters();
+      } catch (e) {
+        const r = await fetch(API + 'data/entries.json').catch(() => null);
+        if (r && r.ok) {
+          entries = await r.json();
+          stripInternalNote(entries);
+          hasEditMode = true;
+          document.getElementById('loginArea').classList.remove('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+          if (token) {
+            document.getElementById('loggedArea').classList.remove('hidden');
+            document.getElementById('loginArea').classList.add('hidden');
+          }
+          entries.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'he'));
+          entries.forEach(e => { e._key = e._key || normKey(e); e._serverKey = e._key; });
+          baseEntries = entries.map(e => ({ ...e }));
+          buildFieldFilters();
+          applyFilters();
+        } else {
+          document.getElementById('list').innerHTML = '<p class="no-results">לא נמצא קובץ נתונים. הרץ: python3 website/server.py</p>';
+        }
+      }
+      updateSaveButton();
+    }
+
+    function normalize(s) {
+      if (!s) return '';
+      return String(s).toLowerCase().replace(/[\u0591-\u05C7]/g, '').trim();
+    }
+
+    function digitsOnlyPhone(s) {
+      return String(s == null ? '' : s).replace(/\D/g, '');
+    }
+
+    function phoneDedupeKey(d) {
+      if (!d) return '';
+      return d.length >= 10 ? d.slice(-10) : d;
+    }
+
+    /** רשימת { display, digits } לכל מספרי הרשומה (phone + מערך phones) */
+    function getPhonesList(entry) {
+      const raw = [];
+      if (Array.isArray(entry.phones) && entry.phones.length) {
+        entry.phones.forEach(function(p) {
+          const t = (p != null && String(p).trim()) ? String(p).trim() : '';
+          if (t) raw.push(t);
+        });
+      }
+      const main = (entry.phone_display || entry.phone || '').trim();
+      if (main && !raw.some(function(p) { return phoneDedupeKey(digitsOnlyPhone(p)) === phoneDedupeKey(digitsOnlyPhone(main)); })) {
+        raw.unshift(main);
+      }
+      if (!raw.length && main) raw.push(main);
+      const seen = new Set();
+      const out = [];
+      raw.forEach(function(r) {
+        const d = digitsOnlyPhone(r);
+        const k = phoneDedupeKey(d);
+        if (!k || seen.has(k)) return;
+        seen.add(k);
+        out.push({ display: r || d, digits: d });
+      });
+      return out;
+    }
+
+    /** חתימה להשוואת שינוי במספרים (סדר + מפתחות ייחודיים) */
+    function phonesSignature(entry) {
+      return getPhonesList(entry).map(function(p) { return phoneDedupeKey(p.digits); }).join('\u001f');
+    }
+
+    /** שורות טקסט → רשימת תצוגות ייחודיות לפי סדר */
+    function parsePhonesFromTextarea(text) {
+      const lines = String(text || '').split(/\r?\n/).map(function(s) { return s.trim(); }).filter(Boolean);
+      const seen = new Set();
+      const out = [];
+      lines.forEach(function(line) {
+        const d = digitsOnlyPhone(line);
+        const k = phoneDedupeKey(d);
+        if (!k || seen.has(k)) return;
+        seen.add(k);
+        out.push(line);
+      });
+      return out;
+    }
+
+    function toIntlTel(digits) {
+      const d = digitsOnlyPhone(digits);
+      if (!d) return '';
+      if (d.startsWith('972')) return '+' + d;
+      if (d.startsWith('0')) return '+972' + d.slice(1);
+      if (d.length === 9 && d[0] === '5') return '+972' + d;
+      return '+' + d;
+    }
+
+    function isIsraeliMobileDigits(d) {
+      const x = digitsOnlyPhone(d);
+      if (!x) return false;
+      let n = x;
+      if (n.startsWith('972')) n = n.slice(3);
+      else if (n.startsWith('0')) n = n.slice(1);
+      return n.length >= 9 && n[0] === '5';
+    }
+
+    function waMeFromDigits(digits) {
+      const d = digitsOnlyPhone(digits);
+      if (!d || !isIsraeliMobileDigits(d)) return '';
+      const wa = d.startsWith('972') ? d : ('972' + d.replace(/^0/, ''));
+      return 'https://wa.me/' + wa;
+    }
+
+    function matchQuery(entry, q) {
+      if (!q) return true;
+      const nq = normalize(q);
+      const name = normalize(entry.name);
+      const field = normalize(entry.field);
+      const filename = normalize(entry.filename || '');
+      const extraInfo = normalize(entry.extra_info || '');
+      const searchable = [name, field, filename, extraInfo].join(' ');
+      if (searchable.includes(nq)) return true;
+      const qDigits = q.replace(/\D/g, '');
+      const allDigits = getPhonesList(entry).map(function(p) { return p.digits; }).join(' ');
+      if (qDigits.length >= 2 && allDigits && allDigits.includes(qDigits)) return true;
+      const phone = (entry.phone_display || entry.phone || '').replace(/\D/g, '');
+      if (phone && qDigits.length >= 2 && phone.includes(qDigits)) return true;
+      const words = nq.split(/\s+/).filter(Boolean);
+      return words.every(function(w) {
+        return searchable.includes(w) || (allDigits && allDigits.includes(w)) || (phone && phone.includes(w));
+      });
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      const div = document.createElement('div');
+      div.textContent = String(s);
+      return div.innerHTML;
+    }
+
+    function escapeAttr(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;');
+    }
+
+    function escapeVcfValue(s) {
+      return String(s || '')
+        .replace(/\\/g, '\\\\')
+        .replace(/\r?\n/g, '\\n')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,');
+    }
+
+    let saveContactPending = null;
+
+    function buildVcardFromSaveButton(btn) {
+      const name = (btn.dataset.name || '').trim() || 'איש קשר';
+      const field = (btn.dataset.field || '').trim();
+      const extraInfo = (btn.dataset.extraInfo || '').trim();
+      const rawList = (btn.dataset.allTels || btn.dataset.tel || '').split('|').map(function(s) { return s.trim(); }).filter(Boolean);
+      const intlList = rawList.map(function(t) {
+        let x = String(t).replace(/[^\d+]/g, '');
+        if (!x) return '';
+        if (!x.startsWith('+')) x = '+' + x;
+        return x;
+      }).filter(Boolean);
+      if (!intlList.length) return null;
+      const safeName = (name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact') + '.vcf';
+      const lines = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'FN:' + escapeVcfValue(name),
+        'N:;' + escapeVcfValue(name) + ';;;'
+      ];
+      let prefOnMobile = false;
+      intlList.forEach(function(intl) {
+        const d = intl.replace(/^\+/, '');
+        const mob = isIsraeliMobileDigits(d);
+        let typePart = mob ? 'CELL' : 'VOICE';
+        if (mob && !prefOnMobile) {
+          typePart = 'CELL,PREF';
+          prefOnMobile = true;
+        }
+        lines.push('TEL;TYPE=' + typePart + ':' + escapeVcfValue(intl));
+      });
+      if (field) lines.push('TITLE:' + escapeVcfValue(field));
+      if (extraInfo) lines.push('X-EXTRA-INFO:' + escapeVcfValue(extraInfo));
+      lines.push('END:VCARD');
+      const vcard = lines.join('\r\n');
+      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+      return { name: name, safeName: safeName, blob: blob };
+    }
+
+    function closeSaveContactModal() {
+      document.getElementById('modalSaveContact').classList.add('hidden');
+      saveContactPending = null;
+    }
+
+    /** מנסה קודם את השרת (Content-Disposition + text/vcard); אם אין שרת — יצירה בדפדפן. */
+    async function ensureVcfBlob() {
+      if (!saveContactPending || !saveContactPending.btn) return null;
+      if (saveContactPending.vcfBlob) return saveContactPending.vcfBlob;
+      const btn = saveContactPending.btn;
+      const body = {
+        name: (btn.dataset.name || '').trim(),
+        all_tels: (btn.dataset.allTels || btn.dataset.tel || '').trim(),
+        field: (btn.dataset.field || '').trim(),
+        extra_info: (btn.dataset.extraInfo || '').trim()
+      };
+      try {
+        const r = await fetch(API + 'api/contact.vcf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (r.ok) {
+          saveContactPending.vcfBlob = await r.blob();
+          saveContactPending.vcfFileName = 'contact.vcf';
+          return saveContactPending.vcfBlob;
+        }
+      } catch (e) { /* fallback below */ }
+      const local = buildVcardFromSaveButton(btn);
+      if (!local) return null;
+      saveContactPending.vcfBlob = local.blob;
+      saveContactPending.vcfFileName = local.safeName;
+      return saveContactPending.vcfBlob;
+    }
+
+    function openSaveContactModal(btn) {
+      const data = buildVcardFromSaveButton(btn);
+      if (!data) {
+        alert('אין מספר טלפון לשמירה');
+        return;
+      }
+      saveContactPending = { btn: btn, name: data.name, safeName: data.safeName, vcfBlob: null, vcfFileName: null };
+      document.getElementById('saveContactHeading').textContent = 'שמירת איש קשר: ' + data.name;
+      const shareBtn = document.getElementById('btnSaveContactShare');
+      const dlBtn = document.getElementById('btnSaveContactDownload');
+      const canTryShare = Boolean(navigator.share && typeof File !== 'undefined');
+      shareBtn.style.display = canTryShare ? '' : 'none';
+      shareBtn.disabled = false;
+      shareBtn.classList.toggle('btn-primary', canTryShare);
+      dlBtn.classList.toggle('btn-primary', !canTryShare);
+      document.getElementById('modalSaveContact').classList.remove('hidden');
+      setTimeout(function() {
+        if (canTryShare) shareBtn.focus();
+        else dlBtn.focus();
+      }, 50);
+    }
+
+    async function runSaveContactShare() {
+      if (!saveContactPending) return;
+      let blob;
+      try {
+        blob = await ensureVcfBlob();
+      } catch (e) {
+        blob = null;
+      }
+      if (!blob) {
+        alert('לא ניתן ליצור את קובץ איש הקשר. נסו שוב או «הורדת קובץ ‎.vcf».');
+        return;
+      }
+      const safeName = saveContactPending.vcfFileName || saveContactPending.safeName || 'contact.vcf';
+      const title = saveContactPending.name;
+
+      async function tryOne(mime) {
+        const file = new File([blob], safeName, { type: mime });
+        const payload = { files: [file], title: title };
+        if (navigator.canShare && !navigator.canShare(payload)) return false;
+        await navigator.share(payload);
+        return true;
+      }
+
+      try {
+        if (await tryOne('text/vcard;charset=utf-8')) {
+          closeSaveContactModal();
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+      try {
+        if (await tryOne('text/x-vcard;charset=utf-8')) {
+          closeSaveContactModal();
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+      try {
+        const file = new File([blob], safeName, { type: 'text/vcard;charset=utf-8' });
+        await navigator.share({ files: [file], title: title });
+        closeSaveContactModal();
+      } catch (e2) {
+        if (e2 && e2.name === 'AbortError') return;
+        alert('השיתוף לא הצליח. נסו «הורדת קובץ ‎.vcf» ואז לפתוח את הקובץ מההורדות או מ«קבצים».');
+      }
+    }
+
+    async function runSaveContactDownload() {
+      if (!saveContactPending) return;
+      try {
+        const blob = await ensureVcfBlob();
+        if (!blob) {
+          alert('אין מספר טלפון לשמירה');
+          return;
+        }
+        const safeName = saveContactPending.vcfFileName || saveContactPending.safeName || 'contact.vcf';
+        const url = URL.createObjectURL(blob);
+        const a2 = document.createElement('a');
+        a2.href = url;
+        a2.download = safeName;
+        a2.rel = 'noopener';
+        document.body.appendChild(a2);
+        a2.click();
+        document.body.removeChild(a2);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
+      } catch (e3) {
+        alert('לא ניתן להוריד את הקובץ. נסו דפדפן אחר (Chrome / Safari).');
+      }
+    }
+
+    document.getElementById('btnSaveContactShare').addEventListener('click', function() {
+      runSaveContactShare().catch(function() { /* share failed */ });
+    });
+    document.getElementById('btnSaveContactDownload').addEventListener('click', function() {
+      runSaveContactDownload().catch(function() { /* download failed */ });
+    });
+    document.getElementById('btnSaveContactClose').addEventListener('click', closeSaveContactModal);
+    document.getElementById('modalSaveContact').addEventListener('click', function(e) {
+      if (e.target === this) closeSaveContactModal();
+    });
+    document.getElementById('modalSaveContact').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSaveContactModal();
+    });
+
+    function closePickPhoneModal() {
+      document.getElementById('modalPickPhone').classList.add('hidden');
+      document.getElementById('pickPhoneList').innerHTML = '';
+    }
+
+    function focusFirstPickPhoneItem() {
+      const listEl = document.getElementById('pickPhoneList');
+      const first = listEl.querySelector('a.pick-phone-item');
+      if (first) first.focus();
+      else document.getElementById('btnPickPhoneCancel').focus();
+    }
+
+    /**
+     * בסלולר אין תקן ל־tel: עם כמה מספרים — פותחים מודל לבחירה.
+     * מספר אחד: מעבר ישיר לחייגן / וואטסאפ.
+     */
+    function openPickPhoneModal(mode, key) {
+      const entry = entries.find(function(e) { return (e._key || normKey(e)) === key; });
+      if (!entry) return;
+      const plist = getPhonesList(entry).filter(function(p) { return p.digits; });
+      const title = document.getElementById('pickPhoneTitle');
+      const listEl = document.getElementById('pickPhoneList');
+      const modal = document.getElementById('modalPickPhone');
+
+      if (mode === 'tel') {
+        if (!plist.length) return;
+        if (plist.length === 1) {
+          window.location.href = 'tel:' + plist[0].digits;
+          return;
+        }
+        title.textContent = 'לאיזה מספר להתקשר?';
+        listEl.innerHTML = plist.map(function(p) {
+          return '<a class="pick-phone-item" href="' + escapeAttr('tel:' + p.digits) + '"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span></a>';
+        }).join('');
+        modal.classList.remove('hidden');
+        setTimeout(focusFirstPickPhoneItem, 50);
+        return;
+      }
+
+      if (mode === 'wa') {
+        const waPlist = plist.filter(function(p) { return waMeFromDigits(p.digits); });
+        if (!waPlist.length) {
+          alert('אין מספר נייד ישראלי זמין לוואטסאפ ברשומה זו.');
+          return;
+        }
+        if (plist.length === 1) {
+          const u = waMeFromDigits(plist[0].digits);
+          if (u) window.open(u, '_blank', 'noopener');
+          return;
+        }
+        title.textContent = 'לאיזה מספר לשלוח בוואטסאפ?';
+        listEl.innerHTML = plist.map(function(p) {
+          const url = waMeFromDigits(p.digits);
+          if (url) {
+            return '<a class="pick-phone-item" href="' + escapeAttr(url) + '" target="_blank" rel="noopener"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span></a>';
+          }
+          return '<div class="pick-phone-item muted"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span><span class="pick-phone-hint">לא נייד ישראלי — אין קישור וואטסאפ ישיר</span></div>';
+        }).join('');
+        listEl.querySelectorAll('a.pick-phone-item').forEach(function(a) {
+          a.addEventListener('click', function() {
+            setTimeout(closePickPhoneModal, 200);
+          });
+        });
+        modal.classList.remove('hidden');
+        setTimeout(focusFirstPickPhoneItem, 50);
+      }
+    }
+
+    function normKey(entry) {
+      const raw = (entry && (entry.phone || entry.phone_display || '')) || '';
+      const p = String(raw).replace(/\D/g, '');
+      return p.slice(-10) || p || (entry && entry._key) || '';
+    }
+
+    function render(list) {
+      const listEl = document.getElementById('list');
+      if (!list.length) {
+        listEl.innerHTML = '<p class="no-results">אין תוצאות לחיפוש זה.</p>';
+        return;
+      }
+      const canEdit = hasEditMode && token;
+      listEl.innerHTML = list.map(e => {
+        const key = e._key || normKey(e);
+        const field = e.field ? `<div class="field" data-key="${escapeHtml(key)}">${escapeHtml(e.field)}</div>` : '<div class="field" data-key="' + escapeHtml(key) + '"></div>';
+        const plist = getPhonesList(e);
+        const allIntl = plist.map(function(p) { return toIntlTel(p.digits); }).filter(Boolean);
+        const allTelsPipe = allIntl.join('|');
+        const extraForVcf = String((e.extra_info != null ? e.extra_info : '') || '').trim().slice(0, 2000);
+        const hasAnyDigit = plist.some(function(p) { return p.digits; });
+        const hasAnyWa = plist.some(function(p) { return waMeFromDigits(p.digits); });
+        let nameContactActions = '';
+        if (hasAnyDigit || hasAnyWa || allTelsPipe) {
+          const callBtn = hasAnyDigit
+            ? '<button type="button" class="pick-call-btn" data-key="' + escapeAttr(key) + '">התקשר</button>'
+            : '';
+          const waBtn = hasAnyWa
+            ? '<button type="button" class="pick-wa-btn" data-key="' + escapeAttr(key) + '">וואטסאפ</button>'
+            : '';
+          const saveBtn = allTelsPipe
+            ? '<button type="button" class="save-contact-btn" title="שמירה לאנשי קשר — שיתוף או הורדת קובץ" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
+            : '';
+          nameContactActions = '<span class="phone-actions name-contact-actions">' + callBtn + waBtn + saveBtn + '</span>';
+        }
+        let phoneBlock = '';
+        if (!plist.length) {
+          phoneBlock = '<div class="phone muted">—</div>';
+        } else {
+          phoneBlock = '<div class="phone-lines">' + plist.map(function(p) {
+            return '<div class="phone-line"><span class="phone-num">' + escapeHtml(p.display) + '</span></div>';
+          }).join('') + '</div>';
+        }
+        const badge = e.from_moshav ? '<span class="badge">מהמושב</span>' : '';
+        const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
+        let actions = '';
+        if (canEdit) {
+          actions = `<div class="card-actions">
+            <label><input type="checkbox" class="cb-moshav" data-key="${escapeHtml(key)}" ${e.from_moshav ? 'checked' : ''}> מהמושב</label>
+            <button type="button" class="btn edit-name-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">ערוך שם</button>
+            <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}">ערוך טלפון</button>
+            <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>
+            <button type="button" class="btn edit-extra-info-btn" data-key="${escapeHtml(key)}" data-extra-info="${escapeHtml((e.extra_info || ''))}">ערוך מידע נוסף</button>
+            <button type="button" class="btn btn-delete delete-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">מחק</button>
+          </div>`;
+        }
+        return `<article class="card" data-key="${escapeHtml(key)}">
+          <div class="name">${escapeHtml(e.name)}${badge}${nameContactActions}</div>
+          ${field}
+          ${phoneBlock}
+          ${extraInfoHtml}
+          ${actions}
+        </article>`;
+      }).join('');
+
+      listEl.querySelectorAll('.save-contact-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          openSaveContactModal(this);
+        });
+      });
+
+      listEl.querySelectorAll('.pick-call-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openPickPhoneModal('tel', this.dataset.key);
+        });
+      });
+      listEl.querySelectorAll('.pick-wa-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openPickPhoneModal('wa', this.dataset.key);
+        });
+      });
+
+      if (canEdit) {
+        listEl.querySelectorAll('.cb-moshav').forEach(cb => {
+          cb.addEventListener('change', function() {
+            patchEntry(this.dataset.key, { from_moshav: this.checked });
+          });
+        });
+        listEl.querySelectorAll('.edit-name-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            openEditValueModal(this.dataset.key, 'name', 'ערוך שם', 'שם', this.dataset.name || '', 'text');
+          });
+        });
+        listEl.querySelectorAll('.edit-phone-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            openEditPhonesModal(this.dataset.key);
+          });
+        });
+        listEl.querySelectorAll('.edit-field-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const field = this.dataset.field || '';
+            openEditFieldModal(key, field);
+          });
+        });
+        listEl.querySelectorAll('.edit-extra-info-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            openEditValueModal(this.dataset.key, 'extra_info', 'ערוך מידע נוסף', 'מידע נוסף', this.dataset.extraInfo || '', 'text');
+          });
+        });
+        listEl.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const key = this.dataset.key;
+            const name = this.dataset.name || '';
+            if (!confirm('למחוק את "' + name + '"?')) return;
+            deleteEntry(key);
+          });
+        });
+      }
+    }
+
+    function deleteEntry(key) {
+      if (!token) return;
+      entries = entries.filter(e => (e._key || normKey(e)) !== key);
+      applyFilters();
+      updateSaveButton();
+    }
+
+    function patchEntry(key, data) {
+      if (!token) return;
+      const idx = entries.findIndex(e => (e._key || normKey(e)) === key);
+      if (idx >= 0) {
+        if ('from_moshav' in data) entries[idx].from_moshav = data.from_moshav;
+        if ('field' in data) entries[idx].field = data.field;
+        if ('name' in data) entries[idx].name = data.name;
+        if ('extra_info' in data) entries[idx].extra_info = data.extra_info;
+        if ('phone' in data) {
+          const raw = (data.phone_display != null ? data.phone_display : data.phone) || '';
+          const dig = digitsOnlyPhone(data.phone != null ? data.phone : raw);
+          entries[idx].phone = dig || String(data.phone || '').replace(/\D/g, '');
+          entries[idx].phone_display = (raw != null && String(raw).trim()) ? String(raw).trim() : (entries[idx].phone || '');
+          entries[idx]._key = phoneDedupeKey(digitsOnlyPhone(entries[idx].phone)) || normKey(entries[idx]);
+        }
+        if ('phones' in data) {
+          const ph = data.phones;
+          if (ph == null || !Array.isArray(ph) || ph.length <= 1) {
+            delete entries[idx].phones;
+          } else {
+            entries[idx].phones = ph.map(function(p) { return String(p).trim(); }).filter(Boolean);
+          }
+        }
+      }
+      applyFilters();
+      updateSaveButton();
+    }
+
+    function updateCount(n) {
+      const el = document.getElementById('count');
+      if (el) el.textContent = n + ' רשומות';
+    }
+
+    function updateSaveButton() {
+      const btn = document.getElementById('btnSave');
+      if (hasEditMode && token) {
+        btn.style.display = '';
+        btn.disabled = false;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function entryChanged(entry, baseEntry) {
+      return (entry.name || '') !== (baseEntry.name || '') ||
+        (entry.phone_display || entry.phone || '') !== (baseEntry.phone_display || baseEntry.phone || '') ||
+        phonesSignature(entry) !== phonesSignature(baseEntry) ||
+        (entry.field || '') !== (baseEntry.field || '') ||
+        (entry.extra_info || '') !== (baseEntry.extra_info || '') ||
+        Boolean(entry.from_moshav) !== Boolean(baseEntry.from_moshav);
+    }
+
+    async function saveAllChanges() {
+      const btn = document.getElementById('btnSave');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.textContent = 'שומר...';
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        if (token) {
+          const deletedKeys = baseEntries.map(e => e._serverKey || normKey(e)).filter(sk => sk && !entries.some(e => (e._serverKey || normKey(e)) === sk));
+          for (const key of deletedKeys) {
+            const r = await fetch(API + 'api/entries/' + encodeURIComponent(key), {
+              method: 'DELETE',
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) {
+              const err = await r.json().catch(() => ({}));
+              throw new Error(err.error || r.statusText || 'delete failed');
+            }
+          }
+        }
+        for (const entry of entries) {
+          const serverKey = entry._serverKey;
+          if (serverKey && token) {
+            const baseEntry = baseEntries.find(b => (b._serverKey || normKey(b)) === serverKey);
+            if (baseEntry && entryChanged(entry, baseEntry)) {
+              const plist = getPhonesList(entry);
+              const phonesPayload = plist.length > 1 ? plist.map(function(p) { return p.display; }) : null;
+              const primaryDisp = (entry.phone_display || entry.phone || '').trim();
+              const primaryDig = digitsOnlyPhone(primaryDisp);
+              const r = await fetch(API + 'api/entries/' + encodeURIComponent(serverKey), {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                body: JSON.stringify({
+                  name: entry.name,
+                  phone: primaryDig || primaryDisp,
+                  phone_display: primaryDisp || primaryDig,
+                  phones: phonesPayload,
+                  field: entry.field,
+                  extra_info: entry.extra_info || '',
+                  from_moshav: entry.from_moshav
+                })
+              });
+              if (!r.ok) {
+                const err = await r.json().catch(() => ({}));
+                throw new Error(err.error || r.statusText || 'patch failed');
+              }
+            }
+          } else if (!serverKey) {
+            const plist = getPhonesList(entry);
+            const phonesPost = plist.length > 1 ? plist.map(function(p) { return p.display; }) : null;
+            const primaryDisp = (entry.phone_display || entry.phone || '').trim();
+            const primaryDig = digitsOnlyPhone(primaryDisp);
+            const r = await fetch(API + 'api/entries', {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({
+                name: entry.name,
+                phone: primaryDig || primaryDisp,
+                phone_display: primaryDisp || primaryDig,
+                phones: phonesPost,
+                field: entry.field,
+                extra_info: entry.extra_info || '',
+                from_moshav: entry.from_moshav
+              })
+            });
+            const data = await r.json().catch(() => ({}));
+            if (!r.ok || !data.ok) throw new Error(data.error || r.statusText || 'add failed');
+          }
+        }
+        await load();
+        btn.textContent = 'נשמר';
+        setTimeout(function() { btn.textContent = 'שמור שינויים'; }, 1500);
+      } catch (e) {
+        const msg = e.message || String(e);
+        if (msg === 'Failed to fetch' || msg.indexOf('NetworkError') !== -1) {
+          alert('לא ניתן להתחבר לשרת. ודא שהאתר נטען דרך השרת (http://localhost:5001) ושהשרת פועל.');
+        } else {
+          alert('שגיאה בשמירה: ' + msg);
+        }
+        btn.textContent = 'שמור שינויים';
+      }
+      btn.disabled = false;
+      updateSaveButton();
+    }
+
+    function buildFieldFilters() {
+      filterFieldChoices = [...new Set(entries.map(e => (e.field || '').trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'he'));
+      if (selectedField && filterFieldChoices.indexOf(selectedField) === -1) {
+        selectedField = null;
+      }
+      if (fieldFilterCombobox) fieldFilterCombobox.syncFromCommitted();
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('q').value.trim();
+      let filtered = entries;
+      if (selectedField !== null) filtered = filtered.filter(e => (e.field || '').trim() === selectedField);
+      if (q) filtered = filtered.filter(e => matchQuery(e, q));
+      if (filterFromMoshavOnly) filtered = filtered.filter(e => e.from_moshav === true);
+      render(filtered);
+      updateCount(filtered.length);
+    }
+
+    document.getElementById('filterFromMoshav').addEventListener('change', function() {
+      filterFromMoshavOnly = this.checked;
+      applyFilters();
+    });
+
+    document.getElementById('q').addEventListener('input', function() {
+      applyFilters();
+    });
+
+    document.getElementById('btnAdd').addEventListener('click', function() {
+      document.getElementById('addName').value = '';
+      document.getElementById('addPhonesTextarea').value = '';
+      if (addFieldCombobox) {
+        const firstF = fieldsList[0] || '';
+        addFieldCombobox.setCommittedExternal(firstF, true);
+        const isOther = firstF.indexOf('אחר') !== -1;
+        document.getElementById('addFieldCustom').classList.toggle('hidden', !isOther);
+        document.getElementById('addFieldCustom').value = '';
+      }
+      document.getElementById('addFromMoshav').checked = false;
+      document.getElementById('addExtraInfo').value = '';
+      document.getElementById('modalAdd').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('addName').focus(); }, 50);
+    });
+    document.getElementById('btnSave').addEventListener('click', saveAllChanges);
+
+    document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
+
+    async function doAddSubmit() {
+      try {
+        const name = document.getElementById('addName').value.trim();
+        const phoneLines = parsePhonesFromTextarea(document.getElementById('addPhonesTextarea').value);
+        let field = (addFieldCombobox && addFieldCombobox.getValue()) ? String(addFieldCombobox.getValue()).trim() : '';
+        if ((field || '').indexOf('אחר') !== -1) {
+          const custom = document.getElementById('addFieldCustom');
+          field = custom ? custom.value.trim() : '';
+        }
+        const from_moshav = document.getElementById('addFromMoshav').checked;
+        const extra_info = (document.getElementById('addExtraInfo').value || '').trim();
+        if (!name) { alert('נא למלא שם'); return; }
+        if (!phoneLines.length) { alert('נא להזין לפחות מספר טלפון אחד'); return; }
+        const primaryDisp = phoneLines[0];
+        const primaryDig = digitsOnlyPhone(primaryDisp);
+        if (!primaryDig) { alert('לא ניתן לזהות ספרות במספר הראשון'); return; }
+        const newKey = phoneDedupeKey(primaryDig) || primaryDig;
+        if (newKey && entries.some(e => (e._key || normKey(e)) === newKey)) {
+          alert('מספר הטלפון כבר קיים ברשימת אנשי הקשר.');
+          return;
+        }
+        const phonesPayload = phoneLines.length > 1 ? phoneLines : null;
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const r = await fetch(API + 'api/entries', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({
+            name,
+            phone: primaryDig,
+            phone_display: primaryDisp,
+            phones: phonesPayload,
+            field,
+            from_moshav,
+            extra_info
+          })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.ok) {
+          document.getElementById('modalAdd').classList.add('hidden');
+          await load();
+        } else {
+          alert(data.error || 'שגיאה בשמירה');
+        }
+        updateSaveButton();
+      } catch (err) {
+        alert('שגיאה: ' + (err.message || err));
+      }
+    }
+
+    document.getElementById('btnAddSubmit').addEventListener('click', function(e) {
+      e.preventDefault();
+      doAddSubmit();
+    });
+    document.getElementById('modalAdd').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnAddCancel').click();
+      } else if (e.key === 'Enter') {
+        if (e.target.id === 'btnAddCancel') return;
+        if (e.target.tagName === 'TEXTAREA' && !e.ctrlKey) return;
+        if (e.target.id === 'addFieldInput' && addFieldCombobox && addFieldCombobox.isListOpen()) return;
+        e.preventDefault();
+        doAddSubmit();
+      }
+    });
+
+    function openEditFieldModal(key, currentField) {
+      editFieldKey = key;
+      const custom = document.getElementById('editFieldCustom');
+      const inList = fieldsList.indexOf(currentField) !== -1;
+      if (inList) {
+        editFieldCombobox.setCommittedExternal(currentField, true);
+        custom.classList.add('hidden');
+        custom.value = '';
+      } else {
+        const otherOpt = fieldsList.find(f => (f || '').indexOf('אחר') !== -1) || fieldsList[0] || '';
+        editFieldCombobox.setCommittedExternal(otherOpt, true);
+        custom.value = currentField;
+        custom.classList.remove('hidden');
+      }
+      document.getElementById('modalEditField').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('editFieldInput').focus(); }, 50);
+    }
+    document.getElementById('btnEditFieldCancel').addEventListener('click', function() {
+      document.getElementById('modalEditField').classList.add('hidden');
+      editFieldKey = null;
+    });
+    document.getElementById('btnEditFieldSubmit').addEventListener('click', function() {
+      if (editFieldKey == null) return;
+      let field = (editFieldCombobox && editFieldCombobox.getValue()) ? String(editFieldCombobox.getValue()).trim() : '';
+      if ((field || '').indexOf('אחר') !== -1) field = document.getElementById('editFieldCustom').value.trim();
+      patchEntry(editFieldKey, { field: field });
+      document.getElementById('modalEditField').classList.add('hidden');
+      editFieldKey = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditField').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditFieldCancel').click();
+      } else if (e.key === 'Enter') {
+        if (e.target.id === 'editFieldInput' && editFieldCombobox && editFieldCombobox.isListOpen()) return;
+        e.preventDefault();
+        document.getElementById('btnEditFieldSubmit').click();
+      }
+    });
+
+    function openEditValueModal(key, fieldName, title, label, currentValue, inputType) {
+      editValueKey = key;
+      editValueField = fieldName;
+      document.getElementById('editValueTitle').textContent = title;
+      document.getElementById('editValueLabel').textContent = label;
+      const input = document.getElementById('editValueInput');
+      input.type = inputType || 'text';
+      input.value = currentValue || '';
+      input.placeholder = label;
+      document.getElementById('modalEditValue').classList.remove('hidden');
+      setTimeout(function() { input.focus(); }, 50);
+    }
+
+    document.getElementById('btnEditValueCancel').addEventListener('click', function() {
+      document.getElementById('modalEditValue').classList.add('hidden');
+      editValueKey = null;
+      editValueField = null;
+    });
+    document.getElementById('btnEditValueSubmit').addEventListener('click', function() {
+      if (editValueKey == null || editValueField == null) return;
+      const val = document.getElementById('editValueInput').value.trim();
+      if (editValueField === 'name' && !val) return;
+      const data = {};
+      data[editValueField] = val;
+      patchEntry(editValueKey, data);
+      document.getElementById('modalEditValue').classList.add('hidden');
+      editValueKey = null;
+      editValueField = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditValue').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditValueCancel').click();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnEditValueSubmit').click();
+      }
+    });
+
+    function openEditPhonesModal(key) {
+      editPhonesKey = key;
+      const entry = entries.find(function(e) { return (e._key || normKey(e)) === key; });
+      const text = entry ? getPhonesList(entry).map(function(p) { return p.display; }).join('\n') : '';
+      document.getElementById('editPhonesTextarea').value = text;
+      document.getElementById('modalEditPhones').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('editPhonesTextarea').focus(); }, 50);
+    }
+
+    document.getElementById('btnEditPhonesCancel').addEventListener('click', function() {
+      document.getElementById('modalEditPhones').classList.add('hidden');
+      editPhonesKey = null;
+    });
+    document.getElementById('btnEditPhonesSubmit').addEventListener('click', function() {
+      if (editPhonesKey == null) return;
+      const lines = parsePhonesFromTextarea(document.getElementById('editPhonesTextarea').value);
+      if (!lines.length) {
+        alert('נא להזין לפחות מספר טלפון אחד');
+        return;
+      }
+      const primaryDisplay = lines[0];
+      const primaryDigits = digitsOnlyPhone(primaryDisplay);
+      if (!primaryDigits) {
+        alert('לא ניתן לזהות ספרות במספר הראשון');
+        return;
+      }
+      const phonesArr = lines.length > 1 ? lines : null;
+      patchEntry(editPhonesKey, {
+        phone: primaryDigits,
+        phone_display: primaryDisplay,
+        phones: phonesArr
+      });
+      document.getElementById('modalEditPhones').classList.add('hidden');
+      editPhonesKey = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditPhones').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditPhonesCancel').click();
+      } else if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        document.getElementById('btnEditPhonesSubmit').click();
+      }
+    });
+
+    async function doLoginSubmit() {
+      const user = document.getElementById('loginUserModal').value.trim();
+      const pass = document.getElementById('loginPassModal').value;
+      const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.token) {
+        token = data.token;
+        sessionStorage.setItem('token', token);
+        document.getElementById('modalLogin').classList.add('hidden');
+        document.getElementById('loggedArea').classList.remove('hidden');
+        load();
+      } else {
+        alert(data.error || 'התחברות נכשלה');
+      }
+    }
+
+    function bindLoginHandlers() {
+      const btnLogin = document.getElementById('btnLogin');
+      const old = btnLogin._bound;
+      if (old || !hasEditMode) return;
+      btnLogin._bound = true;
+      btnLogin.addEventListener('click', () => {
+        document.getElementById('modalLogin').classList.remove('hidden');
+        setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
+      });
+      document.getElementById('btnLoginCancel').addEventListener('click', () => document.getElementById('modalLogin').classList.add('hidden'));
+      document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
+      document.getElementById('modalLogin').addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          document.getElementById('btnLoginCancel').click();
+        } else if (e.key === 'Enter') {
+          if (e.target.id !== 'btnLoginCancel') {
+            e.preventDefault();
+            doLoginSubmit();
+          }
+        }
+      });
+      document.getElementById('btnLogout').addEventListener('click', () => {
+        token = '';
+        sessionStorage.removeItem('token');
+        document.getElementById('loggedArea').classList.add('hidden');
+        load();
+      });
+    }
+
+    document.getElementById('btnPickPhoneCancel').addEventListener('click', closePickPhoneModal);
+    document.getElementById('modalPickPhone').addEventListener('click', function(e) {
+      if (e.target === this) closePickPhoneModal();
+    });
+    document.getElementById('modalPickPhone').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closePickPhoneModal();
+      }
+    });
+
+    loadFields().then(function() {
+      initFieldComboboxes();
+      return load();
+    }).then(function() {
+      bindLoginHandlers();
+    });
+  </script>
+</body>
+</html>

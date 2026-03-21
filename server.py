@@ -6,14 +6,17 @@ Minimal server: auth (single user), serve entries (base + user_data), add/edit.
 import json
 import hashlib
 import os
+import re
+import secrets
 from pathlib import Path
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
 
 APP_DIR = Path(__file__).resolve().parent
 DATA_DIR = APP_DIR / "data"
 CONFIG_PATH = APP_DIR / "config.json"
 USER_DATA_PATH = DATA_DIR / "user_data.json"
 ENTRIES_PATH = DATA_DIR / "entries.json"
+RESTAURANTS_PATH = DATA_DIR / "restaurants.json"
 
 app = Flask(__name__, static_folder=APP_DIR, static_url_path="")
 
@@ -186,11 +189,205 @@ def login():
     return jsonify({"ok": True, "token": token})
 
 
+def _digits_only_phone(s):
+    if s is None:
+        return ""
+    return re.sub(r"\D", "", str(s))
+
+
+def _is_israeli_mobile_digits(d):
+    x = _digits_only_phone(d)
+    if not x:
+        return False
+    n = x
+    if n.startswith("972"):
+        n = n[3:]
+    elif n.startswith("0"):
+        n = n[1:]
+    return len(n) >= 9 and n[0] == "5"
+
+
+def _intl_phone_for_vcf(t):
+    """Match professionals.html buildVcardFromSaveButton: digits and + only, then leading +."""
+    x = "".join(c for c in str(t) if c.isdigit() or c == "+")
+    if not x:
+        return ""
+    if not x.startswith("+"):
+        x = "+" + x
+    return x
+
+
+def _escape_vcf_value(s):
+    return (
+        str(s or "")
+        .replace("\\", "\\\\")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .replace("\n", "\\n")
+        .replace(";", "\\;")
+        .replace(",", "\\,")
+    )
+
+
+def _build_vcard_v3(name, raw_phone_strings, field, extra_info):
+    """Build vCard 3.0 text; raw_phone_strings same as pipe-split list from the UI."""
+    intl_list = []
+    for t in raw_phone_strings:
+        v = _intl_phone_for_vcf(t)
+        if v:
+            intl_list.append(v)
+    if not intl_list:
+        return None
+    display_name = (name or "").strip() or "איש קשר"
+    lines = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "FN:" + _escape_vcf_value(display_name),
+        "N:;" + _escape_vcf_value(display_name) + ";;;",
+    ]
+    pref_on_mobile = False
+    for intl in intl_list:
+        d = intl[1:] if intl.startswith("+") else intl
+        mob = _is_israeli_mobile_digits(d)
+        type_part = "CELL" if mob else "VOICE"
+        if mob and not pref_on_mobile:
+            type_part = "CELL,PREF"
+            pref_on_mobile = True
+        lines.append("TEL;TYPE=" + type_part + ":" + _escape_vcf_value(intl))
+    field = (field or "").strip()[:500]
+    extra_info = (extra_info or "").strip()[:2000]
+    if field:
+        lines.append("TITLE:" + _escape_vcf_value(field))
+    if extra_info:
+        lines.append("X-EXTRA-INFO:" + _escape_vcf_value(extra_info))
+    lines.append("END:VCARD")
+    return "\r\n".join(lines)
+
+
+@app.route("/api/contact.vcf", methods=["POST"])
+def contact_vcf():
+    """Generate vCard on the server (reliable download headers on many browsers)."""
+    data = request.get_json(silent=True) or {}
+    name = (data.get("name") or "").strip()[:400] if isinstance(data.get("name"), str) else ""
+    field = (data.get("field") or "").strip()[:500] if isinstance(data.get("field"), str) else ""
+    ex = data.get("extra_info")
+    extra_info = (ex.strip()[:2000] if isinstance(ex, str) else "") or ""
+    phones_in = data.get("phones")
+    if isinstance(phones_in, list):
+        raw = [str(p).strip() for p in phones_in[:25] if str(p).strip()]
+    else:
+        all_tels = data.get("all_tels")
+        all_tels = all_tels.strip() if isinstance(all_tels, str) else ""
+        raw = [x.strip() for x in all_tels.split("|") if x.strip()][:25]
+    vcard = _build_vcard_v3(name, raw, field, extra_info)
+    if not vcard:
+        return jsonify({"ok": False, "error": "אין מספר טלפון תקין"}), 400
+    resp = Response(
+        vcard.encode("utf-8"),
+        mimetype="text/vcard; charset=utf-8",
+    )
+    resp.headers["Content-Disposition"] = 'attachment; filename="contact.vcf"'
+    return resp
+
+
 def entry_for_client(row):
     """Copy of row for API; note is internal (import) only, not exposed to the web UI."""
     d = dict(row)
     d.pop("note", None)
     return d
+
+
+def load_restaurants():
+    """רשימת מסעדות מ־JSON; מוסיף id לרשומות ישנות ושומר אם צריך."""
+    if not RESTAURANTS_PATH.exists():
+        return []
+    with open(RESTAURANTS_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, list):
+        return []
+    changed = False
+    for row in data:
+        if not isinstance(row, dict):
+            continue
+        if not (row.get("id") or "").strip():
+            row["id"] = secrets.token_urlsafe(12)
+            changed = True
+    if changed:
+        save_restaurants(data)
+    return [r for r in data if isinstance(r, dict)]
+
+
+def save_restaurants(rows):
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(RESTAURANTS_PATH, "w", encoding="utf-8") as f:
+        json.dump(rows, f, ensure_ascii=False, indent=2)
+
+
+@app.route("/api/restaurants", methods=["GET"])
+def get_restaurants():
+    rows = load_restaurants()
+    config = load_config()
+    has_edit_mode = bool(config.get("password_hash"))
+    out = []
+    for r in rows:
+        d = {k: v for k, v in r.items() if not str(k).startswith("_")}
+        out.append(d)
+    return jsonify({"restaurants": out, "has_edit_mode": has_edit_mode})
+
+
+@app.route("/api/restaurants", methods=["POST"])
+def add_restaurant():
+    if not check_auth():
+        return jsonify({"ok": False, "error": "נדרשת התחברות"}), 401
+    data = request.get_json() or {}
+    name = (data.get("name") or "").strip()
+    if not name:
+        return jsonify({"ok": False, "error": "נא למלא שם"}), 400
+    rows = load_restaurants()
+    row = {
+        "id": secrets.token_urlsafe(12),
+        "name": name,
+        "restaurant_type": (data.get("restaurant_type") or "").strip(),
+        "location": (data.get("location") or "").strip(),
+        "note": (data.get("note") or "").strip(),
+        "extra_info": (data.get("extra_info") or "").strip(),
+    }
+    rows.append(row)
+    save_restaurants(rows)
+    return jsonify({"ok": True, "id": row["id"]})
+
+
+@app.route("/api/restaurants/<rid>", methods=["PATCH"])
+def patch_restaurant(rid):
+    if not check_auth():
+        return jsonify({"ok": False, "error": "נדרשת התחברות"}), 401
+    rid = rid.replace("%2B", "+")
+    data = request.get_json() or {}
+    rows = load_restaurants()
+    idx = next((i for i, r in enumerate(rows) if str(r.get("id", "")) == rid), -1)
+    if idx < 0:
+        return jsonify({"ok": False, "error": "לא נמצא"}), 404
+    row = rows[idx]
+    for key in ("name", "restaurant_type", "location", "note", "extra_info"):
+        if key in data:
+            row[key] = (data.get(key) or "").strip() if isinstance(data.get(key), str) else str(data.get(key) or "")
+    if not (row.get("name") or "").strip():
+        return jsonify({"ok": False, "error": "נא למלא שם"}), 400
+    save_restaurants(rows)
+    return jsonify({"ok": True})
+
+
+@app.route("/api/restaurants/<rid>", methods=["DELETE"])
+def delete_restaurant(rid):
+    if not check_auth():
+        return jsonify({"ok": False, "error": "נדרשת התחברות"}), 401
+    rid = rid.replace("%2B", "+")
+    rows = load_restaurants()
+    new_rows = [r for r in rows if str(r.get("id", "")) != rid]
+    if len(new_rows) == len(rows):
+        return jsonify({"ok": False, "error": "לא נמצא"}), 404
+    save_restaurants(new_rows)
+    return jsonify({"ok": True})
 
 
 @app.route("/api/entries", methods=["GET"])
@@ -303,6 +500,16 @@ def delete_entry(key):
 @app.route("/")
 def index():
     return send_from_directory(APP_DIR, "index.html")
+
+
+@app.route("/professionals.html")
+def professionals_page():
+    return send_from_directory(APP_DIR, "professionals.html")
+
+
+@app.route("/restaurants.html")
+def restaurants_page():
+    return send_from_directory(APP_DIR, "restaurants.html")
 
 
 @app.route("/data/<path:path>")

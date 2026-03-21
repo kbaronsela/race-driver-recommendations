@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מסעדות מומלצות – המלצות נהגות מרוצים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0f7ff;
+      --surface: #ffffff;
+      --text: #1a2d4a;
+      --muted: #5a7a9e;
+      --accent: #2563eb;
+      --accent-dim: #3b82f620;
+      --border: #bfdbfe;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .header-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .header-logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.5rem; }
+    .logo { height: 72px; width: auto; max-width: 120px; object-fit: contain; }
+    .header-auth { flex-shrink: 0; }
+    .header-auth .btn { font-size: 0.8rem; padding: 0.35rem 0.65rem; }
+    .muted { color: var(--muted); }
+    .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; flex: 1; letter-spacing: -0.02em; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
+    .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; text-decoration: none; display: inline-block; }
+    .btn:hover { border-color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-delete { border-color: #f85149; color: #f85149; }
+    .btn-delete:hover { background: rgba(248,81,73,0.15); }
+    .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .search-wrap { position: sticky; top: 0; background: var(--bg); padding: 0.5rem 0 1rem; z-index: 10; }
+    .search-inner { display: flex; gap: 0.5rem; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.5rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
+    .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+    .filter-label { color: var(--muted); font-size: 0.9rem; }
+    #typeFilterSelect { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 160px; }
+    .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
+    .list { margin-top: 1rem; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
+    .card:hover { border-color: var(--accent); }
+    .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.35rem; }
+    .card .rest-type { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; font-weight: 600; }
+    .card .rest-location { font-size: 0.95rem; color: var(--text); margin-bottom: 0.35rem; }
+    .card .rest-location strong { color: var(--muted); font-weight: 600; margin-inline-end: 0.35rem; }
+    .card .note-block { font-size: 0.9rem; color: var(--text); margin-top: 0.5rem; padding: 0.5rem 0.65rem; background: var(--accent-dim); border-radius: 8px; white-space: pre-wrap; }
+    .card .note-block .lbl { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
+    .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.5rem; }
+    .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
+    .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 440px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
+    .modal h3 { margin: 0 0 1rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
+    .form-row input, .form-row textarea, .form-row select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font: inherit; box-sizing: border-box; }
+    .form-row textarea { min-height: 4.5rem; resize: vertical; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+    .hidden { display: none !important; }
+    @media (max-width: 768px) {
+      .search-wrap { position: relative; }
+      .container { padding: 1rem; }
+      .top-bar { flex-direction: column; align-items: stretch; }
+      h1 { font-size: 1.35rem; text-align: center; }
+      .logo { height: 56px; max-width: 96px; }
+      .card-actions { flex-direction: column; align-items: stretch; }
+      .card-actions .btn { width: 100%; }
+      .modal { align-items: flex-end; }
+      .modal-actions { flex-direction: column; }
+      .modal-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-row">
+      <div class="header-logos">
+        <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
+        <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo" onerror="this.style.display='none'">
+      </div>
+      <div class="header-auth">
+        <div id="loginArea" class="login-wrap hidden">
+          <button type="button" class="btn" id="btnLogin">התחבר</button>
+        </div>
+        <div id="loggedArea" class="hidden">
+          <span class="muted">מחובר</span>
+          <button type="button" class="btn" id="btnLogout">התנתק</button>
+        </div>
+      </div>
+    </div>
+    <div class="top-bar">
+      <a href="index.html" class="btn" style="flex-shrink:0;">דף הבית</a>
+      <h1>מסעדות מומלצות</h1>
+      <button type="button" class="btn btn-primary hidden" id="btnAdd">הוסף מסעדה</button>
+      <button type="button" class="btn hidden" id="btnSave" style="display:none">שמור שינויים</button>
+    </div>
+    <p class="subtitle">חיפוש לפי שם, סוג מסעדה, מיקום או תוכן ההערות · חלק מִ«המלצות של נהגות מרוצים»</p>
+
+    <div class="search-wrap">
+      <div class="search-inner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="q" name="q" placeholder="למשל: איטלקית, רעננה, פיצה…" autocomplete="off" aria-label="חיפוש במסעדות">
+      </div>
+      <div class="filter-row">
+        <label class="filter-label" for="typeFilterSelect">סוג מסעדה:</label>
+        <select id="typeFilterSelect" aria-label="סינון לפי סוג מסעדה">
+          <option value="">הכל</option>
+        </select>
+      </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="list" id="list"><p class="loading">טוען…</p></div>
+  </div>
+
+  <div id="modalRestaurant" class="modal hidden">
+    <div class="modal-inner">
+      <h3 id="restModalTitle">הוסף מסעדה</h3>
+      <input type="hidden" id="restFormEditId" value="">
+      <div class="form-row">
+        <label for="restFormName">שם</label>
+        <input type="text" id="restFormName" required placeholder="שם המסעדה">
+      </div>
+      <div class="form-row">
+        <label for="restFormType">סוג מסעדה</label>
+        <input type="text" id="restFormType" placeholder="למשל: איטלקית, אסייתית">
+      </div>
+      <div class="form-row">
+        <label for="restFormLocation">מיקום</label>
+        <input type="text" id="restFormLocation" placeholder="כתובת או אזור">
+      </div>
+      <div class="form-row">
+        <label for="restFormNote">הערה</label>
+        <textarea id="restFormNote" placeholder="המלצות, מה להזמין…"></textarea>
+      </div>
+      <div class="form-row">
+        <label for="restFormExtra">מידע נוסף</label>
+        <textarea id="restFormExtra" placeholder="כשרות, שעות, חניה…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnRestaurantCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnRestaurantSubmit">שמור</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalLogin" class="modal hidden">
+    <div class="modal-inner">
+      <h3>התחברות</h3>
+      <p class="muted" style="font-size:0.9rem;margin:0 0 1rem;">אותו משתמש וסיסמה כמו בעמוד «עסקים ובעלי מקצוע».</p>
+      <div class="form-row">
+        <label>משתמש</label>
+        <input type="text" id="loginUserModal" placeholder="משתמש" autocomplete="username">
+      </div>
+      <div class="form-row">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassModal" placeholder="סיסמה" autocomplete="current-password">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnLoginSubmit">התחבר</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+    let restaurants = [];
+    let baseRestaurants = [];
+    let selectedType = null;
+    let hasEditMode = false;
+    let token = sessionStorage.getItem('token') || '';
+
+    function normalize(s) {
+      if (s == null || s === '') return '';
+      return String(s).toLowerCase().replace(/[\u0591-\u05C7]/g, '').trim();
+    }
+
+    function escapeHtml(s) {
+      if (s == null) return '';
+      const div = document.createElement('div');
+      div.textContent = String(s);
+      return div.innerHTML;
+    }
+
+    function escapeAttr(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function matchRow(r, q) {
+      if (!q) return true;
+      const nq = normalize(q);
+      const parts = [r.name, r.restaurant_type, r.location, r.note, r.extra_info].map(function(x) { return normalize(x); });
+      return parts.some(function(p) { return p && p.includes(nq); });
+    }
+
+    function restaurantChanged(a, b) {
+      return (a.name || '') !== (b.name || '') ||
+        (a.restaurant_type || '') !== (b.restaurant_type || '') ||
+        (a.location || '') !== (b.location || '') ||
+        (a.note || '') !== (b.note || '') ||
+        (a.extra_info || '') !== (b.extra_info || '');
+    }
+
+    function buildTypeFilter() {
+      const types = [...new Set(restaurants.map(function(r) { return (r.restaurant_type || '').trim(); }).filter(Boolean))].sort(function(a, b) { return a.localeCompare(b, 'he'); });
+      const sel = document.getElementById('typeFilterSelect');
+      const keep = selectedType && types.indexOf(selectedType) !== -1 ? selectedType : '';
+      sel.innerHTML = '<option value="">הכל</option>' + types.map(function(t) {
+        return '<option value="' + escapeAttr(t) + '">' + escapeHtml(t) + '</option>';
+      }).join('');
+      sel.value = keep;
+      selectedType = keep || null;
+    }
+
+    function updateCount(n) {
+      const el = document.getElementById('count');
+      if (el) el.textContent = n + ' רשומות';
+    }
+
+    function updateSaveButton() {
+      const btn = document.getElementById('btnSave');
+      const btnAdd = document.getElementById('btnAdd');
+      if (hasEditMode && token) {
+        btnAdd.classList.remove('hidden');
+        btn.style.display = '';
+        btn.disabled = false;
+      } else {
+        btnAdd.classList.add('hidden');
+        btn.style.display = 'none';
+      }
+    }
+
+    function render(list) {
+      const listEl = document.getElementById('list');
+      const canEdit = hasEditMode && token;
+      if (!list.length) {
+        listEl.innerHTML = '<p class="no-results">אין תוצאות לחיפוש זה.</p>';
+        return;
+      }
+      listEl.innerHTML = list.map(function(r) {
+        const id = escapeAttr(r._serverKey || r.id || '');
+        const name = escapeHtml(r.name || '');
+        const typ = escapeHtml((r.restaurant_type || '').trim());
+        const loc = escapeHtml((r.location || '').trim());
+        const note = (r.note || '').trim();
+        const extra = (r.extra_info || '').trim();
+        let html = '<article class="card" data-id="' + id + '">';
+        html += '<div class="name">' + name + '</div>';
+        if (typ) html += '<div class="rest-type">' + typ + '</div>';
+        if (loc) html += '<div class="rest-location"><strong>מיקום:</strong> ' + loc + '</div>';
+        if (note) html += '<div class="note-block"><span class="lbl">הערה:</span> ' + escapeHtml(note) + '</div>';
+        if (extra) html += '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(extra) + '</div>';
+        if (canEdit) {
+          html += '<div class="card-actions">' +
+            '<button type="button" class="btn edit-rest-btn" data-id="' + id + '">ערוך</button>' +
+            '<button type="button" class="btn btn-delete delete-rest-btn" data-id="' + id + '" data-name="' + escapeAttr(r.name || '') + '">מחק</button>' +
+            '</div>';
+        }
+        html += '</article>';
+        return html;
+      }).join('');
+
+      if (canEdit) {
+        listEl.querySelectorAll('.edit-rest-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() { openEditRestaurantModal(this.dataset.id); });
+        });
+        listEl.querySelectorAll('.delete-rest-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() { deleteRestaurant(this.dataset.id, this.dataset.name || ''); });
+        });
+      }
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('q').value.trim();
+      let filtered = restaurants;
+      if (selectedType !== null && selectedType !== '') {
+        filtered = filtered.filter(function(r) { return (r.restaurant_type || '').trim() === selectedType; });
+      }
+      if (q) filtered = filtered.filter(function(r) { return matchRow(r, q); });
+      render(filtered);
+      updateCount(filtered.length);
+    }
+
+    function patchRestaurant(rid, data) {
+      if (!token) return;
+      const id = String(rid);
+      const idx = restaurants.findIndex(function(r) { return String(r._serverKey || r.id) === id; });
+      if (idx < 0) return;
+      const r = restaurants[idx];
+      if ('name' in data) r.name = data.name;
+      if ('restaurant_type' in data) r.restaurant_type = data.restaurant_type;
+      if ('location' in data) r.location = data.location;
+      if ('note' in data) r.note = data.note;
+      if ('extra_info' in data) r.extra_info = data.extra_info;
+      restaurants.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'he'); });
+      buildTypeFilter();
+      applyFilters();
+      updateSaveButton();
+    }
+
+    function deleteRestaurant(rid, displayName) {
+      if (!token) return;
+      const label = (displayName || '').trim() || 'מסעדה זו';
+      if (!confirm('למחוק את "' + label + '"?')) return;
+      const id = String(rid);
+      restaurants = restaurants.filter(function(r) { return String(r._serverKey || r.id) !== id; });
+      buildTypeFilter();
+      applyFilters();
+      updateSaveButton();
+    }
+
+    function openAddRestaurantModal() {
+      document.getElementById('restModalTitle').textContent = 'הוסף מסעדה';
+      document.getElementById('restFormEditId').value = '';
+      document.getElementById('restFormName').value = '';
+      document.getElementById('restFormType').value = '';
+      document.getElementById('restFormLocation').value = '';
+      document.getElementById('restFormNote').value = '';
+      document.getElementById('restFormExtra').value = '';
+      document.getElementById('modalRestaurant').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('restFormName').focus(); }, 50);
+    }
+
+    function openEditRestaurantModal(rid) {
+      const id = String(rid);
+      const r = restaurants.find(function(x) { return String(x._serverKey || x.id) === id; });
+      if (!r) return;
+      document.getElementById('restModalTitle').textContent = 'ערוך מסעדה';
+      document.getElementById('restFormEditId').value = id;
+      document.getElementById('restFormName').value = r.name || '';
+      document.getElementById('restFormType').value = r.restaurant_type || '';
+      document.getElementById('restFormLocation').value = r.location || '';
+      document.getElementById('restFormNote').value = r.note || '';
+      document.getElementById('restFormExtra').value = r.extra_info || '';
+      document.getElementById('modalRestaurant').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('restFormName').focus(); }, 50);
+    }
+
+    function closeRestaurantModal() {
+      document.getElementById('modalRestaurant').classList.add('hidden');
+    }
+
+    async function doRestaurantSubmit() {
+      const editId = document.getElementById('restFormEditId').value.trim();
+      const name = document.getElementById('restFormName').value.trim();
+      const restaurant_type = document.getElementById('restFormType').value.trim();
+      const location = document.getElementById('restFormLocation').value.trim();
+      const note = document.getElementById('restFormNote').value.trim();
+      const extra_info = document.getElementById('restFormExtra').value.trim();
+      if (!name) {
+        alert('נא למלא שם');
+        return;
+      }
+      if (!editId) {
+        if (!token) { alert('נדרשת התחברות'); return; }
+        try {
+          const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+          const r = await fetch(API + 'api/restaurants', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({ name, restaurant_type, location, note, extra_info })
+          });
+          const data = await r.json().catch(function() { return {}; });
+          if (!r.ok || !data.ok) {
+            alert(data.error || 'שגיאה בשמירה');
+            return;
+          }
+          closeRestaurantModal();
+          await load();
+        } catch (e) {
+          alert('שגיאה: ' + (e.message || e));
+        }
+        return;
+      }
+      patchRestaurant(editId, { name, restaurant_type, location, note, extra_info });
+      closeRestaurantModal();
+    }
+
+    async function saveAllChanges() {
+      const btn = document.getElementById('btnSave');
+      if (!btn || !token) return;
+      btn.disabled = true;
+      btn.textContent = 'שומר...';
+      try {
+        const deletedIds = baseRestaurants.map(function(b) { return b._serverKey || b.id; }).filter(function(sk) {
+          return sk && !restaurants.some(function(r) { return String(r._serverKey || r.id) === String(sk); });
+        });
+        for (let i = 0; i < deletedIds.length; i++) {
+          const rid = deletedIds[i];
+          const r = await fetch(API + 'api/restaurants/' + encodeURIComponent(rid), {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          if (!r.ok) {
+            const err = await r.json().catch(function() { return {}; });
+            throw new Error(err.error || r.statusText || 'delete failed');
+          }
+        }
+        for (let j = 0; j < restaurants.length; j++) {
+          const entry = restaurants[j];
+          const serverKey = entry._serverKey || entry.id;
+          const baseEntry = baseRestaurants.find(function(b) { return String(b._serverKey || b.id) === String(serverKey); });
+          if (baseEntry && restaurantChanged(entry, baseEntry)) {
+            const r2 = await fetch(API + 'api/restaurants/' + encodeURIComponent(serverKey), {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+              body: JSON.stringify({
+                name: entry.name,
+                restaurant_type: entry.restaurant_type || '',
+                location: entry.location || '',
+                note: entry.note || '',
+                extra_info: entry.extra_info || ''
+              })
+            });
+            if (!r2.ok) {
+              const err = await r2.json().catch(function() { return {}; });
+              throw new Error(err.error || r2.statusText || 'patch failed');
+            }
+          }
+        }
+        await load();
+        btn.textContent = 'נשמר';
+        setTimeout(function() { btn.textContent = 'שמור שינויים'; }, 1500);
+      } catch (e) {
+        const msg = e.message || String(e);
+        if (msg === 'Failed to fetch' || msg.indexOf('NetworkError') !== -1) {
+          alert('לא ניתן להתחבר לשרת. ודא שהאתר נטען דרך השרת.');
+        } else {
+          alert('שגיאה בשמירה: ' + msg);
+        }
+        btn.textContent = 'שמור שינויים';
+      }
+      btn.disabled = false;
+      updateSaveButton();
+    }
+
+    async function load() {
+      try {
+        const r = await fetch(API + 'api/restaurants');
+        const data = await r.json();
+        restaurants = data.restaurants || [];
+        hasEditMode = data.has_edit_mode === true;
+        const authEl = document.querySelector('.header-auth');
+        if (authEl) authEl.style.display = hasEditMode ? '' : 'none';
+        if (!hasEditMode) {
+          document.getElementById('loginArea').classList.add('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+        } else if (token) {
+          document.getElementById('loggedArea').classList.remove('hidden');
+          document.getElementById('loginArea').classList.add('hidden');
+        } else {
+          document.getElementById('loginArea').classList.remove('hidden');
+          document.getElementById('loggedArea').classList.add('hidden');
+        }
+        restaurants.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'he'); });
+        restaurants.forEach(function(x) { x._serverKey = x.id; });
+        baseRestaurants = restaurants.map(function(x) { return Object.assign({}, x); });
+        buildTypeFilter();
+        applyFilters();
+      } catch (e) {
+        try {
+          const r2 = await fetch(API + 'data/restaurants.json');
+          if (r2.ok) {
+            restaurants = await r2.json();
+            hasEditMode = false;
+            const authEl2 = document.querySelector('.header-auth');
+            if (authEl2) authEl2.style.display = 'none';
+            document.getElementById('loginArea').classList.add('hidden');
+            document.getElementById('loggedArea').classList.add('hidden');
+            restaurants.forEach(function(x) { x._serverKey = x.id; });
+            baseRestaurants = restaurants.map(function(x) { return Object.assign({}, x); });
+            buildTypeFilter();
+            applyFilters();
+          } else throw new Error('no data');
+        } catch (e2) {
+          document.getElementById('list').innerHTML = '<p class="no-results">לא ניתן לטעון מסעדות. הריצו את השרת (python server.py) או בדקו את הקובץ data/restaurants.json.</p>';
+          updateCount(0);
+        }
+      }
+      updateSaveButton();
+    }
+
+    document.getElementById('typeFilterSelect').addEventListener('change', function() {
+      const v = (this.value || '').trim();
+      selectedType = v || null;
+      applyFilters();
+    });
+    document.getElementById('q').addEventListener('input', applyFilters);
+
+    document.getElementById('btnAdd').addEventListener('click', openAddRestaurantModal);
+    document.getElementById('btnRestaurantCancel').addEventListener('click', closeRestaurantModal);
+    document.getElementById('btnRestaurantSubmit').addEventListener('click', function(e) {
+      e.preventDefault();
+      doRestaurantSubmit();
+    });
+    document.getElementById('modalRestaurant').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeRestaurantModal();
+      else if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        doRestaurantSubmit();
+      }
+    });
+    document.getElementById('modalRestaurant').addEventListener('click', function(e) {
+      if (e.target === this) closeRestaurantModal();
+    });
+
+    document.getElementById('btnSave').addEventListener('click', saveAllChanges);
+
+    async function doLoginSubmit() {
+      const user = document.getElementById('loginUserModal').value.trim();
+      const pass = document.getElementById('loginPassModal').value;
+      const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
+      const data = await r.json().catch(function() { return {}; });
+      if (r.ok && data.token) {
+        token = data.token;
+        sessionStorage.setItem('token', token);
+        document.getElementById('modalLogin').classList.add('hidden');
+        document.getElementById('loggedArea').classList.remove('hidden');
+        document.getElementById('loginArea').classList.add('hidden');
+        load();
+      } else {
+        alert(data.error || 'התחברות נכשלה');
+      }
+    }
+
+    function bindLoginHandlers() {
+      const btnLogin = document.getElementById('btnLogin');
+      if (!btnLogin || !hasEditMode || btnLogin._bound) return;
+      btnLogin._bound = true;
+      btnLogin.addEventListener('click', function() {
+        document.getElementById('modalLogin').classList.remove('hidden');
+        setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
+      });
+      document.getElementById('btnLoginCancel').addEventListener('click', function() {
+        document.getElementById('modalLogin').classList.add('hidden');
+      });
+      document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
+      document.getElementById('modalLogin').addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') document.getElementById('btnLoginCancel').click();
+        else if (e.key === 'Enter' && e.target.id !== 'btnLoginCancel') {
+          e.preventDefault();
+          doLoginSubmit();
+        }
+      });
+      document.getElementById('btnLogout').addEventListener('click', function() {
+        token = '';
+        sessionStorage.removeItem('token');
+        document.getElementById('loggedArea').classList.add('hidden');
+        document.getElementById('loginArea').classList.remove('hidden');
+        load();
+      });
+    }
+
+    load().then(function() { bindLoginHandlers(); });
+  </script>
+</body>
+</html>

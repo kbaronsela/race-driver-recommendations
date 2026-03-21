@@ -15,7 +15,9 @@
    pip install -r requirements.txt
    python3 server.py
    ```
-   לפתוח בדפדפן: http://localhost:5001
+   לפתוח בדפדפן: http://localhost:5001 — נטען **דף הבית** עם בחירה בין:
+   - **עסקים ובעלי מקצוע** (`professionals.html`) — רשימת אנשי קשר עם עריכה דרך השרת
+   - **מסעדות** (`restaurants.html`) — רשימה מ־`data/restaurants.json` (צפייה בלבד)
 
    בלי שרת (רק צפייה): `python3 -m http.server 8080` ואז http://localhost:8080 (אין עריכה/הוספה).
 

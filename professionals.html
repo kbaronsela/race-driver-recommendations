@@ -17,6 +17,8 @@
       --accent: #2563eb;
       --accent-dim: #3b82f620;
       --border: #bfdbfe;
+      /* תחום / מטא־דאטה — לא כחול «קישור» */
+      --card-category: #0f5c55;
       --green: #16a34a;
       --yellow: #eab308;
       --sky: #0ea5e9;
@@ -72,7 +74,7 @@
     .card:hover { border-color: var(--accent); }
     .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card .name .name-contact-actions { flex-shrink: 0; }
-    .card .field { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
+    .card .field { color: var(--card-category); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .field:empty { display: none; }
     .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
     .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }

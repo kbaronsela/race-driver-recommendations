@@ -48,24 +48,24 @@
     .card .rest-site-link {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 2.5rem;
-      height: 2.5rem;
+      gap: 0.4rem;
+      padding: 0.38rem 0.85rem 0.38rem 0.7rem;
+      min-height: 2.25rem;
       flex-shrink: 0;
-      border-radius: 12px;
+      border-radius: 999px;
       text-decoration: none;
       color: var(--accent);
-      background: linear-gradient(155deg, rgba(37, 99, 235, 0.12) 0%, rgba(37, 99, 235, 0.04) 100%);
-      border: 1px solid rgba(37, 99, 235, 0.2);
+      background: linear-gradient(155deg, rgba(37, 99, 235, 0.11) 0%, rgba(37, 99, 235, 0.04) 100%);
+      border: 1px solid rgba(37, 99, 235, 0.22);
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
     .card .rest-site-link:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       color: #1d4ed8;
-      border-color: rgba(37, 99, 235, 0.42);
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.14);
-      background: linear-gradient(155deg, rgba(37, 99, 235, 0.18) 0%, rgba(37, 99, 235, 0.07) 100%);
+      border-color: rgba(37, 99, 235, 0.45);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+      background: linear-gradient(155deg, rgba(37, 99, 235, 0.17) 0%, rgba(37, 99, 235, 0.06) 100%);
     }
     .card .rest-site-link:focus-visible {
       outline: none;
@@ -74,10 +74,18 @@
     .card .rest-site-link:active {
       transform: translateY(0);
     }
+    .card .rest-site-link .rest-site-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
     .card .rest-site-link .rest-site-icon {
-      width: 1.125rem;
-      height: 1.125rem;
+      width: 1rem;
+      height: 1rem;
+      flex-shrink: 0;
       display: block;
+      opacity: 0.92;
     }
     .card .rest-type { color: var(--card-category); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .rest-location { font-size: 0.95rem; color: var(--text); margin-bottom: 0.35rem; }
@@ -238,8 +246,8 @@
 
   <script>
     const API = '';
-    /** אייקון קישור חיצוני — תג «אתר» בכרטיס */
-    var REST_SITE_ICON_SVG = '<svg class="rest-site-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+    /** גלובוס + טקסט — קישור לאתר המסעדה */
+    var REST_SITE_ICON_SVG = '<svg class="rest-site-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2.5" x2="12" y2="21.5"/></svg>';
     let restaurants = [];
     let selectedType = null;
     let hasEditMode = false;
@@ -332,7 +340,7 @@
         html += '<div class="name-row">';
         html += '<span class="restaurant-name">' + name + '</span>';
         if (siteHref) {
-          html += '<a href="' + escapeAttr(siteHref) + '" class="rest-site-link" target="_blank" rel="noopener noreferrer" title="פתיחת אתר המסעדה" aria-label="פתיחת אתר המסעדה בלשונית חדשה">' + REST_SITE_ICON_SVG + '</a>';
+          html += '<a href="' + escapeAttr(siteHref) + '" class="rest-site-link" target="_blank" rel="noopener noreferrer" title="מעבר לאתר המסעדה (נפתח בלשונית חדשה)"><span class="rest-site-label">אתר</span>' + REST_SITE_ICON_SVG + '</a>';
         }
         html += '</div>';
         if (typ) html += '<div class="rest-type">' + typ + '</div>';

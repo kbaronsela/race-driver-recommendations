@@ -58,7 +58,9 @@
     .card .field:empty { display: none; }
     .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
     .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
-    .card .phone-wrap { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card .phone-wrap { display: flex; align-items: flex-start; gap: 0.5rem; flex-wrap: wrap; flex-direction: column; }
+    .card .phone-lines { display: flex; flex-direction: column; gap: 0.45rem; width: 100%; }
+    .card .phone-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
     .card .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; }
     .card .phone:hover { text-decoration: underline; }
     .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
@@ -87,6 +89,27 @@
       appearance: none;
     }
     .card .phone-actions .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-wrap > .save-contact-btn {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--muted);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--surface);
+      cursor: pointer;
+      margin-inline-end: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .card .phone-wrap > .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
     .badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 6px; background: var(--yellow); color: #000; margin-right: 0.5rem; }
     .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
@@ -139,7 +162,8 @@
       .card { padding: 0.75rem; margin-bottom: 0.5rem; }
       .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
       .card .phone-actions a,
-      .card .phone-actions .save-contact-btn {
+      .card .phone-actions .save-contact-btn,
+      .card .phone-wrap > .save-contact-btn {
         padding: 0.35rem 0.5rem;
         min-height: 2.25rem;
         font-size: 0.85rem;
@@ -213,8 +237,9 @@
         <input type="text" id="addName" required>
       </div>
       <div class="form-row">
-        <label>טלפון</label>
-        <input type="tel" id="addPhone" required>
+        <label for="addPhonesTextarea">טלפון (שורה לכל מספר)</label>
+        <p class="modal-hint" style="margin:0 0 0.35rem;font-size:0.9rem;opacity:0.85;">השורה הראשית היא המספר הראשי לזיהוי כפילויות.</p>
+        <textarea id="addPhonesTextarea" rows="4" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
       </div>
       <div class="form-row">
         <label>תחום עיסוק</label>
@@ -266,6 +291,21 @@
     </div>
   </div>
 
+  <div id="modalEditPhones" class="modal hidden">
+    <div class="modal-inner">
+      <h3>ערוך טלפון</h3>
+      <p class="modal-hint" style="margin:0 0 0.5rem;font-size:0.9rem;opacity:0.85;">מספר אחד בכל שורה. השורה הראשונה היא המספר הראשי.</p>
+      <div class="form-row">
+        <label for="editPhonesTextarea">מספרי טלפון</label>
+        <textarea id="editPhonesTextarea" rows="6" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnEditPhonesCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnEditPhonesSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modalLogin" class="modal hidden">
     <div class="modal-inner">
       <h3>התחברות</h3>
@@ -296,6 +336,7 @@
     let editFieldKey = null;
     let editValueKey = null;
     let editValueField = null;
+    let editPhonesKey = null;
 
     async function loadFields() {
       try {
@@ -364,19 +405,104 @@
       return String(s).toLowerCase().replace(/[\u0591-\u05C7]/g, '').trim();
     }
 
+    function digitsOnlyPhone(s) {
+      return String(s == null ? '' : s).replace(/\D/g, '');
+    }
+
+    function phoneDedupeKey(d) {
+      if (!d) return '';
+      return d.length >= 10 ? d.slice(-10) : d;
+    }
+
+    /** רשימת { display, digits } לכל מספרי הרשומה (phone + מערך phones) */
+    function getPhonesList(entry) {
+      const raw = [];
+      if (Array.isArray(entry.phones) && entry.phones.length) {
+        entry.phones.forEach(function(p) {
+          const t = (p != null && String(p).trim()) ? String(p).trim() : '';
+          if (t) raw.push(t);
+        });
+      }
+      const main = (entry.phone_display || entry.phone || '').trim();
+      if (main && !raw.some(function(p) { return phoneDedupeKey(digitsOnlyPhone(p)) === phoneDedupeKey(digitsOnlyPhone(main)); })) {
+        raw.unshift(main);
+      }
+      if (!raw.length && main) raw.push(main);
+      const seen = new Set();
+      const out = [];
+      raw.forEach(function(r) {
+        const d = digitsOnlyPhone(r);
+        const k = phoneDedupeKey(d);
+        if (!k || seen.has(k)) return;
+        seen.add(k);
+        out.push({ display: r || d, digits: d });
+      });
+      return out;
+    }
+
+    /** חתימה להשוואת שינוי במספרים (סדר + מפתחות ייחודיים) */
+    function phonesSignature(entry) {
+      return getPhonesList(entry).map(function(p) { return phoneDedupeKey(p.digits); }).join('\u001f');
+    }
+
+    /** שורות טקסט → רשימת תצוגות ייחודיות לפי סדר */
+    function parsePhonesFromTextarea(text) {
+      const lines = String(text || '').split(/\r?\n/).map(function(s) { return s.trim(); }).filter(Boolean);
+      const seen = new Set();
+      const out = [];
+      lines.forEach(function(line) {
+        const d = digitsOnlyPhone(line);
+        const k = phoneDedupeKey(d);
+        if (!k || seen.has(k)) return;
+        seen.add(k);
+        out.push(line);
+      });
+      return out;
+    }
+
+    function toIntlTel(digits) {
+      const d = digitsOnlyPhone(digits);
+      if (!d) return '';
+      if (d.startsWith('972')) return '+' + d;
+      if (d.startsWith('0')) return '+972' + d.slice(1);
+      if (d.length === 9 && d[0] === '5') return '+972' + d;
+      return '+' + d;
+    }
+
+    function isIsraeliMobileDigits(d) {
+      const x = digitsOnlyPhone(d);
+      if (!x) return false;
+      let n = x;
+      if (n.startsWith('972')) n = n.slice(3);
+      else if (n.startsWith('0')) n = n.slice(1);
+      return n.length >= 9 && n[0] === '5';
+    }
+
+    function waMeFromDigits(digits) {
+      const d = digitsOnlyPhone(digits);
+      if (!d || !isIsraeliMobileDigits(d)) return '';
+      const wa = d.startsWith('972') ? d : ('972' + d.replace(/^0/, ''));
+      return 'https://wa.me/' + wa;
+    }
+
     function matchQuery(entry, q) {
       if (!q) return true;
       const nq = normalize(q);
       const name = normalize(entry.name);
       const field = normalize(entry.field);
-      const phone = (entry.phone_display || entry.phone || '').replace(/\D/g, '');
       const filename = normalize(entry.filename || '');
       const extraInfo = normalize(entry.extra_info || '');
       const searchable = [name, field, filename, extraInfo].join(' ');
       if (searchable.includes(nq)) return true;
-      if (phone && q.replace(/\D/g, '').length >= 2 && phone.includes(q.replace(/\D/g, ''))) return true;
+      const qDigits = q.replace(/\D/g, '');
+      const allDigits = getPhonesList(entry).map(function(p) { return p.digits; }).join(' ');
+      if (qDigits.length >= 2 && allDigits && allDigits.includes(qDigits)) return true;
+      const phone = (entry.phone_display || entry.phone || '').replace(/\D/g, '');
+      if (phone && qDigits.length >= 2 && phone.includes(qDigits)) return true;
       const words = nq.split(/\s+/).filter(Boolean);
-      return words.every(w => searchable.includes(w) || (phone && phone.includes(w)));
+      return words.every(function(w) {
+        return searchable.includes(w) || (allDigits && allDigits.includes(w)) || (phone && phone.includes(w));
+      });
     }
 
     function escapeHtml(s) {
@@ -404,22 +530,37 @@
 
     async function saveContactToDevice(btn) {
       const name = (btn.dataset.name || '').trim() || 'איש קשר';
-      const tel = (btn.dataset.tel || '').trim().replace(/[^\d+]/g, '');
       const field = (btn.dataset.field || '').trim();
       const extraInfo = (btn.dataset.extraInfo || '').trim();
-      if (!tel) {
+      const rawList = (btn.dataset.allTels || btn.dataset.tel || '').split('|').map(function(s) { return s.trim(); }).filter(Boolean);
+      const intlList = rawList.map(function(t) {
+        let x = String(t).replace(/[^\d+]/g, '');
+        if (!x) return '';
+        if (!x.startsWith('+')) x = '+' + x;
+        return x;
+      }).filter(Boolean);
+      if (!intlList.length) {
         alert('אין מספר טלפון לשמירה');
         return;
       }
       const safeName = (name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact') + '.vcf';
-      // vCard 3.0: FN + N (חלק מהאפליקציות במובייל דורשים N). בלי BOM — BOM שובר ייבוא בחלק מהטלפונים.
       const lines = [
         'BEGIN:VCARD',
         'VERSION:3.0',
         'FN:' + escapeVcfValue(name),
-        'N:;' + escapeVcfValue(name) + ';;;',
-        'TEL;TYPE=CELL;TYPE=VOICE:' + tel
+        'N:;' + escapeVcfValue(name) + ';;;'
       ];
+      let prefOnMobile = false;
+      intlList.forEach(function(intl) {
+        const d = intl.replace(/^\+/, '');
+        const mob = isIsraeliMobileDigits(d);
+        let typePart = mob ? 'CELL' : 'VOICE';
+        if (mob && !prefOnMobile) {
+          typePart = 'CELL,PREF';
+          prefOnMobile = true;
+        }
+        lines.push('TEL;TYPE=' + typePart + ':' + escapeVcfValue(intl));
+      });
       if (field) lines.push('TITLE:' + escapeVcfValue(field));
       if (extraInfo) lines.push('X-EXTRA-INFO:' + escapeVcfValue(extraInfo));
       lines.push('END:VCARD');
@@ -479,15 +620,29 @@
       listEl.innerHTML = list.map(e => {
         const key = e._key || normKey(e);
         const field = e.field ? `<div class="field" data-key="${escapeHtml(key)}">${escapeHtml(e.field)}</div>` : '<div class="field" data-key="' + escapeHtml(key) + '"></div>';
-        const phone = e.phone_display || e.phone || '';
-        const phoneDigits = (e.phone || '').replace(/\D/g, '');
-        const tel = phoneDigits ? `tel:${phoneDigits}` : '#';
-        const waNum = phoneDigits ? (phoneDigits.startsWith('972') ? phoneDigits : '972' + phoneDigits.replace(/^0/, '')) : '';
-        const waLink = waNum ? `https://wa.me/${waNum}` : '#';
-        const intlTel = waNum ? ('+' + waNum) : ('+' + phoneDigits);
+        const plist = getPhonesList(e);
+        const allIntl = plist.map(function(p) { return toIntlTel(p.digits); }).filter(Boolean);
+        const allTelsPipe = allIntl.join('|');
         const extraForVcf = String((e.extra_info != null ? e.extra_info : '') || '').trim().slice(0, 2000);
-        const saveBtn = phoneDigits ? `<button type="button" class="save-contact-btn" data-name="${escapeAttr(e.name || '')}" data-tel="${escapeAttr(intlTel)}" data-field="${escapeAttr((e.field || '').trim())}" data-extra-info="${escapeAttr(extraForVcf)}">שמור איש קשר</button>` : '';
-        const callWa = phoneDigits ? `<span class="phone-actions"><a href="${tel}">התקשר</a><a href="${waLink}" target="_blank" rel="noopener">וואטסאפ</a>${saveBtn}</span>` : '';
+        let phoneBlock = '';
+        if (!plist.length) {
+          phoneBlock = '<div class="phone muted">—</div>';
+        } else {
+          phoneBlock = '<div class="phone-lines">' + plist.map(function(p, i) {
+            const d = p.digits;
+            const disp = escapeHtml(p.display);
+            if (!d) {
+              return '<div class="phone-line"><span class="phone-num">' + disp + '</span></div>';
+            }
+            const tel = 'tel:' + d;
+            const waLink = waMeFromDigits(d) || '#';
+            const saveBtn = (i === 0 && allTelsPipe)
+              ? '<button type="button" class="save-contact-btn" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
+              : '';
+            const callWa = '<span class="phone-actions"><a href="' + tel + '">התקשר</a><a href="' + waLink + '" target="_blank" rel="noopener">וואטסאפ</a>' + saveBtn + '</span>';
+            return '<div class="phone-line"><span class="phone-num">' + disp + '</span> ' + callWa + '</div>';
+          }).join('') + '</div>';
+        }
         const badge = e.from_moshav ? '<span class="badge">מהמושב</span>' : '';
         const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
         let actions = '';
@@ -495,7 +650,7 @@
           actions = `<div class="card-actions">
             <label><input type="checkbox" class="cb-moshav" data-key="${escapeHtml(key)}" ${e.from_moshav ? 'checked' : ''}> מהמושב</label>
             <button type="button" class="btn edit-name-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">ערוך שם</button>
-            <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}" data-phone="${escapeHtml((e.phone_display || e.phone || ''))}">ערוך טלפון</button>
+            <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}">ערוך טלפון</button>
             <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>
             <button type="button" class="btn edit-extra-info-btn" data-key="${escapeHtml(key)}" data-extra-info="${escapeHtml((e.extra_info || ''))}">ערוך מידע נוסף</button>
             <button type="button" class="btn btn-delete delete-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">מחק</button>
@@ -504,7 +659,7 @@
         return `<article class="card" data-key="${escapeHtml(key)}">
           <div class="name">${escapeHtml(e.name)}${badge}</div>
           ${field}
-          <div class="phone-wrap"><a class="phone" href="${tel}">${escapeHtml(phone)}</a>${callWa}</div>
+          ${phoneBlock}
           ${extraInfoHtml}
           ${actions}
         </article>`;
@@ -529,7 +684,7 @@
         });
         listEl.querySelectorAll('.edit-phone-btn').forEach(btn => {
           btn.addEventListener('click', function() {
-            openEditValueModal(this.dataset.key, 'phone', 'ערוך טלפון', 'מספר טלפון', this.dataset.phone || '', 'tel');
+            openEditPhonesModal(this.dataset.key);
           });
         });
         listEl.querySelectorAll('.edit-field-btn').forEach(btn => {
@@ -571,9 +726,19 @@
         if ('name' in data) entries[idx].name = data.name;
         if ('extra_info' in data) entries[idx].extra_info = data.extra_info;
         if ('phone' in data) {
-          entries[idx].phone = data.phone;
-          entries[idx].phone_display = data.phone;
-          entries[idx]._key = (data.phone || '').replace(/\D/g, '').slice(-10);
+          const raw = (data.phone_display != null ? data.phone_display : data.phone) || '';
+          const dig = digitsOnlyPhone(data.phone != null ? data.phone : raw);
+          entries[idx].phone = dig || String(data.phone || '').replace(/\D/g, '');
+          entries[idx].phone_display = (raw != null && String(raw).trim()) ? String(raw).trim() : (entries[idx].phone || '');
+          entries[idx]._key = phoneDedupeKey(digitsOnlyPhone(entries[idx].phone)) || normKey(entries[idx]);
+        }
+        if ('phones' in data) {
+          const ph = data.phones;
+          if (ph == null || !Array.isArray(ph) || ph.length <= 1) {
+            delete entries[idx].phones;
+          } else {
+            entries[idx].phones = ph.map(function(p) { return String(p).trim(); }).filter(Boolean);
+          }
         }
       }
       applyFilters();
@@ -597,6 +762,7 @@
     function entryChanged(entry, baseEntry) {
       return (entry.name || '') !== (baseEntry.name || '') ||
         (entry.phone_display || entry.phone || '') !== (baseEntry.phone_display || baseEntry.phone || '') ||
+        phonesSignature(entry) !== phonesSignature(baseEntry) ||
         (entry.field || '') !== (baseEntry.field || '') ||
         (entry.extra_info || '') !== (baseEntry.extra_info || '') ||
         Boolean(entry.from_moshav) !== Boolean(baseEntry.from_moshav);
@@ -628,12 +794,18 @@
           if (serverKey && token) {
             const baseEntry = baseEntries.find(b => (b._serverKey || normKey(b)) === serverKey);
             if (baseEntry && entryChanged(entry, baseEntry)) {
+              const plist = getPhonesList(entry);
+              const phonesPayload = plist.length > 1 ? plist.map(function(p) { return p.display; }) : null;
+              const primaryDisp = (entry.phone_display || entry.phone || '').trim();
+              const primaryDig = digitsOnlyPhone(primaryDisp);
               const r = await fetch(API + 'api/entries/' + encodeURIComponent(serverKey), {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
                 body: JSON.stringify({
                   name: entry.name,
-                  phone: entry.phone_display || entry.phone,
+                  phone: primaryDig || primaryDisp,
+                  phone_display: primaryDisp || primaryDig,
+                  phones: phonesPayload,
                   field: entry.field,
                   extra_info: entry.extra_info || '',
                   from_moshav: entry.from_moshav
@@ -645,12 +817,18 @@
               }
             }
           } else if (!serverKey) {
+            const plist = getPhonesList(entry);
+            const phonesPost = plist.length > 1 ? plist.map(function(p) { return p.display; }) : null;
+            const primaryDisp = (entry.phone_display || entry.phone || '').trim();
+            const primaryDig = digitsOnlyPhone(primaryDisp);
             const r = await fetch(API + 'api/entries', {
               method: 'POST',
               headers: headers,
               body: JSON.stringify({
                 name: entry.name,
-                phone: entry.phone_display || entry.phone,
+                phone: primaryDig || primaryDisp,
+                phone_display: primaryDisp || primaryDig,
+                phones: phonesPost,
                 field: entry.field,
                 extra_info: entry.extra_info || '',
                 from_moshav: entry.from_moshav
@@ -710,7 +888,7 @@
 
     document.getElementById('btnAdd').addEventListener('click', function() {
       document.getElementById('addName').value = '';
-      document.getElementById('addPhone').value = '';
+      document.getElementById('addPhonesTextarea').value = '';
       document.getElementById('addFieldSelect').value = fieldsList[0] || '';
       document.getElementById('addFieldCustom').value = '';
       document.getElementById('addFieldCustom').classList.add('hidden');
@@ -732,7 +910,7 @@
     async function doAddSubmit() {
       try {
         const name = document.getElementById('addName').value.trim();
-        const phone = document.getElementById('addPhone').value.trim();
+        const phoneLines = parsePhonesFromTextarea(document.getElementById('addPhonesTextarea').value);
         const addFieldSelect = document.getElementById('addFieldSelect');
         let field = (addFieldSelect && addFieldSelect.value) ? addFieldSelect.value.trim() : '';
         if ((field || '').indexOf('אחר') !== -1) {
@@ -741,18 +919,31 @@
         }
         const from_moshav = document.getElementById('addFromMoshav').checked;
         const extra_info = (document.getElementById('addExtraInfo').value || '').trim();
-        if (!name || !phone) { alert('נא למלא שם ומספר טלפון'); return; }
-        const newKey = (phone || '').replace(/\D/g, '').slice(-10);
+        if (!name) { alert('נא למלא שם'); return; }
+        if (!phoneLines.length) { alert('נא להזין לפחות מספר טלפון אחד'); return; }
+        const primaryDisp = phoneLines[0];
+        const primaryDig = digitsOnlyPhone(primaryDisp);
+        if (!primaryDig) { alert('לא ניתן לזהות ספרות במספר הראשון'); return; }
+        const newKey = phoneDedupeKey(primaryDig) || primaryDig;
         if (newKey && entries.some(e => (e._key || normKey(e)) === newKey)) {
           alert('מספר הטלפון כבר קיים ברשימת אנשי הקשר.');
           return;
         }
+        const phonesPayload = phoneLines.length > 1 ? phoneLines : null;
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = 'Bearer ' + token;
         const r = await fetch(API + 'api/entries', {
           method: 'POST',
           headers: headers,
-          body: JSON.stringify({ name, phone, field, from_moshav, extra_info })
+          body: JSON.stringify({
+            name,
+            phone: primaryDig,
+            phone_display: primaryDisp,
+            phones: phonesPayload,
+            field,
+            from_moshav,
+            extra_info
+          })
         });
         const data = await r.json().catch(() => ({}));
         if (r.ok && data.ok) {
@@ -775,10 +966,10 @@
       if (e.key === 'Escape') {
         document.getElementById('btnAddCancel').click();
       } else if (e.key === 'Enter') {
-        if (e.target.id !== 'btnAddCancel') {
-          e.preventDefault();
-          doAddSubmit();
-        }
+        if (e.target.id === 'btnAddCancel') return;
+        if (e.target.tagName === 'TEXTAREA' && !e.ctrlKey) return;
+        e.preventDefault();
+        doAddSubmit();
       }
     });
 
@@ -851,7 +1042,6 @@
       if (editValueKey == null || editValueField == null) return;
       const val = document.getElementById('editValueInput').value.trim();
       if (editValueField === 'name' && !val) return;
-      if (editValueField === 'phone' && !val) return;
       const data = {};
       data[editValueField] = val;
       patchEntry(editValueKey, data);
@@ -866,6 +1056,51 @@
       } else if (e.key === 'Enter') {
         e.preventDefault();
         document.getElementById('btnEditValueSubmit').click();
+      }
+    });
+
+    function openEditPhonesModal(key) {
+      editPhonesKey = key;
+      const entry = entries.find(function(e) { return (e._key || normKey(e)) === key; });
+      const text = entry ? getPhonesList(entry).map(function(p) { return p.display; }).join('\n') : '';
+      document.getElementById('editPhonesTextarea').value = text;
+      document.getElementById('modalEditPhones').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('editPhonesTextarea').focus(); }, 50);
+    }
+
+    document.getElementById('btnEditPhonesCancel').addEventListener('click', function() {
+      document.getElementById('modalEditPhones').classList.add('hidden');
+      editPhonesKey = null;
+    });
+    document.getElementById('btnEditPhonesSubmit').addEventListener('click', function() {
+      if (editPhonesKey == null) return;
+      const lines = parsePhonesFromTextarea(document.getElementById('editPhonesTextarea').value);
+      if (!lines.length) {
+        alert('נא להזין לפחות מספר טלפון אחד');
+        return;
+      }
+      const primaryDisplay = lines[0];
+      const primaryDigits = digitsOnlyPhone(primaryDisplay);
+      if (!primaryDigits) {
+        alert('לא ניתן לזהות ספרות במספר הראשון');
+        return;
+      }
+      const phonesArr = lines.length > 1 ? lines : null;
+      patchEntry(editPhonesKey, {
+        phone: primaryDigits,
+        phone_display: primaryDisplay,
+        phones: phonesArr
+      });
+      document.getElementById('modalEditPhones').classList.add('hidden');
+      editPhonesKey = null;
+      updateSaveButton();
+    });
+    document.getElementById('modalEditPhones').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.getElementById('btnEditPhonesCancel').click();
+      } else if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        document.getElementById('btnEditPhonesSubmit').click();
       }
     });
 

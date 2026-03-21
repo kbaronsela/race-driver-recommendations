@@ -82,7 +82,14 @@ def merge_entries():
         row = dict(e)
         row["from_moshav"] = from_moshav[key] if (key and key in from_moshav) else row.get("from_moshav", False)
         if key and key in edits:
-            row.update(edits[key])
+            edk = edits[key]
+            row.update(edk)
+            if "phones" in edk:
+                ph = edk.get("phones")
+                if ph is None or (isinstance(ph, list) and len(ph) <= 1):
+                    row.pop("phones", None)
+                elif isinstance(ph, list):
+                    row["phones"] = ph
         overlay_note = notes.get(key, "") or (edits.get(key) or {}).get("note", "")
         row["note"] = overlay_note if overlay_note else (row.get("note") or "")
         row["_key"] = norm_phone(row.get("phone")) or key
@@ -97,7 +104,14 @@ def merge_entries():
         row.setdefault("phone_display", row.get("phone", ""))
         row["from_moshav"] = from_moshav.get(key, row.get("from_moshav", False))
         if key in edits:
-            row.update(edits[key])
+            edk = edits[key]
+            row.update(edk)
+            if "phones" in edk:
+                ph = edk.get("phones")
+                if ph is None or (isinstance(ph, list) and len(ph) <= 1):
+                    row.pop("phones", None)
+                elif isinstance(ph, list):
+                    row["phones"] = ph
         overlay_note = notes.get(key, "") or (edits.get(key) or {}).get("note", "")
         row["note"] = overlay_note if overlay_note else (row.get("note") or "")
         row["_key"] = norm_phone(row.get("phone")) or key
@@ -108,7 +122,7 @@ def merge_entries():
 
 def _entry_to_stored(row):
     """Strip internal keys for writing to entries.json."""
-    return {
+    out = {
         "name": row.get("name", ""),
         "phone": row.get("phone_display", row.get("phone", "")),
         "field": row.get("field", ""),
@@ -116,6 +130,10 @@ def _entry_to_stored(row):
         "note": (row.get("note") or "").strip(),
         "extra_info": (row.get("extra_info") or "").strip(),
     }
+    phones = row.get("phones")
+    if isinstance(phones, list) and len(phones) > 1:
+        out["phones"] = phones
+    return out
 
 
 def flush_entries_to_disk():
@@ -190,23 +208,30 @@ def add_entry():
     data = request.get_json() or {}
     name = (data.get("name") or "").strip()
     phone = (data.get("phone") or "").strip()
+    phone_display = (data.get("phone_display") or "").strip() or phone
     field = (data.get("field") or "").strip()
     from_moshav = bool(data.get("from_moshav"))
     # note is internal only; not accepted from the web UI
     extra_info = (data.get("extra_info") or "").strip()
-    if not name or not phone:
+    if not phone and phone_display:
+        phone = "".join(c for c in phone_display if c.isdigit())
+    if not name or not (phone or phone_display):
         return jsonify({"ok": False, "error": "נא למלא שם ומספר טלפון"}), 400
     ud = load_user_data()
     added = ud.get("added", [])
-    added.append({
+    row = {
         "name": name,
-        "phone": phone,
-        "phone_display": phone,
+        "phone": phone or "".join(c for c in phone_display if c.isdigit()),
+        "phone_display": phone_display,
         "field": field,
         "from_moshav": from_moshav,
         "note": "",
         "extra_info": extra_info,
-    })
+    }
+    ph = data.get("phones")
+    if isinstance(ph, list) and len(ph) > 1:
+        row["phones"] = [str(p).strip() for p in ph if str(p).strip()]
+    added.append(row)
     ud["added"] = added
     save_user_data(ud)
     flush_entries_to_disk()
@@ -225,7 +250,14 @@ def patch_entry(key):
         fm[key] = bool(data["from_moshav"])
         ud["from_moshav"] = fm
     # note is not updated via API (internal / import only)
-    if "field" in data or "name" in data or "phone" in data or "extra_info" in data:
+    if (
+        "field" in data
+        or "name" in data
+        or "phone" in data
+        or "phone_display" in data
+        or "extra_info" in data
+        or "phones" in data
+    ):
         ed = ud.get("edits", {})
         if key not in ed:
             ed[key] = {}
@@ -234,11 +266,19 @@ def patch_entry(key):
         if "name" in data:
             ed[key]["name"] = (data.get("name") or "").strip()
         if "phone" in data:
-            new_phone = (data.get("phone") or "").strip()
-            ed[key]["phone"] = new_phone
-            ed[key]["phone_display"] = new_phone
+            ed[key]["phone"] = (data.get("phone") or "").strip()
+        if "phone_display" in data:
+            ed[key]["phone_display"] = (data.get("phone_display") or "").strip()
+        elif "phone" in data:
+            ed[key]["phone_display"] = (data.get("phone") or "").strip()
         if "extra_info" in data:
             ed[key]["extra_info"] = (data.get("extra_info") or "").strip()
+        if "phones" in data:
+            ph = data.get("phones")
+            if isinstance(ph, list) and len(ph) > 1:
+                ed[key]["phones"] = [str(p).strip() for p in ph if str(p).strip()]
+            else:
+                ed[key]["phones"] = None
         ud["edits"] = ed
     save_user_data(ud)
     flush_entries_to_disk()

@@ -337,8 +337,7 @@ def get_restaurants():
 
 @app.route("/api/restaurants", methods=["POST"])
 def add_restaurant():
-    if not check_auth():
-        return jsonify({"ok": False, "error": "נדרשת התחברות"}), 401
+    """הוספת מסעדה פתוחה ללא התחברות; עריכה ומחיקה דורשות אימות."""
     data = request.get_json() or {}
     name = (data.get("name") or "").strip()
     if not name:

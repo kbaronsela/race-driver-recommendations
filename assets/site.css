@@ -41,21 +41,32 @@ body {
   z-index: 20;
 }
 
-.site-sidebar-brand {
-  padding: 1.25rem 1rem 0.75rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #94a3b8;
-}
-
 .site-sidebar-nav {
-  flex: 1;
-  padding: 0.25rem 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+}
+
+/* דף הבית — מעל קבוצת ההמלצות */
+.site-sidebar-nav-site-home {
+  flex: 0 0 auto;
+  padding: 1rem 0.75rem 0.25rem;
+}
+
+.site-sidebar-section-title {
+  margin: 0;
+  padding: 0.65rem 0.75rem 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.site-sidebar-nav-recommendations {
+  flex: 1;
+  padding: 0.15rem 0.75rem 1rem;
+  min-height: 0;
 }
 
 .site-sidebar-nav a {
@@ -185,14 +196,15 @@ body {
     padding: 0.5rem 0;
   }
 
-  .site-sidebar-brand {
+  .site-sidebar-section-title {
     display: none;
   }
 
-  .site-sidebar-nav {
+  .site-sidebar-nav-site-home,
+  .site-sidebar-nav-recommendations {
+    flex: 1 1 auto;
     flex-direction: row;
     flex-wrap: wrap;
-    flex: 1;
     padding: 0.35rem 0.65rem;
     gap: 0.35rem;
   }

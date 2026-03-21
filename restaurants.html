@@ -18,15 +18,12 @@
       --accent-dim: #3b82f620;
       --border: #bfdbfe;
     }
+    a.btn { text-decoration: none; color: inherit; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
     .muted { color: var(--muted); }
     .top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; flex: 1; letter-spacing: -0.02em; }
-    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.25rem; }
-    .rest-login-hint {
-      font-size: 0.9rem; color: var(--accent); background: var(--accent-dim);
-      padding: 0.55rem 0.85rem; border-radius: 10px; margin: 0 0 0.75rem; line-height: 1.45;
-    }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; color: var(--text); }
+    .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
     .btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font: inherit; text-decoration: none; display: inline-block; }
     .btn:hover { border-color: var(--accent); }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -38,7 +35,7 @@
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
     .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
-    .filter-label { color: var(--muted); font-size: 0.9rem; }
+    .filter-field-label { color: var(--muted); font-size: 0.9rem; }
     #typeFilterSelect { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 160px; }
     .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
     .list { margin-top: 1rem; }
@@ -47,15 +44,16 @@
     .card .name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-bottom: 0.35rem; }
     .card .restaurant-name { font-weight: 600; font-size: 1.1rem; line-height: 1.3; }
     .card .name-row .btn-site { font-size: 0.85rem; padding: 0.25rem 0.65rem; text-decoration: none; display: inline-flex; align-items: center; flex-shrink: 0; }
-    .card .rest-type { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; font-weight: 600; }
+    .card .rest-type { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .rest-location { font-size: 0.95rem; color: var(--text); margin-bottom: 0.35rem; }
     .card .rest-location strong { color: var(--muted); font-weight: 600; margin-inline-end: 0.35rem; }
-    .card .note-block { font-size: 0.9rem; color: var(--text); margin-top: 0.5rem; padding: 0.5rem 0.65rem; background: var(--accent-dim); border-radius: 8px; white-space: pre-wrap; }
-    .card .note-block .lbl { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
+    /* כמו בעמוד בעלי מקצוע — מידע נוסף */
+    .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .card .extra-info-display .extra-info-label { font-weight: 600; color: var(--text); margin-inline-end: 0.35rem; }
     .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
-    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 440px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); max-height: 90vh; overflow-y: auto; }
     .modal h3 { margin: 0 0 1rem; }
     .form-row { margin-bottom: 1rem; }
     .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
@@ -64,27 +62,48 @@
     .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
     .hidden { display: none !important; }
     @media (max-width: 768px) {
+      html { width: 100%; overflow-x: hidden; }
+      body { overflow-x: hidden; width: 100%; }
       .search-wrap { position: relative; }
-      .container { padding: 1rem; }
+      .container { padding: 1rem; width: 100%; min-width: 0; }
       .header-row { margin-bottom: 0.75rem; }
-      .top-bar { flex-direction: column; align-items: stretch; }
-      h1 { font-size: 1.35rem; text-align: center; }
-      .card-actions { flex-direction: column; align-items: stretch; }
-      .card-actions .btn { width: 100%; }
-      .modal { align-items: flex-end; }
-      .modal-actions { flex-direction: column; }
-      .modal-actions .btn { width: 100%; }
+      .top-bar { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .top-bar h1 { font-size: 1.35rem; text-align: center; flex: none; }
+      .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+      .search-inner { padding: 0.6rem 0.75rem; }
+      #q { font-size: 1rem; }
+      .card { padding: 0.875rem 1rem; }
+      .card .name-row .restaurant-name { font-size: 1.05rem; }
+      .card-actions { flex-direction: column; align-items: stretch; gap: 0.35rem; }
+      .card-actions .btn { width: 100%; padding: 0.45rem 0.65rem; font-size: 0.85rem; }
+      .modal { align-items: flex-end; padding: 0.75rem; }
+      .modal-inner { max-height: 90vh; overflow-y: auto; margin: auto; }
+      .modal-actions { flex-direction: column; flex-wrap: wrap; }
+      .modal-actions .btn { width: 100%; min-width: 0; flex: 1 1 auto; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0.75rem; }
+      h1 { font-size: 1.2rem; }
+      .top-bar { margin-bottom: 0.75rem; }
+      .card { padding: 0.75rem; margin-bottom: 0.5rem; }
+      .btn { min-height: 2.5rem; padding: 0.5rem 0.75rem; }
+      .modal-inner { padding: 1.25rem; border-radius: 12px 12px 0 0; }
+    }
+    @media (max-width: 768px) {
+      .card .name-row { word-break: break-word; }
     }
   </style>
 </head>
 <body>
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
-      <div class="site-sidebar-brand">ניווט</div>
-      <nav class="site-sidebar-nav">
+      <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html">דף הבית</a>
-        <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">המלצות על בעלי מקצוע</span></a>
-        <a href="restaurants.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">המלצות על מסעדות</span></a>
+      </nav>
+      <h2 class="site-sidebar-section-title">המלצות</h2>
+      <nav class="site-sidebar-nav site-sidebar-nav-recommendations" aria-label="המלצות">
+        <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
+        <a href="restaurants.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>
       </nav>
       <div class="site-sidebar-footer">
         <div class="sidebar-auth">
@@ -103,8 +122,8 @@
     <div class="header-row">
       <div class="header-logos-wrap">
         <div class="header-logos">
-          <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
-          <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo" onerror="this.style.display='none'">
+          <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+          <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
         </div>
       </div>
     </div>
@@ -112,8 +131,7 @@
       <h1>מסעדות מומלצות</h1>
       <button type="button" class="btn btn-primary hidden" id="btnAdd">הוסף מסעדה</button>
     </div>
-    <p id="restLoginHint" class="rest-login-hint hidden">התחברו דרך «התחבר» בתחתית הסרגל כדי להוסיף, לערוך או למחוק מסעדות.</p>
-    <p class="subtitle">חיפוש לפי שם, סוג מסעדה, מיקום או מידע נוסף · חלק מִ«המלצות של נהגות מרוצים»</p>
+    <p class="subtitle">חיפוש לפי שם, סוג מסעדה, מיקום או מידע נוסף</p>
 
     <div class="search-wrap">
       <div class="search-inner">
@@ -121,7 +139,7 @@
         <input type="search" id="q" name="q" placeholder="למשל: איטלקית, רעננה, פיצה…" autocomplete="off" aria-label="חיפוש במסעדות">
       </div>
       <div class="filter-row">
-        <label class="filter-label" for="typeFilterSelect">סוג מסעדה:</label>
+        <label class="filter-field-label" for="typeFilterSelect">סוג מסעדה:</label>
         <select id="typeFilterSelect" aria-label="סינון לפי סוג מסעדה">
           <option value="">הכל</option>
         </select>
@@ -168,14 +186,13 @@
   <div id="modalLogin" class="modal hidden">
     <div class="modal-inner">
       <h3>התחברות</h3>
-      <p class="muted" style="font-size:0.9rem;margin:0 0 1rem;">אותו משתמש וסיסמה כמו בעמוד «עסקים ובעלי מקצוע».</p>
       <div class="form-row">
         <label>משתמש</label>
-        <input type="text" id="loginUserModal" placeholder="משתמש" autocomplete="username">
+        <input type="text" id="loginUserModal" placeholder="משתמש">
       </div>
       <div class="form-row">
         <label>סיסמה</label>
-        <input type="password" id="loginPassModal" placeholder="סיסמה" autocomplete="current-password">
+        <input type="password" id="loginPassModal" placeholder="סיסמה">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
@@ -190,7 +207,6 @@
     let selectedType = null;
     let hasEditMode = false;
     let token = sessionStorage.getItem('token') || '';
-    let pendingAddAfterLogin = false;
 
     function normalize(s) {
       if (s == null || s === '') return '';
@@ -246,29 +262,18 @@
 
     function updateSaveButton() {
       const btnAdd = document.getElementById('btnAdd');
-      const hint = document.getElementById('restLoginHint');
       if (hasEditMode) {
         btnAdd.classList.remove('hidden');
       } else {
         btnAdd.classList.add('hidden');
       }
-      if (hint) {
-        hint.classList.toggle('hidden', !(hasEditMode && !token));
-      }
     }
 
     function openAddRestaurantFlow() {
       if (!hasEditMode) {
-        alert('הוספה ועריכה זמינות כשהאתר רץ דרך השרת (python server.py) ומוגדר בו משתמש וסיסמה.');
+        alert('הוספת מסעדות זמינה כשהאתר רץ דרך השרת (python server.py) ומוגדר בו משתמש וסיסמה. עריכה ומחיקה דורשות התחברות.');
         return;
       }
-      if (!token) {
-        pendingAddAfterLogin = true;
-        document.getElementById('modalLogin').classList.remove('hidden');
-        setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
-        return;
-      }
-      pendingAddAfterLogin = false;
       openAddRestaurantModal();
     }
 
@@ -295,7 +300,7 @@
         html += '</div>';
         if (typ) html += '<div class="rest-type">' + typ + '</div>';
         if (loc) html += '<div class="rest-location"><strong>מיקום:</strong> ' + loc + '</div>';
-        if (extra) html += '<div class="note-block"><span class="lbl">מידע נוסף:</span> ' + escapeHtml(extra) + '</div>';
+        if (extra) html += '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(extra) + '</div>';
         if (canEdit) {
           html += '<div class="card-actions">' +
             '<button type="button" class="btn edit-rest-btn" data-id="' + id + '">ערוך</button>' +
@@ -391,12 +396,10 @@
         return;
       }
       if (!editId) {
-        if (!token) { alert('נדרשת התחברות'); return; }
         try {
-          const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
           const r = await fetch(API + 'api/restaurants', {
             method: 'POST',
-            headers: headers,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, restaurant_type, location, note: '', extra_info, website })
           });
           const data = await r.json().catch(function() { return {}; });
@@ -512,16 +515,11 @@
       if (r.ok && data.token) {
         token = data.token;
         sessionStorage.setItem('token', token);
-        const openAdd = pendingAddAfterLogin;
-        pendingAddAfterLogin = false;
         document.getElementById('modalLogin').classList.add('hidden');
         document.getElementById('loggedArea').classList.remove('hidden');
         document.getElementById('loginArea').classList.add('hidden');
         await load();
         updateSaveButton();
-        if (openAdd) {
-          openAddRestaurantModal();
-        }
       } else {
         alert(data.error || 'התחברות נכשלה');
       }
@@ -536,7 +534,6 @@
         setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
       });
       document.getElementById('btnLoginCancel').addEventListener('click', function() {
-        pendingAddAfterLogin = false;
         document.getElementById('modalLogin').classList.add('hidden');
       });
       document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
@@ -548,7 +545,6 @@
         }
       });
       document.getElementById('btnLogout').addEventListener('click', function() {
-        pendingAddAfterLogin = false;
         token = '';
         sessionStorage.removeItem('token');
         document.getElementById('loggedArea').classList.add('hidden');

@@ -376,31 +376,65 @@
         .replace(/,/g, '\\,');
     }
 
-    function saveContactToDevice(btn) {
+    async function saveContactToDevice(btn) {
       const name = (btn.dataset.name || '').trim() || 'איש קשר';
-      const tel = (btn.dataset.tel || '').trim();
+      const tel = (btn.dataset.tel || '').trim().replace(/[^\d+]/g, '');
       const field = (btn.dataset.field || '').trim();
       const extraInfo = (btn.dataset.extraInfo || '').trim();
       if (!tel) {
         alert('אין מספר טלפון לשמירה');
         return;
       }
-      const lines = ['BEGIN:VCARD', 'VERSION:3.0', 'FN:' + escapeVcfValue(name), 'TEL;TYPE=CELL:' + escapeVcfValue(tel)];
+      const safeName = (name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact') + '.vcf';
+      // vCard 3.0: FN + N (חלק מהאפליקציות במובייל דורשים N). בלי BOM — BOM שובר ייבוא בחלק מהטלפונים.
+      const lines = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        'FN:' + escapeVcfValue(name),
+        'N:;' + escapeVcfValue(name) + ';;;',
+        'TEL;TYPE=CELL;TYPE=VOICE:' + tel
+      ];
       if (field) lines.push('TITLE:' + escapeVcfValue(field));
       if (extraInfo) lines.push('X-EXTRA-INFO:' + escapeVcfValue(extraInfo));
       lines.push('END:VCARD');
       const vcard = lines.join('\r\n');
-      const blob = new Blob(['\ufeff' + vcard], { type: 'text/vcard;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      const safeName = name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact';
-      a.download = safeName + '.vcf';
-      a.rel = 'noopener';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+      const isMobile = isIOS || /Android/i.test(navigator.userAgent || '');
+
+      // 1) מובייל: שיתוף קובץ — בחרי "שמור לאנשי קשר" / "הוסף לאנשי קשר" / "קבצים"
+      try {
+        if (isMobile && navigator.share && typeof File !== 'undefined') {
+          const file = new File([vcard], safeName, { type: 'text/vcard;charset=utf-8' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: name });
+            return;
+          }
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+
+      // 2) הורדת .vcf (ב־iOS לרוב נשמר ל"קבצים" — פתחי משם את הקובץ כדי לייבא לאנשי קשר)
+      try {
+        const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a2 = document.createElement('a');
+        a2.href = url;
+        a2.download = safeName;
+        a2.rel = 'noopener';
+        document.body.appendChild(a2);
+        a2.click();
+        document.body.removeChild(a2);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+        if (isIOS) {
+          setTimeout(function() {
+            alert('באייפון: אם הקובץ נשמר ל"קבצים", פתחי את אפליקציית הקבצים, לחצי על הקובץ ובחרי "הוסף לאנשי קשר".');
+          }, 400);
+        }
+      } catch (e3) {
+        alert('לא ניתן ליצור את קובץ איש הקשר. נסי דפדפן אחר (Chrome / Safari) או שמרי את המספר ידנית.');
+      }
     }
 
     function normKey(entry) {
@@ -451,7 +485,9 @@
       }).join('');
 
       listEl.querySelectorAll('.save-contact-btn').forEach(btn => {
-        btn.addEventListener('click', function() { saveContactToDevice(this); });
+        btn.addEventListener('click', function() {
+          saveContactToDevice(this).catch(function() { /* share cancelled etc. */ });
+        });
       });
 
       if (canEdit) {

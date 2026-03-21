@@ -3,7 +3,8 @@
 """
 Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attachments only).
 Produces JSON: name, phone, field, from_moshav, note, extra_info. Phone numbers in plain text are ignored.
-Contact names are trimmed of leading non-letter/non-digit junk (e.g. leading '.', symbols, marks).
+Contact names are trimmed of leading junk until the first letter (digits, '.', symbols, marks, etc.).
+Only Israeli domestic phone numbers (normalized 10-digit 0…) are kept.
 
 Usage:
   python scripts/whatsapp_to_recommendations.py [path_to.zip] [--output path.json]
@@ -49,10 +50,33 @@ def normalize_phone(s):
     return digits
 
 
+# Israeli national format after normalize_phone (digits only, trunk 0).
+# 10-digit: mobile 05x; geographic 0[23489]+8 subscriber; VoIP 072/073/074/076/077/079 +7.
+# 9-digit: geographic 02/03/04/08/09 + 7-digit subscriber (e.g. 035028838 for 03-5028838).
+_ISRAELI_10_RE = re.compile(
+    r"^(?:05[0-9]\d{7}|0[23489]\d{8}|07[234679]\d{7})$"
+)
+_ISRAELI_9_GEO_RE = re.compile(r"^0[23489]\d{7}$")
+
+
+def is_israeli_phone(s):
+    """True if normalized number is a valid Israeli domestic landline or mobile."""
+    if not s:
+        return False
+    d = normalize_phone(s)
+    if not d.isdigit() or not d.startswith("0"):
+        return False
+    if len(d) == 10:
+        return bool(_ISRAELI_10_RE.match(d))
+    if len(d) == 9:
+        return bool(_ISRAELI_9_GEO_RE.match(d))
+    return False
+
+
 def clean_contact_name_start(s):
     """
-    Strip leading characters that are not Unicode letters (L*) or numbers (N*).
-    Removes leading '.', '-', emoji, RTL marks, spaces, etc. Keeps names like '054 נועה'.
+    Strip leading characters until the first Unicode letter (L*).
+    Removes leading digits, '.', '-', emoji, RTL marks, spaces, etc.
     """
     if not s or not str(s).strip():
         return ""
@@ -60,7 +84,7 @@ def clean_contact_name_start(s):
     i = 0
     while i < len(original):
         cat = unicodedata.category(original[i])
-        if cat[0] in ("L", "N"):
+        if cat[0] == "L":
             break
         i += 1
     out = original[i:].strip()
@@ -711,6 +735,8 @@ def main():
         if key not in by_filename:
             continue
         name, phone = by_filename[key]
+        if not is_israeli_phone(phone):
+            continue
         if not name:
             name = vcf_name.replace(".vcf", "")
         name = clean_contact_name_start(name)

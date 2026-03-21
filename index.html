@@ -362,6 +362,23 @@
     </div>
   </div>
 
+  <div id="modalSaveContact" class="modal hidden">
+    <div class="modal-inner" style="max-width:420px;">
+      <h3 id="saveContactHeading">שמירת איש קשר</h3>
+      <p class="modal-hint" id="saveContactHint" style="margin:0 0 1rem;font-size:0.92rem;line-height:1.45;opacity:0.9;">
+        <strong>שיתוף:</strong> בתפריט שנפתח לרוב מופיעה אפשרות כמו «אנשי קשר», «הוסף לאנשי קשר» או «שמירה לקבצים» — בחרו לפי המכשיר.<br><br>
+        <strong>הורדה:</strong> נשמר קובץ ‎.vcf — פותחים אותו (מההורדות או מ«קבצים») ובוחרים ייבוא לאנשי קשר.
+      </p>
+      <div class="form-row" style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0;">
+        <button type="button" class="btn btn-primary" id="btnSaveContactShare">פתיחת תפריט שיתוף</button>
+        <button type="button" class="btn" id="btnSaveContactDownload">הורדת קובץ ‎.vcf</button>
+      </div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button type="button" class="btn" id="btnSaveContactClose">סגור</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modalLogin" class="modal hidden">
     <div class="modal-inner">
       <h3>התחברות</h3>
@@ -782,7 +799,9 @@
         .replace(/,/g, '\\,');
     }
 
-    async function saveContactToDevice(btn) {
+    let saveContactPending = null;
+
+    function buildVcardFromSaveButton(btn) {
       const name = (btn.dataset.name || '').trim() || 'איש קשר';
       const field = (btn.dataset.field || '').trim();
       const extraInfo = (btn.dataset.extraInfo || '').trim();
@@ -793,10 +812,7 @@
         if (!x.startsWith('+')) x = '+' + x;
         return x;
       }).filter(Boolean);
-      if (!intlList.length) {
-        alert('אין מספר טלפון לשמירה');
-        return;
-      }
+      if (!intlList.length) return null;
       const safeName = (name.replace(/[/\\?%*:|"<>]/g, '_').slice(0, 80) || 'contact') + '.vcf';
       const lines = [
         'BEGIN:VCARD',
@@ -820,71 +836,81 @@
       lines.push('END:VCARD');
       const vcard = lines.join('\r\n');
       const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+      return { name: name, safeName: safeName, blob: blob };
+    }
 
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
-      const isAndroid = /Android/i.test(navigator.userAgent || '');
-      const isMobile = isIOS || isAndroid;
+    function closeSaveContactModal() {
+      document.getElementById('modalSaveContact').classList.add('hidden');
+      saveContactPending = null;
+    }
 
-      async function tryShareVcfFile(mimeType) {
-        if (!navigator.share || typeof File === 'undefined') return false;
-        const file = new File([blob], safeName, { type: mimeType });
-        const payload = { files: [file], title: name };
+    function openSaveContactModal(btn) {
+      const data = buildVcardFromSaveButton(btn);
+      if (!data) {
+        alert('אין מספר טלפון לשמירה');
+        return;
+      }
+      saveContactPending = data;
+      document.getElementById('saveContactHeading').textContent = 'שמירת איש קשר: ' + data.name;
+      const shareBtn = document.getElementById('btnSaveContactShare');
+      const dlBtn = document.getElementById('btnSaveContactDownload');
+      const canTryShare = Boolean(navigator.share && typeof File !== 'undefined');
+      shareBtn.style.display = canTryShare ? '' : 'none';
+      shareBtn.disabled = false;
+      shareBtn.classList.toggle('btn-primary', canTryShare);
+      dlBtn.classList.toggle('btn-primary', !canTryShare);
+      document.getElementById('modalSaveContact').classList.remove('hidden');
+      setTimeout(function() {
+        if (canTryShare) shareBtn.focus();
+        else dlBtn.focus();
+      }, 50);
+    }
+
+    async function runSaveContactShare() {
+      if (!saveContactPending) return;
+      const blob = saveContactPending.blob;
+      const safeName = saveContactPending.safeName;
+      const title = saveContactPending.name;
+
+      async function tryOne(mime) {
+        const file = new File([blob], safeName, { type: mime });
+        const payload = { files: [file], title: title };
         if (navigator.canShare && !navigator.canShare(payload)) return false;
         await navigator.share(payload);
         return true;
       }
 
-      // 1) מובייל: שיתוף קובץ — בגיליון השיתוף לבחור "אנשי קשר" / "הוסף לאנשי קשר" / "Create new contact"
-      if (isMobile && navigator.share && typeof File !== 'undefined') {
-        try {
-          if (await tryShareVcfFile('text/vcard;charset=utf-8')) return;
-        } catch (e) {
-          if (e && e.name === 'AbortError') return;
-        }
-        try {
-          if (await tryShareVcfFile('text/x-vcard;charset=utf-8')) return;
-        } catch (e) {
-          if (e && e.name === 'AbortError') return;
-        }
-        try {
-          // iOS / דפדפנים שבהם canShare מחזיר שגוי — ניסיון שיתוף ישיר
-          const file = new File([blob], safeName, { type: 'text/vcard;charset=utf-8' });
-          await navigator.share({ files: [file], title: name });
-          return;
-        } catch (e2) {
-          if (e2 && e2.name === 'AbortError') return;
-        }
-      }
-
-      // 2) אנדרואיד: פתיחת ה־VCF בלי download — לעיתים מוצע "פתיחה באנשי קשר" (ב־iOS לרוב לא עובד עם blob)
-      if (isAndroid) {
-        try {
-          const url = URL.createObjectURL(blob);
-          const newWin = window.open(url, '_blank', 'noopener,noreferrer');
-          if (newWin) {
-            setTimeout(function() { URL.revokeObjectURL(url); }, 120000);
-            setTimeout(function() {
-              alert('אם הופיעה הורדה: פתחי את ההתראה או את הקובץ מההורדות ובחרי "אנשי קשר" או "הוסף איש קשר".');
-            }, 500);
-            return;
-          }
-          const aOpen = document.createElement('a');
-          aOpen.href = url;
-          aOpen.target = '_blank';
-          aOpen.rel = 'noopener noreferrer';
-          document.body.appendChild(aOpen);
-          aOpen.click();
-          document.body.removeChild(aOpen);
-          setTimeout(function() { URL.revokeObjectURL(url); }, 120000);
-          setTimeout(function() {
-            alert('אם הופיעה הורדה: פתחי את הקובץ ובחרי שמירה לאנשי קשר.');
-          }, 500);
-          return;
-        } catch (e4) { /* נפילה להורדה */ }
-      }
-
-      // 3) מחשב / נפילה: הורדת .vcf
       try {
+        if (await tryOne('text/vcard;charset=utf-8')) {
+          closeSaveContactModal();
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+      try {
+        if (await tryOne('text/x-vcard;charset=utf-8')) {
+          closeSaveContactModal();
+          return;
+        }
+      } catch (e) {
+        if (e && e.name === 'AbortError') return;
+      }
+      try {
+        const file = new File([blob], safeName, { type: 'text/vcard;charset=utf-8' });
+        await navigator.share({ files: [file], title: title });
+        closeSaveContactModal();
+      } catch (e2) {
+        if (e2 && e2.name === 'AbortError') return;
+        alert('השיתוף לא הצליח. נסו «הורדת קובץ ‎.vcf» ואז לפתוח את הקובץ מההורדות או מ«קבצים».');
+      }
+    }
+
+    function runSaveContactDownload() {
+      if (!saveContactPending) return;
+      try {
+        const blob = saveContactPending.blob;
+        const safeName = saveContactPending.safeName;
         const url = URL.createObjectURL(blob);
         const a2 = document.createElement('a');
         a2.href = url;
@@ -893,16 +919,25 @@
         document.body.appendChild(a2);
         a2.click();
         document.body.removeChild(a2);
-        setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
-        if (isIOS) {
-          setTimeout(function() {
-            alert('באייפון: אם הקובץ נשמר ל"קבצים", פתחי את הקובץ ובחרי "הוסף לאנשי קשר". אפשר גם ללחוץ שוב על "שמור איש קשר" ולבחור "אנשי קשר" בגיליון השיתוף.');
-          }, 400);
-        }
+        setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
       } catch (e3) {
-        alert('לא ניתן ליצור את קובץ איש הקשר. נסי דפדפן אחר (Chrome / Safari) או שמרי את המספר ידנית.');
+        alert('לא ניתן להוריד את הקובץ. נסו דפדפן אחר (Chrome / Safari).');
       }
     }
+
+    document.getElementById('btnSaveContactShare').addEventListener('click', function() {
+      runSaveContactShare().catch(function() { /* share failed */ });
+    });
+    document.getElementById('btnSaveContactDownload').addEventListener('click', function() {
+      runSaveContactDownload();
+    });
+    document.getElementById('btnSaveContactClose').addEventListener('click', closeSaveContactModal);
+    document.getElementById('modalSaveContact').addEventListener('click', function(e) {
+      if (e.target === this) closeSaveContactModal();
+    });
+    document.getElementById('modalSaveContact').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSaveContactModal();
+    });
 
     function closePickPhoneModal() {
       document.getElementById('modalPickPhone').classList.add('hidden');
@@ -1003,7 +1038,7 @@
             ? '<button type="button" class="pick-wa-btn" data-key="' + escapeAttr(key) + '">וואטסאפ</button>'
             : '';
           const saveBtn = allTelsPipe
-            ? '<button type="button" class="save-contact-btn" title="במובייל: בגיליון השיתוף בחרי &quot;אנשי קשר&quot; או &quot;הוסף לאנשי קשר&quot;" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
+            ? '<button type="button" class="save-contact-btn" title="שמירה לאנשי קשר — שיתוף או הורדת קובץ" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
             : '';
           nameContactActions = '<span class="phone-actions name-contact-actions">' + callBtn + waBtn + saveBtn + '</span>';
         }
@@ -1039,7 +1074,7 @@
 
       listEl.querySelectorAll('.save-contact-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-          saveContactToDevice(this).catch(function() { /* share cancelled etc. */ });
+          openSaveContactModal(this);
         });
       });
 

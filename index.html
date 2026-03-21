@@ -54,6 +54,7 @@
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
     .card:hover { border-color: var(--accent); }
     .card .name { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card .name .name-contact-actions { flex-shrink: 0; }
     .card .field { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .field:empty { display: none; }
     .card .extra-info-display { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
@@ -65,7 +66,9 @@
     .card .phone:hover { text-decoration: underline; }
     .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
     .card .phone-actions a,
-    .card .phone-actions .save-contact-btn {
+    .card .phone-actions .save-contact-btn,
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn {
       font-size: 0.85rem;
       font-weight: 400;
       line-height: 1.2;
@@ -78,8 +81,18 @@
       justify-content: center;
       box-sizing: border-box;
     }
-    .card .phone-actions a { text-decoration: none; }
-    .card .phone-actions a:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-actions a,
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn { text-decoration: none; }
+    .card .phone-actions a:hover,
+    .card .phone-actions button.pick-call-btn:hover,
+    .card .phone-actions button.pick-wa-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-actions button.pick-call-btn,
+    .card .phone-actions button.pick-wa-btn {
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
     .card .phone-actions .save-contact-btn {
       font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--surface);
@@ -116,6 +129,18 @@
     .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
     .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.12); }
+    .modal-inner.modal-pick-phone { max-width: 420px; }
+    .pick-phone-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.5rem 0 0; max-height: min(55vh, 320px); overflow-y: auto; }
+    .pick-phone-item {
+      display: block; width: 100%; text-align: right; padding: 0.65rem 0.85rem; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff; color: var(--text); font: inherit; cursor: pointer;
+      text-decoration: none; box-sizing: border-box;
+    }
+    .pick-phone-item:hover { border-color: var(--accent); color: var(--accent); }
+    .pick-phone-item.muted { cursor: default; opacity: 0.65; border-style: dashed; }
+    .pick-phone-item.muted:hover { border-color: var(--border); color: var(--muted); }
+    .pick-phone-item .pick-phone-label { font-weight: 600; display: block; }
+    .pick-phone-item .pick-phone-hint { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
     .modal h3 { margin: 0 0 1rem; }
     .form-row { margin-bottom: 1rem; }
     .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
@@ -162,6 +187,8 @@
       .card { padding: 0.75rem; margin-bottom: 0.5rem; }
       .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
       .card .phone-actions a,
+      .card .phone-actions button.pick-call-btn,
+      .card .phone-actions button.pick-wa-btn,
       .card .phone-actions .save-contact-btn,
       .card .phone-wrap > .save-contact-btn {
         padding: 0.35rem 0.5rem;
@@ -302,6 +329,16 @@
       <div class="modal-actions">
         <button type="button" class="btn" id="btnEditPhonesCancel">ביטול</button>
         <button type="button" class="btn btn-primary" id="btnEditPhonesSubmit">עדכן</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalPickPhone" class="modal hidden">
+    <div class="modal-inner modal-pick-phone">
+      <h3 id="pickPhoneTitle">בחר מספר</h3>
+      <div id="pickPhoneList" class="pick-phone-list"></div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button type="button" class="btn" id="btnPickPhoneCancel">סגור</button>
       </div>
     </div>
   </div>
@@ -604,6 +641,74 @@
       }
     }
 
+    function closePickPhoneModal() {
+      document.getElementById('modalPickPhone').classList.add('hidden');
+      document.getElementById('pickPhoneList').innerHTML = '';
+    }
+
+    function focusFirstPickPhoneItem() {
+      const listEl = document.getElementById('pickPhoneList');
+      const first = listEl.querySelector('a.pick-phone-item');
+      if (first) first.focus();
+      else document.getElementById('btnPickPhoneCancel').focus();
+    }
+
+    /**
+     * בסלולר אין תקן ל־tel: עם כמה מספרים — פותחים מודל לבחירה.
+     * מספר אחד: מעבר ישיר לחייגן / וואטסאפ.
+     */
+    function openPickPhoneModal(mode, key) {
+      const entry = entries.find(function(e) { return (e._key || normKey(e)) === key; });
+      if (!entry) return;
+      const plist = getPhonesList(entry).filter(function(p) { return p.digits; });
+      const title = document.getElementById('pickPhoneTitle');
+      const listEl = document.getElementById('pickPhoneList');
+      const modal = document.getElementById('modalPickPhone');
+
+      if (mode === 'tel') {
+        if (!plist.length) return;
+        if (plist.length === 1) {
+          window.location.href = 'tel:' + plist[0].digits;
+          return;
+        }
+        title.textContent = 'לאיזה מספר להתקשר?';
+        listEl.innerHTML = plist.map(function(p) {
+          return '<a class="pick-phone-item" href="' + escapeAttr('tel:' + p.digits) + '"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span></a>';
+        }).join('');
+        modal.classList.remove('hidden');
+        setTimeout(focusFirstPickPhoneItem, 50);
+        return;
+      }
+
+      if (mode === 'wa') {
+        const waPlist = plist.filter(function(p) { return waMeFromDigits(p.digits); });
+        if (!waPlist.length) {
+          alert('אין מספר נייד ישראלי זמין לוואטסאפ ברשומה זו.');
+          return;
+        }
+        if (plist.length === 1) {
+          const u = waMeFromDigits(plist[0].digits);
+          if (u) window.open(u, '_blank', 'noopener');
+          return;
+        }
+        title.textContent = 'לאיזה מספר לשלוח בוואטסאפ?';
+        listEl.innerHTML = plist.map(function(p) {
+          const url = waMeFromDigits(p.digits);
+          if (url) {
+            return '<a class="pick-phone-item" href="' + escapeAttr(url) + '" target="_blank" rel="noopener"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span></a>';
+          }
+          return '<div class="pick-phone-item muted"><span class="pick-phone-label">' + escapeHtml(p.display) + '</span><span class="pick-phone-hint">לא נייד ישראלי — אין קישור וואטסאפ ישיר</span></div>';
+        }).join('');
+        listEl.querySelectorAll('a.pick-phone-item').forEach(function(a) {
+          a.addEventListener('click', function() {
+            setTimeout(closePickPhoneModal, 200);
+          });
+        });
+        modal.classList.remove('hidden');
+        setTimeout(focusFirstPickPhoneItem, 50);
+      }
+    }
+
     function normKey(entry) {
       const raw = (entry && (entry.phone || entry.phone_display || '')) || '';
       const p = String(raw).replace(/\D/g, '');
@@ -624,23 +729,27 @@
         const allIntl = plist.map(function(p) { return toIntlTel(p.digits); }).filter(Boolean);
         const allTelsPipe = allIntl.join('|');
         const extraForVcf = String((e.extra_info != null ? e.extra_info : '') || '').trim().slice(0, 2000);
+        const hasAnyDigit = plist.some(function(p) { return p.digits; });
+        const hasAnyWa = plist.some(function(p) { return waMeFromDigits(p.digits); });
+        let nameContactActions = '';
+        if (hasAnyDigit || hasAnyWa || allTelsPipe) {
+          const callBtn = hasAnyDigit
+            ? '<button type="button" class="pick-call-btn" data-key="' + escapeAttr(key) + '">התקשר</button>'
+            : '';
+          const waBtn = hasAnyWa
+            ? '<button type="button" class="pick-wa-btn" data-key="' + escapeAttr(key) + '">וואטסאפ</button>'
+            : '';
+          const saveBtn = allTelsPipe
+            ? '<button type="button" class="save-contact-btn" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
+            : '';
+          nameContactActions = '<span class="phone-actions name-contact-actions">' + callBtn + waBtn + saveBtn + '</span>';
+        }
         let phoneBlock = '';
         if (!plist.length) {
           phoneBlock = '<div class="phone muted">—</div>';
         } else {
-          phoneBlock = '<div class="phone-lines">' + plist.map(function(p, i) {
-            const d = p.digits;
-            const disp = escapeHtml(p.display);
-            if (!d) {
-              return '<div class="phone-line"><span class="phone-num">' + disp + '</span></div>';
-            }
-            const tel = 'tel:' + d;
-            const waLink = waMeFromDigits(d) || '#';
-            const saveBtn = (i === 0 && allTelsPipe)
-              ? '<button type="button" class="save-contact-btn" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
-              : '';
-            const callWa = '<span class="phone-actions"><a href="' + tel + '">התקשר</a><a href="' + waLink + '" target="_blank" rel="noopener">וואטסאפ</a>' + saveBtn + '</span>';
-            return '<div class="phone-line"><span class="phone-num">' + disp + '</span> ' + callWa + '</div>';
+          phoneBlock = '<div class="phone-lines">' + plist.map(function(p) {
+            return '<div class="phone-line"><span class="phone-num">' + escapeHtml(p.display) + '</span></div>';
           }).join('') + '</div>';
         }
         const badge = e.from_moshav ? '<span class="badge">מהמושב</span>' : '';
@@ -657,7 +766,7 @@
           </div>`;
         }
         return `<article class="card" data-key="${escapeHtml(key)}">
-          <div class="name">${escapeHtml(e.name)}${badge}</div>
+          <div class="name">${escapeHtml(e.name)}${badge}${nameContactActions}</div>
           ${field}
           ${phoneBlock}
           ${extraInfoHtml}
@@ -668,6 +777,17 @@
       listEl.querySelectorAll('.save-contact-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           saveContactToDevice(this).catch(function() { /* share cancelled etc. */ });
+        });
+      });
+
+      listEl.querySelectorAll('.pick-call-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openPickPhoneModal('tel', this.dataset.key);
+        });
+      });
+      listEl.querySelectorAll('.pick-wa-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openPickPhoneModal('wa', this.dataset.key);
         });
       });
 
@@ -1148,6 +1268,17 @@
         load();
       });
     }
+
+    document.getElementById('btnPickPhoneCancel').addEventListener('click', closePickPhoneModal);
+    document.getElementById('modalPickPhone').addEventListener('click', function(e) {
+      if (e.target === this) closePickPhoneModal();
+    });
+    document.getElementById('modalPickPhone').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closePickPhoneModal();
+      }
+    });
 
     loadFields();
     load().then(() => bindLoginHandlers());

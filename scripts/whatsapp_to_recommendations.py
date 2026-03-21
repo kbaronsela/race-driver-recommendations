@@ -5,6 +5,7 @@ Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attac
 Produces JSON: name, phone, field, from_moshav, note, extra_info. Phone numbers in plain text are ignored.
 Contact names are trimmed of leading junk until the first letter (digits, '.', symbols, marks, etc.).
 Only Israeli domestic phone numbers (normalized 10-digit 0…) are kept.
+Duplicate contacts (same field, related names, different numbers) are merged into one row with a phones[] list.
 
 Usage:
   python scripts/whatsapp_to_recommendations.py [path_to.zip] [--output path.json]
@@ -24,6 +25,7 @@ DEFAULT_ZIP = r"G:\My Drive\ai\whatsapp test bck.zip"
 DEFAULT_OUT = ROOT / "data" / "entries.json"
 
 from additional_info import infer_additional_info  # noqa: E402
+from duplicate_contact_merge import apply_duplicate_merge_to_entries  # noqa: E402
 
 # WhatsApp chat line: 18/06/2015, 16:33 - ‎‫סיגל ראב‬‎: message
 CHAT_LINE_RE = re.compile(
@@ -365,6 +367,10 @@ FIELD_KEYWORDS = [
     # לא "ספר" לבד — מתאים גם ל"הספר" (ספר קריאה) בהערות ממוזגות
     ("פן", "מספרה"),
     ("מנעולן", "מנעולן"),
+    ("תיקון שעונים", "שענות"),
+    ("שעונאי", "שענות"),
+    ("שעונים", "שענות"),
+    ("שען", "שענות"),
     ("הדברה", "הדברה"),
     ("מדביר", "הדברה"),
     ("עוזרת בית", "ניקיון"),
@@ -692,6 +698,30 @@ def infer_field_from_context(context_messages):
     return infer_field_from_text(text)
 
 
+# שענות: הקשר בלבד (5 הודעות לפני ה־VCF) לעיתים תופס המלצה על שען מהשיחה הסמוכה.
+_SHAANUT_MARKERS = (
+    "תיקון שעונים",
+    "חנות שעונים",
+    "שעונאי",
+    "שעונים",
+    "שען",
+)
+
+
+def refine_field_shaanut(field, name, note):
+    """Keep שענות only if name or note contains a watchmaking cue; else clear."""
+    if field != "שענות":
+        return field
+    combined = normalize_infer_text((name or "") + " " + (note or ""))
+    if not combined.strip():
+        return ""
+    comb_cf = combined.casefold()
+    for m in _SHAANUT_MARKERS:
+        if m.casefold() in comb_cf:
+            return field
+    return ""
+
+
 def infer_from_moshav(context_messages, message_text):
     """Check if any context or the message mentions מושב."""
     combined = message_text + " " + " ".join(msg[2] for msg in context_messages)
@@ -759,8 +789,10 @@ def main():
                         field = infer_field_from_text(name)
                         if not field:
                             field = infer_field_from_note(merged_note)
-                        if field:
-                            e["field"] = field
+                        if not field:
+                            field = e.get("field") or ""
+                        field = refine_field_shaanut(field, name, merged_note)
+                        e["field"] = field
                         e["extra_info"] = infer_additional_info(
                             e.get("name") or "", e.get("note") or "", e.get("field") or ""
                         )
@@ -774,6 +806,7 @@ def main():
             field = infer_field_from_note(note)
         if not field:
             field = infer_field_from_context(context)
+        field = refine_field_shaanut(field, name, note)
         from_moshav = infer_from_moshav(context, message_text)
         entries.append({
             "name": name,
@@ -784,6 +817,10 @@ def main():
             "extra_info": infer_additional_info(name, note, field),
         })
     print(f"  Found {len(entries)} recommended contacts from VCF attachments only", flush=True)
+
+    entries, n_dup_groups = apply_duplicate_merge_to_entries(entries)
+    if n_dup_groups:
+        print(f"  Merged {n_dup_groups} duplicate group(s) -> {len(entries)} entries (phones[] where merged)", flush=True)
 
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(entries, f, ensure_ascii=False, indent=2)

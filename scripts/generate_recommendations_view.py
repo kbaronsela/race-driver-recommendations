@@ -88,10 +88,21 @@ def main():
       fieldFilter.appendChild(opt);
     });
 
+    function phoneList(r) {
+      if (Array.isArray(r.phones) && r.phones.length) return r.phones;
+      return r.phone ? [r.phone] : [];
+    }
+    function formatPhoneLinks(r) {
+      const list = phoneList(r);
+      if (!list.length) return '—';
+      return list.map(display => {
+        const digits = (display || '').replace(/\\D/g, '');
+        const tel = digits ? 'tel:+972' + (digits.startsWith('0') ? digits.slice(1) : digits) : '';
+        return tel ? `<a href="${tel}">${escapeHtml(display)}</a>` : escapeHtml(display);
+      }).join(' <span class="phone-sep">·</span> ');
+    }
     function render(rows) {
       tbody.innerHTML = rows.map(r => {
-        const phone = (r.phone || '').replace(/\\D/g, '');
-        const tel = phone ? 'tel:+972' + (phone.startsWith('0') ? phone.slice(1) : phone) : '';
         const name = escapeHtml(r.name || '');
         const field = escapeHtml(r.field || '');
         const extra = escapeHtml(r['extra_info'] || '');
@@ -99,7 +110,7 @@ def main():
         const moshav = r.from_moshav ? '<span class="moshav">מהמושב</span>' : '';
         return `<tr>
           <td>${name}</td>
-          <td class="phone">${tel ? `<a href="${tel}">${escapeHtml(r.phone)}</a>` : escapeHtml(r.phone)}</td>
+          <td class="phone">${formatPhoneLinks(r)}</td>
           <td class="field ${!r.field ? 'empty' : ''}">${field || '—'}</td>
           <td class="field ${!r['extra_info'] ? 'empty' : ''}">${extra || '—'}</td>
           <td>${moshav}</td>
@@ -125,6 +136,7 @@ def main():
         const haystack = [
           r.name || '',
           r.phone || '',
+          ...(Array.isArray(r.phones) ? r.phones : []),
           r.field || '',
           String(r['extra_info'] ?? ''),
           r.note || ''

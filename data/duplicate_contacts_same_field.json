@@ -1,0 +1,14 @@
+{
+  "criteria": {
+    "exact": "אותו שם מנורמל + אותו תחום + לפחות 2 מספרים",
+    "extended": "אותו תחום + 2 מספרים + שמות שונים: קידומת מחרוזת אחרי רווח, או מילות השם הקצר מופיעות בתוך הארוך בסדר (נרמול ל- ראש מילה)",
+    "excluded_generic_names": [
+      "ניקוי ספות"
+    ],
+    "excluded_generic_note": "שמות כלליים בלבד — לא נכללים באיחוד מול שום רשומה"
+  },
+  "total_groups_exact": 0,
+  "total_groups_extended": 0,
+  "groups_exact": [],
+  "groups_extended": []
+}

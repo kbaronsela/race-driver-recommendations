@@ -43,7 +43,6 @@
     }
     .search-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     #q { flex: 1; min-width: 0; background: none; border: none; color: var(--text); font: inherit; font-size: 1.05rem; outline: none; }
-    .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
     .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
     .filter-field-label { color: var(--muted); font-size: 0.9rem; }
     .filter-field-select { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: 0.9rem; min-width: 140px; }
@@ -62,6 +61,7 @@
     .filter-moshav { margin-top: 0; }
     .filter-moshav-label { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
     .filter-moshav-label:hover { color: var(--text); }
+    .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
     .list { margin-top: 1rem; }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; transition: border-color 0.2s; }
     .card:hover { border-color: var(--accent); }
@@ -254,16 +254,16 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input type="search" id="q" name="q" placeholder="למשל: אינסטלטור, מספרה, רופא..." autocomplete="search-term">
       </div>
-      <p class="count" id="count"></p>
       <div class="filter-row">
         <label class="filter-field-label" for="fieldFilterInput">תחום:</label>
         <div class="field-combobox filter-field-combobox">
           <input type="text" id="fieldFilterInput" class="filter-field-select field-combobox-input" autocomplete="off"
-            placeholder="חיפוש תחום או בחירה מהרשימה" aria-label="סינון לפי תחום" role="combobox" aria-expanded="false" aria-controls="fieldFilterList" aria-autocomplete="list">
+            aria-label="סינון לפי תחום" role="combobox" aria-expanded="false" aria-controls="fieldFilterList" aria-autocomplete="list">
           <ul id="fieldFilterList" class="field-combobox-list hidden" role="listbox"></ul>
         </div>
         <label class="filter-moshav-label"><input type="checkbox" id="filterFromMoshav"> מהמושב בלבד</label>
       </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
     </div>
 
     <div class="list" id="list"><p class="loading">טוען...</p></div>
@@ -1164,7 +1164,8 @@
     }
 
     function updateCount(n) {
-      document.getElementById('count').textContent = n + ' רשומות';
+      const el = document.getElementById('count');
+      if (el) el.textContent = n + ' רשומות';
     }
 
     function updateSaveButton() {

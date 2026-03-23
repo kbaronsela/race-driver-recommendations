@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site-sidebar.js" defer></script>
   <style>
     :root {
       --bg: #f8fafc;
@@ -154,6 +155,11 @@
 <body>
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
+      <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel">
+        <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
+        <span class="site-sidebar-menu-toggle-text">תפריט</span>
+      </button>
+      <div class="site-sidebar-panel" id="site-sidebar-panel">
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
       </nav>
@@ -178,6 +184,7 @@
             <button type="button" class="btn" id="btnLogout">התנתק</button>
           </div>
         </div>
+      </div>
       </div>
     </aside>
     <main class="site-main">

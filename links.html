@@ -47,26 +47,29 @@
       gap: 0.45rem 0.65rem;
     }
     .link-card .arrow { margin-top: 0.45rem; font-size: 0.85rem; color: var(--heading); font-weight: 600; }
+    /* אליפסה (pill) — גבול ירוק, ללא מילוי */
     .link-kind--whatsapp {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       font-size: 0.78rem;
       font-weight: 700;
-      color: #fff;
-      background: var(--wa);
-      padding: 0.32rem 0.75rem;
+      color: var(--wa);
+      background: transparent;
+      border: 1.5px solid var(--wa);
+      padding: 0.3rem 0.72rem;
       border-radius: 999px;
       margin: 0;
       line-height: 1.2;
       flex-shrink: 0;
-      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+      box-sizing: border-box;
     }
     .link-kind--whatsapp .wa-icon {
       flex-shrink: 0;
       width: 1rem;
       height: 1rem;
       display: block;
+      color: var(--wa);
     }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
@@ -139,7 +142,7 @@
                   קבוצת וואטסאפ
                 </span>
               </div>
-              <div class="arrow">פתיחת הקבוצה בוואטסאפ ←</div>
+              <div class="arrow">להצטרפות לקבוצה בוואטסאפ ←</div>
             </div>
           </a>
           <a class="link-card" href="https://chat.whatsapp.com/BaIXwTkGO4GFvltZrmmorg" target="_blank" rel="noopener noreferrer" title="חדשות מועצה דרום השרון (יישובי צפון מערב המועצה)" aria-label="קבוצת וואטסאפ: חדשות מועצה דרום השרון">
@@ -152,7 +155,7 @@
                   קבוצת וואטסאפ
                 </span>
               </div>
-              <div class="arrow">פתיחת הקבוצה בוואטסאפ ←</div>
+              <div class="arrow">להצטרפות לקבוצה בוואטסאפ ←</div>
             </div>
           </a>
           <a class="link-card" href="https://www.sdewarburg.co.il/" target="_blank" rel="noopener noreferrer" title="אתר שדה ורבורג">

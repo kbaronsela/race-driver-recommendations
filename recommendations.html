@@ -33,6 +33,7 @@
     }
     .home-card h2 {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.45rem;
       margin: 0;
@@ -44,7 +45,13 @@
       line-height: 1;
       flex-shrink: 0;
     }
-    .home-card .arrow { margin-top: 0.65rem; font-size: 0.9rem; color: var(--heading); font-weight: 600; }
+    .home-card h2 .home-card-arrow {
+      font-weight: 600;
+      font-size: 1em;
+      margin-inline-start: 0.2em;
+      flex-shrink: 0;
+      color: var(--heading);
+    }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
     .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
@@ -102,12 +109,10 @@
         <h1>המלצות של נהגות מרוצים</h1>
         <nav class="home-cards" aria-label="קטגוריות">
           <a href="professionals.html" class="home-card">
-            <h2><span class="home-card-emoji" aria-hidden="true">🛠️</span>בעלי מקצוע ועסקים מומלצים</h2>
-            <div class="arrow">כניסה ←</div>
+            <h2><span class="home-card-emoji" aria-hidden="true">🛠️</span>בעלי מקצוע ועסקים מומלצים<span class="home-card-arrow" aria-hidden="true">←</span></h2>
           </a>
           <a href="restaurants.html" class="home-card">
-            <h2><span class="home-card-emoji" aria-hidden="true">🍽️</span>מסעדות</h2>
-            <div class="arrow">כניסה ←</div>
+            <h2><span class="home-card-emoji" aria-hidden="true">🍽️</span>מסעדות<span class="home-card-arrow" aria-hidden="true">←</span></h2>
           </a>
         </nav>
       </div>

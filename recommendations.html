@@ -31,9 +31,20 @@
       box-shadow: 0 12px 40px var(--heading-shadow);
       transform: translateY(-2px);
     }
-    .home-card h2 { margin: 0 0 0.35rem; font-size: 1.25rem; color: var(--heading); }
-    .home-card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-    .home-card .arrow { margin-top: 0.75rem; font-size: 0.9rem; color: var(--heading); font-weight: 600; }
+    .home-card h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--heading);
+    }
+    .home-card h2 .home-card-emoji {
+      font-size: 1.35em;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .home-card .arrow { margin-top: 0.65rem; font-size: 0.9rem; color: var(--heading); font-weight: 600; }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
     .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
@@ -91,13 +102,11 @@
         <h1>המלצות של נהגות מרוצים</h1>
         <nav class="home-cards" aria-label="קטגוריות">
           <a href="professionals.html" class="home-card">
-            <h2>בעלי מקצוע ועסקים מומלצים</h2>
-            <p>אנשי מקצוע ועסקים מומלצים — חיפוש לפי שם, תחום וטלפון.</p>
+            <h2><span class="home-card-emoji" aria-hidden="true">🛠️</span>בעלי מקצוע ועסקים מומלצים</h2>
             <div class="arrow">כניסה ←</div>
           </a>
           <a href="restaurants.html" class="home-card">
-            <h2>מסעדות</h2>
-            <p>מסעדות מומלצות — סוג, מיקום ומידע מהקהילה.</p>
+            <h2><span class="home-card-emoji" aria-hidden="true">🍽️</span>מסעדות</h2>
             <div class="arrow">כניסה ←</div>
           </a>
         </nav>

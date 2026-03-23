@@ -53,17 +53,18 @@ body {
   padding: 1rem 0.75rem 0.25rem;
 }
 
+/* כותרת «המלצות» — אותו קו וגודל כמו דף הבית / מידע / קישורים (padding כמו קישור ראשי) */
 .site-sidebar-section-title {
-  margin: 0;
-  padding: 0.65rem 0.75rem 0.35rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #f8fafc;
+  margin: 0 0.75rem;
+  padding: 0.7rem 0.9rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #cbd5e1;
   letter-spacing: -0.02em;
   line-height: 1.3;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
   flex-wrap: wrap;
 }
 
@@ -80,11 +81,11 @@ body {
 
 .site-sidebar-nav-recommendations {
   flex: 1;
-  padding: 0.15rem 0.75rem 0.5rem;
+  padding: 0.1rem 0.75rem 0.45rem;
   min-height: 0;
-  /* הזחה תחת כותרת «המלצות» (RTL) */
-  margin-inline-start: 0.35rem;
-  padding-inline-start: 0.7rem;
+  /* תת־ניווט: הזחה נוספת + גודל קטן יותר (בעלי מקצוע / מסעדות) */
+  margin-inline-start: 0.55rem;
+  padding-inline-start: 0.95rem;
   border-inline-start: 2px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -132,6 +133,18 @@ body {
   flex-shrink: 0;
   font-size: 1.15em;
   line-height: 1;
+}
+
+/* בעלי מקצוע / מסעדות — קטן יותר מהשורה הראשית */
+.site-sidebar-nav-recommendations a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+}
+
+.site-sidebar-nav-recommendations a .nav-emoji {
+  font-size: 1.05em;
 }
 
 .site-sidebar-footer {
@@ -250,6 +263,16 @@ body {
   .site-sidebar-nav a {
     padding: 0.5rem 0.75rem;
     font-size: 0.88rem;
+  }
+
+  .site-sidebar-nav-recommendations a {
+    font-size: 0.82rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .site-sidebar-nav-recommendations {
+    margin-inline-start: 0.4rem;
+    padding-inline-start: 0.65rem;
   }
 
   .site-sidebar-footer {

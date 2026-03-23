@@ -27,11 +27,12 @@
       padding: 1rem 1.2rem;
       margin-bottom: 0.85rem;
     }
+    /* כותרות מקטע — var(--muted) כמו שורת המשנה של החיפוש במסעדות, לא כחול קישור */
     .info-section h2 {
       margin: 0 0 0.65rem;
       font-size: 1.05rem;
       font-weight: 700;
-      color: var(--accent);
+      color: var(--muted);
       border-bottom: 1px solid var(--border);
       padding-bottom: 0.4rem;
     }
@@ -51,53 +52,67 @@
       line-height: 1.55;
     }
     .phone-line:last-child { margin-bottom: 0; }
-    .btn-call {
+    /* כמו .card .phone-actions button.pick-call-btn / .pick-wa-btn ב־professionals (ובכרטיסי מסעדות כשיש פעולות דומות) */
+    .info-phone-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+    .info-section .btn-call,
+    .info-section .btn-wa {
+      font-size: 0.85rem;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--muted) !important;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      font-family: inherit;
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      background: var(--accent);
-      color: #fff !important;
+      box-sizing: border-box;
       text-decoration: none !important;
+      background: var(--surface);
+      font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
-      transition: filter 0.15s, box-shadow 0.15s;
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
     }
-    .btn-call:hover {
-      filter: brightness(1.08);
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
-    }
-    .info-section li .btn-call { margin-inline-start: 0.25rem; vertical-align: middle; }
-    .btn-wa {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      font-family: inherit;
-      border: 1px solid #20bd5a;
-      border-radius: 8px;
-      background: #25d366;
-      color: #fff !important;
+    .info-section .btn-call:hover,
+    .info-section .btn-wa:hover {
+      color: var(--accent) !important;
+      border-color: var(--accent);
       text-decoration: none !important;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: filter 0.15s, box-shadow 0.15s;
     }
-    .btn-wa:hover {
-      filter: brightness(1.06);
-      box-shadow: 0 2px 10px rgba(37, 211, 102, 0.45);
+    .info-section li .info-phone-actions { margin-inline-start: 0.15rem; vertical-align: middle; }
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2); }
+    .modal h3 { margin: 0 0 1rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
+    .form-row input { width: 100%; padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font: inherit; box-sizing: border-box; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+    .modal-actions .btn {
+      padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font: inherit; cursor: pointer;
     }
-    .info-section li .btn-wa { margin-inline-start: 0.25rem; vertical-align: middle; }
+    .modal-actions .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       h1 { font-size: 1.4rem; }
+    }
+    @media (max-width: 480px) {
+      .info-section .btn-call,
+      .info-section .btn-wa {
+        padding: 0.35rem 0.5rem;
+        min-height: 2.25rem;
+        font-size: 0.85rem;
+        line-height: 1.2;
+      }
     }
   </style>
 </head>
@@ -155,9 +170,9 @@
 
         <section class="info-section" aria-labelledby="h-office">
           <h2 id="h-office">מזכירות</h2>
-          <p class="phone-line">טלפון: <a href="tel:+97297483120">09-7483120</a> <a class="btn-call" href="tel:+97297483120" aria-label="התקשר למזכירות">התקשר</a></p>
-          <p class="phone-line">וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a> <a class="btn-wa" href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למזכירות">וואטסאפ</a></p>
-          <p class="phone-line">ינק: <a href="tel:+972537723871">053-7723871</a> <a class="btn-call" href="tel:+972537723871" aria-label="התקשר לינק">התקשר</a></p>
+          <p class="phone-line">טלפון: <a href="tel:+97297483120">09-7483120</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+97297483120" aria-label="התקשר למזכירות">התקשר</a></span></p>
+          <p class="phone-line">וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a> <span class="info-phone-actions"><a class="btn-wa" href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למזכירות">וואטסאפ</a></span></p>
+          <p class="phone-line">ינק: <a href="tel:+972537723871">053-7723871</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972537723871" aria-label="התקשר לינק">התקשר</a></span></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-mail">
@@ -192,7 +207,7 @@
             <li>א׳–ה׳: 06:30–20:30</li>
             <li>שישי: 06:00–16:00</li>
           </ul>
-          <p class="phone-line">משלוחים: <a href="tel:+972534498881">053-4498881</a> <a class="btn-call" href="tel:+972534498881" aria-label="התקשר למשלוחי המכולת">התקשר</a> <a class="btn-wa" href="https://wa.me/972534498881" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למשלוחי המכולת">וואטסאפ</a></p>
+          <p class="phone-line">משלוחים: <a href="tel:+972534498881">053-4498881</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972534498881" aria-label="התקשר למשלוחי המכולת">התקשר</a><a class="btn-wa" href="https://wa.me/972534498881" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למשלוחי המכולת">וואטסאפ</a></span></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-lib">
@@ -204,13 +219,108 @@
           <h2 id="h-more">עוד פרטים</h2>
           <ul>
             <li><strong>דואר רמת הכובש:</strong> ימים ראשון עד חמישי, 9:00–12:00</li>
-            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063 <a class="btn-call" href="tel:%2A2063" aria-label="התקשר לתמיכת סיבים">התקשר</a></li>
-            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a> <a class="btn-call" href="tel:+972548081490" aria-label="התקשר לנציג רשות הטבע והגנים">התקשר</a> <a class="btn-wa" href="https://wa.me/972548081490" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ לנציג רשות הטבע והגנים">וואטסאפ</a></li>
+            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063 <span class="info-phone-actions"><a class="btn-call" href="tel:%2A2063" aria-label="התקשר לתמיכת סיבים">התקשר</a></span></li>
+            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972548081490" aria-label="התקשר לנציג רשות הטבע והגנים">התקשר</a><a class="btn-wa" href="https://wa.me/972548081490" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ לנציג רשות הטבע והגנים">וואטסאפ</a></span></li>
             <li><strong>דוכן התותים של יובל סיני</strong> בצומת בית ברל — פתוח בימים ב׳–ה׳ 11:00–17:00, ובשישי 08:00–16:00</li>
           </ul>
         </section>
       </div>
     </main>
   </div>
+
+  <div id="modalLogin" class="modal hidden">
+    <div class="modal-inner">
+      <h3>התחברות</h3>
+      <p class="muted" style="font-size:0.9rem;margin:0 0 1rem;">אותו משתמש וסיסמה כמו בעמוד העריכה.</p>
+      <div class="form-row">
+        <label>משתמש</label>
+        <input type="text" id="loginUserModal" placeholder="משתמש" autocomplete="username">
+      </div>
+      <div class="form-row">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassModal" placeholder="סיסמה" autocomplete="current-password">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnLoginSubmit">התחבר</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+    let token = sessionStorage.getItem('token') || '';
+    let hasEditMode = false;
+
+    function syncAuthUI() {
+      if (!hasEditMode) {
+        document.getElementById('loginArea').classList.add('hidden');
+        document.getElementById('loggedArea').classList.add('hidden');
+        return;
+      }
+      if (token) {
+        document.getElementById('loggedArea').classList.remove('hidden');
+        document.getElementById('loginArea').classList.add('hidden');
+      } else {
+        document.getElementById('loginArea').classList.remove('hidden');
+        document.getElementById('loggedArea').classList.add('hidden');
+      }
+    }
+
+    async function initAuth() {
+      try {
+        const r = await fetch(API + 'api/entries');
+        const data = await r.json();
+        hasEditMode = data.has_edit_mode === true;
+      } catch (e) {
+        hasEditMode = false;
+      }
+      const foot = document.querySelector('.site-sidebar-footer');
+      if (foot) foot.style.display = hasEditMode ? '' : 'none';
+      syncAuthUI();
+    }
+
+    async function doLoginSubmit() {
+      const user = document.getElementById('loginUserModal').value.trim();
+      const pass = document.getElementById('loginPassModal').value;
+      const r = await fetch(API + 'api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, password: pass })
+      });
+      const data = await r.json().catch(function() { return {}; });
+      if (r.ok && data.token) {
+        token = data.token;
+        sessionStorage.setItem('token', token);
+        document.getElementById('modalLogin').classList.add('hidden');
+        syncAuthUI();
+      } else {
+        alert(data.error || 'התחברות נכשלה');
+      }
+    }
+
+    document.getElementById('btnLogin').addEventListener('click', function() {
+      document.getElementById('modalLogin').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
+    });
+    document.getElementById('btnLoginCancel').addEventListener('click', function() {
+      document.getElementById('modalLogin').classList.add('hidden');
+    });
+    document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
+    document.getElementById('btnLogout').addEventListener('click', function() {
+      token = '';
+      sessionStorage.removeItem('token');
+      syncAuthUI();
+    });
+    document.getElementById('modalLogin').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') document.getElementById('btnLoginCancel').click();
+      else if (e.key === 'Enter' && e.target.id !== 'btnLoginCancel') {
+        e.preventDefault();
+        doLoginSubmit();
+      }
+    });
+
+    initAuth();
+  </script>
 </body>
 </html>

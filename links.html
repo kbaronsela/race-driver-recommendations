@@ -42,6 +42,19 @@
     .link-card .title { font-weight: 700; font-size: 1.05rem; color: var(--accent); margin: 0 0 0.35rem; }
     .link-card .desc { font-size: 0.9rem; color: var(--muted); margin: 0; line-height: 1.5; }
     .link-card .arrow { margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal-inner { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; max-width: 400px; width: 100%; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2); }
+    .modal h3 { margin: 0 0 1rem; }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
+    .form-row input { width: 100%; padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--text); font: inherit; box-sizing: border-box; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+    .modal-actions .btn {
+      padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font: inherit; cursor: pointer;
+    }
+    .modal-actions .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       h1 { font-size: 1.4rem; }
@@ -119,5 +132,100 @@
       </div>
     </main>
   </div>
+
+  <div id="modalLogin" class="modal hidden">
+    <div class="modal-inner">
+      <h3>התחברות</h3>
+      <p class="muted" style="font-size:0.9rem;margin:0 0 1rem;">אותו משתמש וסיסמה כמו בעמוד העריכה.</p>
+      <div class="form-row">
+        <label>משתמש</label>
+        <input type="text" id="loginUserModal" placeholder="משתמש" autocomplete="username">
+      </div>
+      <div class="form-row">
+        <label>סיסמה</label>
+        <input type="password" id="loginPassModal" placeholder="סיסמה" autocomplete="current-password">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btnLoginCancel">ביטול</button>
+        <button type="button" class="btn btn-primary" id="btnLoginSubmit">התחבר</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';
+    let token = sessionStorage.getItem('token') || '';
+    let hasEditMode = false;
+
+    function syncAuthUI() {
+      if (!hasEditMode) {
+        document.getElementById('loginArea').classList.add('hidden');
+        document.getElementById('loggedArea').classList.add('hidden');
+        return;
+      }
+      if (token) {
+        document.getElementById('loggedArea').classList.remove('hidden');
+        document.getElementById('loginArea').classList.add('hidden');
+      } else {
+        document.getElementById('loginArea').classList.remove('hidden');
+        document.getElementById('loggedArea').classList.add('hidden');
+      }
+    }
+
+    async function initAuth() {
+      try {
+        const r = await fetch(API + 'api/entries');
+        const data = await r.json();
+        hasEditMode = data.has_edit_mode === true;
+      } catch (e) {
+        hasEditMode = false;
+      }
+      const foot = document.querySelector('.site-sidebar-footer');
+      if (foot) foot.style.display = hasEditMode ? '' : 'none';
+      syncAuthUI();
+    }
+
+    async function doLoginSubmit() {
+      const user = document.getElementById('loginUserModal').value.trim();
+      const pass = document.getElementById('loginPassModal').value;
+      const r = await fetch(API + 'api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, password: pass })
+      });
+      const data = await r.json().catch(function() { return {}; });
+      if (r.ok && data.token) {
+        token = data.token;
+        sessionStorage.setItem('token', token);
+        document.getElementById('modalLogin').classList.add('hidden');
+        syncAuthUI();
+      } else {
+        alert(data.error || 'התחברות נכשלה');
+      }
+    }
+
+    document.getElementById('btnLogin').addEventListener('click', function() {
+      document.getElementById('modalLogin').classList.remove('hidden');
+      setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
+    });
+    document.getElementById('btnLoginCancel').addEventListener('click', function() {
+      document.getElementById('modalLogin').classList.add('hidden');
+    });
+    document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
+    document.getElementById('btnLogout').addEventListener('click', function() {
+      token = '';
+      sessionStorage.removeItem('token');
+      syncAuthUI();
+    });
+    document.getElementById('modalLogin').addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') document.getElementById('btnLoginCancel').click();
+      else if (e.key === 'Enter' && e.target.id !== 'btnLoginCancel') {
+        e.preventDefault();
+        doLoginSubmit();
+      }
+    });
+
+    initAuth();
+  </script>
 </body>
 </html>

@@ -82,89 +82,85 @@
     .card .phone-line { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
     .card .phone { color: var(--green); text-decoration: none; font-variant-numeric: tabular-nums; }
     .card .phone:hover { text-decoration: underline; }
-    .card .phone-actions { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
+    /* כפתורי פעולה — כמו בעמוד מידע (רקע נייטרלי + SVG) */
+    .card .phone-actions { display: inline-flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+    .prof-act-icon {
+      width: 1.125rem;
+      height: 1.125rem;
+      display: block;
+      flex-shrink: 0;
+    }
     .card .phone-actions a,
     .card .phone-actions .save-contact-btn,
     .card .phone-actions button.pick-call-btn,
     .card .phone-actions button.pick-wa-btn {
-      font-size: 0.85rem;
+      line-height: 1;
       font-weight: 400;
-      line-height: 1.2;
-      color: var(--muted);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-    }
-    .card .phone-actions a,
-    .card .phone-actions button.pick-call-btn,
-    .card .phone-actions button.pick-wa-btn { text-decoration: none; }
-    .card .phone-actions a:hover { color: var(--accent); border-color: var(--accent); }
-    .card .phone-actions button.pick-call-btn,
-    .card .phone-actions button.pick-wa-btn {
+      text-decoration: none;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
       margin: 0;
       -webkit-appearance: none;
       appearance: none;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
     }
-    /* 📞 התקשר — רקע עדין (לא ירוק) */
-    .card .phone-actions button.pick-call-btn {
-      font-size: 1.1rem;
-      line-height: 1;
-      padding: 0.3rem 0.45rem;
-      background: #e8ecf4;
-      border-color: #c5d0e0;
+    .card .phone-actions a:hover,
+    .card .phone-actions button.pick-call-btn:hover,
+    .card .phone-actions button.pick-wa-btn:hover,
+    .card .phone-actions .save-contact-btn:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #334155;
     }
-    .card .phone-actions button.pick-call-btn:hover {
-      background: #dce3f0;
-      border-color: var(--accent);
-      color: var(--accent);
+    .card .phone-actions button.pick-call-btn svg {
+      color: #475569;
     }
-    /* 💬 וואטסאפ — רקע ירקרק */
-    .card .phone-actions button.pick-wa-btn {
-      font-size: 1.1rem;
-      line-height: 1;
-      padding: 0.3rem 0.45rem;
-      background: #d1fae5;
-      border-color: rgba(16, 185, 129, 0.4);
+    .card .phone-actions button.pick-call-btn:hover svg {
+      color: #334155;
     }
-    .card .phone-actions button.pick-wa-btn:hover {
-      background: #bbf7d0;
-      border-color: #10b981;
-      color: #047857;
+    .card .phone-actions button.pick-wa-btn svg {
+      color: #0f766e;
+    }
+    .card .phone-actions button.pick-wa-btn:hover svg {
+      color: #0d5c56;
     }
     .card .phone-actions .save-contact-btn {
-      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--surface);
-      cursor: pointer;
-      margin: 0;
-      -webkit-appearance: none;
-      appearance: none;
+      font-size: 1.15rem;
     }
-    .card .phone-actions .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
     .card .phone-wrap > .save-contact-btn {
       margin-top: 0.25rem;
-      font-size: 0.85rem;
+      line-height: 1;
       font-weight: 400;
-      line-height: 1.2;
-      color: var(--muted);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--surface);
+      font-family: inherit;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #475569;
       cursor: pointer;
       margin-inline-end: 0;
       -webkit-appearance: none;
       appearance: none;
+      font-size: 1.15rem;
     }
-    .card .phone-wrap > .save-contact-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .card .phone-wrap > .save-contact-btn:hover {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #334155;
+    }
     .card-actions { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
     .card-actions label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
     .no-results, .loading { text-align: center; color: var(--muted); padding: 2rem 1rem; }
@@ -224,19 +220,13 @@
       .card .phone-wrap { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
       .card .phone-actions a,
       .card .phone-actions .save-contact-btn,
-      .card .phone-wrap > .save-contact-btn {
-        padding: 0.35rem 0.5rem;
-        min-height: 2.25rem;
-        font-size: 0.85rem;
-        line-height: 1.2;
-      }
       .card .phone-actions button.pick-call-btn,
-      .card .phone-actions button.pick-wa-btn {
-        padding: 0.4rem 0.55rem;
-        min-height: 2.35rem;
-        font-size: 1.15rem;
-        line-height: 1;
+      .card .phone-actions button.pick-wa-btn,
+      .card .phone-wrap > .save-contact-btn {
+        padding: 0.45rem 0.55rem;
+        min-height: 2.4rem;
       }
+      .prof-act-icon { width: 1.2rem; height: 1.2rem; }
       .card-actions { flex-direction: column; align-items: stretch; }
       .card-actions .btn { width: 100%; }
       .card-actions label { justify-content: center; }
@@ -459,6 +449,9 @@
 
   <script>
     const API = ''; // same origin when served by server
+    /** SVG — אותו סגנון כמו info.html */
+    var PROF_ICON_PHONE_SVG = '<svg class="prof-act-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+    var PROF_ICON_CHAT_SVG = '<svg class="prof-act-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
     let entries = [];
     let baseEntries = [];
     let hasEditMode = false;
@@ -1142,13 +1135,13 @@
         let nameContactActions = '';
         if (hasAnyDigit || hasAnyWa || allTelsPipe) {
           const callBtn = hasAnyDigit
-            ? '<button type="button" class="pick-call-btn" data-key="' + escapeAttr(key) + '" title="התקשר" aria-label="התקשר">📞</button>'
+            ? '<button type="button" class="pick-call-btn" data-key="' + escapeAttr(key) + '" title="התקשר" aria-label="התקשר">' + PROF_ICON_PHONE_SVG + '</button>'
             : '';
           const waBtn = hasAnyWa
-            ? '<button type="button" class="pick-wa-btn" data-key="' + escapeAttr(key) + '" title="וואטסאפ" aria-label="וואטסאפ">💬</button>'
+            ? '<button type="button" class="pick-wa-btn" data-key="' + escapeAttr(key) + '" title="וואטסאפ" aria-label="וואטסאפ">' + PROF_ICON_CHAT_SVG + '</button>'
             : '';
           const saveBtn = allTelsPipe
-            ? '<button type="button" class="save-contact-btn" title="שמירה לאנשי קשר — שיתוף או הורדת קובץ" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">שמור איש קשר</button>'
+            ? '<button type="button" class="save-contact-btn" title="שמירה לאנשי קשר — שיתוף או הורדת קובץ" aria-label="שמור איש קשר" data-name="' + escapeAttr(e.name || '') + '" data-all-tels="' + escapeAttr(allTelsPipe) + '" data-field="' + escapeAttr((e.field || '').trim()) + '" data-extra-info="' + escapeAttr(extraForVcf) + '">📇</button>'
             : '';
           nameContactActions = '<span class="phone-actions name-contact-actions">' + callBtn + waBtn + saveBtn + '</span>';
         }

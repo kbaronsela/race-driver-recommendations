@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>נהגת מרוצים – דף הבית</title>
+  <title>דף המלצות – נהגות מרוצים</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,37 +17,24 @@
       --border: #e2e8f0;
     }
     .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; }
-    .home-hero {
-      text-align: center;
-      padding: 1rem 0 2.5rem;
+    .header-logos { margin-bottom: 1.5rem; }
+    h1 { font-size: 1.9rem; font-weight: 700; margin: 0 0 0.5rem; text-align: center; letter-spacing: -0.03em; }
+    .lead { color: var(--muted); text-align: center; font-size: 1.05rem; margin: 0 0 2rem; }
+    .home-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .home-card {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 1.4rem 1.5rem; transition: border-color 0.2s, box-shadow 0.25s, transform 0.2s;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
     }
-    .home-hero-logo {
-      width: min(88vw, 440px);
-      height: auto;
-      max-height: min(42vh, 320px);
-      object-fit: contain;
-      margin: 0 auto 1.75rem;
-      display: block;
-      filter: drop-shadow(0 16px 48px rgba(15, 23, 42, 0.14));
+    .home-card:hover {
+      border-color: var(--heading-border-strong);
+      box-shadow: 0 12px 40px var(--heading-shadow);
+      transform: translateY(-2px);
     }
-    .home-hero-title {
-      font-size: clamp(2.25rem, 7vw, 3.5rem);
-      font-weight: 700;
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.045em;
-      line-height: 1.1;
-      color: var(--heading, #0f766e);
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-    }
-    .home-hero-lead {
-      font-size: clamp(1.05rem, 2.8vw, 1.2rem);
-      font-weight: 500;
-      color: var(--muted);
-      margin: 0;
-      line-height: 1.65;
-      max-width: 28em;
-      margin-inline: auto;
-    }
+    .home-card h2 { margin: 0 0 0.35rem; font-size: 1.25rem; color: var(--heading); }
+    .home-card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .home-card .arrow { margin-top: 0.75rem; font-size: 0.9rem; color: var(--heading); font-weight: 600; }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
     .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
@@ -63,7 +50,7 @@
     .modal-actions .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     @media (max-width: 768px) {
       .container { padding: 1.25rem 1rem; }
-      .home-hero { padding: 0.5rem 0 3rem; }
+      h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -71,9 +58,9 @@
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
-        <a href="index.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
+        <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
       </nav>
-      <a href="recommendations.html" class="site-sidebar-section-title site-sidebar-section-link" aria-label="דף המלצות — בחירת קטגוריה"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></a>
+      <a href="recommendations.html" class="site-sidebar-section-title site-sidebar-section-link is-current" aria-current="page" aria-label="דף המלצות — בחירת קטגוריה"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></a>
       <nav class="site-sidebar-nav site-sidebar-nav-recommendations" aria-label="המלצות">
         <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
         <a href="restaurants.html"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>
@@ -98,11 +85,24 @@
     </aside>
     <main class="site-main">
       <div class="container">
-        <header class="home-hero">
-          <img src="assets/logo-race-driver.png" alt="לוגו נהגת מרוצים" class="home-hero-logo" width="440" height="320" onerror="this.style.display='none'">
-          <h1 class="home-hero-title">נהגת מרוצים</h1>
-          <p class="home-hero-lead">ברוכות הבאות לאתר הקהילה — המלצות, מידע וקישורים שימושיים נמצאים בסרגל הצד.</p>
-        </header>
+        <div class="header-logos">
+          <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
+          <img src="assets/logo-race-driver.png" alt="נהגת מרוצים" class="logo" onerror="this.style.display='none'">
+        </div>
+        <h1>המלצות של נהגות מרוצים</h1>
+        <p class="lead">בחרו את סוג ההמלצות שברצונכם לצפות בהן</p>
+        <nav class="home-cards" aria-label="קטגוריות">
+          <a href="professionals.html" class="home-card">
+            <h2>עסקים ובעלי מקצוע</h2>
+            <p>אנשי מקצוע ועסקים מומלצים — חיפוש לפי שם, תחום וטלפון.</p>
+            <div class="arrow">כניסה ←</div>
+          </a>
+          <a href="restaurants.html" class="home-card">
+            <h2>מסעדות</h2>
+            <p>מסעדות מומלצות — סוג, מיקום ומידע מהקהילה.</p>
+            <div class="arrow">כניסה ←</div>
+          </a>
+        </nav>
       </div>
     </main>
   </div>

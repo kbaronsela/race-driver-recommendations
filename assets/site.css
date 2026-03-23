@@ -91,6 +91,27 @@ body {
   min-width: 0;
 }
 
+/* כותרת «המלצות» כקישור לדף בחירת קטגוריה */
+a.site-sidebar-section-title.site-sidebar-section-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+a.site-sidebar-section-title.site-sidebar-section-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+a.site-sidebar-section-title.site-sidebar-section-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+a.site-sidebar-section-title.site-sidebar-section-link.is-current {
+  background: rgba(13, 148, 136, 0.45);
+  color: #fff;
+}
+
 /* לא flex:1 — אחרת נוצר רווח גדול ודוחף את מידע/קישורים למטה; הריווח מתחת לניווט יילך לפוטר (margin-top: auto) */
 .site-sidebar-nav-recommendations {
   flex: 0 0 auto;
@@ -258,8 +279,18 @@ body {
     padding: 0.5rem 0;
   }
 
-  .site-sidebar-section-title {
+  /* כותרת רגילה מוסתרת במובייל; קישור «המלצות» נשאר גלוי */
+  .site-sidebar-section-title:not(.site-sidebar-section-link) {
     display: none;
+  }
+  a.site-sidebar-section-title.site-sidebar-section-link {
+    display: flex;
+    flex: 1 1 100%;
+    width: 100%;
+    justify-content: center;
+    margin: 0.35rem 0.65rem 0.15rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
   }
 
   .site-sidebar-nav-site-home,

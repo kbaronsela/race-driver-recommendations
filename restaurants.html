@@ -54,34 +54,37 @@
     .card:hover { border-color: var(--accent); }
     .card .name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-bottom: 0.35rem; }
     .card .restaurant-name { font-weight: 600; font-size: 1.1rem; line-height: 1.3; }
-    /* כמו כפתורי פעולה בעמוד מידע — קומפקטי, רק אימוג'י */
+    /* כפתור אתר — אותו בסיס כמו כפתורי התקשר / וואטסאפ בעמוד בעלי מקצוע (🌐 נשאר) */
     .card .rest-site-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      line-height: 1;
+      font-weight: 400;
+      font-size: 1.15rem;
       padding: 0.4rem 0.5rem;
       min-height: 2.25rem;
       flex-shrink: 0;
       border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
       text-decoration: none;
-      line-height: 1;
-      font-size: 1.15rem;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      margin: 0;
       background: #f1f5f9;
       border: 1px solid #e2e8f0;
-      color: inherit;
-      box-shadow: none;
-      transition: background 0.15s, border-color 0.15s;
+      color: #475569;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     }
     .card .rest-site-link:hover {
       background: #e2e8f0;
       border-color: #cbd5e1;
+      color: #334155;
     }
     .card .rest-site-link:focus-visible {
       outline: none;
       box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
-    }
-    .card .rest-site-link:active {
-      background: #cbd5e1;
     }
     .card .rest-type { color: var(--card-category); font-size: 0.95rem; margin-bottom: 0.35rem; }
     .card .rest-location { font-size: 0.95rem; color: var(--text); margin-bottom: 0.35rem; }
@@ -131,7 +134,7 @@
       .card .rest-site-link {
         padding: 0.45rem 0.55rem;
         min-height: 2.4rem;
-        font-size: 1.2rem;
+        font-size: 1.15rem;
       }
     }
     @media (max-width: 768px) {
@@ -145,7 +148,7 @@
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
       </nav>
-      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></h2>
+      <a href="recommendations.html" class="site-sidebar-section-title site-sidebar-section-link" aria-label="דף המלצות — בחירת קטגוריה"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></a>
       <nav class="site-sidebar-nav site-sidebar-nav-recommendations" aria-label="המלצות">
         <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
         <a href="restaurants.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>

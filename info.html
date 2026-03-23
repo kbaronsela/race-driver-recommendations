@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>מידע שימושי – שדה ורבורג</title>
+  <title>מידע – שדה ורבורג</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -42,6 +42,59 @@
     .info-section a { color: var(--accent); text-decoration: none; }
     .info-section a:hover { text-decoration: underline; }
     .info-section .note { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    .phone-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      margin: 0 0 0.5rem;
+      line-height: 1.55;
+    }
+    .phone-line:last-child { margin-bottom: 0; }
+    .btn-call {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff !important;
+      text-decoration: none !important;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: filter 0.15s, box-shadow 0.15s;
+    }
+    .btn-call:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.35);
+    }
+    .info-section li .btn-call { margin-inline-start: 0.25rem; vertical-align: middle; }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid #20bd5a;
+      border-radius: 8px;
+      background: #25d366;
+      color: #fff !important;
+      text-decoration: none !important;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: filter 0.15s, box-shadow 0.15s;
+    }
+    .btn-wa:hover {
+      filter: brightness(1.06);
+      box-shadow: 0 2px 10px rgba(37, 211, 102, 0.45);
+    }
+    .info-section li .btn-wa { margin-inline-start: 0.25rem; vertical-align: middle; }
     @media (max-width: 768px) {
       .container { padding: 1rem; }
       h1 { font-size: 1.4rem; }
@@ -59,17 +112,11 @@
         <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
         <a href="restaurants.html"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>
       </nav>
-      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">ℹ️</span><span class="section-label">מידע</span></h2>
       <nav class="site-sidebar-nav site-sidebar-nav-info" aria-label="מידע">
-        <a href="info.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">📌</span><span class="nav-label">מידע שימושי</span></a>
-        <a href="view_recommendations.html"><span class="nav-emoji" aria-hidden="true">📋</span><span class="nav-label">תצוגת המלצות</span></a>
-        <a href="view_restaurants.html"><span class="nav-emoji" aria-hidden="true">📄</span><span class="nav-label">תצוגת מסעדות</span></a>
+        <a href="info.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">ℹ️</span><span class="nav-label">מידע</span></a>
       </nav>
-      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">🔗</span><span class="section-label">קישורים</span></h2>
-      <nav class="site-sidebar-nav site-sidebar-nav-links" aria-label="קישורים חיצוניים">
-        <a href="https://chat.whatsapp.com/BsmPt6AdL4fLHio9ympv8u" target="_blank" rel="noopener noreferrer" title="למסירה באהבה - שדה ורבורג"><span class="nav-emoji" aria-hidden="true">💬</span><span class="nav-label">למסירה באהבה — שדה ורבורג</span></a>
-        <a href="https://chat.whatsapp.com/BaIXwTkGO4GFvltZrmmorg" target="_blank" rel="noopener noreferrer" title="חדשות מועצה דרום השרון (יישובי צפון מערב המועצה)"><span class="nav-emoji" aria-hidden="true">📰</span><span class="nav-label">חדשות מועצה דרום השרון</span></a>
-        <a href="https://www.sdewarburg.co.il/" target="_blank" rel="noopener noreferrer" title="אתר שדה ורבורג"><span class="nav-emoji" aria-hidden="true">🏘️</span><span class="nav-label">אתר המושב</span></a>
+      <nav class="site-sidebar-nav site-sidebar-nav-links" aria-label="קישורים">
+        <a href="links.html"><span class="nav-emoji" aria-hidden="true">🔗</span><span class="nav-label">קישורים</span></a>
       </nav>
       <div class="site-sidebar-footer">
         <div class="sidebar-auth">
@@ -93,8 +140,8 @@
             </div>
           </div>
         </div>
-        <h1>מידע שימושי</h1>
-        <p class="lead">פרטים שימושיים למושב שדה ורבורג — שעות, טלפונים ושירותים. לעדכונים רשמיים עקבו אחרי המזכירות והודעות ההנהלה.</p>
+        <h1>מידע</h1>
+        <p class="lead">מידע שימושי למושב שדה ורבורג — שעות, טלפונים ושירותים. לעדכונים רשמיים עקבו אחרי המזכירות והודעות ההנהלה.</p>
 
         <section class="info-section" aria-labelledby="h-gate">
           <h2 id="h-gate">שער אחורי</h2>
@@ -108,9 +155,9 @@
 
         <section class="info-section" aria-labelledby="h-office">
           <h2 id="h-office">מזכירות</h2>
-          <p>טלפון: <a href="tel:+97297483120">09-7483120</a></p>
-          <p>וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a></p>
-          <p>ינק: <a href="tel:+972537723871">053-7723871</a></p>
+          <p class="phone-line">טלפון: <a href="tel:+97297483120">09-7483120</a> <a class="btn-call" href="tel:+97297483120" aria-label="התקשר למזכירות">התקשר</a></p>
+          <p class="phone-line">וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a> <a class="btn-wa" href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למזכירות">וואטסאפ</a></p>
+          <p class="phone-line">ינק: <a href="tel:+972537723871">053-7723871</a> <a class="btn-call" href="tel:+972537723871" aria-label="התקשר לינק">התקשר</a></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-mail">
@@ -145,7 +192,7 @@
             <li>א׳–ה׳: 06:30–20:30</li>
             <li>שישי: 06:00–16:00</li>
           </ul>
-          <p>משלוחים: <a href="tel:+972534498881">053-4498881</a></p>
+          <p class="phone-line">משלוחים: <a href="tel:+972534498881">053-4498881</a> <a class="btn-call" href="tel:+972534498881" aria-label="התקשר למשלוחי המכולת">התקשר</a> <a class="btn-wa" href="https://wa.me/972534498881" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למשלוחי המכולת">וואטסאפ</a></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-lib">
@@ -157,8 +204,8 @@
           <h2 id="h-more">עוד פרטים</h2>
           <ul>
             <li><strong>דואר רמת הכובש:</strong> ימים ראשון עד חמישי, 9:00–12:00</li>
-            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063</li>
-            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a></li>
+            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063 <a class="btn-call" href="tel:%2A2063" aria-label="התקשר לתמיכת סיבים">התקשר</a></li>
+            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a> <a class="btn-call" href="tel:+972548081490" aria-label="התקשר לנציג רשות הטבע והגנים">התקשר</a> <a class="btn-wa" href="https://wa.me/972548081490" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ לנציג רשות הטבע והגנים">וואטסאפ</a></li>
             <li><strong>דוכן התותים של יובל סיני</strong> בצומת בית ברל — פתוח בימים ב׳–ה׳ 11:00–17:00, ובשישי 08:00–16:00</li>
           </ul>
         </section>

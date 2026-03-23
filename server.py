@@ -517,6 +517,11 @@ def info_page():
     return send_from_directory(APP_DIR, "info.html")
 
 
+@app.route("/links.html")
+def links_page():
+    return send_from_directory(APP_DIR, "links.html")
+
+
 @app.route("/view_recommendations.html")
 def view_recommendations_page():
     return send_from_directory(APP_DIR, "view_recommendations.html")

@@ -82,6 +82,10 @@ body {
   flex: 1;
   padding: 0.15rem 0.75rem 0.5rem;
   min-height: 0;
+  /* הזחה תחת כותרת «המלצות» (RTL) */
+  margin-inline-start: 0.35rem;
+  padding-inline-start: 0.7rem;
+  border-inline-start: 2px solid rgba(255, 255, 255, 0.14);
 }
 
 .site-sidebar-nav-info,
@@ -91,7 +95,13 @@ body {
   min-height: 0;
 }
 
+/* קישור «מידע» יחיד — ריווח מתחת לבלוק ההמלצות */
+.site-sidebar-nav-info {
+  padding-top: 0.5rem;
+}
+
 .site-sidebar-nav-links {
+  padding-top: 0.5rem;
   padding-bottom: 1rem;
 }
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>קישורים – שדה ורבורג</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    :root {
+      --bg: #f0f4fb;
+      --surface: #ffffff;
+      --text: #1a2d4a;
+      --muted: #5a7a9e;
+      --accent: #2563eb;
+      --border: #bfdbfe;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.02em; }
+    .lead { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.5rem; }
+    .links-list { display: flex; flex-direction: column; gap: 0.85rem; }
+    .link-card {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    }
+    .link-card:hover {
+      border-color: rgba(37, 99, 235, 0.4);
+      box-shadow: 0 8px 28px rgba(37, 99, 235, 0.12);
+      transform: translateY(-1px);
+    }
+    .link-card .emoji { font-size: 1.75rem; line-height: 1; flex-shrink: 0; }
+    .link-card .body { min-width: 0; }
+    .link-card .title { font-weight: 700; font-size: 1.05rem; color: var(--accent); margin: 0 0 0.35rem; }
+    .link-card .desc { font-size: 0.9rem; color: var(--muted); margin: 0; line-height: 1.5; }
+    .link-card .arrow { margin-top: 0.5rem; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <aside class="site-sidebar" aria-label="ניווט ראשי">
+      <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
+        <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
+      </nav>
+      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></h2>
+      <nav class="site-sidebar-nav site-sidebar-nav-recommendations" aria-label="המלצות">
+        <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
+        <a href="restaurants.html"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>
+      </nav>
+      <nav class="site-sidebar-nav site-sidebar-nav-info" aria-label="מידע">
+        <a href="info.html"><span class="nav-emoji" aria-hidden="true">ℹ️</span><span class="nav-label">מידע</span></a>
+      </nav>
+      <nav class="site-sidebar-nav site-sidebar-nav-links" aria-label="קישורים">
+        <a href="links.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🔗</span><span class="nav-label">קישורים</span></a>
+      </nav>
+      <div class="site-sidebar-footer">
+        <div class="sidebar-auth">
+          <div id="loginArea" class="login-wrap hidden">
+            <button type="button" class="btn" id="btnLogin">התחבר</button>
+          </div>
+          <div id="loggedArea" class="logged-row hidden">
+            <span class="muted">מחובר</span>
+            <button type="button" class="btn" id="btnLogout">התנתק</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="site-main">
+      <div class="container">
+        <div class="header-row">
+          <div class="header-logos-wrap">
+            <div class="header-logos">
+              <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+              <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+            </div>
+          </div>
+        </div>
+        <h1>קישורים</h1>
+        <p class="lead">קבוצות ואתרים שימושיים הקשורים לשדה ורבורג ולסביבה.</p>
+
+        <div class="links-list">
+          <a class="link-card" href="https://chat.whatsapp.com/BsmPt6AdL4fLHio9ympv8u" target="_blank" rel="noopener noreferrer" title="למסירה באהבה - שדה ורבורג">
+            <span class="emoji" aria-hidden="true">💬</span>
+            <div class="body">
+              <p class="title">למסירה באהבה — שדה ורבורג</p>
+              <p class="desc">קבוצת וואטסאפ של המושב</p>
+              <div class="arrow">פתיחה בלשונית חדשה ←</div>
+            </div>
+          </a>
+          <a class="link-card" href="https://chat.whatsapp.com/BaIXwTkGO4GFvltZrmmorg" target="_blank" rel="noopener noreferrer" title="חדשות מועצה דרום השרון (יישובי צפון מערב המועצה)">
+            <span class="emoji" aria-hidden="true">📰</span>
+            <div class="body">
+              <p class="title">חדשות מועצה דרום השרון</p>
+              <p class="desc">יישובי צפון מערב המועצה</p>
+              <div class="arrow">פתיחה בלשונית חדשה ←</div>
+            </div>
+          </a>
+          <a class="link-card" href="https://www.sdewarburg.co.il/" target="_blank" rel="noopener noreferrer" title="אתר שדה ורבורג">
+            <span class="emoji" aria-hidden="true">🏘️</span>
+            <div class="body">
+              <p class="title">אתר המושב</p>
+              <p class="desc">שדה ורבורג — אתר רשמי</p>
+              <div class="arrow">פתיחה בלשונית חדשה ←</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

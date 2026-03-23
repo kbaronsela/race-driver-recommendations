@@ -1116,7 +1116,8 @@ def _guess_type(body: str) -> str:
         return "בית קפה"
     if "איטלק" in body or "פסטה" in body:
         return "איטלקית"
-    return "מסעדה (חילוץ צ'אט)"
+    # ברירת מחדל: ריק — לא «מסעדה (חילוץ צ'אט)» (מקור החילוץ כבר ב־note)
+    return ""
 
 
 def _clean_name(raw: str) -> str:

@@ -27,18 +27,21 @@
       height: auto;
       max-height: min(42vh, 320px);
       object-fit: contain;
-      margin: 0 auto 1.75rem;
+      margin: 0 auto;
       display: block;
       filter: drop-shadow(0 16px 48px rgba(15, 23, 42, 0.14));
     }
+    /* כותרת מוסתרת לנגישות — הלוגו הגדול הוא המיתוג הוויזואלי */
     .home-hero-title {
-      font-size: clamp(2.25rem, 7vw, 3.5rem);
-      font-weight: 700;
-      margin: 0;
-      letter-spacing: -0.045em;
-      line-height: 1.1;
-      color: var(--heading, #0f766e);
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
@@ -60,6 +63,9 @@
     @media (max-width: 768px) {
       .container { padding: 1.25rem 1rem; }
       .home-hero { padding: 0.5rem 0 3rem; }
+      .header-row--with-menu .header-logos-wrap {
+        display: none;
+      }
     }
   </style>
 </head>

@@ -128,11 +128,12 @@
     .card .phone-actions button.pick-call-btn:hover svg {
       color: #334155;
     }
+    /* ירוק וואטסאפ רשמי (כמו בסמל האפליקציה) */
     .card .phone-actions button.pick-wa-btn svg {
-      color: #0f766e;
+      color: #25d366;
     }
     .card .phone-actions button.pick-wa-btn:hover svg {
-      color: #0d5c56;
+      color: #128c7e;
     }
     .card .phone-actions .save-contact-btn {
       font-size: 1.15rem;
@@ -290,7 +291,7 @@
     </div>
     <div class="top-bar">
       <h1>בעלי מקצוע ועסקים מומלצים</h1>
-      <button type="button" class="btn btn-primary" id="btnAdd">הוסף איש קשר</button>
+      <button type="button" class="btn btn-primary" id="btnAdd">הוספת המלצה</button>
       <button type="button" class="btn" id="btnSave" style="display:none">שמור שינויים</button>
     </div>
     <div class="search-wrap">
@@ -325,24 +326,24 @@
 
   <div id="modalAdd" class="modal hidden">
     <div class="modal-inner">
-      <h3>הוסף איש קשר</h3>
+      <h3>הוספת המלצה</h3>
       <div class="form-row">
-        <label>שם</label>
-        <input type="text" id="addName" required>
+        <label for="addName">שם (חובה)</label>
+        <input type="text" id="addName" name="addName" required autocomplete="name" aria-required="true">
       </div>
       <div class="form-row">
-        <label for="addPhonesTextarea">טלפון (שורה לכל מספר)</label>
+        <label for="addPhonesTextarea">טלפון — שורה לכל מספר (חובה)</label>
         <p class="modal-hint" style="margin:0 0 0.35rem;font-size:0.9rem;opacity:0.85;">השורה הראשית היא המספר הראשי לזיהוי כפילויות.</p>
-        <textarea id="addPhonesTextarea" rows="4" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
+        <textarea id="addPhonesTextarea" name="addPhones" rows="4" required aria-required="true" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
       </div>
       <div class="form-row">
-        <label for="addFieldInput">תחום עיסוק</label>
+        <label for="addFieldInput">תחום עיסוק (חובה)</label>
         <div class="field-combobox modal-field-combobox">
           <input type="text" id="addFieldInput" class="field-combobox-input" autocomplete="off"
-            placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list">
+            placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list" aria-required="true">
           <ul id="addFieldList" class="field-combobox-list hidden" role="listbox"></ul>
         </div>
-        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום (חובה)" style="margin-top:0.35rem;">
       </div>
       <div class="form-row">
         <label class="label-moshav-flag" title="איש קשר מהמושב — יוצג כוכב כתום ליד השם ברשימה"><input type="checkbox" id="addFromMoshav" aria-label="איש קשר מהמושב">
@@ -1432,12 +1433,26 @@
 
     async function doAddSubmit() {
       try {
-        const name = document.getElementById('addName').value.trim();
-        const phoneLines = parsePhonesFromTextarea(document.getElementById('addPhonesTextarea').value);
+        const nameEl = document.getElementById('addName');
+        const phonesEl = document.getElementById('addPhonesTextarea');
+        if (!nameEl.checkValidity()) {
+          nameEl.reportValidity();
+          return;
+        }
+        if (!phonesEl.checkValidity()) {
+          phonesEl.reportValidity();
+          return;
+        }
+        const name = nameEl.value.trim();
+        const phoneLines = parsePhonesFromTextarea(phonesEl.value);
         let field = (addFieldCombobox && addFieldCombobox.getValue()) ? String(addFieldCombobox.getValue()).trim() : '';
         if ((field || '').indexOf('אחר') !== -1) {
           const custom = document.getElementById('addFieldCustom');
           field = custom ? custom.value.trim() : '';
+        }
+        if (!field) {
+          alert('נא לבחור או להזין תחום עיסוק');
+          return;
         }
         const from_moshav = document.getElementById('addFromMoshav').checked;
         const extra_info = (document.getElementById('addExtraInfo').value || '').trim();

@@ -314,6 +314,12 @@ def _env_truthy(name: str) -> bool:
     return (os.environ.get(name) or "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _parse_year_from_curated_note(note: str) -> int | None:
+    """השנה הראשונה שנמצאת ב-note (למשל «· 24/05/2016»)."""
+    m = re.search(r"(\d{1,2})/(\d{1,2})/(\d{4})", note or "")
+    return int(m.group(3)) if m else None
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = argv if argv is not None else sys.argv[1:]
     ap = argparse.ArgumentParser(description="חילוץ מסעדות מייצוא WhatsApp ל-data/restaurants.json")
@@ -328,6 +334,13 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="בטל אימות רשת (ברירת מחדל; עוקף גם RESTAURANT_WEB_VERIFY)",
     )
+    ap.add_argument(
+        "--since-year",
+        type=int,
+        metavar="YEAR",
+        default=None,
+        help="לסרוק רק הודעות משנת YEAR והלאה (מבוסס תאריך בייצוא); בלוק «עוטף» יושמט; CURATED מסונן לפי תאריך ב-note",
+    )
     args = ap.parse_args(argv)
 
     if args.web_verify:
@@ -341,11 +354,20 @@ def main(argv: list[str] | None = None) -> int:
         print("Chat not found:", CHAT)
         return 1
     text = CHAT.read_text(encoding="utf-8", errors="replace")
-    entries = extract_gaza_food_block(text)
-    scanned = extract_restaurants_from_chat_scan(text, slug_id=slug_id)
+    min_year = args.since_year
+    entries: list[dict] = []
+    if min_year is None:
+        entries.extend(extract_gaza_food_block(text))
+    else:
+        print(f"Skipping Gaza envelope block (no per-message dates; use full export without --since-year to include).")
+    scanned = extract_restaurants_from_chat_scan(text, slug_id=slug_id, min_year=min_year)
     entries.extend(scanned)
-    print(f"Chat scan: {len(scanned)} raw rows (before merge)")
+    print(f"Chat scan: {len(scanned)} raw rows (before merge)" + (f" (messages from {min_year}+ only)" if min_year else ""))
     for name, rtype, loc, recommendation, source_line in CURATED:
+        if min_year is not None:
+            cy = _parse_year_from_curated_note(source_line)
+            if cy is None or cy < min_year:
+                continue
         entries.append(
             {
                 "id": slug_id("curated:" + name + loc),

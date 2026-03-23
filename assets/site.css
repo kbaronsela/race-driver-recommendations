@@ -5,6 +5,15 @@
 :root {
   --sidebar-w: 228px;
   --sidebar-edge: rgba(255, 255, 255, 0.09);
+  /* כותרות / תוויות כרטיס (לא כחול #2563eb של קישורים וכפתורים ראשיים) */
+  --heading: #0f5c55;
+  --heading-hover: #0a4540;
+  --heading-soft: rgba(15, 92, 85, 0.1);
+  --heading-soft-strong: rgba(15, 92, 85, 0.16);
+  --heading-border: rgba(15, 92, 85, 0.22);
+  --heading-border-strong: rgba(15, 92, 85, 0.42);
+  --heading-ring: rgba(15, 92, 85, 0.2);
+  --heading-shadow: rgba(15, 92, 85, 0.14);
 }
 
 * {
@@ -79,13 +88,14 @@ body {
   min-width: 0;
 }
 
+/* לא flex:1 — אחרת נוצר רווח גדול ודוחף את מידע/קישורים למטה; הריווח מתחת לניווט יילך לפוטר (margin-top: auto) */
 .site-sidebar-nav-recommendations {
-  flex: 1;
+  flex: 0 0 auto;
   padding: 0.1rem 0.75rem 0.45rem;
   min-height: 0;
   /* תת־ניווט: הזחה נוספת + גודל קטן יותר (בעלי מקצוע / מסעדות) */
-  margin-inline-start: 0.55rem;
-  padding-inline-start: 0.95rem;
+  margin-inline-start: 0.95rem;
+  padding-inline-start: 1.35rem;
   border-inline-start: 2px solid rgba(255, 255, 255, 0.14);
 }
 
@@ -271,8 +281,8 @@ body {
   }
 
   .site-sidebar-nav-recommendations {
-    margin-inline-start: 0.4rem;
-    padding-inline-start: 0.65rem;
+    margin-inline-start: 0.7rem;
+    padding-inline-start: 1rem;
   }
 
   .site-sidebar-footer {

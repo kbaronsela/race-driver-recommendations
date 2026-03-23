@@ -17,6 +17,10 @@
       --accent-soft: #e8f1ff;
       --border: #d3e2f0;
       --shadow: 0 4px 24px rgba(21, 34, 56, 0.08);
+      /* כותרות / תגיות — לא כחול */
+      --heading: #0f5c55;
+      --heading-soft: rgba(15, 92, 85, 0.1);
+      --heading-ring: rgba(15, 92, 85, 0.2);
     }
     * { box-sizing: border-box; }
     body {
@@ -54,7 +58,7 @@
     }
     .nav-links a {
       font-size: 0.9rem;
-      color: var(--accent);
+      color: var(--heading);
       text-decoration: none;
       padding: 0.35rem 0.75rem;
       border-radius: 8px;
@@ -62,8 +66,8 @@
       background: var(--surface);
     }
     .nav-links a:hover {
-      background: var(--accent-soft);
-      border-color: var(--accent);
+      background: var(--heading-soft);
+      border-color: rgba(15, 92, 85, 0.35);
     }
     .toolbar {
       position: sticky;
@@ -84,8 +88,8 @@
       box-shadow: var(--shadow);
     }
     .search-row:focus-within {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.18);
+      border-color: var(--heading);
+      box-shadow: 0 0 0 3px var(--heading-ring);
     }
     #q {
       flex: 1;
@@ -164,8 +168,8 @@
       display: inline-block;
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--accent);
-      background: var(--accent-soft);
+      color: var(--heading);
+      background: var(--heading-soft);
       padding: 0.2rem 0.65rem;
       border-radius: 999px;
       max-width: 100%;
@@ -186,7 +190,7 @@
       padding: 0.65rem 0.85rem;
       background: #f8fafc;
       border-radius: 10px;
-      border-inline-end: 4px solid var(--accent);
+      border-inline-end: 4px solid var(--heading);
       font-size: 0.92rem;
       white-space: pre-wrap;
       word-break: break-word;

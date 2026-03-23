@@ -17,8 +17,8 @@
       --accent: #2563eb;
       --accent-dim: #3b82f620;
       --border: #bfdbfe;
-      /* סוג מסעדה / מטא־דאטה — לא כחול «קישור» */
-      --card-category: #0f5c55;
+      /* סוג מסעדה — צבע כותרת (מ־site.css --heading) */
+      --card-category: var(--heading);
     }
     a.btn { text-decoration: none; color: inherit; }
     .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
@@ -65,22 +65,22 @@
       flex-shrink: 0;
       border-radius: 999px;
       text-decoration: none;
-      color: var(--accent);
-      background: linear-gradient(155deg, rgba(37, 99, 235, 0.11) 0%, rgba(37, 99, 235, 0.04) 100%);
-      border: 1px solid rgba(37, 99, 235, 0.22);
+      color: var(--heading);
+      background: linear-gradient(155deg, var(--heading-soft) 0%, rgba(15, 92, 85, 0.04) 100%);
+      border: 1px solid var(--heading-border);
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
     .card .rest-site-link:hover {
       transform: translateY(-1px);
-      color: #1d4ed8;
-      border-color: rgba(37, 99, 235, 0.45);
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
-      background: linear-gradient(155deg, rgba(37, 99, 235, 0.17) 0%, rgba(37, 99, 235, 0.06) 100%);
+      color: var(--heading-hover);
+      border-color: var(--heading-border-strong);
+      box-shadow: 0 6px 18px var(--heading-shadow);
+      background: linear-gradient(155deg, var(--heading-soft-strong) 0%, rgba(15, 92, 85, 0.06) 100%);
     }
     .card .rest-site-link:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px var(--accent-dim), 0 6px 18px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 0 3px var(--heading-ring), 0 6px 18px var(--heading-shadow);
     }
     .card .rest-site-link:active {
       transform: translateY(0);

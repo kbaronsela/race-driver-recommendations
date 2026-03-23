@@ -17,6 +17,9 @@
   --heading-border-strong: rgba(15, 92, 85, 0.42);
   --heading-ring: rgba(15, 92, 85, 0.2);
   --heading-shadow: rgba(15, 92, 85, 0.14);
+  /* וואטסאפ — גווני מותג האפליקציה (אייקונים / תגים) */
+  --wa-green: #25d366;
+  --wa-green-hover: #128c7e;
 }
 
 * {

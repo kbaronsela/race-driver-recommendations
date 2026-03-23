@@ -58,15 +58,39 @@
     .filter-moshav { margin-top: 0; }
     .filter-moshav-label { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; cursor: pointer; }
     .filter-moshav-label:hover { color: var(--text); }
-    .moshav-star {
-      color: #ea580c;
-      font-size: 1.05em;
-      line-height: 1;
+    /* תג «מהמושב»: כוכב צהוב + טקסט קטן על רקע צהוב */
+    .moshav-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #713f12;
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      border-radius: 6px;
+      padding: 0.1rem 0.38rem 0.12rem 0.3rem;
       flex-shrink: 0;
       user-select: none;
+      box-sizing: border-box;
     }
-    .card .name .moshav-star { font-size: 1.1em; }
-    .filter-moshav-label .moshav-star { font-size: 1.15em; }
+    .moshav-badge-star {
+      color: #ca8a04;
+      font-size: 0.78rem;
+      line-height: 1;
+    }
+    .moshav-badge-text {
+      font-size: 1em;
+      letter-spacing: -0.02em;
+    }
+    .card .name .moshav-badge {
+      font-size: 0.65rem;
+      padding: 0.1rem 0.35rem 0.1rem 0.28rem;
+    }
+    .card .name .moshav-badge-star {
+      font-size: 0.72rem;
+    }
     label.label-moshav-flag { display: inline-flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; cursor: pointer; }
     .search-wrap .count { color: var(--muted); font-size: 0.9rem; margin-top: 0.65rem; margin-bottom: 0; }
     .list { margin-top: 1rem; }
@@ -128,12 +152,11 @@
     .card .phone-actions button.pick-call-btn:hover svg {
       color: #334155;
     }
-    /* ירוק וואטסאפ רשמי (כמו בסמל האפליקציה) */
     .card .phone-actions button.pick-wa-btn svg {
-      color: #25d366;
+      color: var(--wa-green);
     }
     .card .phone-actions button.pick-wa-btn:hover svg {
-      color: #128c7e;
+      color: var(--wa-green-hover);
     }
     .card .phone-actions .save-contact-btn {
       font-size: 1.15rem;
@@ -309,10 +332,9 @@
             aria-label="סינון לפי תחום" role="combobox" aria-expanded="false" aria-controls="fieldFilterList" aria-autocomplete="list">
           <ul id="fieldFilterList" class="field-combobox-list hidden" role="listbox"></ul>
         </div>
-        <label class="filter-moshav-label" title="הצג רק אנשי קשר מהמושב (מסומנים בכוכב כתום ליד השם)">
+        <label class="filter-moshav-label" title="הצג רק אנשי קשר מהמושב (מסומנים בתג צהוב ליד השם)">
           <input type="checkbox" id="filterFromMoshav" aria-label="הצג רק אנשי קשר מהמושב">
-          <span>מהמושב</span>
-          <span class="moshav-star" aria-hidden="true">★</span>
+          <span class="moshav-badge" aria-hidden="true"><span class="moshav-badge-star">★</span><span class="moshav-badge-text">מהמושב</span></span>
           <span>בלבד</span>
         </label>
       </div>
@@ -346,9 +368,8 @@
         <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום (חובה)" style="margin-top:0.35rem;">
       </div>
       <div class="form-row">
-        <label class="label-moshav-flag" title="איש קשר מהמושב — יוצג כוכב כתום ליד השם ברשימה"><input type="checkbox" id="addFromMoshav" aria-label="איש קשר מהמושב">
-          <span class="moshav-star" aria-hidden="true">★</span>
-          <span>מהמושב</span>
+        <label class="label-moshav-flag" title="איש קשר מהמושב — יוצג תג צהוב ליד השם ברשימה"><input type="checkbox" id="addFromMoshav" aria-label="איש קשר מהמושב">
+          <span class="moshav-badge" aria-hidden="true"><span class="moshav-badge-star">★</span><span class="moshav-badge-text">מהמושב</span></span>
         </label>
       </div>
       <div class="form-row">
@@ -1161,13 +1182,13 @@
             return '<div class="phone-line"><span class="phone-num">' + escapeHtml(p.display) + '</span></div>';
           }).join('') + '</div>';
         }
-        const moshavMark = e.from_moshav ? '<span class="moshav-star" role="img" aria-label="מהמושב" title="מהמושב">★</span>' : '';
+        const moshavMark = e.from_moshav ? '<span class="moshav-badge" role="img" aria-label="מהמושב" title="מהמושב"><span class="moshav-badge-star" aria-hidden="true">★</span><span class="moshav-badge-text">מהמושב</span></span>' : '';
         const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
         let actions = '';
         if (canEdit) {
           actions = `<div class="card-actions">
             <label title="איש קשר מהמושב"><input type="checkbox" class="cb-moshav" data-key="${escapeHtml(key)}" ${e.from_moshav ? 'checked' : ''} aria-label="מהמושב">
-            <span class="moshav-star" aria-hidden="true">★</span></label>
+            <span class="moshav-badge" aria-hidden="true"><span class="moshav-badge-star">★</span><span class="moshav-badge-text">מהמושב</span></span></label>
             <button type="button" class="btn edit-name-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">ערוך שם</button>
             <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}">ערוך טלפון</button>
             <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>

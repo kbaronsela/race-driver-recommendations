@@ -18,7 +18,7 @@
       --border: #e2e8f0;
     }
     .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; }
-    .header-logos { margin-bottom: 1.5rem; }
+    .header-row--with-menu { margin-bottom: 1.5rem; }
     h1 { font-size: 1.9rem; font-weight: 700; margin: 0 0 0.5rem; text-align: center; letter-spacing: -0.03em; }
     .home-cards { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
     .home-card {
@@ -75,10 +75,6 @@
 <body>
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
-      <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel">
-        <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
-        <span class="site-sidebar-menu-toggle-text">תפריט</span>
-      </button>
       <div class="site-sidebar-panel" id="site-sidebar-panel">
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
@@ -109,9 +105,17 @@
     </aside>
     <main class="site-main">
       <div class="container">
-        <div class="header-logos">
-          <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
-          <img src="assets/logo-race-driver.png" alt="נהגת מרוצים" class="logo" onerror="this.style.display='none'">
+        <div class="header-row header-row--with-menu">
+          <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel" aria-label="פתח תפריט ניווט">
+            <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
+            <span class="site-sidebar-menu-toggle-text">תפריט</span>
+          </button>
+          <div class="header-logos-wrap">
+            <div class="header-logos">
+              <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo" onerror="this.style.display='none'">
+              <img src="assets/logo-race-driver.png" alt="נהגת מרוצים" class="logo" onerror="this.style.display='none'">
+            </div>
+          </div>
         </div>
         <h1>המלצות של נהגות מרוצים</h1>
         <nav class="home-cards" aria-label="קטגוריות">

@@ -155,10 +155,6 @@
 <body>
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
-      <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel">
-        <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
-        <span class="site-sidebar-menu-toggle-text">תפריט</span>
-      </button>
       <div class="site-sidebar-panel" id="site-sidebar-panel">
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
@@ -189,7 +185,11 @@
     </aside>
     <main class="site-main">
       <div class="container">
-        <div class="header-row">
+        <div class="header-row header-row--with-menu">
+          <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel" aria-label="פתח תפריט ניווט">
+            <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
+            <span class="site-sidebar-menu-toggle-text">תפריט</span>
+          </button>
           <div class="header-logos-wrap">
             <div class="header-logos">
               <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">

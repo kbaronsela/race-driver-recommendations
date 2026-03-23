@@ -7,6 +7,7 @@
     if (!btn || !panel) return;
     btn.setAttribute('aria-expanded', 'false');
     panel.classList.remove('site-sidebar-panel-open');
+    document.body.classList.remove('site-sidebar-menu-open');
   }
 
   function openPanel() {
@@ -15,6 +16,7 @@
     if (!btn || !panel) return;
     btn.setAttribute('aria-expanded', 'true');
     panel.classList.add('site-sidebar-panel-open');
+    if (mq.matches) document.body.classList.add('site-sidebar-menu-open');
   }
 
   function togglePanel() {

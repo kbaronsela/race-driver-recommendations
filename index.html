@@ -53,6 +53,10 @@
       padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font: inherit; cursor: pointer;
     }
     .modal-actions .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    @media (min-width: 769px) {
+      /* שורת לוגואים+תפריט רק במובייל; בדסקטופ נשאר ה־hero בלי כפילות */
+      .header-row--with-menu { display: none; }
+    }
     @media (max-width: 768px) {
       .container { padding: 1.25rem 1rem; }
       .home-hero { padding: 0.5rem 0 3rem; }
@@ -62,10 +66,6 @@
 <body>
   <div class="site-shell">
     <aside class="site-sidebar" aria-label="ניווט ראשי">
-      <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel">
-        <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
-        <span class="site-sidebar-menu-toggle-text">תפריט</span>
-      </button>
       <div class="site-sidebar-panel" id="site-sidebar-panel">
       <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
         <a href="index.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
@@ -96,6 +96,18 @@
     </aside>
     <main class="site-main">
       <div class="container">
+        <div class="header-row header-row--with-menu">
+          <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn" aria-expanded="false" aria-controls="site-sidebar-panel" aria-label="פתח תפריט ניווט">
+            <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
+            <span class="site-sidebar-menu-toggle-text">תפריט</span>
+          </button>
+          <div class="header-logos-wrap">
+            <div class="header-logos">
+              <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+              <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+            </div>
+          </div>
+        </div>
         <header class="home-hero">
           <img src="assets/logo-race-driver.png" alt="לוגו נהגת מרוצים" class="home-hero-logo" width="440" height="320" onerror="this.style.display='none'">
           <h1 class="home-hero-title">נהגת מרוצים</h1>

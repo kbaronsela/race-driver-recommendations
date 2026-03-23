@@ -512,6 +512,21 @@ def restaurants_page():
     return send_from_directory(APP_DIR, "restaurants.html")
 
 
+@app.route("/info.html")
+def info_page():
+    return send_from_directory(APP_DIR, "info.html")
+
+
+@app.route("/view_recommendations.html")
+def view_recommendations_page():
+    return send_from_directory(APP_DIR, "view_recommendations.html")
+
+
+@app.route("/view_restaurants.html")
+def view_restaurants_page():
+    return send_from_directory(APP_DIR, "view_restaurants.html")
+
+
 @app.route("/data/<path:path>")
 def data(path):
     return send_from_directory(DATA_DIR, path)

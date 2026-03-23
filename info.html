@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מידע שימושי – שדה ורבורג</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+  <style>
+    :root {
+      --bg: #f0f4fb;
+      --surface: #ffffff;
+      --text: #1a2d4a;
+      --muted: #5a7a9e;
+      --accent: #2563eb;
+      --border: #bfdbfe;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.02em; }
+    .lead { color: var(--muted); font-size: 0.95rem; margin: 0 0 1.5rem; }
+    .info-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.85rem;
+    }
+    .info-section h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+    .info-section p { margin: 0 0 0.5rem; line-height: 1.55; font-size: 0.95rem; color: var(--text); }
+    .info-section p:last-child { margin-bottom: 0; }
+    .info-section ul { margin: 0.35rem 0 0; padding-right: 1.25rem; line-height: 1.55; font-size: 0.95rem; color: var(--text); }
+    .info-section li { margin-bottom: 0.35rem; }
+    .info-section a { color: var(--accent); text-decoration: none; }
+    .info-section a:hover { text-decoration: underline; }
+    .info-section .note { font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem; }
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <aside class="site-sidebar" aria-label="ניווט ראשי">
+      <nav class="site-sidebar-nav site-sidebar-nav-site-home" aria-label="כללי">
+        <a href="index.html"><span class="nav-emoji" aria-hidden="true">🏠</span><span class="nav-label">דף הבית</span></a>
+      </nav>
+      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">המלצות</span></h2>
+      <nav class="site-sidebar-nav site-sidebar-nav-recommendations" aria-label="המלצות">
+        <a href="professionals.html"><span class="nav-emoji" aria-hidden="true">🛠️</span><span class="nav-label">בעלי מקצוע</span></a>
+        <a href="restaurants.html"><span class="nav-emoji" aria-hidden="true">🍽️</span><span class="nav-label">מסעדות</span></a>
+      </nav>
+      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">ℹ️</span><span class="section-label">מידע</span></h2>
+      <nav class="site-sidebar-nav site-sidebar-nav-info" aria-label="מידע">
+        <a href="info.html" class="is-current" aria-current="page"><span class="nav-emoji" aria-hidden="true">📌</span><span class="nav-label">מידע שימושי</span></a>
+        <a href="view_recommendations.html"><span class="nav-emoji" aria-hidden="true">📋</span><span class="nav-label">תצוגת המלצות</span></a>
+        <a href="view_restaurants.html"><span class="nav-emoji" aria-hidden="true">📄</span><span class="nav-label">תצוגת מסעדות</span></a>
+      </nav>
+      <h2 class="site-sidebar-section-title"><span class="section-emoji" aria-hidden="true">🔗</span><span class="section-label">קישורים</span></h2>
+      <nav class="site-sidebar-nav site-sidebar-nav-links" aria-label="קישורים חיצוניים">
+        <a href="https://chat.whatsapp.com/BsmPt6AdL4fLHio9ympv8u" target="_blank" rel="noopener noreferrer" title="למסירה באהבה - שדה ורבורג"><span class="nav-emoji" aria-hidden="true">💬</span><span class="nav-label">למסירה באהבה — שדה ורבורג</span></a>
+        <a href="https://chat.whatsapp.com/BaIXwTkGO4GFvltZrmmorg" target="_blank" rel="noopener noreferrer" title="חדשות מועצה דרום השרון (יישובי צפון מערב המועצה)"><span class="nav-emoji" aria-hidden="true">📰</span><span class="nav-label">חדשות מועצה דרום השרון</span></a>
+        <a href="https://www.sdewarburg.co.il/" target="_blank" rel="noopener noreferrer" title="אתר שדה ורבורג"><span class="nav-emoji" aria-hidden="true">🏘️</span><span class="nav-label">אתר המושב</span></a>
+      </nav>
+      <div class="site-sidebar-footer">
+        <div class="sidebar-auth">
+          <div id="loginArea" class="login-wrap hidden">
+            <button type="button" class="btn" id="btnLogin">התחבר</button>
+          </div>
+          <div id="loggedArea" class="logged-row hidden">
+            <span class="muted">מחובר</span>
+            <button type="button" class="btn" id="btnLogout">התנתק</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <main class="site-main">
+      <div class="container">
+        <div class="header-row">
+          <div class="header-logos-wrap">
+            <div class="header-logos">
+              <img src="assets/logo-moshav.png" alt="מושב שדה ורבורג" class="logo logo-moshav" onerror="this.style.display='none'">
+              <img src="assets/logo-race-driver.png" alt="נהגת מירוצים" class="logo logo-race-driver" onerror="this.style.display='none'">
+            </div>
+          </div>
+        </div>
+        <h1>מידע שימושי</h1>
+        <p class="lead">פרטים שימושיים למושב שדה ורבורג — שעות, טלפונים ושירותים. לעדכונים רשמיים עקבו אחרי המזכירות והודעות ההנהלה.</p>
+
+        <section class="info-section" aria-labelledby="h-gate">
+          <h2 id="h-gate">שער אחורי</h2>
+          <p>פתוח בימים ראשון עד שישי:</p>
+          <ul>
+            <li>06:00–07:00</li>
+            <li>07:40–21:00</li>
+          </ul>
+          <p><strong>שבת:</strong> סגור</p>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-office">
+          <h2 id="h-office">מזכירות</h2>
+          <p>טלפון: <a href="tel:+97297483120">09-7483120</a></p>
+          <p>וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a></p>
+          <p>ינק: <a href="tel:+972537723871">053-7723871</a></p>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-mail">
+          <h2 id="h-mail">איסוף דואר מצופית</h2>
+          <p>מהמכולת</p>
+          <ul>
+            <li>א׳–ה׳: 09:00–19:00</li>
+            <li>יום ו׳: 09:00–13:00</li>
+          </ul>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-waste">
+          <h2 id="h-waste">פינויים</h2>
+          <p><strong>פינוי אשפה במושב:</strong> ימים שני וחמישי</p>
+          <p><strong>פינוי גזם:</strong> ימים ראשון ורביעי — מניחים קרוב למדרכה</p>
+          <p><strong>פינוי אשפה גדולה:</strong> כל שלושה חודשים — תצא הודעה מהמזכירות</p>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-yak">
+          <h2 id="h-yak">משק יעקובובסקי</h2>
+          <ul>
+            <li>א׳: 09:00–15:00</li>
+            <li>ב׳–ה׳: 08:00–17:30</li>
+            <li>ו׳: 08:00–14:00</li>
+            <li><strong>שבת:</strong> סגור</li>
+          </ul>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-mif">
+          <h2 id="h-mif">מכולת מפגשים</h2>
+          <ul>
+            <li>א׳–ה׳: 06:30–20:30</li>
+            <li>שישי: 06:00–16:00</li>
+          </ul>
+          <p>משלוחים: <a href="tel:+972534498881">053-4498881</a></p>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-lib">
+          <h2 id="h-lib">ספריה</h2>
+          <p>כל יום חמישי: 17:00–18:30</p>
+        </section>
+
+        <section class="info-section" aria-labelledby="h-more">
+          <h2 id="h-more">עוד פרטים</h2>
+          <ul>
+            <li><strong>דואר רמת הכובש:</strong> ימים ראשון עד חמישי, 9:00–12:00</li>
+            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063</li>
+            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a></li>
+            <li><strong>דוכן התותים של יובל סיני</strong> בצומת בית ברל — פתוח בימים ב׳–ה׳ 11:00–17:00, ובשישי 08:00–16:00</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

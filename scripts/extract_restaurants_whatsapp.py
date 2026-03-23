@@ -3,22 +3,32 @@
 """
 Extract restaurant recommendations from WhatsApp export.
 1) Structured block >>> מסעדות ומוצרי מזון (עסקים בעוטף).
-2) Curated entries manually traced from group threads (names, types, locations, notes).
+2) סריקת כל הצ'אט (היוריסטית) — restaurant_chat_scan.
+3) רשימה ידנית CURATED (גוברת על כפילויות בשם זהה).
 
 Pipeline for data/restaurants.json:
   raw entries → איחוד שם מדויק (שורה אחת לכל name) → איחוד כפולים (מפתח merge)
-  → מילוי website מ־restaurant_websites → כתיבה ל־JSON → build_view_restaurants.py
+  → מילוי website מ־restaurant_websites → (אופציונלי) אימות נוכחות ברשת → כתיבה ל־JSON → build_view_restaurants.py
+
+אימות רשת (אופציונלי): ``--web-verify`` או ``RESTAURANT_WEB_VERIFY=1`` — דורש
+``GOOGLE_CSE_API_KEY`` ו-``GOOGLE_CSE_CX`` (Google Programmable Search + Custom Search API).
+נשארות רק מסעדות עם אתר (https) או עם אזכור תואם בתוצאות חיפוש. מטמון: data/restaurant_web_presence_cache.json
 
 Output fields: id, name, restaurant_type, location, note, extra_info, website.
 בקובץ: ``note`` = שורת מקור/תאריך; ``extra_info`` = טקסט ההמלצה (החלפה יחסית לסכימה הראשונית של הפרויקט).
 """
+import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
 from pathlib import Path
 
+from restaurant_chat_scan import extract_restaurants_from_chat_scan
+from restaurant_name_plausible import is_plausible_restaurant_name
+from restaurant_web_presence import filter_by_web_presence, web_verify_configured
 from restaurant_websites import assign_websites
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -31,7 +41,10 @@ def slug_id(s: str) -> str:
 
 
 def strip_trailing_paren(name: str) -> str:
-    return re.sub(r"\s*\([^)]*\)\s*$", "", (name or "").strip()).strip()
+    s = re.sub(r"\s*\([^)]*\)\s*$", "", (name or "").strip()).strip()
+    while s.endswith("*"):
+        s = s[:-1].rstrip()
+    return s.strip()
 
 
 # שם ראשון לפני " — " שמאחד למסעדה אחת (למשל בן זגר)
@@ -55,6 +68,14 @@ def restaurant_merge_key(name: str) -> str:
         first = first.strip()
         if first in _SLASH_CANONICAL_PREFIXES:
             return first.lower()
+    # קפה אוגוסט / אוגוסט … — אותו מותג (סריקה vs שם קצר / סניף)
+    if n.startswith("קפה אוגוסט"):
+        return "אוגוסט"
+    if n.startswith("אוגוסט"):
+        return "אוגוסט"
+    # האחים (אבן גבירול) / האחים באבן גבירול / האחים — אותה מסעדה
+    if n.startswith("האחים"):
+        return "האחים"
     return strip_trailing_paren(n).lower()
 
 
@@ -117,9 +138,17 @@ def dedupe_merge_and_assign_websites(entries: list[dict]) -> list[dict]:
     איחוד כפולים: קודם כפילויות בשם מדויק, אחר כך איחוד לפי restaurant_merge_key,
     ואז שדה website לפי השם הסופי.
     """
+    n0 = len(entries)
+    entries = [e for e in entries if is_plausible_restaurant_name(e.get("name") or "")]
+    dropped = n0 - len(entries)
+    if dropped:
+        print(f"Name filter: dropped {dropped} implausible rows (before dedupe)")
     by_exact: dict[str, dict] = {}
     for e in entries:
-        by_exact[e["name"].strip().lower()] = e
+        k = strip_trailing_paren(e.get("name") or "").casefold()
+        if not k:
+            k = (e.get("name") or "").strip().casefold()
+        by_exact[k] = e
     deduped = list(by_exact.values())
     merged = merge_restaurant_entries(deduped)
     assign_websites(merged, log_hints=True)
@@ -220,6 +249,11 @@ CURATED = [
     ("סיאטרה / סאן", "מסעדה", "בי אנד סאן, תל אביב", "מאיה גולי ממליצה.", "מאיה גולי · 19/01/2017"),
     ("קפה נואר", "בית קפה", "נחמני, תל אביב", "אין ארוחות בוקר — פותחים בצהריים (תיקון לדנה הראל).", "דנה הראל · 19/01/2017"),
     ("גוהר", "פרסית", "אזור התעשייה כפר סבא", "טעים מאוד; להזמין מראש. טלפון בצ'אט: 09-7664533.", "סיגל ראב · 05/04/2017"),
+    ("גומבה", "איטלקית", "רעננה", "מסעדה איטלקית; הומלצה בקבוצה — טעים, טרי ובמחיר סביר. הוזכרה גם בהקשר משלוחים (כפר סבא).", "איילה בר · 23/03/2020 · אזכורים נוספים בקבוצה 2025–2026"),
+    ("פסטה לוקו", "איטלקית", "חדרה", "פסטה לוקו בחדרה; מסעדה איטלקית קטנה וחמודה.", "דורין ליבר · 10/12/2023, 13:54"),
+    ("Timo", "איטלקית", "טירה", "היינו ב-TIMO בטירה; מסעדה איטלקית ממש משפחתית נחמדה וטעימה. מומלץ.", "חן ארזי מרקו · 24/12/2022, 16:30"),
+    ("צבעים בקפה", "בית קפה", "בפארק כפס", "צבעים בקפה בפארק כפס. ליד האיצטדיון", "עדנה גל קידר · 18/06/2025, 14:49"),
+    ("אל דנטה", "איטלקית כשרה", "אושיסקין, ירושלים", "מסעדה איטלקית קטנה וחמודה עם כשרות (אל דנטה).", "מירי מרגולין · 10/08/2025, 12:50"),
     ("אדמה (זיכרון)", "מסעדה", "זכרון יעקב", "הוצעה למסעדה פתוחה בשבת למשפחה גדולה.", "מיכל סטפק · 09/08/2017"),
     ("אנגוס", "מסעדת בשרים", "חיפה", "הוצע ליד ניר דוד / אזור הצפון.", "איילה בר · 09/08/2017"),
     ("צל תמר", "מסעדה", "אגדות יעקב / אשדות יעקב", "מעולה לילדים ואוכל; לבדוק שעות שבת לפי שרשור.", "תמי בנארצי · 09/08/2017"),
@@ -276,12 +310,41 @@ CURATED = [
 ]
 
 
-def main():
+def _env_truthy(name: str) -> bool:
+    return (os.environ.get(name) or "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def main(argv: list[str] | None = None) -> int:
+    argv = argv if argv is not None else sys.argv[1:]
+    ap = argparse.ArgumentParser(description="חילוץ מסעדות מייצוא WhatsApp ל-data/restaurants.json")
+    vg = ap.add_mutually_exclusive_group()
+    vg.add_argument(
+        "--web-verify",
+        action="store_true",
+        help="סנן מסעדות לפי נוכחות ברשת (אתר או אזכור בחיפוש Google CSE; דורש GOOGLE_CSE_API_KEY + GOOGLE_CSE_CX)",
+    )
+    vg.add_argument(
+        "--no-web-verify",
+        action="store_true",
+        help="בטל אימות רשת (ברירת מחדל; עוקף גם RESTAURANT_WEB_VERIFY)",
+    )
+    args = ap.parse_args(argv)
+
+    if args.web_verify:
+        web_verify = True
+    elif args.no_web_verify:
+        web_verify = False
+    else:
+        web_verify = _env_truthy("RESTAURANT_WEB_VERIFY")
+
     if not CHAT.exists():
         print("Chat not found:", CHAT)
         return 1
     text = CHAT.read_text(encoding="utf-8", errors="replace")
     entries = extract_gaza_food_block(text)
+    scanned = extract_restaurants_from_chat_scan(text, slug_id=slug_id)
+    entries.extend(scanned)
+    print(f"Chat scan: {len(scanned)} raw rows (before merge)")
     for name, rtype, loc, recommendation, source_line in CURATED:
         entries.append(
             {
@@ -294,6 +357,26 @@ def main():
             }
         )
     uniq = dedupe_merge_and_assign_websites(entries)
+
+    if web_verify:
+        if not web_verify_configured():
+            print(
+                "אימות רשת מופעל (--web-verify או RESTAURANT_WEB_VERIFY=1) אבל חסרים משתני סביבה.\n"
+                "הגדירו GOOGLE_CSE_API_KEY ו-GOOGLE_CSE_CX (Google Custom Search API + מנוע חיפוש מתוכנת),\n"
+                "או הריצו עם --no-web-verify.",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            uniq, wstats = filter_by_web_presence(uniq, root=ROOT)
+        except RuntimeError as e:
+            print(str(e), file=sys.stderr)
+            return 1
+        print(
+            f"Web verify: kept {wstats['kept']}, dropped {wstats['dropped']}, "
+            f"cache hits {wstats['cached_hits']}, API calls {wstats['api_calls']}"
+        )
+
     uniq.sort(key=lambda x: (x["name"] or "").lower())
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:

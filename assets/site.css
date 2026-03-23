@@ -61,12 +61,38 @@ body {
   color: #f8fafc;
   letter-spacing: -0.02em;
   line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.site-sidebar-section-title .section-emoji {
+  font-size: 1.15em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.site-sidebar-section-title .section-label {
+  flex: 1;
+  min-width: 0;
 }
 
 .site-sidebar-nav-recommendations {
   flex: 1;
-  padding: 0.15rem 0.75rem 1rem;
+  padding: 0.15rem 0.75rem 0.5rem;
   min-height: 0;
+}
+
+.site-sidebar-nav-info,
+.site-sidebar-nav-links {
+  flex: 0 0 auto;
+  padding: 0.15rem 0.75rem 0.5rem;
+  min-height: 0;
+}
+
+.site-sidebar-nav-links {
+  padding-bottom: 1rem;
 }
 
 .site-sidebar-nav a {
@@ -201,7 +227,9 @@ body {
   }
 
   .site-sidebar-nav-site-home,
-  .site-sidebar-nav-recommendations {
+  .site-sidebar-nav-recommendations,
+  .site-sidebar-nav-info,
+  .site-sidebar-nav-links {
     flex: 1 1 auto;
     flex-direction: row;
     flex-wrap: wrap;

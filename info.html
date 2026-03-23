@@ -14,8 +14,7 @@
       --surface: #ffffff;
       --text: #1a2d4a;
       --muted: #5a7a9e;
-      --accent: #2563eb;
-      --border: #bfdbfe;
+      --border: #cbd5e1;
     }
     .container { max-width: 720px; margin: 0 auto; padding: 1.5rem; }
     h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.5rem; color: var(--text); letter-spacing: -0.02em; }
@@ -61,19 +60,16 @@
     }
     .info-section .btn-call,
     .info-section .btn-wa {
-      font-size: 0.85rem;
+      font-size: 1.15rem;
+      line-height: 1;
       font-weight: 400;
-      line-height: 1.2;
-      color: var(--muted) !important;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      padding: 0.35rem 0.5rem;
+      border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
       text-decoration: none !important;
-      background: var(--surface);
       font-family: inherit;
       cursor: pointer;
       white-space: nowrap;
@@ -81,10 +77,24 @@
       -webkit-appearance: none;
       appearance: none;
     }
-    .info-section .btn-call:hover,
-    .info-section .btn-wa:hover {
-      color: var(--accent) !important;
+    /* 📞 רקע עדין — לא ירוק */
+    .info-section .btn-call {
+      background: #e8ecf4;
+      border: 1px solid #c5d0e0;
+    }
+    .info-section .btn-call:hover {
+      background: #dce3f0;
       border-color: var(--accent);
+      text-decoration: none !important;
+    }
+    /* 💬 רקע ירקרק */
+    .info-section .btn-wa {
+      background: #d1fae5;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .info-section .btn-wa:hover {
+      background: #bbf7d0;
+      border-color: #10b981;
       text-decoration: none !important;
     }
     .info-section li .info-phone-actions { margin-inline-start: 0.15rem; vertical-align: middle; }
@@ -108,10 +118,10 @@
     @media (max-width: 480px) {
       .info-section .btn-call,
       .info-section .btn-wa {
-        padding: 0.35rem 0.5rem;
-        min-height: 2.25rem;
-        font-size: 0.85rem;
-        line-height: 1.2;
+        padding: 0.4rem 0.55rem;
+        min-height: 2.35rem;
+        font-size: 1.2rem;
+        line-height: 1;
       }
     }
   </style>
@@ -170,9 +180,9 @@
 
         <section class="info-section" aria-labelledby="h-office">
           <h2 id="h-office">מזכירות</h2>
-          <p class="phone-line">טלפון: <a href="tel:+97297483120">09-7483120</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+97297483120" aria-label="התקשר למזכירות">התקשר</a></span></p>
-          <p class="phone-line">וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a> <span class="info-phone-actions"><a class="btn-wa" href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למזכירות">וואטסאפ</a></span></p>
-          <p class="phone-line">ינק: <a href="tel:+972537723871">053-7723871</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972537723871" aria-label="התקשר לינק">התקשר</a></span></p>
+          <p class="phone-line">טלפון: <a href="tel:+97297483120">09-7483120</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+97297483120" aria-label="התקשר למזכירות">📞</a></span></p>
+          <p class="phone-line">וואטסאפ לשליחת הודעות למזכירות: <a href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer">054-3674595</a> <span class="info-phone-actions"><a class="btn-wa" href="https://wa.me/972543674595" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למזכירות">💬</a></span></p>
+          <p class="phone-line">ינק: <a href="tel:+972537723871">053-7723871</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972537723871" aria-label="התקשר לינק">📞</a></span></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-mail">
@@ -207,7 +217,7 @@
             <li>א׳–ה׳: 06:30–20:30</li>
             <li>שישי: 06:00–16:00</li>
           </ul>
-          <p class="phone-line">משלוחים: <a href="tel:+972534498881">053-4498881</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972534498881" aria-label="התקשר למשלוחי המכולת">התקשר</a><a class="btn-wa" href="https://wa.me/972534498881" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למשלוחי המכולת">וואטסאפ</a></span></p>
+          <p class="phone-line">משלוחים: <a href="tel:+972534498881">053-4498881</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972534498881" aria-label="התקשר למשלוחי המכולת">📞</a><a class="btn-wa" href="https://wa.me/972534498881" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ למשלוחי המכולת">💬</a></span></p>
         </section>
 
         <section class="info-section" aria-labelledby="h-lib">
@@ -219,8 +229,8 @@
           <h2 id="h-more">עוד פרטים</h2>
           <ul>
             <li><strong>דואר רמת הכובש:</strong> ימים ראשון עד חמישי, 9:00–12:00</li>
-            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063 <span class="info-phone-actions"><a class="btn-call" href="tel:%2A2063" aria-label="התקשר לתמיכת סיבים">התקשר</a></span></li>
-            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972548081490" aria-label="התקשר לנציג רשות הטבע והגנים">התקשר</a><a class="btn-wa" href="https://wa.me/972548081490" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ לנציג רשות הטבע והגנים">וואטסאפ</a></span></li>
+            <li><strong>תמיכה אינטרנט סיבים:</strong> *2063 <span class="info-phone-actions"><a class="btn-call" href="tel:%2A2063" aria-label="התקשר לתמיכת סיבים">📞</a></span></li>
+            <li><strong>טל — נציג רשות הטבע והגנים:</strong> <a href="tel:+972548081490">054-8081490</a> <span class="info-phone-actions"><a class="btn-call" href="tel:+972548081490" aria-label="התקשר לנציג רשות הטבע והגנים">📞</a><a class="btn-wa" href="https://wa.me/972548081490" target="_blank" rel="noopener noreferrer" aria-label="פתח וואטסאפ לנציג רשות הטבע והגנים">💬</a></span></li>
             <li><strong>דוכן התותים של יובל סיני</strong> בצומת בית ברל — פתוח בימים ב׳–ה׳ 11:00–17:00, ובשישי 08:00–16:00</li>
           </ul>
         </section>

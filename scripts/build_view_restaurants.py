@@ -109,7 +109,7 @@ HTML_HEAD = """<!DOCTYPE html>
     .type { font-weight: 500; color: #2c3e50; }
     .loc { font-size: 0.95rem; color: #333; max-width: 220px; word-break: break-word; }
     .web { font-size: 0.85rem; max-width: 200px; word-break: break-all; }
-    .web a { color: #1a5fb4; }
+    .web a { color: #0d9488; }
     .empty { color: #999; }
     .hint { color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
   </style>

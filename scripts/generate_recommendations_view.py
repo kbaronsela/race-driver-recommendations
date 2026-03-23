@@ -37,7 +37,7 @@ def main():
     th, td { padding: 0.6rem 0.75rem; text-align: right; border-bottom: 1px solid #eee; }
     th { background: #2c3e50; color: #fff; font-weight: 600; }
     tr:hover { background: #f8f9fa; }
-    .phone a { color: #2980b9; text-decoration: none; }
+    .phone a { color: #0d9488; text-decoration: none; }
     .phone a:hover { text-decoration: underline; }
     .moshav-star { color: #ea580c; font-size: 1rem; }
     .note { max-width: 320px; font-size: 0.9rem; color: #444; white-space: pre-wrap; word-break: break-word; }

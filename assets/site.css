@@ -5,8 +5,11 @@
 :root {
   --sidebar-w: 228px;
   --sidebar-edge: rgba(255, 255, 255, 0.09);
-  /* כותרות / תוויות כרטיס (לא כחול #2563eb של קישורים וכפתורים ראשיים) */
+  /* כותרות */
   --heading: #0f5c55;
+  /* קישורים, כפתורים ראשיים, פוקוס — טורקיז (לא כחול) */
+  --accent: #0d9488;
+  --accent-dim: rgba(13, 148, 136, 0.22);
   --heading-hover: #0a4540;
   --heading-soft: rgba(15, 92, 85, 0.1);
   --heading-soft-strong: rgba(15, 92, 85, 0.16);
@@ -135,7 +138,7 @@ body {
 }
 
 .site-sidebar-nav a.is-current {
-  background: rgba(37, 99, 235, 0.38);
+  background: rgba(13, 148, 136, 0.45);
   color: #fff;
 }
 

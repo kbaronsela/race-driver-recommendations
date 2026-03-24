@@ -293,7 +293,6 @@ _SOLO_WORD_REJECT: frozenset[str] = frozenset(
         "נעי",
         "נאדי",
         "נהדרת",
-        "נומי",
         "נוסף",
         # מילה בודדת — שארית צ'אט (מחמיר; בלי מילים שיכולות להיות חלק ממותג)
         "לב",
@@ -769,7 +768,6 @@ _CHAT_NON_VENUE_SUBSTRINGS: frozenset[str] = frozenset(
         "מקסיקנית של המאכל",
         "מתיתיהו",
         "נאדי 4",
-        "נומי בכפר",
         "נעי ם",
         "סגורה והחל",
         "עוטף - נתיב",
@@ -826,6 +824,9 @@ def is_chat_junk_extracted_name(s: str) -> bool:
         return True
     t = _strip_outer_noise(s)
     if _NON_VENUE_TIME_OR_DURATION.search(t):
+        return True
+    # שורת יצירת קשר בהפקות/אירועים («*לשאלות - שרון 054…*») — לא שם מסעדה
+    if re.search(r"לשאלות\s*[-–:]", t):
         return True
     low = t.casefold()
     for sub in _CHAT_NON_VENUE_SUBSTRINGS:

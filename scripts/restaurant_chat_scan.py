@@ -103,6 +103,15 @@ def normalize_spaces(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+def _strip_whatsapp_export_meta(text: str) -> str:
+    """מסיר סימוני עריכה/מטא שמצורפים לטקסט בייצוא וואטסאפ."""
+    s = text or ""
+    s = re.sub(r"\s*<This message was edited>\s*", " ", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s*<הודעה זו נערכה>\s*", " ", s)
+    s = re.sub(r"\s*<הודעה נערכה>\s*", " ", s)
+    return normalize_spaces(s)
+
+
 _FOOD = (
     "מסעד",
     "בית קפה",
@@ -342,6 +351,10 @@ _REQUEST = (
     "איפה יש בית קפה",
     "איפה יש מסעד",
     "איפה המסעדה",
+    "איפה זה קפה",
+    "איפה זה בית קפה",
+    "איפה זה בית הקפה",
+    "איפה זה המסעדה",
     "הייתי שמחה לקבל",
     "הייתי שמח לקבל",
     "נשמח לקבל כל מידע",
@@ -414,6 +427,12 @@ _EXCLUDE = (
     "לבר ומהבר שוב למסעדה",
     "ל24 שעות",
     "ל 24 שעות",
+    # דיגסט הרצאות / קהילת מרצים — לא המלצות אוכל (גם כשמופיעים «מומלץ», «לאכול», «קפה מהמכונה»)
+    "נטוורקינג למרצים",
+    "תכנית ההרצאות",
+    # פלייר / חיילת שמוכרת קינוחים מהבית — לא מסעדה
+    "מעבירה אליכם פלייר",
+    "מתמחה בקינוחים",
 )
 
 # מוצרי קפה לבית / אריזות — לא המלצת מסעדה (גם אם מופיע «קפה» / «מסעדה» בשארית)
@@ -594,12 +613,14 @@ _BE_CAPTURE_JUNK = frozenset(
         "וקר",
         "ורוכוב",
         "גין",
+        # «רק במטבח» / סוף משפט — לא «במסעדת מטבח»
+        "מטבח",
     }
 )
 
 _BE_IN_CITY = re.compile(
     r"(?P<prefix>(?:^|[\s,.;:!?]))(?P<bet>ב)(?P<name>[א-ת][א-ת']{1,18})"
-    r"(?=\s+ב(?:רעננה|כפר סבא|תל אביב|יהוד|נתניה|חיפה|הוד|קניון|שוק|יפו|זכרון)|\s+פתוח|\s+למשלוח|\s*$|[,.!?])",
+    r"(?=\s+ב(?:רעננה|כפר סבא|תל אביב|יהוד|נתניה|חיפה|הוד|קניון|שוק|יפו|זכרון)|\s+פתוח|\s+למשלוח|\s*$)",
 )
 
 # «המפלט האחרון - מסעדת דגים מעולה» — השם הוא לפני המקף; אחרי «מסעדת» זה תיאור מטבח לא שם המותג
@@ -725,6 +746,17 @@ def _junk_extracted_venue_name(raw: str) -> bool:
         return True
     if s in _JUNK_VENUE_NAME_EXACT:
         return True
+    # תיאור אירוע / מגורים / שולחן — לא שם מסעדה
+    if s in (
+        "מאפה ופירות",
+        "בשיכון",
+        "בשולחן הקינוחים",
+        "קינוחים",
+        "נייד",
+    ):
+        return True
+    if s.startswith("בשיכון בנים"):
+        return True
     if re.fullmatch(r"ל\s*24\s*שעות", s):
         return True
     if re.fullmatch(r"חוםם+", s):
@@ -842,11 +874,34 @@ def _scan_exclude(body: str) -> bool:
     return any(x.casefold() in b for x in _EXCLUDE_COFFEE_PRODUCT)
 
 
+def _scan_body_is_hairdressing_not_food(body: str) -> bool:
+    """
+    המלצה על ספרית / תספורת (לעיתים ליד «עגלת קפה») — לא המלצת אוכל.
+    לדוגמה: «שמספרת … בעגלת הקפה צ'ופצ'יק» עם קישורי IG לשיער.
+    """
+    b = normalize_spaces(body)
+    bl = b.casefold()
+    if "שמספרת" in b:
+        return True
+    if "yourhair" in bl or "frizura" in bl or "inyourhair" in bl:
+        return True
+    if "בעגלת הקפה" in b and "ספרית" in b:
+        return True
+    if "תספורת" in b and "בעגלת הקפה" in b:
+        return True
+    return False
+
+
 def _scan_has_food_anchor(body: str) -> bool:
     """האם יש בהודעה הקשר מפורש לאוכל / מסעדה / קפה (לא רק «שוק» / מילה כללית)."""
     for a in _FOOD_ANCHOR:
         if a == "בית קפה":
             if _BAYIT_KAFEH_STANDALONE.search(body) or "בבית קפה" in body:
+                return True
+            continue
+        # «מוזמנות» מכילה את תת־המחרוזת «מנות » — לא מנות אוכל
+        if a == "מנות ":
+            if re.search(r"(?<!ז)מנות\s", body):
                 return True
             continue
         if a != "קפה ":
@@ -979,6 +1034,17 @@ def _scan_where_food_question_without_rec(body: str) -> bool:
     return False
 
 
+def _scan_message_ends_with_question_not_recommendation(body: str) -> bool:
+    """
+    הודעה שנגמרת ב־? — כמעט תמיד שאלה («פתוח בחול המועד?»), לא המלצה.
+    אם יש באותה הודעה המלצה חזקה — לא מסננים (למשל שאלת המשך אחרי «מומלץ בחום»).
+    """
+    if _scan_has_strong_recommend(body):
+        return False
+    t = normalize_spaces(body).rstrip()
+    return bool(t) and t.endswith("?")
+
+
 # אחרי «קפה » — מילה שאינה שם עסק (שתייה במקום / תיאור), לא «קפה + מותג»
 _CAFE_FIRST_WORD_NOT_VENUE = frozenset(
     {
@@ -1002,6 +1068,8 @@ _CAFE_FIRST_WORD_NOT_VENUE = frozenset(
         "בחודשים",
         "בשנת",
         "בעת",
+        # «קפה מהמכונה» — לא שם מקום
+        "מהמכונה",
     }
 )
 
@@ -1059,44 +1127,174 @@ def _scan_explicit_venue(body: str) -> bool:
     return _scan_has_explicit_cafe_venue_name(body)
 
 
-_CITIES = (
-    "תל אביב",
-    'ת"א',
-    "רעננה",
-    "כפר סבא",
-    "כפ״ס",
-    "קניון הירוקה",
-    "הירוקה",
-    "יהוד",
-    "נתניה",
-    "חיפה",
-    "ירושלים",
-    "הוד השרון",
-    "אילת",
-    "הרצליה",
-    "רמת גן",
-    "גבעתיים",
-    "פתח תקווה",
-    "קרית אונו",
-    "רמת החייל",
-    "יפו",
-    "נווה צדק",
-    "זכרון יעקב",
-    "אחד העם",
-    "פלורנטין",
-    "שוק מחנה יהודה",
-    "בי אנד סאן",
-    "שדרות",
+def _build_location_canonical_to_aliases() -> dict[str, frozenset[str]]:
+    """
+    שם מלא → כל הצורות שמזוהות בטקסט (כולל קיצורים וראשי תיבות).
+    הערך המוחזר מ־_guess_location / expand_location_abbreviations הוא תמיד השם המלא.
+    """
+    special: dict[str, frozenset[str]] = {
+        "הוד השרון": frozenset(
+            {
+                "הוד השרון",
+                "הוד\"ש",
+                "הוד״ש",
+                "הודש",
+            }
+        ),
+        "רמת השרון": frozenset(
+            {
+                "רמת השרון",
+                "רמה\"ש",
+                "רמה״ש",
+                "רמהש",
+            }
+        ),
+        "תל אביב": frozenset({"תל אביב", "ת\"א", "ת״א"}),
+        "כפר סבא": frozenset({"כפר סבא", "כפ\"ס", "כפ״ס"}),
+        "פתח תקווה": frozenset({"פתח תקווה", "פ\"ת", "פ״ת"}),
+        "זכרון יעקב": frozenset({"זכרון יעקב", "זכרון יעקוב"}),
+    }
+    base_only = (
+        "רעננה",
+        "קניון הירוקה",
+        "הירוקה",
+        "יהוד",
+        "נתניה",
+        "חיפה",
+        "ירושלים",
+        "אילת",
+        "הרצליה",
+        "רמת גן",
+        "גבעתיים",
+        "קרית אונו",
+        "רמת החייל",
+        "נווה צדק",
+        "אחד העם",
+        "פלורנטין",
+        "שוק מחנה יהודה",
+        "בי אנד סאן",
+        "שדרות",
+        "תל מונד",
+        "כפר מונש",
+        "קיבוץ העוגן",
+    )
+    m = dict(special)
+    for c in base_only:
+        m.setdefault(c, frozenset({c}))
+    return m
+
+
+# שם מלא → כינויים (לזיהוי בצ'אט ולהרחבה בשדה location)
+LOCATION_CANONICAL_TO_ALIASES: dict[str, frozenset[str]] = _build_location_canonical_to_aliases()
+
+def _be_suffix_alias_canonical_ordered() -> tuple[tuple[str, str], ...]:
+    """כל כינוי מקום → שם קנוני, מהארוך לקצר (כולל כתיבים חלופיים כמו זכרון יעקוב)."""
+    pairs: list[tuple[str, str]] = []
+    for canonical, aliases in LOCATION_CANONICAL_TO_ALIASES.items():
+        for a in aliases:
+            pairs.append((a, canonical))
+    pairs.sort(key=lambda x: len(x[0]), reverse=True)
+    return tuple(pairs)
+
+
+_BE_SUFFIX_ALIAS_CANONICAL_ORDERED: tuple[tuple[str, str], ...] = (
+    _be_suffix_alias_canonical_ordered()
 )
 
 
+def _split_trailing_be_place(name: str) -> tuple[str, str]:
+    """«צ'אנג מאי בזכרון יעקוב» → (צ'אנג מאי, זכרון יעקב). אם אין התאמה — (name, '')."""
+    s = normalize_spaces(name or "")
+    if not s or " ב" not in s:
+        return s, ""
+    for alias, canonical in _BE_SUFFIX_ALIAS_CANONICAL_ORDERED:
+        suf = f" ב{alias}"
+        if s.endswith(suf):
+            base = normalize_spaces(s[: -len(suf)])
+            if len(base) >= 2:
+                return base, canonical
+    return s, ""
+
+
+_BE_KIBBUTZ_IN_NAME = re.compile(
+    r"^(.{2,50}?)\s+בקיבוץ\s+(.{2,80})$",
+    re.UNICODE,
+)
+
+
+def _split_be_kibbutz(name: str) -> tuple[str, str]:
+    """«גראציה בקיבוץ העוגן» → (גראציה, קיבוץ העוגן)."""
+    s = normalize_spaces(name or "")
+    m = _BE_KIBBUTZ_IN_NAME.match(s)
+    if not m:
+        return s, ""
+    brand, k_tail = normalize_spaces(m.group(1)), normalize_spaces(m.group(2))
+    k_tail = re.sub(r"\s*[-–—].*$", "", k_tail).strip()
+    if len(brand) < 2 or len(k_tail) < 2:
+        return s, ""
+    return brand, f"קיבוץ {k_tail}"
+
+
+def _split_name_location_suffixes(name: str) -> tuple[str, str]:
+    """מנסה « ב<מקום> » ואז « בקיבוץ <שם> »."""
+    base, loc = _split_trailing_be_place(name)
+    if loc:
+        return base, loc
+    return _split_be_kibbutz(base)
+
+# «יפו» כעיר — לא תת־מחרוזת של «סיפור», «חיפוש», «מיפוי» וכו׳
+_IPPO_PLACE_RE = re.compile(
+    r"(?:^|[^\u0590-\u05FF])(?:ב|ל|מ|כ)?יפו(?:$|\s|[^\u0590-\u05FF])",
+    re.UNICODE,
+)
+
+
+def expand_location_abbreviations(loc: str) -> str:
+    """
+    מחליף קיצורים וראשי תיבות בשם העיר המלא; מנקה כפילויות אחרי איחוד (|).
+    """
+    s = normalize_spaces(loc or "")
+    if not s:
+        return ""
+    pairs: list[tuple[str, str]] = []
+    for canonical, aliases in LOCATION_CANONICAL_TO_ALIASES.items():
+        for a in aliases:
+            if a != canonical:
+                pairs.append((a, canonical))
+    pairs.sort(key=lambda x: len(x[0]), reverse=True)
+    for ab, canonical in pairs:
+        if ab in s:
+            s = s.replace(ab, canonical)
+    s = normalize_spaces(s)
+    parts = re.split(r"\s*\|\s*", s)
+    seen: set[str] = set()
+    out: list[str] = []
+    for p in parts:
+        p = normalize_spaces(p)
+        if not p:
+            continue
+        k = p.casefold()
+        if k not in seen:
+            seen.add(k)
+            out.append(p)
+    joined = " | ".join(out)
+    return joined[:250] if len(joined) > 250 else joined
+
+
 def _guess_location(body: str) -> str:
-    hits = [c for c in _CITIES if c in body]
+    if not body:
+        return ""
+    hits: list[str] = []
+    for canonical, aliases in LOCATION_CANONICAL_TO_ALIASES.items():
+        if any(a in body for a in aliases):
+            hits.append(canonical)
+    if _IPPO_PLACE_RE.search(body):
+        hits.append("יפו")
     if not hits:
         return ""
-    # prefer longer city names first
-    hits.sort(key=len, reverse=True)
-    return hits[0][:200]
+    uniq = list(dict.fromkeys(hits))
+    uniq.sort(key=len, reverse=True)
+    return uniq[0][:200]
 
 
 def _guess_type(body: str) -> str:
@@ -1121,7 +1319,7 @@ def _guess_type(body: str) -> str:
 
 
 def _clean_name(raw: str) -> str:
-    s = normalize_spaces(raw)
+    s = _strip_whatsapp_export_meta(raw)
     s = s.strip(' "\'"״׳-–')
     s = re.sub(r"\s+", " ", s)
     if len(s) < 2 or len(s) > 55:
@@ -1138,10 +1336,27 @@ def _clean_name(raw: str) -> str:
     while prev != s:
         prev = s
         s = re.sub(r"^\*+\s*|\s*\*+$", "", s).strip()
+    # שבח בסוף השם («- נהדר», «— מעולה») — לא חלק מהמותג
+    s = re.sub(
+        r"\s*[-–—]\s*(?:נהדר|נהדרת|מעולה|מעולים|מעולות|טעים|טעימה|טעימים|שווה|מומלץ|מומלצת|מומלצים)\s*!*\s*$",
+        "",
+        s,
+        flags=re.UNICODE,
+    ).strip()
     # drop trailing parenthetical English only
     s = re.sub(r"\s*\([A-Za-z][^)]{0,40}\)\s*$", "", s).strip()
     s = re.sub(r"\s+ביום\s+שישי\b.*$", "", s, flags=re.UNICODE).strip()
     s = re.sub(r"\s*\(מעולה.*$", "", s, flags=re.UNICODE).strip()
+    s = re.sub(r"\s+https?://\S+", "", s, flags=re.UNICODE).strip()
+    s = re.sub(r"\s+https\s*$", "", s, flags=re.UNICODE | re.IGNORECASE).strip()
+    s = re.sub(
+        r"\s+(?:\+?972[\s\-]?\d{1,2}[\s\-]?\d{3}[\s\-]?\d{4}|0\d{1,2}[\s\-]?\d{3}[\s\-]?\d{4})\s*$",
+        "",
+        s,
+        flags=re.UNICODE,
+    ).strip()
+    # סניף/אזור שצמוד לשם בלי « ב » (למשל «גן סיפור הוד"ש») — המיקום ייגזר מגוף ההודעה
+    s = re.sub(r"^(גן סיפור)\s*הוד[\"״]ש\s*$", r"\1", s).strip()
     s = s[:120]
     if not is_plausible_restaurant_name(s):
         return ""
@@ -1258,8 +1473,10 @@ def extract_restaurants_from_chat_scan(
             continue
         if body == "<Media omitted>":
             continue
-        nb = normalize_spaces(body)
+        nb = _strip_whatsapp_export_meta(normalize_spaces(body))
         if _scan_exclude(nb):
+            continue
+        if _scan_body_is_hairdressing_not_food(nb):
             continue
         if _scan_is_recommendation_request(nb):
             continue
@@ -1271,12 +1488,14 @@ def extract_restaurants_from_chat_scan(
             continue
         if _scan_opening_shabbat_question_without_rec(nb):
             continue
+        if _scan_message_ends_with_question_not_recommendation(nb):
+            continue
         if not _scan_qualifies_for_chat_extraction(nb):
             continue
         names = _extract_names(nb)
         if not names:
             continue
-        loc = _guess_location(nb)
+        loc_body = _guess_location(nb)
         rtype = _guess_type(nb)
         src = f"חילוץ אוטומטי מצ'אט · {sender} · {date}"
         snippet = nb[:550]
@@ -1284,6 +1503,8 @@ def extract_restaurants_from_chat_scan(
             name = _clean_name(raw)
             if not name:
                 continue
+            name, loc_from_name = _split_name_location_suffixes(name)
+            loc = loc_from_name or loc_body
             rows.append(
                 {
                     "id": slug_id("scan:" + name + date + sender[:20]),

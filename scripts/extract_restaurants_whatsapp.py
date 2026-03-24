@@ -7,7 +7,7 @@ Extract restaurant recommendations from WhatsApp export.
 3) רשימה ידנית CURATED (גוברת על כפילויות בשם זהה).
 
 Pipeline for data/restaurants.json:
-  raw entries → איחוד שם מדויק (שורה אחת לכל name) → איחוד כפולים (מפתח merge)
+  raw entries → איחוד כפולים (מפתח merge + מיקום: אותו מיקום או לפחות אחד ללא מיקום)
   → מילוי website מ־restaurant_websites → (אופציונלי) אימות נוכחות ברשת → כתיבה ל־JSON → build_view_restaurants.py
 
 אימות רשת (אופציונלי): ``--web-verify`` או ``RESTAURANT_WEB_VERIFY=1`` — דורש
@@ -26,7 +26,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from restaurant_chat_scan import extract_restaurants_from_chat_scan
+from restaurant_chat_scan import expand_location_abbreviations, extract_restaurants_from_chat_scan
 from restaurant_name_plausible import is_plausible_restaurant_name
 from restaurant_web_presence import filter_by_web_presence, web_verify_configured
 from restaurant_websites import assign_websites
@@ -76,6 +76,18 @@ def restaurant_merge_key(name: str) -> str:
     # האחים (אבן גבירול) / האחים באבן גבירול / האחים — אותה מסעדה
     if n.startswith("האחים"):
         return "האחים"
+    # נומי בכפר מונש (חילוץ מטקסט) ≈ נומי
+    if n.startswith("נומי "):
+        return "נומי"
+    # מלצ'ט / מלצ׳ט (גרש ASCII או עברי) — אותו בית קפה
+    if re.match(r"^מלצ['\u05f3]ט", n):
+        return "מלצט"
+    # גן סיפור / גן סיפור הוד"ש / … — אותו קפה (סימון עריכה וסיומות אזור בצ'אט)
+    if n.startswith("גן סיפור"):
+        return "גן סיפור"
+    # גראציה בקיבוץ העוגן / גראציה — אותה מסעדה
+    if n.startswith("גראציה"):
+        return "גראציה"
     return strip_trailing_paren(n).lower()
 
 
@@ -101,7 +113,72 @@ def _uniq_join(parts: list[str], sep: str = " | ") -> str:
     return sep.join(out)
 
 
+def _norm_loc(s: str) -> str:
+    return normalize_spaces(s or "").casefold()
+
+
+def _location_merge_compatible(loc_a: str, loc_b: str) -> bool:
+    """איחוד רשומות עם אותו שם: אותו מיקום, או שאחד מהמיקומים ריק."""
+    a = (loc_a or "").strip()
+    b = (loc_b or "").strip()
+    if _norm_loc(a) == _norm_loc(b):
+        return True
+    if not a or not b:
+        return True
+    return False
+
+
+def _partition_by_location_rules(grp: list[dict]) -> list[list[dict]]:
+    """חלוקת רשומות עם אותו מפתח שם לרכיבים קשירים לפי כללי מיקום."""
+    n = len(grp)
+    if n <= 1:
+        return [grp]
+    parent = list(range(n))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    def union(i: int, j: int) -> None:
+        pi, pj = find(i), find(j)
+        if pi != pj:
+            parent[pi] = pj
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if _location_merge_compatible(grp[i].get("location"), grp[j].get("location")):
+                union(i, j)
+    buckets: dict[int, list[dict]] = {}
+    for i in range(n):
+        r = find(i)
+        buckets.setdefault(r, []).append(grp[i])
+    return list(buckets.values())
+
+
+def _merge_subgroup(k: str, grp: list[dict]) -> dict:
+    names = [g["name"] for g in grp]
+    display = min(names, key=lambda n: _display_name_score(n))
+    types = _uniq_join([g.get("restaurant_type") or "" for g in grp])
+    locs = _uniq_join([g.get("location") or "" for g in grp])
+    notes = _uniq_join([g.get("note") or "" for g in grp])
+    extras = _uniq_join([g.get("extra_info") or "" for g in grp])
+    return {
+        "id": slug_id("merged:" + k + display + locs[:40]),
+        "name": display,
+        "restaurant_type": types[:200] if len(types) > 200 else types,
+        "location": locs[:250] if len(locs) > 250 else locs,
+        "note": notes[:400] + ("..." if len(notes) > 400 else ""),
+        "extra_info": extras[:600] + ("..." if len(extras) > 600 else ""),
+    }
+
+
 def merge_restaurant_entries(entries: list[dict]) -> list[dict]:
+    """
+    איחוד לפי restaurant_merge_key; בתוך אותו מפתח — רק רשומות שאפשר לחבר לפי מיקום:
+    מיקום זהה (אחרי נרמול), או שאחת לפחות ללא מיקום (ריק).
+    """
     groups: dict[str, list[dict]] = {}
     for e in entries:
         k = restaurant_merge_key(e.get("name", ""))
@@ -111,46 +188,31 @@ def merge_restaurant_entries(entries: list[dict]) -> list[dict]:
 
     merged: list[dict] = []
     for k, grp in groups.items():
-        if len(grp) == 1:
-            merged.append(dict(grp[0]))
-            continue
-        names = [g["name"] for g in grp]
-        display = min(names, key=lambda n: _display_name_score(n))
-        types = _uniq_join([g.get("restaurant_type") or "" for g in grp])
-        locs = _uniq_join([g.get("location") or "" for g in grp])
-        notes = _uniq_join([g.get("note") or "" for g in grp])
-        extras = _uniq_join([g.get("extra_info") or "" for g in grp])
-        merged.append(
-            {
-                "id": slug_id("merged:" + k + display),
-                "name": display,
-                "restaurant_type": types[:200] if len(types) > 200 else types,
-                "location": locs[:250] if len(locs) > 250 else locs,
-                "note": notes[:400] + ("..." if len(notes) > 400 else ""),
-                "extra_info": extras[:600] + ("..." if len(extras) > 600 else ""),
-            }
-        )
+        for sub in _partition_by_location_rules(grp):
+            if len(sub) == 1:
+                merged.append(dict(sub[0]))
+            else:
+                merged.append(_merge_subgroup(k, sub))
     return merged
 
 
 def dedupe_merge_and_assign_websites(entries: list[dict]) -> list[dict]:
     """
-    איחוד כפולים: קודם כפילויות בשם מדויק, אחר כך איחוד לפי restaurant_merge_key,
-    ואז שדה website לפי השם הסופי.
+    איחוד כפולים: לפי restaurant_merge_key וכללי מיקום (אותו מיקום או לפחות אחד ריק).
+    ללא דה-דופ בשם מדויק שמוחק סניפים שונים לפני האיחוד.
     """
     n0 = len(entries)
     entries = [e for e in entries if is_plausible_restaurant_name(e.get("name") or "")]
     dropped = n0 - len(entries)
     if dropped:
         print(f"Name filter: dropped {dropped} implausible rows (before dedupe)")
-    by_exact: dict[str, dict] = {}
-    for e in entries:
-        k = strip_trailing_paren(e.get("name") or "").casefold()
-        if not k:
-            k = (e.get("name") or "").strip().casefold()
-        by_exact[k] = e
-    deduped = list(by_exact.values())
-    merged = merge_restaurant_entries(deduped)
+    entries = [
+        {**e, "location": expand_location_abbreviations(e.get("location") or "")}
+        for e in entries
+    ]
+    merged = merge_restaurant_entries(entries)
+    for e in merged:
+        e["restaurant_type"] = strip_kashrut_from_restaurant_type(e.get("restaurant_type") or "")
     assign_websites(merged, log_hints=True)
     return merged
 
@@ -158,6 +220,29 @@ def dedupe_merge_and_assign_websites(entries: list[dict]) -> list[dict]:
 def normalize_spaces(s: str) -> str:
     s = s.replace("\u00a0", " ").replace("\u200f", "").replace("\u200e", "")
     return re.sub(r"\s+", " ", s).strip()
+
+
+def strip_kashrut_from_restaurant_type(t: str) -> str:
+    """מסיר אזכורי כשרות מ־restaurant_type — נשאר סוג המטבח/העסק בלבד."""
+    s = normalize_spaces(t or "")
+    if not s:
+        return ""
+    parts = re.split(r"\s*[/|]\s*", s)
+    out: list[str] = []
+    for part in parts:
+        p = part.strip()
+        if not p:
+            continue
+        p = re.sub(r"\s*לא\s+כשרה?\s*", " ", p)
+        p = re.sub(r"\s*לא\s+כשר\s*", " ", p)
+        p = re.sub(r"\s*כשרות\s*", " ", p)
+        p = re.sub(r"\s*כשרה\s*", " ", p)
+        p = re.sub(r"^\s*כשר\s+|\s+כשר\s*$|\s+כשר\s+", " ", p)
+        p = normalize_spaces(p).strip(" /|,-")
+        if p:
+            out.append(p)
+    s = " / ".join(out)
+    return s[:200] if len(s) > 200 else s
 
 
 def extract_gaza_food_block(text: str) -> list[dict]:
@@ -226,7 +311,7 @@ def extract_gaza_food_block(text: str) -> list[dict]:
 CURATED = [
     ("מל ומישל", "איטלקית", "תל אביב", "רומנטית, איטלקית וטעימה — הומלצה להצעת נישואין (לא כשר).", "מירי יעקובי · 24/05/2016"),
     ("גלריה הביתית (שף פרטי)", "אירוח פרטי / מטבח שף", "גבעתיים", "שף פרטי בגבעתיים; פרטים בפרטי לפי עינת שיין.", "עינת שיין · 24/05/2016"),
-    ("ביסטרו דה כרמל", "ביסטרו / חלבי כשר", "זכרון יעקב", "ארוחת בוקר עסקית חלבית כשרה צפונה מהמושב.", "+972 52-773-0585 · 24/08/2016"),
+    ("ביסטרו דה כרמל", "ביסטרו / חלבי", "זכרון יעקב", "ארוחת בוקר עסקית חלבית כשרה צפונה מהמושב.", "+972 52-773-0585 · 24/08/2016"),
     ("אדמה", "מסעדה", "זכרון יעקב", "הומלצה יחד עם ביסטרו דה כרמל וקפה נילי לארוחות בזכרון.", "+972 52-773-0585 · 24/08/2016"),
     ("קפה נילי", "בית קפה", "זכרון יעקב", "באותו שרשור המלצות לזכרון.", "+972 52-773-0585 · 24/08/2016"),
     ("ג'וז ודניאל", "מסעדה", "תל יצחק (ליד צופית)", "מסעדה מעולה, יפה וכייפית; מומלץ להזמין מקום מראש.", "דיקלה אלמגור, איילה בר · 24/08/2016"),
@@ -253,7 +338,12 @@ CURATED = [
     ("פסטה לוקו", "איטלקית", "חדרה", "פסטה לוקו בחדרה; מסעדה איטלקית קטנה וחמודה.", "דורין ליבר · 10/12/2023, 13:54"),
     ("Timo", "איטלקית", "טירה", "היינו ב-TIMO בטירה; מסעדה איטלקית ממש משפחתית נחמדה וטעימה. מומלץ.", "חן ארזי מרקו · 24/12/2022, 16:30"),
     ("צבעים בקפה", "בית קפה", "בפארק כפס", "צבעים בקפה בפארק כפס. ליד האיצטדיון", "עדנה גל קידר · 18/06/2025, 14:49"),
-    ("אל דנטה", "איטלקית כשרה", "אושיסקין, ירושלים", "מסעדה איטלקית קטנה וחמודה עם כשרות (אל דנטה).", "מירי מרגולין · 10/08/2025, 12:50"),
+    ("אל דנטה", "איטלקית", "אושיסקין, ירושלים", "מסעדה איטלקית קטנה וחמודה עם כשרות (אל דנטה).", "מירי מרגולין · 10/08/2025, 12:50"),
+    ("פונדק עין כרם", "פונדק / מסעדה", "עין כרם, ירושלים", "ליד המעיין; באותה הודעה עם ״אדום״ בתחנת הרכבת הישנה ושאר המלצות ירושלים.", "ריס פריבר · 10/08/2025, 14:33"),
+    ("ברסרי בעין כרם", "בראסרי", "עין כרם, ירושלים", "בצ'אט נכתב ״בראסרי בעין כרם״; נהדרת תמיד — ציטוט מהמלצת ריס פריבר.", "ריס פריבר · 10/08/2025, 14:33"),
+    ("טלביה", "בית תה", "מתחת לתיאטרון ירושלים", "לשעבר ״בית התה של יאן״; היום נקרא טלביה; באותה רשימת המלצות ירושלים.", "ריס פריבר · 10/08/2025, 14:33"),
+    ("פוקאצ'ה בר", "מסעדה", "ירושלים", "נהדרת תמיד; באותה הודעה עם אדום, פונדק עין כרם, ברסרי בעין כרם וטלביה.", "ריס פריבר · 10/08/2025, 14:33"),
+    ("נומי", "בית קפה", "כפר מונש", "קפה נומי בכפר מונש; באותה הודעה עם קפה מלצ'ט בתל מונד.", "+972 54-663-3531 · 24/08/2023, 19:52"),
     ("אדמה (זיכרון)", "מסעדה", "זכרון יעקב", "הוצעה למסעדה פתוחה בשבת למשפחה גדולה.", "מיכל סטפק · 09/08/2017"),
     ("אנגוס", "מסעדת בשרים", "חיפה", "הוצע ליד ניר דוד / אזור הצפון.", "איילה בר · 09/08/2017"),
     ("צל תמר", "מסעדה", "אגדות יעקב / אשדות יעקב", "מעולה לילדים ואוכל; לבדוק שעות שבת לפי שרשור.", "תמי בנארצי · 09/08/2017"),
@@ -261,7 +351,7 @@ CURATED = [
     ("אלבית (Albait)", "מסעדה", "בית שאן–אזור", "לינק הופץ בשרשור מסעדות ליד ניר דוד.", "+972 54-223-0180 · 09/08/2017"),
     ("מסעדת הארזים", "לבנונית", "ליד נהריה", "מזרחית עממית; ליד נהריה.", "תמי בנארצי · 06/10/2017"),
     ("מסעדה טבעונית (ויצמן)", "טבעונית", "כפר סבא — רחוב ויצמן מול העירייה", "מקסימה בחוץ עם עציצים, אוכל מעולה.", "ליאת ריקליס אורן · 24/10/2017"),
-    ("קזן", "מסעדה כשרה", "רעננה", "כמעט כל המסעדות ברעננה כשרות; קזן חדשה וטובה.", "רותה לאור · 02/11/2017"),
+    ("קזן", "מסעדה", "רעננה", "כמעט כל המסעדות ברעננה כשרות; קזן חדשה וטובה.", "רותה לאור · 02/11/2017"),
     ("אלבמה", "מסעדת בשרים מעושנים", "נתניה", "קשה להזמין; הופיעה הזמנה להעברת מקום בקבוצה.", "הודעה מועברת · לפי שרשור 2018"),
     ("מוריס", "מסעדת בשרים", "שוק מחנה יהודה, ירושלים", "אותנטי בשוק.", "+972 52-487-5558 · 28/08/2017"),
     ("עזורה / פתיליות", "מסעדה", "שוק מחנה יהודה", "טעים וזול לדעת דנה הראל.", "דנה הראל · 28/08/2017"),

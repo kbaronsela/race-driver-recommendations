@@ -26,10 +26,31 @@
     else openPanel();
   }
 
+  function ensureCloseButton(panel) {
+    if (!panel || document.getElementById('site-sidebar-close-btn')) return;
+    var closeBtn = document.createElement('button');
+    closeBtn.id = 'site-sidebar-close-btn';
+    closeBtn.type = 'button';
+    closeBtn.className = 'site-sidebar-close';
+    closeBtn.setAttribute('aria-label', 'סגור תפריט');
+    closeBtn.innerHTML = '<span class="site-sidebar-close-icon" aria-hidden="true">×</span>';
+    var header = document.createElement('div');
+    header.className = 'site-sidebar-panel-header';
+    header.appendChild(closeBtn);
+    panel.insertBefore(header, panel.firstChild);
+    closeBtn.addEventListener('click', function () {
+      closePanel();
+      var menuBtn = document.getElementById('site-sidebar-menu-btn');
+      if (menuBtn) menuBtn.focus();
+    });
+  }
+
   function init() {
     var btn = document.getElementById('site-sidebar-menu-btn');
     var panel = document.getElementById('site-sidebar-panel');
     if (!btn || !panel) return;
+
+    ensureCloseButton(panel);
 
     btn.addEventListener('click', togglePanel);
 

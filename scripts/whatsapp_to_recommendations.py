@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attachments only).
+For each VCF share in the chat, context (messages before/after) is sent to a local LLM (Ollama)
+to decide if this is a professional/service recommendation and which field (תחום) applies.
 Produces JSON: name, phone, field, from_moshav, note, extra_info. Phone numbers in plain text are ignored.
 Contact names are trimmed of leading junk until the first letter (digits, '.', symbols, marks, etc.).
 Only Israeli domestic phone numbers (normalized 10-digit 0…) are kept.
@@ -9,11 +11,15 @@ Duplicate contacts (same field, related names, different numbers) are merged int
 
 Usage:
   python scripts/whatsapp_to_recommendations.py [path_to.zip] [--output path.json]
+  python scripts/whatsapp_to_recommendations.py ... --legacy   # keyword rules only, no LLM
 
 Default ZIP: G:\\My Drive\\ai\\whatsapp test bck.zip
 Default output: data/entries.json
+Default LLM: http://127.0.0.1:11434, model qwen2.5:7b
 """
+import os
 import re
+import sys
 import json
 import zipfile
 import argparse
@@ -26,6 +32,11 @@ DEFAULT_OUT = ROOT / "data" / "entries.json"
 
 from additional_info import infer_additional_info  # noqa: E402
 from duplicate_contact_merge import apply_duplicate_merge_to_entries  # noqa: E402
+from llm_recommendation_gate import (  # noqa: E402
+    DEFAULT_MODEL as OLLAMA_DEFAULT_MODEL,
+    DEFAULT_OLLAMA_URL,
+    classify_vcf_share,
+)
 
 # WhatsApp chat line: 18/06/2015, 16:33 - ‎‫סיגל ראב‬‎: message
 CHAT_LINE_RE = re.compile(
@@ -93,23 +104,36 @@ def clean_contact_name_start(s):
     return out if out else original
 
 
+def _vcf_field_upper(line):
+    """Upper part before first colon (property name, ignoring value)."""
+    if ":" not in line:
+        return ""
+    return line.split(":", 1)[0].upper()
+
+
 def parse_vcard(content):
-    """Parse one VCF content. Return (name, phone) or (None, None)."""
+    """Parse one VCF. Return dict: name, phone, org, note_vcf, title_vcf."""
     name = None
     phone = None
+    org = ""
+    note_vcf = ""
+    title_vcf = ""
     for line in content.splitlines():
         line = line.strip()
+        prop = _vcf_field_upper(line)
         if line.startswith("FN:"):
             name = line[3:].strip()
-        elif "TEL" in line.upper():
-            # item1.TEL;waid=...:+972 54-490-9706  or TEL;TYPE=CELL:050-1234567
+        elif "TEL" in prop and "LABEL" not in prop:
             m = re.search(r"[\d\-\+\s]{9,}", line)
-            if m:
+            if m and not phone:
                 phone = normalize_phone(m.group(0))
-        if name and phone:
-            break
+        elif prop.startswith("ORG"):
+            org = line.split(":", 1)[-1].strip() if ":" in line else ""
+        elif prop.startswith("NOTE"):
+            note_vcf = line.split(":", 1)[-1].strip() if ":" in line else ""
+        elif prop.startswith("TITLE"):
+            title_vcf = line.split(":", 1)[-1].strip() if ":" in line else ""
     if not name and "N:" in content:
-        # N:;Family;Given;;;
         for line in content.splitlines():
             if line.startswith("N:"):
                 parts = line[2:].split(";")
@@ -117,11 +141,17 @@ def parse_vcard(content):
                     name = (parts[2] + " " + parts[1]).strip() or parts[1]
                 break
     name = clean_contact_name_start(name or "")
-    return (name, phone or "")
+    return {
+        "name": name,
+        "phone": phone or "",
+        "org": org,
+        "note_vcf": note_vcf,
+        "title_vcf": title_vcf,
+    }
 
 
 def load_vcf_from_zip(zip_path):
-    """Return dict: normalized_phone -> {name, vcf_filename}, and vcf_filename_lower -> (name, phone)."""
+    """Return by_phone index and by_filename -> contact dict (name, phone, org, note_vcf, title_vcf)."""
     by_phone = {}
     by_filename = {}
     with zipfile.ZipFile(zip_path, "r") as z:
@@ -133,18 +163,26 @@ def load_vcf_from_zip(zip_path):
                     raw = f.read().decode("utf-8", errors="replace")
             except Exception:
                 continue
-            name, phone = parse_vcard(raw)
+            vc = parse_vcard(raw)
+            phone = vc.get("phone") or ""
             if not phone:
                 continue
             base = Path(info.filename).name
-            stem = base.replace(".vcf", "")
-            display = clean_contact_name_start(name) if name else clean_contact_name_start(stem)
+            stem = base.replace(".vcf", "").replace(".VCF", "")
+            display = clean_contact_name_start(vc.get("name") or "") if vc.get("name") else clean_contact_name_start(stem)
             if not display:
                 display = stem
+            rec = {
+                "name": display,
+                "phone": phone,
+                "org": (vc.get("org") or "").strip(),
+                "note_vcf": (vc.get("note_vcf") or "").strip(),
+                "title_vcf": (vc.get("title_vcf") or "").strip(),
+                "vcf_filename": base,
+            }
             by_phone[phone] = {"name": display, "vcf_filename": base}
-            by_filename[base.lower()] = (display, phone)
-            # also map without .vcf for flexible matching
-            by_filename[stem.lower()] = (display, phone)
+            by_filename[base.lower()] = rec
+            by_filename[stem.lower()] = rec
     return by_phone, by_filename
 
 
@@ -183,16 +221,19 @@ def parse_chat_messages(zip_path):
             yield (current_date, current_sender, text)
 
 
-def find_vcf_mentions_and_context(zip_path, by_filename, window_before=5):
-    """For each message that attaches a VCF, yield (vcf_filename, sender, message_text, context_messages)."""
+def find_vcf_mentions_and_context(zip_path, by_filename, window_before=5, window_after=3):
+    """For each VCF attachment, yield (vcf_filename, sender, message_text, context_before, context_after)."""
     messages = list(parse_chat_messages(zip_path))
     for i, (dt, sender, text) in enumerate(messages):
         for m in VCF_ATTACHED_RE.finditer(text):
             vcf_name = m.group(1).strip()
-            context = []
+            context_before = []
             for j in range(max(0, i - window_before), i):
-                context.append(messages[j])
-            yield (vcf_name, sender, text, context)
+                context_before.append(messages[j])
+            context_after = []
+            for j in range(i + 1, min(len(messages), i + 1 + window_after)):
+                context_after.append(messages[j])
+            yield (vcf_name, sender, text, context_before, context_after)
 
 
 def normalize_infer_text(s):
@@ -722,9 +763,11 @@ def refine_field_shaanut(field, name, note):
     return ""
 
 
-def infer_from_moshav(context_messages, message_text):
+def infer_from_moshav(context_messages, message_text, context_after=None):
     """Check if any context or the message mentions מושב."""
     combined = message_text + " " + " ".join(msg[2] for msg in context_messages)
+    if context_after:
+        combined += " " + " ".join(msg[2] for msg in context_after)
     return "מושב" in combined or "מהמושב" in combined or "במושב" in combined
 
 
@@ -742,10 +785,51 @@ def build_note(sender, message_text, context_messages, max_len=350):
     return out[:max_len] + ("..." if len(out) > max_len else "") if out else ""
 
 
+def _infer_field_fallback(name, note, context_before, context_after):
+    """Keyword-based field when LLM disabled or returned empty field."""
+    field = infer_field_from_text(name)
+    if not field:
+        field = infer_field_from_note(note)
+    if not field:
+        field = infer_field_from_context(context_before)
+    if not field:
+        field = infer_field_from_context(context_after)
+    return field
+
+
 def main():
+    # Windows consoles often default to cp1252; Hebrew log lines must not crash the script.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError, AttributeError):
+                pass
+
     parser = argparse.ArgumentParser(description="WhatsApp ZIP to recommendations JSON")
     parser.add_argument("zip_path", nargs="?", default=DEFAULT_ZIP, help="Path to WhatsApp export ZIP")
     parser.add_argument("--output", "-o", default=str(DEFAULT_OUT), help="Output JSON path")
+    parser.add_argument(
+        "--legacy",
+        action="store_true",
+        help="Do not call the LLM; use keyword rules only (old behavior).",
+    )
+    parser.add_argument(
+        "--ollama-url",
+        default=os.environ.get("OLLAMA_URL", DEFAULT_OLLAMA_URL),
+        help="Ollama API base URL (default: %(default)s or env OLLAMA_URL)",
+    )
+    parser.add_argument(
+        "--ollama-model",
+        default=os.environ.get("OLLAMA_MODEL", OLLAMA_DEFAULT_MODEL),
+        help="Model name (default: %(default)s or env OLLAMA_MODEL)",
+    )
+    parser.add_argument(
+        "--llm-timeout",
+        type=int,
+        default=180,
+        help="Seconds per LLM request (default: %(default)s)",
+    )
     args = parser.parse_args()
     zip_path = Path(args.zip_path)
     if not zip_path.exists():
@@ -758,17 +842,42 @@ def main():
     by_phone, by_filename = load_vcf_from_zip(zip_path)
     print(f"  Found {len(by_phone)} contacts in VCF, {len(by_filename)} filename mappings", flush=True)
 
+    use_llm = not args.legacy
+    if use_llm:
+        print(f"  LLM gate: {args.ollama_url} model={args.ollama_model}", flush=True)
+    else:
+        print("  Mode: --legacy (keyword rules only, no LLM)", flush=True)
+
     print("Scanning chat for VCF attachments...", flush=True)
+    if use_llm:
+        print(
+            "  (מודל מקומי: בקשה אחת לכל מספר טלפון חדש; בין שורות בלוג יכולות לעבור דקות על מעבד.)",
+            flush=True,
+        )
     seen_phones = set()
     entries = []
-    for vcf_name, sender, message_text, context in find_vcf_mentions_and_context(zip_path, by_filename):
-        # Match vcf_name to contact (filename might be "Name.vcf" or with different encoding)
+    llm_skipped = 0
+    llm_errors = 0
+    llm_calls = 0
+    n = 0
+    for vcf_name, sender, message_text, context_before, context_after in find_vcf_mentions_and_context(
+        zip_path, by_filename
+    ):
+        n += 1
+        if n % 100 == 0:
+            print(f"  ... processed {n} VCF attachment(s) in chat", flush=True)
         key = vcf_name.lower().strip()
         if key not in by_filename:
             key = key.replace(".vcf", "").lower()
         if key not in by_filename:
             continue
-        name, phone = by_filename[key]
+        rec = by_filename[key]
+        name = rec["name"]
+        phone = rec["phone"]
+        org = rec.get("org") or ""
+        note_vcf = rec.get("note_vcf") or ""
+        title_vcf = rec.get("title_vcf") or ""
+        vcf_filename = rec.get("vcf_filename") or vcf_name
         if not is_israeli_phone(phone):
             continue
         if not name:
@@ -776,14 +885,14 @@ def main():
         name = clean_contact_name_start(name)
         if not name:
             name = vcf_name.replace(".vcf", "").strip()
+
+        note = build_note(sender, message_text, context_before)
         if phone in seen_phones:
-            # Merge note with existing and re-infer field from name + merged note
             for e in entries:
                 if e.get("phone") == phone or normalize_phone(e.get("phone", "")) == phone:
-                    extra = build_note(sender, message_text, context)
+                    extra = build_note(sender, message_text, context_before)
                     if extra and extra not in (e.get("note") or ""):
                         e["note"] = (e.get("note") or "") + " | " + extra
-                        # Re-infer field: name first, then note (by frequency)
                         name = e.get("name") or ""
                         merged_note = e.get("note") or ""
                         field = infer_field_from_text(name)
@@ -798,16 +907,46 @@ def main():
                         )
                     break
             continue
+
+        if use_llm:
+            llm = classify_vcf_share(
+                ollama_url=args.ollama_url,
+                model=args.ollama_model,
+                name=name,
+                phone=phone,
+                vcf_filename=vcf_filename,
+                org=org,
+                note_vcf=note_vcf,
+                title_vcf=title_vcf,
+                sender=sender,
+                attach_message=message_text,
+                context_before=context_before,
+                context_after=context_after,
+                timeout_sec=args.llm_timeout,
+            )
+            llm_calls += 1
+            if llm_calls == 1 or llm_calls % 5 == 0:
+                print(
+                    f"  ... LLM completed {llm_calls} request(s); last: {phone} (attachment #{n} in chat)",
+                    flush=True,
+                )
+            if llm.get("error"):
+                llm_errors += 1
+                print(f"  LLM error (skip entry): {phone} {name!r} — {llm['error']}", flush=True)
+                continue
+            if not llm.get("include"):
+                llm_skipped += 1
+                continue
+            field = (llm.get("field") or "").strip()
+            if not field:
+                field = _infer_field_fallback(name, note, context_before, context_after)
+            field = refine_field_shaanut(field, name, note)
+        else:
+            field = _infer_field_fallback(name, note, context_before, context_after)
+            field = refine_field_shaanut(field, name, note)
+
         seen_phones.add(phone)
-        note = build_note(sender, message_text, context)
-        # Priority: 1) name, 2) note (if several fields in note → choose the one that appears most), 3) context
-        field = infer_field_from_text(name)
-        if not field:
-            field = infer_field_from_note(note)
-        if not field:
-            field = infer_field_from_context(context)
-        field = refine_field_shaanut(field, name, note)
-        from_moshav = infer_from_moshav(context, message_text)
+        from_moshav = infer_from_moshav(context_before, message_text, context_after)
         entries.append({
             "name": name,
             "phone": phone,
@@ -817,6 +956,8 @@ def main():
             "extra_info": infer_additional_info(name, note, field),
         })
     print(f"  Found {len(entries)} recommended contacts from VCF attachments only", flush=True)
+    if use_llm:
+        print(f"  LLM: excluded {llm_skipped} attachment(s), errors {llm_errors}", flush=True)
 
     entries, n_dup_groups = apply_duplicate_merge_to_entries(entries)
     if n_dup_groups:

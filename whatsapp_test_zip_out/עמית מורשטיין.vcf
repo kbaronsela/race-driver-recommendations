@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מורשטיין;עמית;;;
+FN:עמית מורשטיין
+item1.TEL;waid=972526605858:+972 52-660-5858
+item1.X-ABLabel:‏עבודה
+item2.TEL:+972 53-731-3875
+item2.X-ABLabel:‏בית
+item3.TEL;waid=972542443737:+972 54-244-3737
+item3.X-ABLabel:‏נייד
+END:VCARD

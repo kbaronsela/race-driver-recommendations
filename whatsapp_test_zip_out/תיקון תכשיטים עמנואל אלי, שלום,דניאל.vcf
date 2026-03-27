@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אלי, שלום,דניאל;תיקון תכשיטים עמנואל;;;
+FN:תיקון תכשיטים עמנואל אלי, שלום,דניאל
+TEL;type=CELL;type=VOICE:+972 9-765-9119
+TEL;waid=972548972726:+972 54-897-2726
+item1.ADR;type=HOME:;;ירושלים 30;כפר סבא;;;Israel
+item1.X-ABADR:il
+END:VCARD

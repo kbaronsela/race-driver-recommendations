@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Extract recommended contacts from a WhatsApp export ZIP (Hebrew chat + VCF attachments only).
-For each VCF share in the chat, context (messages before/after) is sent to a local LLM (Ollama)
-to decide if this is a professional/service recommendation and which field (תחום) applies.
+Extract recommended contacts from a WhatsApp export (ZIP or extracted folder: Hebrew chat + VCF attachments).
+For each VCF share in the chat, context (messages before/after) is sent to an LLM (Ollama / Groq / Gemini)
+to decide if this is a professional/service recommendation. By default (**hybrid**), the model only decides
+include/exclude; **field** (תחום) comes from Hebrew keyword rules (name, filename, TITLE/ORG, chat). Use
+``--no-hybrid`` for the older behavior where the model also suggests field.
 Produces JSON: name, phone, field, from_moshav, note, extra_info. Phone numbers in plain text are ignored.
 Contact names are trimmed of leading junk until the first letter (digits, '.', symbols, marks, etc.).
 Only Israeli domestic phone numbers (normalized 10-digit 0…) are kept.
 Duplicate contacts (same field, related names, different numbers) are merged into one row with a phones[] list.
 
 Usage:
-  python scripts/whatsapp_to_recommendations.py [path_to.zip] [--output path.json]
+  python scripts/whatsapp_to_recommendations.py [path_to.zip|export_folder] [--output path.json]
   python scripts/whatsapp_to_recommendations.py ... --legacy   # keyword rules only, no LLM
+  python scripts/whatsapp_to_recommendations.py ... --limit 5    # first 5 VCF lines in chat (smoke test)
+  python scripts/whatsapp_to_recommendations.py ... --no-hybrid # LLM returns field too (legacy)
 
-Default ZIP: G:\\My Drive\\ai\\whatsapp test bck.zip
+Default export: <repo>/whatsapp test.zip (if missing, pass path explicitly)
 Default output: data/entries.json
-Default LLM: http://127.0.0.1:11434, model qwen2.5:7b
+Default local LLM: http://127.0.0.1:11434, model qwen2.5:7b
+Remote: --llm-backend openai + GROQ_API_KEY, or --llm-backend gemini + GEMINI_API_KEY (Google AI Studio)
 """
 import os
 import re
 import sys
+import time
 import json
 import zipfile
 import argparse
@@ -27,7 +33,7 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_ZIP = r"G:\My Drive\ai\whatsapp test bck.zip"
+DEFAULT_EXPORT = ROOT / "whatsapp test.zip"
 DEFAULT_OUT = ROOT / "data" / "entries.json"
 
 from additional_info import infer_additional_info  # noqa: E402
@@ -35,6 +41,9 @@ from duplicate_contact_merge import apply_duplicate_merge_to_entries  # noqa: E4
 from llm_recommendation_gate import (  # noqa: E402
     DEFAULT_MODEL as OLLAMA_DEFAULT_MODEL,
     DEFAULT_OLLAMA_URL,
+    DEFAULT_OPENAI_BASE_URL,
+    DEFAULT_OPENAI_MODEL,
+    DEFAULT_GEMINI_MODEL,
     classify_vcf_share,
 )
 
@@ -186,20 +195,68 @@ def load_vcf_from_zip(zip_path):
     return by_phone, by_filename
 
 
-def parse_chat_messages(zip_path):
+def load_vcf_from_directory(dir_path: Path):
+    """Same indexing as load_vcf_from_zip, for a flat folder of .vcf + chat .txt."""
+    by_phone = {}
+    by_filename = {}
+    for p in sorted(dir_path.glob("*.vcf")):
+        try:
+            raw = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        vc = parse_vcard(raw)
+        phone = vc.get("phone") or ""
+        if not phone:
+            continue
+        base = p.name
+        stem = base.replace(".vcf", "").replace(".VCF", "")
+        display = clean_contact_name_start(vc.get("name") or "") if vc.get("name") else clean_contact_name_start(stem)
+        if not display:
+            display = stem
+        rec = {
+            "name": display,
+            "phone": phone,
+            "org": (vc.get("org") or "").strip(),
+            "note_vcf": (vc.get("note_vcf") or "").strip(),
+            "title_vcf": (vc.get("title_vcf") or "").strip(),
+            "vcf_filename": base,
+        }
+        by_phone[phone] = {"name": display, "vcf_filename": base}
+        by_filename[base.lower()] = rec
+        by_filename[stem.lower()] = rec
+    return by_phone, by_filename
+
+
+def load_vcf_index(export_path: Path):
+    """Load VCF index from a WhatsApp export .zip or extracted directory."""
+    if export_path.is_dir():
+        return load_vcf_from_directory(export_path)
+    return load_vcf_from_zip(export_path)
+
+
+def read_export_chat_text(export_path: Path) -> str:
+    """Read UTF-8 chat text from export: .zip (first .txt member), folder (WhatsApp Chat*.txt), or a single .txt path."""
+    if export_path.is_dir():
+        for p in sorted(export_path.glob("WhatsApp Chat*.txt")):
+            return p.read_text(encoding="utf-8", errors="replace")
+        for p in sorted(export_path.glob("*.txt")):
+            return p.read_text(encoding="utf-8", errors="replace")
+        return ""
+    if export_path.is_file() and export_path.suffix.lower() == ".txt":
+        return export_path.read_text(encoding="utf-8", errors="replace")
+    if export_path.is_file() and export_path.suffix.lower() == ".zip":
+        with zipfile.ZipFile(export_path, "r") as z:
+            for info in z.infolist():
+                if info.filename.endswith(".txt"):
+                    return z.read(info).decode("utf-8", errors="replace")
+    return ""
+
+
+def parse_chat_messages(export_path):
     """Yield (datetime_str, sender, message_text) for each message. Multi-line messages merged."""
-    chat_name = None
-    with zipfile.ZipFile(zip_path, "r") as z:
-        for info in z.infolist():
-            if not info.filename.endswith(".txt"):
-                continue
-            chat_name = info.filename
-            break
-    if not chat_name:
+    lines = read_export_chat_text(export_path).splitlines()
+    if not lines:
         return
-    with zipfile.ZipFile(zip_path, "r") as z:
-        with z.open(chat_name) as f:
-            lines = f.read().decode("utf-8", errors="replace").splitlines()
     current_date = current_sender = None
     current_parts = []
     for line in lines:
@@ -221,9 +278,9 @@ def parse_chat_messages(zip_path):
             yield (current_date, current_sender, text)
 
 
-def find_vcf_mentions_and_context(zip_path, by_filename, window_before=5, window_after=3):
+def find_vcf_mentions_and_context(export_path, by_filename, window_before=5, window_after=3):
     """For each VCF attachment, yield (vcf_filename, sender, message_text, context_before, context_after)."""
-    messages = list(parse_chat_messages(zip_path))
+    messages = list(parse_chat_messages(export_path))
     for i, (dt, sender, text) in enumerate(messages):
         for m in VCF_ATTACHED_RE.finditer(text):
             vcf_name = m.group(1).strip()
@@ -785,9 +842,24 @@ def build_note(sender, message_text, context_messages, max_len=350):
     return out[:max_len] + ("..." if len(out) > max_len else "") if out else ""
 
 
-def _infer_field_fallback(name, note, context_before, context_after):
-    """Keyword-based field when LLM disabled or returned empty field."""
-    field = infer_field_from_text(name)
+def _infer_field_fallback(
+    name,
+    note,
+    context_before,
+    context_after,
+    title_vcf="",
+    org="",
+    vcf_filename="",
+):
+    """Keyword-based field: contact name, filename stem, TITLE/ORG, then note and chat context."""
+    stem = ""
+    if vcf_filename:
+        stem = str(vcf_filename).replace(".vcf", "").replace(".VCF", "").strip()
+    field = infer_field_from_text(name or "")
+    if not field and stem:
+        field = infer_field_from_text(stem)
+    if not field:
+        field = infer_field_from_text(((title_vcf or "") + " " + (org or "")).strip())
     if not field:
         field = infer_field_from_note(note)
     if not field:
@@ -806,13 +878,23 @@ def main():
             except (OSError, ValueError, AttributeError):
                 pass
 
-    parser = argparse.ArgumentParser(description="WhatsApp ZIP to recommendations JSON")
-    parser.add_argument("zip_path", nargs="?", default=DEFAULT_ZIP, help="Path to WhatsApp export ZIP")
+    parser = argparse.ArgumentParser(description="WhatsApp export (ZIP or folder) to recommendations JSON")
+    parser.add_argument(
+        "export_path",
+        nargs="?",
+        default=str(DEFAULT_EXPORT),
+        help="WhatsApp export: .zip or folder with chat .txt and .vcf files (default: %(default)s)",
+    )
     parser.add_argument("--output", "-o", default=str(DEFAULT_OUT), help="Output JSON path")
     parser.add_argument(
         "--legacy",
         action="store_true",
         help="Do not call the LLM; use keyword rules only (old behavior).",
+    )
+    parser.add_argument(
+        "--no-hybrid",
+        action="store_true",
+        help="When using LLM: also ask the model for field (legacy). Default: hybrid — LLM only include/exclude; field from keyword rules.",
     )
     parser.add_argument(
         "--ollama-url",
@@ -830,28 +912,122 @@ def main():
         default=180,
         help="Seconds per LLM request (default: %(default)s)",
     )
+    parser.add_argument(
+        "--llm-backend",
+        choices=("ollama", "openai", "gemini"),
+        default=os.environ.get("LLM_BACKEND", "ollama"),
+        help="ollama=local; openai=Groq/OpenRouter/…; gemini=Google. Env: LLM_BACKEND.",
+    )
+    parser.add_argument(
+        "--openai-base-url",
+        default=os.environ.get("OPENAI_BASE_URL", DEFAULT_OPENAI_BASE_URL),
+        help="OpenAI-compatible base (default: Groq %(default)s). Env: OPENAI_BASE_URL.",
+    )
+    parser.add_argument(
+        "--openai-api-key",
+        default=os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY", ""),
+        help="API key for --llm-backend openai. Env: GROQ_API_KEY or OPENAI_API_KEY.",
+    )
+    parser.add_argument(
+        "--openai-model",
+        default=os.environ.get("OPENAI_MODEL", DEFAULT_OPENAI_MODEL),
+        help="Model id for OpenAI-compatible API (default: Groq %(default)s). Env: OPENAI_MODEL.",
+    )
+    parser.add_argument(
+        "--gemini-api-key",
+        default=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", ""),
+        help="API key for --llm-backend gemini (https://aistudio.google.com/apikey). Env: GEMINI_API_KEY.",
+    )
+    parser.add_argument(
+        "--gemini-model",
+        default=os.environ.get("GEMINI_MODEL", DEFAULT_GEMINI_MODEL),
+        help="Gemini model id (default: %(default)s). Env: GEMINI_MODEL.",
+    )
+    parser.add_argument(
+        "--llm-delay",
+        type=float,
+        default=float(os.environ.get("LLM_DELAY") or "0"),
+        metavar="SEC",
+        help="Seconds to sleep after each remote LLM call (openai/gemini). Groq free tier is ~6000 TPM; "
+        "use e.g. 10–15 to avoid bursts. Env: LLM_DELAY. Default: %(default)s.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Process only the first N VCF attachment lines in chat order (for testing).",
+    )
     args = parser.parse_args()
-    zip_path = Path(args.zip_path)
-    if not zip_path.exists():
-        print(f"ZIP not found: {zip_path}", flush=True)
+    export_path = Path(args.export_path)
+    if not export_path.exists():
+        print(f"Export not found: {export_path}", flush=True)
+        return 1
+    if not export_path.is_dir() and not (export_path.is_file() and export_path.suffix.lower() == ".zip"):
+        print("Export must be a .zip file or a folder containing WhatsApp Chat *.txt and .vcf files.", flush=True)
         return 1
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    print("Loading VCF from ZIP...", flush=True)
-    by_phone, by_filename = load_vcf_from_zip(zip_path)
+    print("Loading VCF from export...", flush=True)
+    by_phone, by_filename = load_vcf_index(export_path)
     print(f"  Found {len(by_phone)} contacts in VCF, {len(by_filename)} filename mappings", flush=True)
 
     use_llm = not args.legacy
     if use_llm:
-        print(f"  LLM gate: {args.ollama_url} model={args.ollama_model}", flush=True)
+        if args.llm_backend == "openai":
+            if not (args.openai_api_key or "").strip():
+                print(
+                    "  --llm-backend openai requires an API key. Set GROQ_API_KEY (free at https://console.groq.com) "
+                    "or OPENAI_API_KEY, or pass --openai-api-key.",
+                    flush=True,
+                )
+                return 1
+            print(
+                f"  LLM gate (OpenAI-compatible): {args.openai_base_url} model={args.openai_model}",
+                flush=True,
+            )
+            if args.llm_delay <= 0:
+                print(
+                    "  Tip: Groq free tier limits tokens/minute — 429s auto-retry with backoff; "
+                    "add --llm-delay 12 for fewer rate limits on long runs.",
+                    flush=True,
+                )
+        elif args.llm_backend == "gemini":
+            if not (args.gemini_api_key or "").strip():
+                print(
+                    "  --llm-backend gemini requires GEMINI_API_KEY (free at https://aistudio.google.com/apikey) "
+                    "or pass --gemini-api-key.",
+                    flush=True,
+                )
+                return 1
+            print(f"  LLM gate (Gemini): model={args.gemini_model}", flush=True)
+            if args.llm_delay <= 0:
+                print(
+                    "  Tip: Gemini free tier has RPM limits — use --llm-delay 4–8 on long runs if you see many 429s.",
+                    flush=True,
+                )
+        else:
+            print(f"  LLM gate (Ollama): {args.ollama_url} model={args.ollama_model}", flush=True)
+        if not args.no_hybrid:
+            print(
+                "  Hybrid: LLM decides include/exclude only; field = keyword rules (name, file, TITLE/ORG, chat).",
+                flush=True,
+            )
+        else:
+            print("  Legacy LLM: model also returns field when possible.", flush=True)
     else:
         print("  Mode: --legacy (keyword rules only, no LLM)", flush=True)
 
     print("Scanning chat for VCF attachments...", flush=True)
-    if use_llm:
+    if args.limit is not None:
         print(
-            "  (מודל מקומי: בקשה אחת לכל מספר טלפון חדש; בין שורות בלוג יכולות לעבור דקות על מעבד.)",
+            f"  --limit {args.limit}: will stop after {args.limit} VCF attachment line(s) in chat order.",
+            flush=True,
+        )
+    if use_llm and args.llm_backend == "ollama":
+        print(
+            "  (מודל מקומי: בקשה אחת לכל צירוף VCF בצ'אט; בין שורות בלוג יכולות לעבור דקות על מעבד.)",
             flush=True,
         )
     seen_phones = set()
@@ -861,9 +1037,11 @@ def main():
     llm_calls = 0
     n = 0
     for vcf_name, sender, message_text, context_before, context_after in find_vcf_mentions_and_context(
-        zip_path, by_filename
+        export_path, by_filename
     ):
         n += 1
+        if args.limit is not None and n > args.limit:
+            break
         if n % 100 == 0:
             print(f"  ... processed {n} VCF attachment(s) in chat", flush=True)
         key = vcf_name.lower().strip()
@@ -880,6 +1058,7 @@ def main():
         vcf_filename = rec.get("vcf_filename") or vcf_name
         if not is_israeli_phone(phone):
             continue
+        phone_key = normalize_phone(phone)
         if not name:
             name = vcf_name.replace(".vcf", "")
         name = clean_contact_name_start(name)
@@ -887,9 +1066,9 @@ def main():
             name = vcf_name.replace(".vcf", "").strip()
 
         note = build_note(sender, message_text, context_before)
-        if phone in seen_phones:
+        if phone_key in seen_phones:
             for e in entries:
-                if e.get("phone") == phone or normalize_phone(e.get("phone", "")) == phone:
+                if e.get("phone") == phone or normalize_phone(e.get("phone", "")) == phone_key:
                     extra = build_note(sender, message_text, context_before)
                     if extra and extra not in (e.get("note") or ""):
                         e["note"] = (e.get("note") or "") + " | " + extra
@@ -909,9 +1088,19 @@ def main():
             continue
 
         if use_llm:
+            if args.llm_backend == "openai":
+                llm_model = args.openai_model
+            elif args.llm_backend == "gemini":
+                llm_model = args.gemini_model
+            else:
+                llm_model = args.ollama_model
             llm = classify_vcf_share(
+                backend=args.llm_backend,
                 ollama_url=args.ollama_url,
-                model=args.ollama_model,
+                model=llm_model,
+                openai_base_url=args.openai_base_url,
+                openai_api_key=args.openai_api_key,
+                gemini_api_key=args.gemini_api_key,
                 name=name,
                 phone=phone,
                 vcf_filename=vcf_filename,
@@ -923,6 +1112,7 @@ def main():
                 context_before=context_before,
                 context_after=context_after,
                 timeout_sec=args.llm_timeout,
+                hybrid=not args.no_hybrid,
             )
             llm_calls += 1
             if llm_calls == 1 or llm_calls % 5 == 0:
@@ -933,19 +1123,32 @@ def main():
             if llm.get("error"):
                 llm_errors += 1
                 print(f"  LLM error (skip entry): {phone} {name!r} — {llm['error']}", flush=True)
+                if args.llm_delay > 0 and args.llm_backend in ("openai", "gemini"):
+                    time.sleep(args.llm_delay)
                 continue
             if not llm.get("include"):
                 llm_skipped += 1
+                if args.llm_delay > 0 and args.llm_backend in ("openai", "gemini"):
+                    time.sleep(args.llm_delay)
                 continue
-            field = (llm.get("field") or "").strip()
-            if not field:
-                field = _infer_field_fallback(name, note, context_before, context_after)
+            if args.no_hybrid:
+                field = (llm.get("field") or "").strip()
+                if not field:
+                    field = _infer_field_fallback(
+                        name, note, context_before, context_after, title_vcf, org, vcf_filename
+                    )
+            else:
+                field = _infer_field_fallback(
+                    name, note, context_before, context_after, title_vcf, org, vcf_filename
+                )
             field = refine_field_shaanut(field, name, note)
+            if args.llm_delay > 0 and args.llm_backend in ("openai", "gemini"):
+                time.sleep(args.llm_delay)
         else:
             field = _infer_field_fallback(name, note, context_before, context_after)
             field = refine_field_shaanut(field, name, note)
 
-        seen_phones.add(phone)
+        seen_phones.add(phone_key)
         from_moshav = infer_from_moshav(context_before, message_text, context_after)
         entries.append({
             "name": name,

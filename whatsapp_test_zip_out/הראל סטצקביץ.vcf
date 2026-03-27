@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סטצקביץ;הראל;;;
+FN:הראל סטצקביץ
+ORG:מומחה בכירורגיה אורטופדית;
+TEL;type=WORK:+972 9-740-8877
+TEL;type=WORK:+972 9-768-5555
+TEL;type=IPHONE;type=CELL;type=VOICE;waid=972548128888:+972 54-812-8888
+item1.ADR;type=HOME:;;מכבי בשכונה הירוקה\r\nקומה 2 חדר 211;כפס;;;Israel
+item1.X-ABADR:il
+END:VCARD

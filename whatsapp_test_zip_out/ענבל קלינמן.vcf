@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קלינמן;ענבל;;;
+FN:ענבל קלינמן
+item1.TEL;waid=972522956389:+972 52-295-6389
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:רפד (רעננה);איל;;;
+FN:איל רפד (רעננה)
+TEL;type=CELL;type=VOICE;waid=972522726729:+972 52-272-6729
+item1.ADR;type=HOME:;;בן גוריון 4,;רעננה;;;Israel
+item1.X-ABADR:il
+END:VCARD

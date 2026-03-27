@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;תומר נעים  מאמן כושר;;;
+FN:תומר נעים  מאמן כושר
+item1.TEL;waid=972544956622:+972 54-495-6622
+item1.X-ABLabel:Mobile
+item2.ADR;type=HOME:;;בן גוריון 36 ;כפר סבא;;;ישראל
+item2.X-ABADR:il
+END:VCARD

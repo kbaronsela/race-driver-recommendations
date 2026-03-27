@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קורן;סלולר השרון;בן;;
+FN:סלולר השרון בן קורן
+item1.TEL:+972 77-301-0069
+item1.X-ABLabel:נייד
+item2.ADR:;;62 דרך מגדיאל;הוד השרון;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

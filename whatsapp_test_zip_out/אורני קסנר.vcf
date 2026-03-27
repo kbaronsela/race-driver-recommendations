@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;אורני קסנר;;;
+FN:אורני קסנר
+TEL;type=CELL;type=VOICE;waid=972524294644:+972 52-429-4644
+item1.EMAIL;type=INTERNET:ornakeder@walla.com
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

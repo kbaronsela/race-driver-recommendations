@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:raz;revital -;testing;;
+FN:revital - testing raz
+item1.TEL;waid=972528672486:+972 52-867-2486
+item1.X-ABLabel:Mobile
+END:VCARD

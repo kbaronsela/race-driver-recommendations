@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Assaf;שרון אסף;;;
+FN:שרון אסף Assaf
+item1.TEL;waid=972506008019:+972 50-600-8019
+item1.X-ABLabel:בית
+item2.EMAIL;type=INTERNET:sharon@ash-mobile.com
+item2.X-ABLabel:בית
+END:VCARD

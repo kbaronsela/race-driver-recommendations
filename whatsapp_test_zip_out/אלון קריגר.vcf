@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:קריגר;אלון;;;
+FN:אלון קריגר
+item1.TEL:+972 9-745-0819
+item1.X-ABLabel:בית
+item2.TEL;waid=972522893407:+972 52-289-3407
+item2.X-ABLabel:נייד
+END:VCARD

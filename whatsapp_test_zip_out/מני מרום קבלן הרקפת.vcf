@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מרום קבלן הרקפת;מני;;;
+FN:מני מרום קבלן הרקפת
+TITLE:שכן
+item1.TEL;waid=972523411029:+972 52-341-1029
+item1.X-ABLabel:נייד
+item2.TEL:+972 53-341-1119
+item2.X-ABLabel:נייד
+item3.EMAIL;type=INTERNET:m.marom2002@ gmail.com
+item3.X-ABLabel:בית
+END:VCARD

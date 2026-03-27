@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ברזילי;ציפי;;;
+FN:ציפי ברזילי
+item1.TEL;waid=972547567640:+972 54-756-7640
+item1.X-ABLabel:נייד
+item2.ADR:;;דירה 6 13 משעול בית הבד;כפר סבא;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+item3.ADR:;;דירה 6 13 משעול בית הבד;כפר סבא;;;
+item3.X-ABADR:ac
+item3.X-ABLabel:בית
+END:VCARD

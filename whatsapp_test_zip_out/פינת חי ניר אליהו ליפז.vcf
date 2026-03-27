@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פינת חי ניר אליהו ליפז;;;;
+FN:פינת חי ניר אליהו ליפז
+TEL;type=OTHER;type=VOICE:+97297647348
+TEL;type=CELL;type=VOICE;waid=972507477502:+972 50-747-7502
+item1.TEL;waid=972528641129:+972 52-864-1129
+item1.X-ABLabel:ליפז
+END:VCARD

@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פרנסין;אלי;;;
+FN:אלי פרנסין
+item1.TEL;waid=972524899555:+972 52-489-9555
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:elifr47@gmail.com
+item2.X-ABLabel:בית
+item3.ADR:;;Israel;;;;
+item3.X-ABADR:in
+item3.X-ABLabel:בית
+END:VCARD

@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:דפוס;פיקס;נדלן;;
+FN:פיקס נדלן דפוס
+item1.TEL:+972 9-771-2408
+item1.X-ABLabel:‏בית
+item2.TEL:+972 9-771-2903
+item2.X-ABLabel:‏נייד
+item3.TEL:+972 9-799-7597
+item3.X-ABLabel:‏נייד
+END:VCARD

@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Horwits;Yonit;;;
+FN:Yonit Horwits
+BDAY;value=date:1970-02-27
+ORG:Yonit's Designs   יונית עיצובים;
+TITLE:בעלים ומעצבת
+TEL;type=CELL;type=VOICE;waid=972523897821:+972 52-389-7821
+item1.X-FACEBOOK:yonit.h.shechter
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

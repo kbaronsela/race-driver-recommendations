@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:עובדיה;מירי;סיטון;;
+FN:מירי סיטון עובדיה
+item1.TEL;waid=972534240327:+972 53-424-0327
+item1.X-ABLabel:עבודה
+item2.TEL:+972 77-424-0327
+item2.X-ABLabel:בית
+END:VCARD

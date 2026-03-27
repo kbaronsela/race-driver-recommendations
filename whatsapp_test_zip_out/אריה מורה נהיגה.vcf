@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:נהיגה;אריה;מורה;;
+FN:אריה מורה נהיגה
+item1.TEL:+972 9-792-5332
+item1.X-ABLabel:נייד
+item2.TEL;waid=972522515494:+972 52-251-5494
+item2.X-ABLabel:נייד
+END:VCARD

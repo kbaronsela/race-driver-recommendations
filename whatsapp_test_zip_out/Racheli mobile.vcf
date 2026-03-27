@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:mobile;Racheli;;;
+FN:Racheli mobile
+item1.TEL;waid=972542186090:+972 54-218-6090
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:racheli.gy@gmail.com
+item2.X-ABLabel:null
+END:VCARD

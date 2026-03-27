@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אגוזי;דליה;;;
+FN:דליה אגוזי
+item1.TEL;waid=972546461907:+972 54-646-1907
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-767-4797
+item2.X-ABLabel:עבודה
+END:VCARD

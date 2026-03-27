@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+N:משה;אופיר;בן;;
+FN:אופיר בן משה
+item1.TEL;waid=972505788550:+972 50-578-8550
+item1.X-ABLabel:נייד
+item2.TEL;waid=97235661010:+972 3-566-1010
+item2.X-ABLabel:עבודה
+item3.ADR:;;;ישראל ;;;
+item3.X-ABADR:ac
+item3.X-ABLabel:בית
+item4.ADR:;;;;;;ישראל
+item4.X-ABADR:il
+item4.X-ABLabel:בית
+END:VCARD

@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ברק;ד"ר;אשר;;
+FN:ד"ר אשר ברק
+item1.TEL:+972 9-772-2211
+item1.X-ABLabel:Mobile
+item2.TEL:+972 9-772-2255
+item2.X-ABLabel:Work Fax
+END:VCARD

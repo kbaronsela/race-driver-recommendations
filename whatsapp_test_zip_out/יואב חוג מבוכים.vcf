@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מבוכים;יואב;חוג;;
+FN:יואב חוג מבוכים
+item1.TEL;waid=972503599705:+972 50-359-9705
+item1.X-ABLabel:נייד
+item2.TEL;waid=972544400987:+972 54-440-0987
+item2.X-ABLabel:עבודה
+END:VCARD

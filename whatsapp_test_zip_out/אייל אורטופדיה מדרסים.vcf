@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מדרסים;אייל;אורטופדיה;;
+FN:אייל אורטופדיה מדרסים
+item1.TEL:+972 9-745-0305
+item1.X-ABLabel:נייד
+item2.TEL;waid=972545956545:+972 54-595-6545
+item2.X-ABLabel:בית
+END:VCARD

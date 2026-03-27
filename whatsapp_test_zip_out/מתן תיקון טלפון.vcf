@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:טלפון;מתן;תיקון;;
+FN:מתן תיקון טלפון
+item1.TEL;waid=972522215515:+972 52-221-5515
+item1.X-ABLabel:בית
+item2.TEL;waid=972534318344:+972 53-431-8344
+item2.X-ABLabel:נייד
+X-WA-BIZ-NAME:מתן תיקון טלפון
+END:VCARD

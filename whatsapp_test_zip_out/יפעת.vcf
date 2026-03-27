@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;יפעת;;;
+FN:יפעת
+item1.TEL:+972 9-748-2787
+item1.X-ABLabel:בית
+item2.TEL;waid=972528373570:+972 52-837-3570
+item2.X-ABLabel:נייד
+END:VCARD

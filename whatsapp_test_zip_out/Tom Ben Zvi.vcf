@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Zvi;Tom;Ben;;
+FN:Tom Ben Zvi
+item1.TEL;waid=972542277257:+972 54-227-7257
+item1.X-ABLabel:Mobile
+END:VCARD

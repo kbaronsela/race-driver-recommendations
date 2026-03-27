@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מרוץ;אלפא אחסנה אודי הובלות מומלץ;נהגות;;
+FN:אלפא אחסנה אודי הובלות מומלץ נהגות מרוץ
+ORG:אלפא אחסנה
+TITLE:
+item1.TEL;waid=972542000723:+972 54-200-0723
+item1.X-ABLabel:ראשי
+item2.URL:https://www.ahsana.co.il/
+item2.X-ABLabel:OTHER
+item3.URL:https://www.ahsana.co.il/
+item3.X-ABLabel:HOMEPAGE
+item4.ADR:;;17 רחבעם זאבי;חולון;;5822405;ישראל
+item4.X-ABADR:il
+item4.X-ABLabel:בית
+item5.ADR:;;17 רחבעם זאבי;חולון;;5822405;ישראל
+item5.X-ABADR:il
+item5.X-ABLabel:בית
+END:VCARD

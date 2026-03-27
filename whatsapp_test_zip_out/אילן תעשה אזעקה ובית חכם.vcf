@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ובית חכם;אילן תעשה אזעקה;;;
+FN:אילן תעשה אזעקה ובית חכם
+TEL;type=CELL;type=VOICE;waid=972549000955:+972 54-900-0955
+item1.EMAIL;type=INTERNET:ilan_o@012.net.il
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

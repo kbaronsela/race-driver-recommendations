@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שמואלי;יוסי;;;
+FN:יוסי שמואלי
+TEL;type=CELL;type=VOICE;waid=972526155161:+972 52-615-5161
+TEL;type=OTHER;type=VOICE:+97297449331
+TEL;type=HOME;type=FAX:+97297449331
+EMAIL;type=INTERNET;type=HOME:info@t-i-m.co.il
+END:VCARD

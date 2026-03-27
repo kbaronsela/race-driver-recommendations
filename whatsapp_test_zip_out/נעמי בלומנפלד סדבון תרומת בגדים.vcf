@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בגדים;נעמי בלומנפלד סדבון;תרומת;;
+FN:נעמי בלומנפלד סדבון תרומת בגדים
+item1.TEL;waid=972502210507:+972 50-221-0507
+item1.X-ABLabel:נייד
+item2.ADR:;;מורדי הגטאות;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

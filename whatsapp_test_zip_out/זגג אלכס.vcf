@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אלכס;זגג;;;
+FN:זגג אלכס
+item1.TEL;waid=972546658490:+972 54-665-8490
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:alex_roit@bezeqint.net
+item2.X-ABLabel:בית
+END:VCARD

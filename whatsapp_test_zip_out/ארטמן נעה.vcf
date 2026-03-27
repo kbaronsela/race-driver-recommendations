@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:נעה;ארטמן;נעה;;
+FN:ארטמן נעה
+item1.TEL:+90 552 361 73 69
+item1.X-ABLabel:נייד
+item2.TEL;waid=972525933270:+972 52-593-3270
+item2.X-ABLabel:נייד
+item3.ADR:;;;;;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:בית
+BDAY;value=date:2023-12-12
+END:VCARD

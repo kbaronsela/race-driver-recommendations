@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ורבורג;תמי בן ארצי;שדה;;
+FN:תמי בן ארצי שדה ורבורג
+item1.TEL;waid=972507481108:+972 50-748-1108
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-748-2794
+item2.X-ABLabel:בית
+END:VCARD

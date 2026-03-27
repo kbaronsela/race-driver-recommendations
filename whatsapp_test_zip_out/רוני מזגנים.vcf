@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מזגנים;רוני;;;
+FN:רוני מזגנים
+item1.TEL:0
+item1.X-ABLabel:נייד
+item2.TEL;waid=972507452481:+972 50-745-2481
+item2.X-ABLabel:בית
+END:VCARD

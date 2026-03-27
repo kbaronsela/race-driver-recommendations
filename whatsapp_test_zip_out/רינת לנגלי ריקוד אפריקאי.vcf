@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אפריקאי;רינת לנגלי;ריקוד;;
+FN:רינת לנגלי ריקוד אפריקאי
+item1.TEL;waid=972528248702:+972 52-824-8702
+item1.X-ABLabel:נייד
+item2.ADR:;;;קיבוץ מגל;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:עבודה
+END:VCARD

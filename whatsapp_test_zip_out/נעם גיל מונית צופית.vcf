@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:צופית;נעם גיל;מונית;;
+FN:נעם גיל מונית צופית
+item1.TEL:+972 50-850-4171
+item1.X-ABLabel:נייד
+item2.TEL;waid=972526151414:+972 52-615-1414
+item2.X-ABLabel:נייד
+END:VCARD

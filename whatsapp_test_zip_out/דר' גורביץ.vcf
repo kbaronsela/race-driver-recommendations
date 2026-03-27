@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גורביץ;דר';;;
+FN:דר' גורביץ
+item1.TEL;waid=972544618447:+972 54-461-8447
+item1.X-ABLabel:Mobile
+TEL;type=Work;waid=97297489090:+972 9-748-9090
+X-WA-BIZ-DESCRIPTION:מרפאת ילדים
+X-WA-BIZ-NAME:דר' גורביץ
+END:VCARD

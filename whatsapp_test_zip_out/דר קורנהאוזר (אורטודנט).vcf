@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:(אורטודנט);דר;קורנהאוזר;;
+FN:דר קורנהאוזר (אורטודנט)
+item1.TEL;waid=972503616663:+972 50-361-6663
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-744-3373
+item2.X-ABLabel:אחר
+END:VCARD

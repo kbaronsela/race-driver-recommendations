@@ -1,0 +1,20 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;אהרון חדד נהג מונית שו;;;
+FN:אהרון חדד נהג מונית שו
+TEL;type=CELL;type=VOICE;waid=972523993187:+972 52-399-3187
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:גיל;נהג מונית;נעם;;
+FN:נהג מונית נעם גיל
+item1.TEL;waid=972526151414:+972 52-615-1414
+item1.X-ABLabel:נייד
+item2.TEL:+972 50-574-2871
+item2.X-ABLabel:נייד
+END:VCARDBEGIN:VCARD
+VERSION:3.0
+N:מונית;**יואב שער**;;;
+FN:**יואב שער** מונית
+ORG:שדה ורבורג;
+TEL;type=CELL;type=VOICE;waid=972507688989:+972 50-768-8989
+END:VCARD

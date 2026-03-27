@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;רעיה פלדמן;;;
+FN:רעיה פלדמן
+item1.TEL;waid=972504905332:+972 50-490-5332
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:rayalurie@gmail.com
+item2.X-ABLabel:בית
+END:VCARD

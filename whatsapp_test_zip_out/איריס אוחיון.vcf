@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אוחיון;איריס;;;
+FN:איריס אוחיון
+item1.TEL:+972 9-748-3886
+item1.X-ABLabel:נייד
+item2.TEL;waid=972544901463:+972 54-490-1463
+item2.X-ABLabel:נייד
+END:VCARD

@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:עובדיה;דר;;;
+FN:דר עובדיה
+TEL;type=CELL;type=VOICE:+972 77-777-9222
+item1.TEL:+97236974269
+item1.X-ABLabel:מזכירה עדי
+END:VCARD

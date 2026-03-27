@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:זאבי;אורית;;;
+FN:אורית זאבי
+TEL;type=נייד:+972 52-312-0739
+TEL;type=בית:+972 77-402-0729
+EMAIL;TYPE=בית:orit.z.03.1953@gmail.com
+item1.ADR;type=בית:;;;Sde Warburg;;;
+item1.X-ABADR:in
+item2.ADR;type=בית:;;;Sde Warburg;;;
+item2.X-ABADR:in
+BDAY;value=date:1953-03-18
+END:VCARD

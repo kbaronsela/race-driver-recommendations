@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שרם;ניר;;;
+FN:ניר שרם
+item1.TEL;waid=972523871197:+972 52-387-1197
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:nir@mytad.co.il
+item2.X-ABLabel:בית
+item3.EMAIL;type=INTERNET:100658624
+item3.X-ABLabel:עבודה
+BDAY;value=date:1969-05-24
+END:VCARD

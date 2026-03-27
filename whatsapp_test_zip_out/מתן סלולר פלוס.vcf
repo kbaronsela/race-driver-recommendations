@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פלוס;מתן;סלולר;;
+FN:מתן סלולר פלוס
+ORG:מעבדת טלפונים ניידת
+TITLE:
+TEL;type=Mobile;waid=972522215515:+972 52-221-5515
+item1.ADR;type=Work:;;4 היצירה;רעננה;;;
+item1.X-ABADR:ac
+X-WA-BIZ-DESCRIPTION:תיקון ומכירת סלולר ואביזרים נלווים
+X-WA-BIZ-NAME:מתן סלולר פלוס
+END:VCARD

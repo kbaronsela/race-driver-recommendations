@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אריאל;דר;;;
+FN:דר אריאל
+ORG:null
+TITLE:רופא שיניים
+item1.TEL:+972 9-744-9135
+item1.X-ABLabel:נייד
+item2.ADR:;;שברץ 20 קומה 4, רעננה;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

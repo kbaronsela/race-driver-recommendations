@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Abadi עבדי;Miguel מיגל;;;
+FN:Miguel מיגל Abadi עבדי
+TITLE:עו״ד ונוטריון רעננה
+TEL;type=WORK:+972 77-525-3419
+TEL;type=CELL;type=VOICE;waid=972508668808:+972 50-866-8808
+TEL;type=WORK;type=FAX:+97297727448
+EMAIL;type=INTERNET;type=WORK:abadil2@netvision.net.il
+item1.URL:www.abadilawyers.com
+item1.X-ABLabel:_$!<HomePage>!$_
+END:VCARD

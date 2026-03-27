@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בן-ארצי;אסתי;;;
+FN:אסתי בן-ארצי
+TEL;type=CELL;type=VOICE;waid=972544675487:+972 54-467-5487
+TEL;type=OTHER;type=VOICE:+97297658084
+item1.EMAIL;type=INTERNET:esthy.benartzy@gmail.com
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

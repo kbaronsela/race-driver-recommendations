@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אביטל;רון סקיטל;של;;
+FN:רון סקיטל של אביטל
+item1.TEL;waid=972544424429:+972 54-442-4429
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:Skitallaw@gmail.com
+item2.X-ABLabel:בית
+END:VCARD

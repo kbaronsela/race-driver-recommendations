@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:(קלארו);עומר;אבישר;;
+FN:עומר אבישר (קלארו)
+item1.TEL;waid=972526360560:+972 52-636-0560
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

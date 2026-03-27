@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:צופית;נועם -;מונית;;
+FN:נועם - מונית צופית
+ORG:Airport Service
+TITLE:
+item1.TEL:+972 50-574-2871
+item1.X-ABLabel:CUSTOM(CHARSET
+item2.TEL;waid=972526151414:+972 52-615-1414
+item2.X-ABLabel:CUSTOM(CHARSET
+END:VCARD

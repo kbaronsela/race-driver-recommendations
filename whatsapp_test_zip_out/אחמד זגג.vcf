@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:זגג;אחמד;;;
+FN:אחמד זגג
+item1.TEL;waid=972505284718:+972 50-528-4718
+item1.X-ABLabel:נייד
+item2.TEL;waid=972506383299:+972 50-638-3299
+item2.X-ABLabel:בית
+END:VCARD

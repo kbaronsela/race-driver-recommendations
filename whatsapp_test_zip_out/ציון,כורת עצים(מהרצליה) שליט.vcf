@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שליט;ציון,כורת עצים(מהרצליה);;;
+FN:ציון,כורת עצים(מהרצליה) שליט
+TEL;type=CELL;type=VOICE;waid=972522500889:+972 52-250-0889
+EMAIL;type=INTERNET;type=HOME:עפרה0522995077
+item1.ADR;type=HOME:;;מנדלבלט 15;הרצליה;;;ישראל
+item1.X-ABADR:il
+END:VCARD

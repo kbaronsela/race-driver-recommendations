@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מדביר;Edi;אדי;;
+FN:Edi אדי מדביר
+ORG:Exterminator
+TITLE:
+item1.TEL:+972 3-634-5708
+item1.X-ABLabel:עבודה
+item2.TEL;waid=972524444446:+972 52-444-4446
+item2.X-ABLabel:נייד
+item3.EMAIL;type=INTERNET:www.1a1.co.il
+item3.X-ABLabel:בית
+END:VCARD

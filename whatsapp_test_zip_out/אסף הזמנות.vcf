@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:הזמנות;אסף;;;
+FN:אסף הזמנות
+item1.TEL;waid=972549090275:+972 54-909-0275
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:asaf@yeshuv.com
+item2.X-ABLabel:בית
+END:VCARD

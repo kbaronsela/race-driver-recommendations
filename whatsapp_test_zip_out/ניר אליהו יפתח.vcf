@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:יפתח;ניר;אליהו;;
+FN:ניר אליהו יפתח
+item1.TEL;waid=972542357960:+972 54-235-7960
+item1.X-ABLabel:נייד
+item2.TEL:+972 57-777-2273
+item2.X-ABLabel:נייד
+END:VCARD

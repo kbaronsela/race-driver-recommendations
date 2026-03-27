@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;יונית;;;
+FN:יונית
+item1.TEL:4
+item1.X-ABLabel:נייד
+item2.TEL;waid=972523897821:+972 52-389-7821
+item2.X-ABLabel:נייד
+item3.TEL:+972 9-745-8273
+item3.X-ABLabel:בית
+END:VCARD

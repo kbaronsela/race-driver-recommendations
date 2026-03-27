@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אורתודנט;ד״ר נמרוד דיקשטיין;;;
+FN:ד״ר נמרוד דיקשטיין אורתודנט
+TEL;type=CELL;type=VOICE;waid=972542448118:+972 54-244-8118
+item1.ADR;type=HOME:;;הנדיב 71, קומה 2, הרצליה;;;;
+item1.X-ABADR:IL
+END:VCARD

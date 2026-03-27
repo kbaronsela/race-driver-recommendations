@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:פזיותרפיסט;מכון 1 אריק;לויטה-;;
+FN:מכון 1 אריק לויטה- פזיותרפיסט
+item1.TEL:+972 9-767-5829
+item1.X-ABLabel:בית
+item2.TEL;waid=972522449990:+972 52-244-9990
+item2.X-ABLabel:נייד
+END:VCARD

@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;דר פוד;;;
+FN:דר פוד
+TEL;type=IPHONE;type=CELL;type=VOICE:+972 1-800-386-486
+item1.TEL:+97297444665
+item1.X-ABLabel:mobile
+item2.TEL:+972 1-800-386-486
+item2.X-ABLabel:other
+END:VCARD

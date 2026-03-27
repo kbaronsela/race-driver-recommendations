@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:וצ׳פניק;דר׳;גורביץ;;
+FN:דר׳ גורביץ וצ׳פניק
+item1.TEL;waid=97297489090:+972 9-748-9090
+item1.X-ABLabel:נייד
+item2.TEL:+972 77-234-6056
+item2.X-ABLabel:פקס בעבודה
+END:VCARD

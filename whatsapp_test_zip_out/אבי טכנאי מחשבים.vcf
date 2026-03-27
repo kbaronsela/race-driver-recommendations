@@ -1,0 +1,18 @@
+BEGIN:VCARD
+VERSION:3.0
+N:טכנאי מחשבים;אבי;;;
+FN:אבי טכנאי מחשבים
+ORG:און מחשבים ותקשורת (אבי אור-לי)
+TITLE:
+item1.TEL:+972 54-493-7020
+item1.X-ABLabel:נייד
+item2.ADR:;;;Hod HaSharon;HaMerkaz;;Israel
+item2.X-ABADR:
+item2.X-ABLabel:בית
+item3.ADR:;;;Hod HaSharon;HaMerkaz;;Israel
+item3.X-ABADR:
+item3.X-ABLabel:בית
+item4.ADR:;;;Hod HaSharon;HaMerkaz;;Israel
+item4.X-ABADR:
+item4.X-ABLabel:בית
+END:VCARD

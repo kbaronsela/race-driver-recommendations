@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;דורית;;;
+FN:דורית
+ORG:סוכנת נסיעות
+TITLE:
+item1.TEL;waid=972543973567:+972 54-397-3567
+item1.X-ABLabel:אחר
+item2.TEL:+972 3-754-1702
+item2.X-ABLabel:נייד
+END:VCARD

@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;ורדה;;;
+FN:ורדה
+TEL;type=CELL;type=VOICE;waid=972542504200:+972 54-250-4200
+item1.EMAIL;type=INTERNET:Vardery@gmail.com
+item1.X-ABLabel:_$!<Other>!$_
+END:VCARD

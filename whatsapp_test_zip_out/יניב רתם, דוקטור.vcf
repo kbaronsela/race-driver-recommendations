@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:רתם;יניב;;;דוקטור
+FN:יניב רתם, דוקטור
+item1.TEL:+972 9-766-3311
+item1.X-ABLabel:נייד
+item2.TEL;waid=972522539177:+972 52-253-9177
+item2.X-ABLabel:נייד
+END:VCARD

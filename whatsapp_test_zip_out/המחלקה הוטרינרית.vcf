@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:הוטרינרית;המחלקה;;;
+FN:המחלקה הוטרינרית
+item1.TEL;waid=972543196910:+972 54-319-6910
+item1.X-ABLabel:נייד
+item2.TEL:+972 3-631-2222
+item2.X-ABLabel:בית
+END:VCARD

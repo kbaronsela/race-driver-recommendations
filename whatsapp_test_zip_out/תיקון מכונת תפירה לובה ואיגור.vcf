@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ואיגור;תיקון מכונת תפירה;לובה;;
+FN:תיקון מכונת תפירה לובה ואיגור
+item1.TEL;waid=972547338281:+972 54-733-8281
+item1.X-ABLabel:בית
+item2.TEL;waid=972544479537:+972 54-447-9537
+item2.X-ABLabel:נייד
+item3.ADR:;;בורוכוב 6 רעננה;;;;
+item3.X-ABADR:ac
+item3.X-ABLabel:בית
+END:VCARD

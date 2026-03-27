@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ורבורג;ניצן;שדה;;
+FN:ניצן שדה ורבורג
+ORG:null;
+TITLE:מרפאה בעיסוק
+item1.TEL;waid=972544680000:+972 54-468-0000
+item1.X-ABLabel:נייד
+TEL;type=CELL;type=VOICE;waid=972544680000:+972 54-468-0000
+END:VCARD

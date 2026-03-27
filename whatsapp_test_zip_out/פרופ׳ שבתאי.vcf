@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;פרופ׳ שבתאי;;;
+FN:פרופ׳ שבתאי
+TEL;type=HOME:+97235302247
+TEL;type=MAIN:+97235302360
+TEL;type=WORK:+97235302258
+TEL;type=CELL;type=VOICE;waid=972526666221:+972 52-666-6221
+EMAIL;type=INTERNET;type=HOME:shabtai.med@gmail.com
+END:VCARD

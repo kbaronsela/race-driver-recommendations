@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:חשבון;נחום שיימן;רואה;;
+FN:נחום שיימן רואה חשבון
+item1.TEL;waid=972544454274:+972 54-445-4274
+item1.X-ABLabel:נייד
+item2.TEL:+972 3-752-5700
+item2.X-ABLabel:עבודה
+item3.EMAIL;type=INTERNET:nahum@swcpa.co.il
+item3.X-ABLabel:בית
+END:VCARD

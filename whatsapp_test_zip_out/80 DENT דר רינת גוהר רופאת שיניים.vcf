@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:3.0
+N:שיניים;80 DENT ד"ר רינת גוהר;רופאת;;
+FN:80 DENT ד"ר רינת גוהר רופאת שיניים
+ORG:מרפאת שיניים
+TITLE:
+item1.TEL:+972 9-882-8480
+item1.X-ABLabel:עבודה
+item2.TEL;waid=972508550805:+972 50-855-0805
+item2.X-ABLabel:נייד
+item3.ADR:;;5 ש"י עגנון;כפר סבא;;;
+item3.X-ABADR:ac
+item3.X-ABLabel:עבודה
+item4.ADR:;;ש"י עגנון 5;כפר סבא;;;
+item4.X-ABADR:ac
+item4.X-ABLabel:עבודה
+END:VCARD

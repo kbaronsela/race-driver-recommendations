@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אפילציה;אמירה;;;
+FN:אמירה אפילציה
+item1.TEL;waid=972507364536:+972 50-736-4536
+item1.X-ABLabel:נייד
+item2.TEL:+972 9-766-4616
+item2.X-ABLabel:עבודה
+END:VCARD

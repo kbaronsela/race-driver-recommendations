@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מחשבים;רותם;טכנאי;;
+FN:רותם טכנאי מחשבים
+item1.TEL;waid=972526652288:+972 52-665-2288
+item1.X-ABLabel:‏נייד
+item2.TEL;waid=972526652288:+972 52-665-2288
+item2.X-ABLabel:נייד
+END:VCARD

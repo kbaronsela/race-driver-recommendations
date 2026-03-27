@@ -1,0 +1,15 @@
+BEGIN:VCARD
+VERSION:3.0
+N:בנג'ו;יואב הובלות דרך;שרון;;
+FN:יואב הובלות דרך שרון בנג'ו
+ORG:יואב הובלות
+TITLE:
+item1.TEL;waid=972523572480:+972 52-357-2480
+item1.X-ABLabel:ראשי
+item2.URL:https://www.yoav-moving.co.il/
+item2.X-ABLabel:OTHER
+item3.ADR:;;10 יחיאל דרזנר;פתח תקווה;;;ישראל
+item3.X-ABADR:il
+item3.X-ABLabel:בית
+X-WA-BIZ-NAME:יואב הובלות דרך שרון בנג'ו
+END:VCARD

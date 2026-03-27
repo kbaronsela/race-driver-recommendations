@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אורטודנטית;דר' רוזנבלום;יהודית;;
+FN:דר' רוזנבלום יהודית אורטודנטית
+TEL;type=Work:+972 9-748-1038
+item1.TEL;waid=972506781100:+972 50-678-1100
+item1.X-ABLabel:Mobile
+item2.ADR;type=Home:;;רמות השבים הדקל 3;;;;ישראל
+item2.X-ABADR:il
+END:VCARD

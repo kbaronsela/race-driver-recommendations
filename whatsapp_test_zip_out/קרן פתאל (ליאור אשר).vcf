@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:אשר);קרן פתאל;(ליאור;;
+FN:קרן פתאל (ליאור אשר)
+item1.TEL;waid=972506338233:+972 50-633-8233
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

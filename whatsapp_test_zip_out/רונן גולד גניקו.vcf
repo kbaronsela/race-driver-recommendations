@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:גניקו;רונן;גולד;;
+FN:רונן גולד גניקו
+item1.TEL;waid=972524262086:+972 52-426-2086
+item1.X-ABLabel:נייד
+item2.EMAIL;type=INTERNET:r_gold_il@yahoo.com
+item2.X-ABLabel:בית
+END:VCARD

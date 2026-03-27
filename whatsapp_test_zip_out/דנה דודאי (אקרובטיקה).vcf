@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:(אקרובטיקה);דנה;דודאי;;
+FN:דנה דודאי (אקרובטיקה)
+item1.TEL;waid=972544605646:+972 54-460-5646
+item1.X-ABLabel:נייד
+item2.ADR:;;Israel;;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:בית
+END:VCARD

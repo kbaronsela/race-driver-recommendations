@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Daniel;Miriam;של;;
+FN:Miriam Daniel
+item1.TEL;waid=972526410101:+972 52-641-0101
+item1.X-ABLabel:Mobile
+TEL;type=Home:+972 77-916-6488
+END:VCARD

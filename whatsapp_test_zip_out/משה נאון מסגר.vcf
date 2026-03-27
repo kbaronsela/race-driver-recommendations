@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+N:מסגר;משה;נאון;;
+FN:משה נאון מסגר
+item1.TEL:+972 50-530-6896
+item1.X-ABLabel:נייד
+TEL;type=CELL;type=VOICE;waid=972547797757:+972 54-779-7757
+END:VCARD

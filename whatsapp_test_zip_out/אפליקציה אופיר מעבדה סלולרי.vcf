@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:סלולרי;אפליקציה אופיר;מעבדה;;
+FN:אפליקציה אופיר מעבדה סלולרי
+item1.TEL:+972 9-865-1444
+item1.X-ABLabel:נייד
+item2.ADR:;;29 הנגב אחוזה 102רעננה מול העיריה חניה;רעננה;;;
+item2.X-ABADR:ac
+item2.X-ABLabel:עבודה
+END:VCARD

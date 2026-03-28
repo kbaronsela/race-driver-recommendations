@@ -269,6 +269,7 @@ def _call_openai_chat_completions(
     prompt: str,
     timeout_sec: int,
     max_retries: int = 15,
+    max_tokens: int = 350,
 ) -> tuple[str, str | None]:
     """
     Returns (response_text, error_message). On HTTP 429, sleep (from API message) and retry.
@@ -280,7 +281,7 @@ def _call_openai_chat_completions(
             "model": model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.1,
-            "max_tokens": 350,
+            "max_tokens": max_tokens,
         },
         ensure_ascii=False,
     ).encode("utf-8")
@@ -351,6 +352,7 @@ def _call_gemini_generate_content(
     prompt: str,
     timeout_sec: int,
     max_retries: int = 15,
+    max_output_tokens: int = 400,
 ) -> tuple[str, str | None]:
     """Gemini generateContent REST. Retries on 429/503 like OpenAI-compatible path."""
     safe = (model or "").strip()
@@ -362,7 +364,7 @@ def _call_gemini_generate_content(
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "temperature": 0.1,
-                "maxOutputTokens": 400,
+                "maxOutputTokens": max_output_tokens,
             },
         },
         ensure_ascii=False,

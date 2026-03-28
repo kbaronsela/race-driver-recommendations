@@ -10,6 +10,7 @@ not recommendation alone on unrelated topics. בקשות להמלצות נזרק
 from __future__ import annotations
 
 import re
+import unicodedata
 from typing import Iterator
 
 from restaurant_name_plausible import is_chat_junk_extracted_name, is_plausible_restaurant_name
@@ -90,6 +91,21 @@ def iter_whatsapp_messages(text: str) -> Iterator[tuple[str, str, str]]:
                 body_lines.append(line)
     if current_date is not None:
         yield (current_date, current_sender or "", "\n".join(body_lines).strip())
+
+
+def iter_whatsapp_messages_since(
+    text: str, min_year: int | None = None
+) -> Iterator[tuple[str, str, str]]:
+    """
+    כמו iter_whatsapp_messages, אבל מדלג על הודעות שתאריך הכותרת שלהן לפני min_year.
+    כש־min_year הוא None — אין סינון. בודקים שנה לפני כל עיבוד על גוף ההודעה.
+    """
+    for date, sender, body in iter_whatsapp_messages(text):
+        if min_year is not None:
+            y = parse_whatsapp_message_year(date)
+            if y is None or y < min_year:
+                continue
+        yield date, sender, body
 
 
 def normalize_sender(s: str) -> str:
@@ -1297,6 +1313,38 @@ def _guess_location(body: str) -> str:
     return uniq[0][:200]
 
 
+def _guess_location_for_venue(body: str, venue_name: str) -> str:
+    """
+    כשבאותה הודעה מופיעים כמה יישובים — מנסים לקשור מקום לפי צמידות לשם המקום בטקסט
+    (למשל נומי↔כפר מונש, מלצ'ט↔תל מונד).
+    """
+    if not body or not venue_name:
+        return ""
+    vn = venue_name.strip()
+    window = 48
+    if re.search(r"מלצ['\u05f3]ט", vn):
+        if "תל מונד" in body and (
+            re.search(
+                rf"מלצ['\u05f3]ט.{{0,{window}}}תל מונד",
+                body,
+                re.DOTALL,
+            )
+            or re.search(
+                rf"תל מונד.{{0,{window}}}מלצ['\u05f3]ט",
+                body,
+                re.DOTALL,
+            )
+        ):
+            return "תל מונד"
+    if "נומי" in vn:
+        if "כפר מונש" in body and (
+            re.search(rf"נומי.{{0,{window}}}כפר מונש", body, re.DOTALL)
+            or re.search(rf"כפר מונש.{{0,{window}}}נומי", body, re.DOTALL)
+        ):
+            return "כפר מונש"
+    return ""
+
+
 def _guess_type(body: str) -> str:
     if "סושי" in body:
         return "סושי / אסייתי"
@@ -1316,6 +1364,45 @@ def _guess_type(body: str) -> str:
         return "איטלקית"
     # ברירת מחדל: ריק — לא «מסעדה (חילוץ צ'אט)» (מקור החילוץ כבר ב־note)
     return ""
+
+
+# רצף לטיני באותיות קטנות בלבד (שגיאות מודל); לא נוגע ב־Timo / PE וכו'
+_LATIN_LOWERCASE_JUNK = r"[a-z\u00E0-\u024F]{2,14}"
+
+
+def scrub_latin_corruption_in_hebrew_venue_name(s: str) -> str:
+    """
+    מסיר רצפי לטינית שמודל או עיוות תווים דוחפים לתוך שם בעברית
+    (למשל «ķafeה גן סיפור», «דגי האדי מifo»). לא נוגע בשם לטיני בלבד.
+    """
+    if not s or not re.search(r"[\u0590-\u05FF]", s):
+        return s
+    t = unicodedata.normalize("NFKC", s.strip())
+    # אות לטינית בודדת לפני «פה» (עיוות/מודל: k במקום ק) — לדוגמה ķפה גן סיפור → קפה גן סיפור
+    t = re.sub(r"^[\u0137\u0138ķkKqQ]\s*(?=פה)", "ק", t)
+    lat = _LATIN_LOWERCASE_JUNK
+    for _ in range(10):
+        prev = t
+        t = re.sub(rf"^{lat}(?=[\u0590-\u05FF])", "", t).strip()
+        t = re.sub(rf"(?<=[\u0590-\u05FF])\s+{lat}\s*$", "", t, flags=re.UNICODE).strip()
+        t = re.sub(
+            rf"(?<=[\u0590-\u05FF])\s+{lat}(?=\s+[\u0590-\u05FF])",
+            " ",
+            t,
+            flags=re.UNICODE,
+        )
+        t = re.sub(
+            rf"(?<=[\u0590-\u05FF]){lat}(?=[\u0590-\u05FF])",
+            " ",
+            t,
+            flags=re.UNICODE,
+        )
+        t = normalize_spaces(t)
+        if t == prev:
+            break
+    # אחרי הורדת «cafe» לטינית נשאר לעיתים «ה גן סיפור» — שחזור סביר ל־«קפה גן סיפור»
+    t = re.sub(r"^\s*ה\s+(?=גן סיפור\b)", "קפה ", t).strip()
+    return t
 
 
 def _clean_name(raw: str) -> str:
@@ -1357,6 +1444,7 @@ def _clean_name(raw: str) -> str:
     ).strip()
     # סניף/אזור שצמוד לשם בלי « ב » (למשל «גן סיפור הוד"ש») — המיקום ייגזר מגוף ההודעה
     s = re.sub(r"^(גן סיפור)\s*הוד[\"״]ש\s*$", r"\1", s).strip()
+    s = scrub_latin_corruption_in_hebrew_venue_name(s)
     s = s[:120]
     if not is_plausible_restaurant_name(s):
         return ""
@@ -1452,6 +1540,108 @@ def _extract_names(body: str) -> list[str]:
     return out
 
 
+def pre_scan_filters_ok(nb: str) -> bool:
+    """סינון משותף לפני חילוץ שמות (מעבר ראשון) או לפני מועמדות למודל (מעבר שני)."""
+    if _scan_exclude(nb):
+        return False
+    if _scan_body_is_hairdressing_not_food(nb):
+        return False
+    if _scan_is_recommendation_request(nb):
+        return False
+    if _scan_where_food_question_without_rec(nb):
+        return False
+    if _scan_opinion_or_gossip_about_venue(nb):
+        return False
+    if _scan_venue_plus_bazor_question_without_rec(nb):
+        return False
+    if _scan_opening_shabbat_question_without_rec(nb):
+        return False
+    if _scan_message_ends_with_question_not_recommendation(nb):
+        return False
+    return True
+
+
+def loose_food_context_for_llm_second_pass(nb: str) -> bool:
+    """
+    רמזי אוכל/מקום רחבים יותר מ־_scan_qualifies_for_chat_extraction —
+    להודעות שעברו pre_scan_filters_ok אבל לא נחלצו שמות בכללים הקשיחים.
+    """
+    if _scan_explicit_venue(nb):
+        return True
+    if _scan_has_food_anchor(nb):
+        return True
+    soft = (
+        "מעולה",
+        "טעים",
+        "טעימה",
+        "נהדר",
+        "מדהים",
+        "אהבנו",
+        "מושלם",
+        "שווה",
+        "היינו",
+        "הייתי",
+        "נסענו",
+        "ממליץ",
+        "ממליצה",
+        "ממליצים",
+    )
+    if any(s in nb for s in soft) and any(f in nb for f in _FOOD):
+        return True
+    return False
+
+
+def extract_restaurants_strict_from_message(
+    date: str,
+    sender: str,
+    body: str,
+    *,
+    slug_id,
+) -> list[dict]:
+    """
+    חילוץ לפי כללים (מעבר ראשון). רשימה ריקה אם ההודעה לא עומדת בתנאים או בלי שמות שניתן לנקות.
+    סינון לפי שנה — ב־iter_whatsapp_messages_since לפני הקריאה לפה.
+    """
+    if not body or len(body) < 10:
+        return []
+    if body == "<Media omitted>":
+        return []
+    nb = _strip_whatsapp_export_meta(normalize_spaces(body))
+    if not pre_scan_filters_ok(nb):
+        return []
+    if not _scan_qualifies_for_chat_extraction(nb):
+        return []
+    names = _extract_names(nb)
+    if not names:
+        return []
+    loc_body = _guess_location(nb)
+    rtype = _guess_type(nb)
+    src = f"חילוץ אוטומטי מצ'אט · {sender} · {date}"
+    snippet = nb[:550]
+    rows: list[dict] = []
+    for raw in names:
+        name = _clean_name(raw)
+        if not name:
+            continue
+        name, loc_from_name = _split_name_location_suffixes(name)
+        loc = (
+            loc_from_name
+            or _guess_location_for_venue(nb, name)
+            or loc_body
+        )
+        rows.append(
+            {
+                "id": slug_id("scan:" + name + date + sender[:20]),
+                "name": name,
+                "restaurant_type": rtype[:150],
+                "location": loc,
+                "note": src[:400],
+                "extra_info": snippet[:600],
+            }
+        )
+    return rows
+
+
 def extract_restaurants_from_chat_scan(
     text: str,
     *,
@@ -1461,58 +1651,12 @@ def extract_restaurants_from_chat_scan(
     """
     Walk all messages; emit one entry per extracted venue name per message (merge later in pipeline).
     ``slug_id`` is the same callable as in extract_restaurants_whatsapp (stable id).
-    אם ``min_year`` מוגדר — מדלגים על הודעות עם תאריך לפני אותה שנה (לפי כותרת ההודעה).
+    אם ``min_year`` מוגדר — מדלגים על הודעות עם תאריך לפני אותה שנה (לפי כותרת ההודעה),
+    לפני כל חילוץ (iter_whatsapp_messages_since).
     """
     rows: list[dict] = []
-    for date, sender, body in iter_whatsapp_messages(text):
-        if min_year is not None:
-            y = parse_whatsapp_message_year(date)
-            if y is None or y < min_year:
-                continue
-        if not body or len(body) < 10:
-            continue
-        if body == "<Media omitted>":
-            continue
-        nb = _strip_whatsapp_export_meta(normalize_spaces(body))
-        if _scan_exclude(nb):
-            continue
-        if _scan_body_is_hairdressing_not_food(nb):
-            continue
-        if _scan_is_recommendation_request(nb):
-            continue
-        if _scan_where_food_question_without_rec(nb):
-            continue
-        if _scan_opinion_or_gossip_about_venue(nb):
-            continue
-        if _scan_venue_plus_bazor_question_without_rec(nb):
-            continue
-        if _scan_opening_shabbat_question_without_rec(nb):
-            continue
-        if _scan_message_ends_with_question_not_recommendation(nb):
-            continue
-        if not _scan_qualifies_for_chat_extraction(nb):
-            continue
-        names = _extract_names(nb)
-        if not names:
-            continue
-        loc_body = _guess_location(nb)
-        rtype = _guess_type(nb)
-        src = f"חילוץ אוטומטי מצ'אט · {sender} · {date}"
-        snippet = nb[:550]
-        for raw in names:
-            name = _clean_name(raw)
-            if not name:
-                continue
-            name, loc_from_name = _split_name_location_suffixes(name)
-            loc = loc_from_name or loc_body
-            rows.append(
-                {
-                    "id": slug_id("scan:" + name + date + sender[:20]),
-                    "name": name,
-                    "restaurant_type": rtype[:150],
-                    "location": loc,
-                    "note": src[:400],
-                    "extra_info": snippet[:600],
-                }
-            )
+    for date, sender, body in iter_whatsapp_messages_since(text, min_year):
+        rows.extend(
+            extract_restaurants_strict_from_message(date, sender, body, slug_id=slug_id)
+        )
     return rows

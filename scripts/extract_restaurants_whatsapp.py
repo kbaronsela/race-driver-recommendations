@@ -4,7 +4,10 @@
 Extract restaurant recommendations from WhatsApp export.
 1) Structured block >>> מסעדות ומוצרי מזון (עסקים בעוטף).
 2) סריקת כל הצ'אט (היוריסטית) — restaurant_chat_scan.
-3) רשימה ידנית CURATED (גוברת על כפילויות בשם זהה).
+3) אופציונלי: ``--llm-second-pass`` — מודל שפה: אימות על הודעות עם חילוץ קשיח, וחילוץ נוסף על הודעות עם **הקשר אוכל רחב** (ללא שמות מהכללים).
+4) רשימה ידנית CURATED (גוברת על כפילויות בשם זהה).
+
+ברירת מחדל: נסרקות רק הודעות מ־2020 והלאה (לפי תאריך בייצוא). ‎--all-years‎ לכל הטווח.
 
 Pipeline for data/restaurants.json:
   raw entries → איחוד כפולים (מפתח merge + מיקום: אותו מיקום או לפחות אחד ללא מיקום)
@@ -24,8 +27,16 @@ import os
 import re
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
+from llm_recommendation_gate import (
+    DEFAULT_GEMINI_MODEL,
+    DEFAULT_MODEL as DEFAULT_OLLAMA_MODEL,
+    DEFAULT_OLLAMA_URL,
+    DEFAULT_OPENAI_BASE_URL,
+    DEFAULT_OPENAI_MODEL,
+)
 from restaurant_chat_scan import expand_location_abbreviations, extract_restaurants_from_chat_scan
 from restaurant_name_plausible import is_plausible_restaurant_name
 from restaurant_web_presence import filter_by_web_presence, web_verify_configured
@@ -34,6 +45,8 @@ from restaurant_websites import assign_websites
 ROOT = Path(__file__).resolve().parent.parent
 CHAT = ROOT / "whatsapp_extract" / "WhatsApp Chat with נהגת מרוצים.txt"
 OUT = ROOT / "data" / "restaurants.json"
+# הודעות לפני השנה הזו לא נסרקות (ברירת מחדל); ‎--all-years‎ מבטל.
+DEFAULT_MIN_MESSAGE_YEAR = 2020
 
 
 def slug_id(s: str) -> str:
@@ -45,6 +58,24 @@ def strip_trailing_paren(name: str) -> str:
     while s.endswith("*"):
         s = s[:-1].rstrip()
     return s.strip()
+
+
+# מקפים יוניקוד (מינוס, en dash, וכו') — לאותו מרווח לצורך מפתח איחוד
+_DASH_RUN = re.compile(r"[\u002D\u2010\u2011\u2012\u2013\u2014\u2015\u2212\uFE58\uFE63\uFF0D]+")
+
+
+def normalize_restaurant_name_for_merge(name: str) -> str:
+    """
+    מפתח איחוד אחיד: מקפים/רווחים, תיקון צמד נפוץ (בבית ברל מול בית ברל אחרי מקף).
+    """
+    n = strip_trailing_paren((name or "").strip())
+    n = unicodedata.normalize("NFC", n)
+    n = n.replace("\u05f3", "'").replace("\u02BC", "'")
+    n = _DASH_RUN.sub(" ", n)
+    n = normalize_spaces(n)
+    if "בית ברל" in n:
+        n = n.replace("בבית ברל", "בית ברל")
+    return n.casefold()
 
 
 # שם ראשון לפני " — " שמאחד למסעדה אחת (למשל בן זגר)
@@ -76,11 +107,13 @@ def restaurant_merge_key(name: str) -> str:
     # האחים (אבן גבירול) / האחים באבן גבירול / האחים — אותה מסעדה
     if n.startswith("האחים"):
         return "האחים"
-    # נומי בכפר מונש (חילוץ מטקסט) ≈ נומי
-    if n.startswith("נומי "):
+    # נומי / קפה נומי / «נומי ב…» — אותו בית קפה
+    if n.startswith("קפה נומי"):
         return "נומי"
-    # מלצ'ט / מלצ׳ט (גרש ASCII או עברי) — אותו בית קפה
-    if re.match(r"^מלצ['\u05f3]ט", n):
+    if n.startswith("נומי ") or n == "נומי":
+        return "נומי"
+    # מלצ'ט / קפה מלצ'ט (גרש ASCII או עברי) — אותו בית קפה
+    if "קפה מלצ" in n or re.match(r"^מלצ['\u05f3]ט", n):
         return "מלצט"
     # גן סיפור / גן סיפור הוד"ש / … — אותו קפה (סימון עריכה וסיומות אזור בצ'אט)
     if n.startswith("גן סיפור"):
@@ -88,7 +121,7 @@ def restaurant_merge_key(name: str) -> str:
     # גראציה בקיבוץ העוגן / גראציה — אותה מסעדה
     if n.startswith("גראציה"):
         return "גראציה"
-    return strip_trailing_paren(n).lower()
+    return normalize_restaurant_name_for_merge(n)
 
 
 def _display_name_score(n: str) -> tuple:
@@ -132,6 +165,13 @@ def _partition_by_location_rules(grp: list[dict]) -> list[list[dict]]:
     """חלוקת רשומות עם אותו מפתח שם לרכיבים קשירים לפי כללי מיקום."""
     n = len(grp)
     if n <= 1:
+        return [grp]
+    # אותו שם אחרי נרמול — איחוד לשורה אחת גם כשמיקום שונה (LLM מול CURATED, תיאור מול עיר)
+    norm_names = {
+        normalize_restaurant_name_for_merge(e.get("name") or "") for e in grp
+    }
+    norm_names.discard("")
+    if len(norm_names) == 1:
         return [grp]
     parent = list(range(n))
 
@@ -405,9 +445,24 @@ def _env_truthy(name: str) -> bool:
 
 
 def _parse_year_from_curated_note(note: str) -> int | None:
-    """השנה הראשונה שנמצאת ב-note (למשל «· 24/05/2016»)."""
-    m = re.search(r"(\d{1,2})/(\d{1,2})/(\d{4})", note or "")
-    return int(m.group(3)) if m else None
+    """
+    שנה מ־note של CURATED לסינון לפי --since-year.
+    תומך ב־DD/MM/YYYY, ב־MM/YYYY (למשל «· 07/2018» ברשימת העוטף), ובשנה בלבד (20xx).
+    """
+    s = note or ""
+    m = re.search(r"(\d{1,2})/(\d{1,2})/(\d{4})", s)
+    if m:
+        return int(m.group(3))
+    for m2 in re.finditer(r"(?<!\d)(\d{1,2})/(\d{4})(?!\d)", s):
+        mon, yr = int(m2.group(1)), int(m2.group(2))
+        if 1 <= mon <= 12 and 1990 <= yr <= 2100:
+            return yr
+    m3 = re.search(r"\b(20\d{2})\b", s)
+    if m3:
+        y = int(m3.group(1))
+        if 1990 <= y <= 2100:
+            return y
+    return None
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -428,8 +483,91 @@ def main(argv: list[str] | None = None) -> int:
         "--since-year",
         type=int,
         metavar="YEAR",
+        default=DEFAULT_MIN_MESSAGE_YEAR,
+        help=(
+            "לסרוק רק הודעות משנת YEAR והלאה (מבוסס תאריך בייצוא WhatsApp); "
+            "בלוק «עוטף» ללא תאריכי הודעה יושמט; CURATED מסונן לפי תאריך ב-note. "
+            f"ברירת מחדל: {DEFAULT_MIN_MESSAGE_YEAR}."
+        ),
+    )
+    ap.add_argument(
+        "--all-years",
+        action="store_true",
+        help="לכלול את כל השנים (מבטל סינון לפי ‎--since-year‎; כולל בלוק עוטף אם קיים בטקסט)",
+    )
+    ap.add_argument(
+        "--export",
+        type=Path,
         default=None,
-        help="לסרוק רק הודעות משנת YEAR והלאה (מבוסס תאריך בייצוא); בלוק «עוטף» יושמט; CURATED מסונן לפי תאריך ב-note",
+        metavar="PATH",
+        help="ייצוא WhatsApp: .zip, תיקייה, או .txt (ברירת מחדל: whatsapp_extract/WhatsApp Chat … בפרויקט)",
+    )
+    ap.add_argument(
+        "--llm-second-pass",
+        action="store_true",
+        help="LLM: אימות על הודעות עם חילוץ קשיח, וחילוץ על הודעות עם הקשר אוכל רחב בלי שמות מהכללים (דורש Ollama או מפתח API)",
+    )
+    ap.add_argument(
+        "--llm-backend",
+        choices=("ollama", "openai", "gemini"),
+        default="ollama",
+        help="מנוע ל־--llm-second-pass (ברירת מחדל: ollama מקומי)",
+    )
+    ap.add_argument(
+        "--ollama-url",
+        default=os.environ.get("OLLAMA_HOST", DEFAULT_OLLAMA_URL),
+        help="כתובת Ollama (ברירת מחדל: %(default)s). Env: OLLAMA_HOST.",
+    )
+    ap.add_argument(
+        "--ollama-model",
+        default=os.environ.get("OLLAMA_MODEL", DEFAULT_OLLAMA_MODEL),
+        help="מודל Ollama. Env: OLLAMA_MODEL.",
+    )
+    ap.add_argument(
+        "--openai-base-url",
+        default=os.environ.get("OPENAI_BASE_URL", DEFAULT_OPENAI_BASE_URL),
+        help="בסיס OpenAI-compatible (ברירת מחדל: Groq). Env: OPENAI_BASE_URL.",
+    )
+    ap.add_argument(
+        "--openai-api-key",
+        default=os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY", ""),
+        help="מפתח ל־--llm-backend openai. Env: GROQ_API_KEY או OPENAI_API_KEY.",
+    )
+    ap.add_argument(
+        "--openai-model",
+        default=os.environ.get("OPENAI_MODEL", DEFAULT_OPENAI_MODEL),
+        help="מזהה מודל ל־openai-compatible. Env: OPENAI_MODEL.",
+    )
+    ap.add_argument(
+        "--gemini-api-key",
+        default=os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY", ""),
+        help="מפתח Gemini (--llm-backend gemini). Env: GEMINI_API_KEY.",
+    )
+    ap.add_argument(
+        "--gemini-model",
+        default=os.environ.get("GEMINI_MODEL", DEFAULT_GEMINI_MODEL),
+        help="מודל Gemini. Env: GEMINI_MODEL.",
+    )
+    ap.add_argument(
+        "--llm-timeout",
+        type=int,
+        default=120,
+        metavar="SEC",
+        help="Timeout לקריאת LLM בשניות (ברירת מחדל: %(default)s)",
+    )
+    ap.add_argument(
+        "--llm-limit",
+        type=int,
+        default=None,
+        metavar="N",
+        help="הגבלה למספר קריאות LLM (לבדיקות; ברירת מחדל: ללא הגבלה)",
+    )
+    ap.add_argument(
+        "--llm-sleep",
+        type=float,
+        default=0.0,
+        metavar="SEC",
+        help="השהיה בין קריאות LLM לקצב (ברירת מחדל: 0)",
     )
     args = ap.parse_args(argv)
 
@@ -440,23 +578,111 @@ def main(argv: list[str] | None = None) -> int:
     else:
         web_verify = _env_truthy("RESTAURANT_WEB_VERIFY")
 
-    if not CHAT.exists():
-        print("Chat not found:", CHAT)
+    chat_path = args.export if args.export is not None else CHAT
+    if not chat_path.exists():
+        print("Chat export not found:", chat_path)
         return 1
-    text = CHAT.read_text(encoding="utf-8", errors="replace")
-    min_year = args.since_year
+    from whatsapp_to_recommendations import read_export_chat_text
+
+    text = read_export_chat_text(Path(chat_path))
+    if not (text or "").strip():
+        print("Empty or unreadable chat text:", chat_path)
+        return 1
+
+    if args.llm_second_pass:
+        if args.llm_backend == "openai" and not (args.openai_api_key or "").strip():
+            print(
+                "Error: --llm-second-pass with --llm-backend openai requires GROQ_API_KEY or OPENAI_API_KEY "
+                "(or pass --openai-api-key).",
+                file=sys.stderr,
+            )
+            return 1
+        if args.llm_backend == "gemini" and not (args.gemini_api_key or "").strip():
+            print(
+                "Error: --llm-second-pass with --llm-backend gemini requires GEMINI_API_KEY "
+                "(https://aistudio.google.com/apikey) or pass --gemini-api-key.",
+                file=sys.stderr,
+            )
+            return 1
+
+    if args.llm_backend == "openai":
+        llm_model = args.openai_model
+    elif args.llm_backend == "gemini":
+        llm_model = args.gemini_model
+    else:
+        llm_model = args.ollama_model
+    min_year = None if args.all_years else args.since_year
     entries: list[dict] = []
     if min_year is None:
         entries.extend(extract_gaza_food_block(text))
     else:
-        print(f"Skipping Gaza envelope block (no per-message dates; use full export without --since-year to include).")
-    scanned = extract_restaurants_from_chat_scan(text, slug_id=slug_id, min_year=min_year)
-    entries.extend(scanned)
-    print(f"Chat scan: {len(scanned)} raw rows (before merge)" + (f" (messages from {min_year}+ only)" if min_year else ""))
+        print(
+            "Skipping Gaza envelope block (no per-message dates; use --all-years to include it).",
+            flush=True,
+        )
+    if args.llm_second_pass:
+        from restaurant_llm_second_pass import collect_llm_second_pass_rows
+
+        (
+            llm_rows,
+            llm_calls,
+            strict_msg_n,
+            strict_rows_n,
+            loose_msg_n,
+        ) = collect_llm_second_pass_rows(
+            text,
+            slug_id=slug_id,
+            min_year=min_year,
+            backend=args.llm_backend,
+            ollama_url=args.ollama_url,
+            model=llm_model,
+            openai_base_url=args.openai_base_url,
+            openai_api_key=args.openai_api_key,
+            gemini_api_key=args.gemini_api_key,
+            timeout_sec=args.llm_timeout,
+            llm_limit=args.llm_limit,
+            llm_sleep_sec=args.llm_sleep,
+            log=print,
+        )
+        entries.extend(llm_rows)
+        llm_candidates = strict_msg_n + loose_msg_n
+        skipped_llm = max(0, llm_candidates - llm_calls)
+        print(
+            f"Strict pass (rules): {strict_rows_n} restaurant row(s) in {strict_msg_n} message(s)—"
+            f"sent to LLM for verification; loose food-context: {loose_msg_n} additional message(s) "
+            f"sent to LLM without rule-extracted names"
+            + (f"; messages from year {min_year}+" if min_year else "")
+            + ".",
+            flush=True,
+        )
+        print(
+            f"LLM: {llm_calls} API call(s) ({strict_msg_n} strict + {loose_msg_n} loose candidate messages)"
+            + (
+                f" ({skipped_llm} message(s) skipped due to --llm-limit)"
+                if args.llm_limit is not None and skipped_llm
+                else ""
+            )
+            + ".",
+            flush=True,
+        )
+        print(
+            f"LLM: +{len(llm_rows)} restaurant row(s) kept after model + name filter.",
+            flush=True,
+        )
+    else:
+        scanned = extract_restaurants_from_chat_scan(text, slug_id=slug_id, min_year=min_year)
+        entries.extend(scanned)
+        print(
+            f"Strict pass: {len(scanned)} restaurant row(s) from chat rules (before merge)"
+            + (f"; messages from year {min_year}+" if min_year else "")
+            + ".",
+            flush=True,
+        )
     for name, rtype, loc, recommendation, source_line in CURATED:
         if min_year is not None:
             cy = _parse_year_from_curated_note(source_line)
-            if cy is None or cy < min_year:
+            # רק כשיש תאריך ב-note — מדלגים על פריטים מלפני min_year; בלי תאריך — נשמר (רשימה ידנית)
+            if cy is not None and cy < min_year:
                 continue
         entries.append(
             {

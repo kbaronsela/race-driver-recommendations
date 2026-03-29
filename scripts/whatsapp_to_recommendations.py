@@ -3,7 +3,7 @@
 """
 Extract recommended contacts from a WhatsApp export (ZIP or extracted folder: Hebrew chat + VCF attachments).
 For each VCF share in the chat, context (messages before/after) is sent to an LLM (Ollama / Groq / Gemini)
-to decide if this is a professional/service recommendation. By default (**hybrid**), the model only decides
+to decide if the share is an explicit **recommendation** or a **direct reply** to a request for a professional/service provider. By default (**hybrid**), the model only decides
 include/exclude; **field** (תחום) comes from Hebrew keyword rules (name, filename, TITLE/ORG, chat). Use
 ``--no-hybrid`` for the older behavior where the model also suggests field.
 Produces JSON: name, phone, field, from_moshav, note, extra_info. Phone numbers in plain text are ignored.
@@ -18,7 +18,7 @@ Usage:
   python scripts/whatsapp_to_recommendations.py ... --no-hybrid # LLM returns field too (legacy)
 
 Default export: <repo>/whatsapp test.zip (if missing, pass path explicitly)
-Default output: data/entries.json
+Default output: data/entries.json (also refreshes view_recommendations.html when using that path)
 Default local LLM: http://127.0.0.1:11434, model qwen2.5:7b
 Remote: --llm-backend openai + GROQ_API_KEY, or --llm-backend gemini + GEMINI_API_KEY (Google AI Studio)
 """
@@ -38,6 +38,7 @@ DEFAULT_OUT = ROOT / "data" / "entries.json"
 
 from additional_info import infer_additional_info  # noqa: E402
 from duplicate_contact_merge import apply_duplicate_merge_to_entries  # noqa: E402
+from generate_recommendations_view import main as regenerate_recommendations_view  # noqa: E402
 from llm_recommendation_gate import (  # noqa: E402
     DEFAULT_MODEL as OLLAMA_DEFAULT_MODEL,
     DEFAULT_OLLAMA_URL,
@@ -299,7 +300,115 @@ def normalize_infer_text(s):
         return ""
     s = s.replace("\u00a0", " ").replace("\u200f", "").replace("\u200e", "")
     s = re.sub(r"\s+", " ", s).strip()
+    # עו׳ד (ו+גרש עברי) / עו'ד / עו״ד → עו"ד — כדי שיתאים לרשומת עו"ד ב-FIELD_KEYWORDS
+    s = s.replace("עו׳ד", 'עו"ד').replace("עו'ד", 'עו"ד')
+    s = s.replace("עו״ד", 'עו"ד')
     return s
+
+
+# Merged notes concatenate many chat snippets; counting on the full string overweights
+# frequent topics (רופא, הובלות…). Field inference uses only this prefix.
+NOTE_INFER_MAX_LEN = 420
+
+
+def _count_gaz_occurrences(s: str) -> int:
+    """Count 'גז' without matching inside ארגז/מגזין/גזר (common false positives in group chats)."""
+    n = 0
+    i = 0
+    while True:
+        j = s.find("גז", i)
+        if j < 0:
+            break
+        if j > 0 and s[j - 1] in ("ר", "מ"):
+            i = j + 2
+            continue
+        if j + 2 < len(s) and s[j + 2] == "ר":
+            i = j + 2
+            continue
+        n += 1
+        i = j + 2
+    return n
+
+
+def _count_dikur_occurrences(s: str) -> int:
+    """לא לתפוס את 'דיקור' בתוך 'פדיקור'."""
+    n = 0
+    i = 0
+    needle = "דיקור"
+    step = len(needle)
+    while True:
+        j = s.find(needle, i)
+        if j < 0:
+            break
+        if j > 0 and s[j - 1] == "פ":
+            i = j + step
+            continue
+        n += 1
+        i = j + step
+    return n
+
+
+def _is_hebrew_letter(ch: str) -> bool:
+    if not ch:
+        return False
+    o = ord(ch)
+    return 0x0590 <= o <= 0x05FF
+
+
+def _match_nagar_at(text: str, j: int) -> bool:
+    """נגר כמקצוע בלבד — לא בתוך זינגרמן / אינגריד וכו'."""
+    if j + 5 <= len(text) and text[j : j + 5] == "נגרות":
+        return True
+    if j + 5 <= len(text) and text[j : j + 5] == "נגרית":
+        return True
+    if j + 4 <= len(text) and text[j : j + 4] == "נגרים":
+        return True
+    if j + 3 > len(text) or text[j : j + 3] != "נגר":
+        return False
+    after = j + 3
+    if after < len(text) and _is_hebrew_letter(text[after]):
+        return False
+    if j == 0:
+        return True
+    prev = text[j - 1]
+    if not _is_hebrew_letter(prev):
+        return True
+    if prev == "ה" and (j == 1 or not _is_hebrew_letter(text[j - 2])):
+        return True
+    return False
+
+
+def _count_nagar_occurrences(text: str) -> int:
+    n = 0
+    j = 0
+    while j < len(text):
+        if _match_nagar_at(text, j):
+            if j + 5 <= len(text) and text[j : j + 5] in ("נגרות", "נגרית"):
+                j += 5
+            elif j + 4 <= len(text) and text[j : j + 4] == "נגרים":
+                j += 4
+            else:
+                j += 3
+            n += 1
+        else:
+            j += 1
+    return n
+
+
+def _keyword_occurrences_in_text(kw: str, text: str) -> int:
+    if not kw or not text:
+        return 0
+    if kw == "גז":
+        return _count_gaz_occurrences(text)
+    if kw == "נגר":
+        return _count_nagar_occurrences(text)
+    if kw == "דיקור":
+        return _count_dikur_occurrences(text)
+    return text.count(kw)
+
+
+def _keyword_in_text(kw: str, text: str) -> bool:
+    return _keyword_occurrences_in_text(kw, text) > 0
 
 
 # Simple keyword -> field mapping (Hebrew). First match wins. More specific first.
@@ -311,6 +420,7 @@ FIELD_KEYWORDS = [
     ("תנורים", "טכנאי מכשירי חשמל"),
     ("תריסים חשמליים", "תריסים"),
     ("תריסים", "תריסים"),
+    ("תריס", "תריסים"),
     ("שיעורי נגינה", "נגינה"),
     ("מורה לנגינה", "נגינה"),
     ("מורים לנגינה", "נגינה"),
@@ -389,6 +499,10 @@ FIELD_KEYWORDS = [
     ("CBT", "פסיכולוגיה"),
     ("Cbt", "פסיכולוגיה"),
     ("cbt", "פסיכולוגיה"),
+    ("נומרולוג", "נומרולוגיה"),
+    ("מיניאטורות", "חוגים"),
+    ("אדריכלית", "אדריכלות"),
+    ("אדריכל", "אדריכלות"),
     ("וטרינר", "רפואה"),
     ("טכנאי מזגנים", "מיזוג"),
     ("איש מזגנים", "מיזוג"),
@@ -490,6 +604,7 @@ FIELD_KEYWORDS = [
     ("מאלף כלבים", "אילוף כלבים"),
     ("מאלפת", "אילוף כלבים"),
     ("מאלף", "אילוף כלבים"),
+    ("בית ספר", "חינוך"),
     ("גננת", "גני ילדים"),
     ("סייעת", "גני ילדים"),
     ("מתקן מכונות כביסה", "טכנאי מכשירי חשמל"),
@@ -562,8 +677,12 @@ FIELD_KEYWORDS = [
     ("מסאג'יסטית", "עיסוי"),
     ("מסאג'יסט", "עיסוי"),
     ("מעסה", "עיסוי"),
+    ("מטפלת", "רפואה משלימה"),
+    ("מטפל", "רפואה משלימה"),
     ("רפלקסולוג", "רפואה משלימה"),
     ("יוגה", "רפואה משלימה"),
+    ("מאפרת", "קוסמטיקה"),
+    ("מאפר", "קוסמטיקה"),
     ("קוסמטיקאית", "קוסמטיקה"),
     ("קוסמטיקה", "קוסמטיקה"),
     ("מניקור", "קוסמטיקה"),
@@ -709,7 +828,7 @@ FIELD_KEYWORDS = [
     ("מתנפחים", "השכרת מתנפחים"),
     ("מצנחי רחיפה", "ספורט"),
     ("פנסיון כלבים", "אילוף כלבים"),
-    ("כלבים", "אילוף כלבים"),
+    # לא "כלבים" לבד — מופיע בהמון הודעות ממוזגות ודוחף תחום שגוי (למשל פלאפל).
     ("מתקין דלתות", "נגרות"),
     ("דלתות", "נגרות"),
     ("בייבי סיטר", "בייביסיטר"),
@@ -722,6 +841,7 @@ FIELD_KEYWORDS = [
     ("הצרכניה", "מכולת"),
     ("צימר", "תיירות"),
     ("צימרים", "תיירות"),
+    ("וילה", "תיירות"),
     ("מודד", "שמאות"),
     ("שמאי", "שמאות"),
     ("שמאית", "שמאות"),
@@ -733,7 +853,11 @@ FIELD_KEYWORDS = [
     ("תרנגולות", "חקלאות"),
     ("חקלאי", "חקלאות"),
     ("חקלאות", "חקלאות"),
+    ("פלאפל", "קייטרינג"),
+    ("מאפיה", "קייטרינג"),
     ("מאפייה", "קייטרינג"),
+    ("סחלבים", "קייטרינג"),
+    ("סחלב", "קייטרינג"),
     ("עוגות", "קייטרינג"),
     ("דף סוכר", "קייטרינג"),
     ("צמיגים", "מוסך"),
@@ -762,12 +886,22 @@ def infer_field_from_text(text):
     if not text:
         return ""
     for kw, field in FIELD_KEYWORDS:
-        if kw in text:
+        if _keyword_in_text(kw, text):
             return field
     # Fallback: case-insensitive (e.g. CBT vs Cbt, Computers vs computers)
     text_cf = text.casefold()
     for kw, field in FIELD_KEYWORDS:
-        if kw.casefold() in text_cf:
+        kw_cf = kw.casefold()
+        if kw_cf == "גז":
+            if _count_gaz_occurrences(text_cf) > 0:
+                return field
+        elif kw_cf == "נגר":
+            if _count_nagar_occurrences(text_cf) > 0:
+                return field
+        elif kw_cf == "דיקור":
+            if _count_dikur_occurrences(text_cf) > 0:
+                return field
+        elif kw_cf in text_cf:
             return field
     return ""
 
@@ -777,12 +911,22 @@ def infer_field_from_note(note):
     note = normalize_infer_text(note)
     if not note:
         return ""
+    if len(note) > NOTE_INFER_MAX_LEN:
+        note = note[:NOTE_INFER_MAX_LEN]
     count = defaultdict(int)
     note_cf = note.casefold()
     for kw, field in FIELD_KEYWORDS:
         if not kw:
             continue
-        n = note_cf.count(kw.casefold())
+        kw_cf = kw.casefold()
+        if kw_cf == "גז":
+            n = _count_gaz_occurrences(note_cf)
+        elif kw_cf == "נגר":
+            n = _count_nagar_occurrences(note_cf)
+        elif kw_cf == "דיקור":
+            n = _count_dikur_occurrences(note_cf)
+        else:
+            n = note_cf.count(kw_cf)
         if n:
             count[field] += n
     if not count:
@@ -792,7 +936,9 @@ def infer_field_from_note(note):
 
 def infer_field_from_context(context_messages):
     """Concatenate recent messages and match first keyword -> field."""
-    text = " ".join(msg[2] for msg in context_messages)
+    text = normalize_infer_text(" ".join(msg[2] for msg in context_messages))
+    if len(text) > NOTE_INFER_MAX_LEN:
+        text = text[-NOTE_INFER_MAX_LEN:]
     return infer_field_from_text(text)
 
 
@@ -816,6 +962,60 @@ def refine_field_shaanut(field, name, note):
     comb_cf = combined.casefold()
     for m in _SHAANUT_MARKERS:
         if m.casefold() in comb_cf:
+            return field
+    return ""
+
+
+# תחומים שנבחרים לעיתים מהקשר צ'אט רחוק — נשאיר רק אם יש רמז בשם או בראש ההערה.
+_TSILUM_MARKERS = (
+    "צילום",
+    "צלם",
+    "צלמת",
+    "צילומי",
+    "צילומים",
+    "מצלם",
+    "מצלמת",
+    "צילומי משפחה",
+)
+_SHCHIYA_MARKERS = (
+    "שחייה",
+    "שחיה",
+    "בריכה",
+    "בריכת",
+    "שחיין",
+    "שחיינית",
+    "מורה שחייה",
+)
+_MOSHEH_MARKERS = (
+    "מוסך",
+    "צמיג",
+    "צמיגים",
+    "טכנאי רכב",
+    "חשמלאי רכב",
+    "פחח",
+    "פחחות",
+)
+
+
+def refine_field_chat_noise(field, name, note):
+    """Clear צילום / שחייה / מוסך when cue exists only in far chat, not in name or note head."""
+    if field not in ("צילום", "שחייה", "מוסך"):
+        return field
+    n = normalize_infer_text(name or "")
+    nt = normalize_infer_text(note or "")
+    if len(nt) > NOTE_INFER_MAX_LEN:
+        nt = nt[:NOTE_INFER_MAX_LEN]
+    combined = normalize_infer_text(n + " " + nt).casefold()
+    if not combined.strip():
+        return ""
+    if field == "צילום":
+        markers = _TSILUM_MARKERS
+    elif field == "שחייה":
+        markers = _SHCHIYA_MARKERS
+    else:
+        markers = _MOSHEH_MARKERS
+    for m in markers:
+        if m.casefold() in combined:
             return field
     return ""
 
@@ -1079,7 +1279,9 @@ def main():
                             field = infer_field_from_note(merged_note)
                         if not field:
                             field = e.get("field") or ""
-                        field = refine_field_shaanut(field, name, merged_note)
+                        field = refine_field_chat_noise(
+                            refine_field_shaanut(field, name, merged_note), name, merged_note
+                        )
                         e["field"] = field
                         e["extra_info"] = infer_additional_info(
                             e.get("name") or "", e.get("note") or "", e.get("field") or ""
@@ -1141,12 +1343,12 @@ def main():
                 field = _infer_field_fallback(
                     name, note, context_before, context_after, title_vcf, org, vcf_filename
                 )
-            field = refine_field_shaanut(field, name, note)
+            field = refine_field_chat_noise(refine_field_shaanut(field, name, note), name, note)
             if args.llm_delay > 0 and args.llm_backend in ("openai", "gemini"):
                 time.sleep(args.llm_delay)
         else:
             field = _infer_field_fallback(name, note, context_before, context_after)
-            field = refine_field_shaanut(field, name, note)
+            field = refine_field_chat_noise(refine_field_shaanut(field, name, note), name, note)
 
         seen_phones.add(phone_key)
         from_moshav = infer_from_moshav(context_before, message_text, context_after)
@@ -1169,6 +1371,18 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(entries, f, ensure_ascii=False, indent=2)
     print(f"Wrote {out_path}", flush=True)
+    try:
+        if out_path.resolve() == (ROOT / "data" / "entries.json").resolve():
+            vr = regenerate_recommendations_view()
+            if vr != 0:
+                print(f"  Warning: regenerate view_recommendations.html exited {vr}", flush=True)
+        else:
+            print(
+                f"  Skipped view_recommendations.html (output is not data/entries.json)",
+                flush=True,
+            )
+    except Exception as e:
+        print(f"  Warning: could not refresh view_recommendations.html: {e}", flush=True)
     return 0
 
 

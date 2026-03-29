@@ -4,7 +4,7 @@
 Extract restaurant recommendations from WhatsApp export.
 1) Structured block >>> מסעדות ומוצרי מזון (עסקים בעוטף).
 2) סריקת כל הצ'אט (היוריסטית) — restaurant_chat_scan.
-3) אופציונלי: ``--llm-second-pass`` — מודל שפה: אימות על הודעות עם חילוץ קשיח, וחילוץ נוסף על הודעות עם **הקשר אוכל רחב** (ללא שמות מהכללים).
+3) אופציונלי: ``--llm-second-pass`` — מודל שפה: אימות על הודעות עם חילוץ קשיח. חילוץ «הקשר אוכל» **רק** עם ``--llm-loose-food-context``.
 4) רשימה ידנית CURATED (גוברת על כפילויות בשם זהה).
 
 ברירת מחדל: נסרקות רק הודעות מ־2020 והלאה (לפי תאריך בייצוא). ‎--all-years‎ לכל הטווח.
@@ -505,7 +505,26 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--llm-second-pass",
         action="store_true",
-        help="LLM: אימות על הודעות עם חילוץ קשיח, וחילוץ על הודעות עם הקשר אוכל רחב בלי שמות מהכללים (דורש Ollama או מפתח API)",
+        help=(
+            "LLM: אימות על הודעות עם חילוץ קשיח (דורש Ollama או מפתח API). "
+            "חילוץ «הקשר אוכל» — רק עם --llm-loose-food-context."
+        ),
+    )
+    ap.add_argument(
+        "--llm-loose-food-context",
+        action="store_true",
+        help=(
+            "עם --llm-second-pass: שלח ל-LLM גם הודעות «הקשר אוכל» בלי שמות מהכללים "
+            "(דורש ניסוח עסק אוכל בהודעה). בלי דגל זה — רק אימות strict."
+        ),
+    )
+    ap.add_argument(
+        "--llm-loose-permissive",
+        action="store_true",
+        help=(
+            "עם --llm-second-pass ו-‎--llm-loose-food-context‎: הרחב את שער הכניסה ל«הקשר אוכל» "
+            "(כמו לפני: עוגן אוכל רחב או מילות שבח+מזון). ברירת מחדל: שער מחמיר (המלצה חזקה+עוגן אוכל או מקום מפורש)."
+        ),
     )
     ap.add_argument(
         "--llm-backend",
@@ -623,6 +642,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.llm_second_pass:
         from restaurant_llm_second_pass import collect_llm_second_pass_rows
 
+        if args.llm_loose_permissive and not args.llm_loose_food_context:
+            print(
+                "Note: --llm-loose-permissive only affects loose food-context messages; "
+                "add --llm-loose-food-context to enable that pass.",
+                flush=True,
+            )
+
         (
             llm_rows,
             llm_calls,
@@ -642,6 +668,8 @@ def main(argv: list[str] | None = None) -> int:
             timeout_sec=args.llm_timeout,
             llm_limit=args.llm_limit,
             llm_sleep_sec=args.llm_sleep,
+            llm_loose_permissive=args.llm_loose_permissive,
+            include_loose_food_llm=args.llm_loose_food_context,
             log=print,
         )
         entries.extend(llm_rows)
@@ -651,6 +679,11 @@ def main(argv: list[str] | None = None) -> int:
             f"Strict pass (rules): {strict_rows_n} restaurant row(s) in {strict_msg_n} message(s)—"
             f"sent to LLM for verification; loose food-context: {loose_msg_n} additional message(s) "
             f"sent to LLM without rule-extracted names"
+            + (
+                " (loose off; add --llm-loose-food-context to enable)"
+                if not args.llm_loose_food_context
+                else (" (loose gate: permissive)" if args.llm_loose_permissive else " (loose gate: strict)")
+            )
             + (f"; messages from year {min_year}+" if min_year else "")
             + ".",
             flush=True,

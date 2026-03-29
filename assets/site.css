@@ -517,3 +517,15 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
     touch-action: none;
   }
 }
+
+/* הודעת שגיאה במודל התחברות — משותף לכל העמודים */
+.login-modal-error {
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}

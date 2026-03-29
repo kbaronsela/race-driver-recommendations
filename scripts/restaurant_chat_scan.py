@@ -329,6 +329,9 @@ _REQUEST = (
     "המלצה לבית קפה",
     "המלצות לבית קפה",
     "המלצה לקפה ",
+    "המלצה לבר",
+    "המלצה לבר/",
+    "המלצות לבר",
     "המלצה למסעדה",
     "המלצה למסעדת",
     "המלצות למסעדה",
@@ -1561,32 +1564,39 @@ def pre_scan_filters_ok(nb: str) -> bool:
     return True
 
 
-def loose_food_context_for_llm_second_pass(nb: str) -> bool:
+def loose_food_context_for_llm_second_pass(nb: str, *, permissive: bool = False) -> bool:
     """
-    רמזי אוכל/מקום רחבים יותר מ־_scan_qualifies_for_chat_extraction —
-    להודעות שעברו pre_scan_filters_ok אבל לא נחלצו שמות בכללים הקשיחים.
+    רמזי אוכל/מקום להודעות שעברו pre_scan_filters_ok אבל ללא חילוץ קשיח.
+
+    ``permissive=False`` (ברירת מחדל): כמו כניסה לחילוץ שמות — מקום מפורש או המלצה חזקה + עוגן אוכל.
+
+    ``permissive=True``: התנהגות רחבה יותר (עוגן אוכל בלבד, או מילות שבח + מילת מזון) — לשימוש עם ``--llm-loose-permissive``.
     """
     if _scan_explicit_venue(nb):
         return True
-    if _scan_has_food_anchor(nb):
-        return True
-    soft = (
-        "מעולה",
-        "טעים",
-        "טעימה",
-        "נהדר",
-        "מדהים",
-        "אהבנו",
-        "מושלם",
-        "שווה",
-        "היינו",
-        "הייתי",
-        "נסענו",
-        "ממליץ",
-        "ממליצה",
-        "ממליצים",
-    )
-    if any(s in nb for s in soft) and any(f in nb for f in _FOOD):
+    if permissive:
+        if _scan_has_food_anchor(nb):
+            return True
+        soft = (
+            "מעולה",
+            "טעים",
+            "טעימה",
+            "נהדר",
+            "מדהים",
+            "אהבנו",
+            "מושלם",
+            "שווה",
+            "היינו",
+            "הייתי",
+            "נסענו",
+            "ממליץ",
+            "ממליצה",
+            "ממליצים",
+        )
+        if any(s in nb for s in soft) and any(f in nb for f in _FOOD):
+            return True
+        return False
+    if _scan_has_strong_recommend(nb) and _scan_has_food_anchor(nb):
         return True
     return False
 

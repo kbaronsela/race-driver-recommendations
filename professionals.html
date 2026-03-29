@@ -505,6 +505,7 @@
   <div id="modalLogin" class="modal hidden">
     <div class="modal-inner">
       <h3>התחברות</h3>
+      <p id="loginModalError" class="login-modal-error hidden" role="alert"></p>
       <div class="form-row">
         <label>משתמש</label>
         <input type="text" id="loginUserModal" placeholder="משתמש">
@@ -1740,19 +1741,37 @@
       }
     });
 
+    function clearLoginModalError() {
+      const el = document.getElementById('loginModalError');
+      if (el) {
+        el.textContent = '';
+        el.classList.add('hidden');
+      }
+    }
+
     async function doLoginSubmit() {
+      clearLoginModalError();
+      const errEl = document.getElementById('loginModalError');
       const user = document.getElementById('loginUserModal').value.trim();
       const pass = document.getElementById('loginPassModal').value;
-      const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
-      const data = await r.json().catch(() => ({}));
-      if (r.ok && data.token) {
-        token = data.token;
-        sessionStorage.setItem('token', token);
-        document.getElementById('modalLogin').classList.add('hidden');
-        document.getElementById('loggedArea').classList.remove('hidden');
-        load();
-      } else {
-        alert(data.error || 'התחברות נכשלה');
+      try {
+        const r = await fetch(API + 'api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user, password: pass }) });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.token) {
+          token = data.token;
+          sessionStorage.setItem('token', token);
+          document.getElementById('modalLogin').classList.add('hidden');
+          document.getElementById('loggedArea').classList.remove('hidden');
+          load();
+        } else if (errEl) {
+          errEl.textContent = (data && data.error) ? data.error : 'שם משתמש או סיסמה שגויים';
+          errEl.classList.remove('hidden');
+        }
+      } catch (e) {
+        if (errEl) {
+          errEl.textContent = 'לא ניתן להתחבר כרגע. נסו שוב.';
+          errEl.classList.remove('hidden');
+        }
       }
     }
 
@@ -1762,10 +1781,14 @@
       if (old || !hasEditMode) return;
       btnLogin._bound = true;
       btnLogin.addEventListener('click', () => {
+        clearLoginModalError();
         document.getElementById('modalLogin').classList.remove('hidden');
         setTimeout(function() { document.getElementById('loginUserModal').focus(); }, 50);
       });
-      document.getElementById('btnLoginCancel').addEventListener('click', () => document.getElementById('modalLogin').classList.add('hidden'));
+      document.getElementById('btnLoginCancel').addEventListener('click', () => {
+        clearLoginModalError();
+        document.getElementById('modalLogin').classList.add('hidden');
+      });
       document.getElementById('btnLoginSubmit').addEventListener('click', doLoginSubmit);
       document.getElementById('modalLogin').addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {

@@ -240,23 +240,23 @@
       <h3 id="restModalTitle">הוספת המלצה</h3>
       <input type="hidden" id="restFormEditId" value="">
       <div class="form-row">
-        <label for="restFormName">שם (חובה)</label>
+        <label for="restFormName">שם <span class="form-required" aria-hidden="true">*</span></label>
         <input type="text" id="restFormName" name="restFormName" required autocomplete="organization" aria-required="true" placeholder="שם המסעדה">
       </div>
       <div class="form-row">
-        <label for="restFormType" id="restFormTypeLabel">סוג מסעדה (חובה)</label>
+        <label for="restFormType" id="restFormTypeLabel">סוג מסעדה <span id="restFormTypeStar" class="form-required hidden" aria-hidden="true">*</span></label>
         <input type="text" id="restFormType" name="restFormType" placeholder="למשל: איטלקית, אסייתית">
       </div>
       <div class="form-row">
-        <label for="restFormLocation" id="restFormLocationLabel">מיקום (חובה)</label>
+        <label for="restFormLocation" id="restFormLocationLabel">מיקום <span id="restFormLocationStar" class="form-required hidden" aria-hidden="true">*</span></label>
         <input type="text" id="restFormLocation" name="restFormLocation" placeholder="כתובת או אזור">
       </div>
       <div class="form-row">
-        <label for="restFormExtra">מידע נוסף (אופציונלי)</label>
+        <label for="restFormExtra">מידע נוסף</label>
         <textarea id="restFormExtra" name="restFormExtra" placeholder="כשרות, שעות, המלצות…"></textarea>
       </div>
       <div class="form-row">
-        <label for="restFormWebsite">אתר — כתובת URL (אופציונלי)</label>
+        <label for="restFormWebsite">אתר — כתובת URL</label>
         <input type="url" id="restFormWebsite" name="restFormWebsite" placeholder="https://…" inputmode="url" autocomplete="url">
       </div>
       <div class="modal-actions">
@@ -685,8 +685,8 @@
       document.getElementById('restFormLocation').setAttribute('required', '');
       document.getElementById('restFormType').setAttribute('aria-required', 'true');
       document.getElementById('restFormLocation').setAttribute('aria-required', 'true');
-      document.getElementById('restFormTypeLabel').textContent = 'סוג מסעדה (חובה)';
-      document.getElementById('restFormLocationLabel').textContent = 'מיקום (חובה)';
+      document.getElementById('restFormTypeStar').classList.remove('hidden');
+      document.getElementById('restFormLocationStar').classList.remove('hidden');
       document.getElementById('modalRestaurant').classList.remove('hidden');
       setTimeout(function() { document.getElementById('restFormName').focus(); }, 50);
     }
@@ -706,8 +706,8 @@
       document.getElementById('restFormLocation').removeAttribute('required');
       document.getElementById('restFormType').setAttribute('aria-required', 'false');
       document.getElementById('restFormLocation').setAttribute('aria-required', 'false');
-      document.getElementById('restFormTypeLabel').textContent = 'סוג מסעדה';
-      document.getElementById('restFormLocationLabel').textContent = 'מיקום';
+      document.getElementById('restFormTypeStar').classList.add('hidden');
+      document.getElementById('restFormLocationStar').classList.add('hidden');
       document.getElementById('modalRestaurant').classList.remove('hidden');
       setTimeout(function() { document.getElementById('restFormName').focus(); }, 50);
     }
@@ -955,6 +955,9 @@
           e.preventDefault();
           doLoginSubmit();
         }
+      });
+      document.getElementById('modalLogin').addEventListener('click', function(e) {
+        if (e.target === this) document.getElementById('btnLoginCancel').click();
       });
       document.getElementById('btnLogout').addEventListener('click', function() {
         token = '';

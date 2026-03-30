@@ -394,22 +394,22 @@
     <div class="modal-inner">
       <h3>הוספת המלצה</h3>
       <div class="form-row">
-        <label for="addName">שם (חובה)</label>
+        <label for="addName">שם <span class="form-required" aria-hidden="true">*</span></label>
         <input type="text" id="addName" name="addName" required autocomplete="name" aria-required="true">
       </div>
       <div class="form-row">
-        <label for="addPhonesTextarea">טלפון — שורה לכל מספר (חובה)</label>
+        <label for="addPhonesTextarea">טלפון — שורה לכל מספר <span class="form-required" aria-hidden="true">*</span></label>
         <p class="modal-hint" style="margin:0 0 0.35rem;font-size:0.9rem;opacity:0.85;">השורה הראשית היא המספר הראשי לזיהוי כפילויות.</p>
         <textarea id="addPhonesTextarea" name="addPhones" rows="4" required aria-required="true" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
       </div>
       <div class="form-row">
-        <label for="addFieldInput">תחום עיסוק (חובה)</label>
+        <label for="addFieldInput">תחום עיסוק <span class="form-required" aria-hidden="true">*</span></label>
         <div class="field-combobox modal-field-combobox">
           <input type="text" id="addFieldInput" class="field-combobox-input" autocomplete="off"
             placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list" aria-required="true">
           <ul id="addFieldList" class="field-combobox-list hidden" role="listbox"></ul>
         </div>
-        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום (חובה)" style="margin-top:0.35rem;">
+        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
       </div>
       <div class="form-row">
         <label class="label-moshav-flag" title="איש קשר מהמושב — יוצג תג צהוב ליד השם ברשימה"><input type="checkbox" id="addFromMoshav" aria-label="איש קשר מהמושב">
@@ -417,7 +417,7 @@
         </label>
       </div>
       <div class="form-row">
-        <label>מידע נוסף (אופציונלי)</label>
+        <label for="addExtraInfo">מידע נוסף</label>
         <input type="text" id="addExtraInfo" placeholder="מידע נוסף">
       </div>
       <div class="modal-actions">
@@ -1616,6 +1616,9 @@
         doAddSubmit();
       }
     });
+    document.getElementById('modalAdd').addEventListener('click', function(e) {
+      if (e.target === this) document.getElementById('btnAddCancel').click();
+    });
 
     function openEditFieldModal(key, currentField) {
       editFieldKey = key;
@@ -1656,6 +1659,9 @@
         document.getElementById('btnEditFieldSubmit').click();
       }
     });
+    document.getElementById('modalEditField').addEventListener('click', function(e) {
+      if (e.target === this) document.getElementById('btnEditFieldCancel').click();
+    });
 
     function openEditValueModal(key, fieldName, title, label, currentValue, inputType) {
       editValueKey = key;
@@ -1694,6 +1700,9 @@
         e.preventDefault();
         document.getElementById('btnEditValueSubmit').click();
       }
+    });
+    document.getElementById('modalEditValue').addEventListener('click', function(e) {
+      if (e.target === this) document.getElementById('btnEditValueCancel').click();
     });
 
     function openEditPhonesModal(key) {
@@ -1739,6 +1748,9 @@
         e.preventDefault();
         document.getElementById('btnEditPhonesSubmit').click();
       }
+    });
+    document.getElementById('modalEditPhones').addEventListener('click', function(e) {
+      if (e.target === this) document.getElementById('btnEditPhonesCancel').click();
     });
 
     function clearLoginModalError() {
@@ -1799,6 +1811,9 @@
             doLoginSubmit();
           }
         }
+      });
+      document.getElementById('modalLogin').addEventListener('click', function(e) {
+        if (e.target === this) document.getElementById('btnLoginCancel').click();
       });
       document.getElementById('btnLogout').addEventListener('click', () => {
         token = '';

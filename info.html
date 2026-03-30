@@ -379,6 +379,9 @@
         doLoginSubmit();
       }
     });
+    document.getElementById('modalLogin').addEventListener('click', function(e) {
+      if (e.target === this) document.getElementById('btnLoginCancel').click();
+    });
 
     initAuth();
   </script>

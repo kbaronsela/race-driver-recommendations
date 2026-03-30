@@ -518,6 +518,14 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
   }
 }
 
+/* כוכבית לשדות חובה בטפסים */
+.form-required {
+  color: #dc2626;
+  font-weight: 700;
+  margin-inline-start: 0.2em;
+  white-space: nowrap;
+}
+
 /* הודעת שגיאה במודל התחברות — משותף לכל העמודים */
 .login-modal-error {
   margin: 0 0 1rem;

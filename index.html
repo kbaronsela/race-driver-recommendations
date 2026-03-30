@@ -43,6 +43,17 @@
       white-space: nowrap;
       border: 0;
     }
+    .home-hero-intro {
+      margin: 1.35rem auto 0;
+      max-width: 32rem;
+      text-align: right;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .home-hero-intro + .home-hero-intro {
+      margin-top: 0.75rem;
+    }
     .hidden { display: none !important; }
     .muted { color: var(--muted); }
     .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 1rem; backdrop-filter: blur(4px); }
@@ -117,6 +128,8 @@
         <header class="home-hero">
           <img src="assets/home-hero-logos.png" alt="שדה ורבורג ונהגת מרוצים" class="home-hero-logo" width="360" height="560" onerror="this.style.display='none'">
           <h1 class="home-hero-title">שדה ורבורג — נהגת מרוצים</h1>
+          <p class="home-hero-intro">המידע באתר נלקח באופן חצי־אוטומטי מקבוצת הוואטסאפ ״נהגת מרוצים״. כולם מוזמנים להשתמש בו, וגם להוסיף עוד המלצות.</p>
+          <p class="home-hero-intro">ייתכן שהמידע אינו מדויק, אינו עדכני או חסר — בין השאר משום שהופק באופן אוטומטי.</p>
         </header>
       </div>
     </main>

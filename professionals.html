@@ -406,10 +406,10 @@
         <label for="addFieldInput">תחום עיסוק <span class="form-required" aria-hidden="true">*</span></label>
         <div class="field-combobox modal-field-combobox">
           <input type="text" id="addFieldInput" class="field-combobox-input" autocomplete="off"
-            placeholder="חיפוש תחום או בחירה מהרשימה" aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list" aria-required="true">
+            aria-expanded="false" aria-controls="addFieldList" role="combobox" aria-autocomplete="list" aria-required="true">
           <ul id="addFieldList" class="field-combobox-list hidden" role="listbox"></ul>
         </div>
-        <input type="text" id="addFieldCustom" class="hidden" placeholder="הזן תחום" style="margin-top:0.35rem;">
+        <input type="text" id="addFieldCustom" class="hidden" style="margin-top:0.35rem;">
       </div>
       <div class="form-row">
         <label class="label-moshav-flag" title="איש קשר מהמושב — יוצג תג צהוב ליד השם ברשימה"><input type="checkbox" id="addFromMoshav" aria-label="איש קשר מהמושב">
@@ -418,7 +418,11 @@
       </div>
       <div class="form-row">
         <label for="addExtraInfo">מידע נוסף</label>
-        <input type="text" id="addExtraInfo" placeholder="מידע נוסף">
+        <input type="text" id="addExtraInfo">
+      </div>
+      <div class="form-row">
+        <label for="addRecommender">שם הממליצ.ה</label>
+        <input type="text" id="addRecommender" name="addRecommender" autocomplete="name">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn" id="btnAddCancel">ביטול</button>
@@ -766,7 +770,7 @@
         listEl: document.getElementById('addFieldList'),
         getSource: function() { return fieldsList; },
         allOptionLabel: null,
-        initialCommitted: fieldsList[0] || '',
+        initialCommitted: null,
         onChange: function(val) {
           const v = val || '';
           const isOther = v.indexOf('אחר') !== -1;
@@ -937,7 +941,8 @@
       const field = normalize(entry.field);
       const filename = normalize(entry.filename || '');
       const extraInfo = normalize(entry.extra_info || '');
-      const searchable = [name, field, filename, extraInfo].join(' ');
+      const recommender = normalize(entry.recommender || '');
+      const searchable = [name, field, filename, extraInfo, recommender].join(' ');
       if (searchable.includes(nq)) return true;
       const qDigits = q.replace(/\D/g, '');
       const allDigits = getPhonesList(entry).map(function(p) { return p.digits; }).join(' ');
@@ -1269,6 +1274,7 @@
         }
         const moshavMark = e.from_moshav ? '<span class="moshav-badge" role="img" aria-label="מהמושב" title="מהמושב"><span class="moshav-badge-star" aria-hidden="true">★</span><span class="moshav-badge-text">מהמושב</span></span>' : '';
         const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
+        const recommenderHtml = (e.recommender || '').trim() ? '<div class="extra-info-display recommender-display"><span class="extra-info-label">ממליץ.ה:</span> ' + escapeHtml(e.recommender) + '</div>' : '';
         let actions = '';
         if (canEdit) {
           actions = `<div class="card-actions">
@@ -1278,6 +1284,7 @@
             <button type="button" class="btn edit-phone-btn" data-key="${escapeHtml(key)}">ערוך טלפון</button>
             <button type="button" class="btn edit-field-btn" data-key="${escapeHtml(key)}" data-field="${escapeHtml((e.field || ''))}">ערוך תחום</button>
             <button type="button" class="btn edit-extra-info-btn" data-key="${escapeHtml(key)}" data-extra-info="${escapeHtml((e.extra_info || ''))}">ערוך מידע נוסף</button>
+            <button type="button" class="btn edit-recommender-btn" data-key="${escapeHtml(key)}" data-recommender="${escapeHtml((e.recommender || ''))}">ערוך שם ממליץ.ה</button>
             <button type="button" class="btn btn-delete delete-btn" data-key="${escapeHtml(key)}" data-name="${escapeHtml((e.name || ''))}">מחק</button>
           </div>`;
         }
@@ -1286,6 +1293,7 @@
           ${field}
           ${phoneBlock}
           ${extraInfoHtml}
+          ${recommenderHtml}
           ${actions}
         </article>`;
       }).join('');
@@ -1335,6 +1343,11 @@
             openEditValueModal(this.dataset.key, 'extra_info', 'ערוך מידע נוסף', 'מידע נוסף', this.dataset.extraInfo || '', 'text');
           });
         });
+        listEl.querySelectorAll('.edit-recommender-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            openEditValueModal(this.dataset.key, 'recommender', 'ערוך שם ממליץ.ה', 'שם הממליצ.ה', this.dataset.recommender || '', 'text');
+          });
+        });
         listEl.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const key = this.dataset.key;
@@ -1361,6 +1374,7 @@
         if ('field' in data) entries[idx].field = data.field;
         if ('name' in data) entries[idx].name = data.name;
         if ('extra_info' in data) entries[idx].extra_info = data.extra_info;
+        if ('recommender' in data) entries[idx].recommender = data.recommender;
         if ('phone' in data) {
           const raw = (data.phone_display != null ? data.phone_display : data.phone) || '';
           const dig = digitsOnlyPhone(data.phone != null ? data.phone : raw);
@@ -1402,6 +1416,7 @@
         phonesSignature(entry) !== phonesSignature(baseEntry) ||
         (entry.field || '') !== (baseEntry.field || '') ||
         (entry.extra_info || '') !== (baseEntry.extra_info || '') ||
+        (entry.recommender || '') !== (baseEntry.recommender || '') ||
         Boolean(entry.from_moshav) !== Boolean(baseEntry.from_moshav);
     }
 
@@ -1445,6 +1460,7 @@
                   phones: phonesPayload,
                   field: entry.field,
                   extra_info: entry.extra_info || '',
+                  recommender: entry.recommender || '',
                   from_moshav: entry.from_moshav
                 })
               });
@@ -1468,6 +1484,7 @@
                 phones: phonesPost,
                 field: entry.field,
                 extra_info: entry.extra_info || '',
+                recommender: entry.recommender || '',
                 from_moshav: entry.from_moshav
               })
             });
@@ -1522,14 +1539,13 @@
       document.getElementById('addName').value = '';
       document.getElementById('addPhonesTextarea').value = '';
       if (addFieldCombobox) {
-        const firstF = fieldsList[0] || '';
-        addFieldCombobox.setCommittedExternal(firstF, true);
-        const isOther = firstF.indexOf('אחר') !== -1;
-        document.getElementById('addFieldCustom').classList.toggle('hidden', !isOther);
+        addFieldCombobox.setCommittedExternal(null, true);
+        document.getElementById('addFieldCustom').classList.add('hidden');
         document.getElementById('addFieldCustom').value = '';
       }
       document.getElementById('addFromMoshav').checked = false;
       document.getElementById('addExtraInfo').value = '';
+      document.getElementById('addRecommender').value = '';
       document.getElementById('modalAdd').classList.remove('hidden');
       setTimeout(function() { document.getElementById('addName').focus(); }, 50);
     });
@@ -1562,6 +1578,7 @@
         }
         const from_moshav = document.getElementById('addFromMoshav').checked;
         const extra_info = (document.getElementById('addExtraInfo').value || '').trim();
+        const recommender = (document.getElementById('addRecommender').value || '').trim();
         if (!name) { alert('נא למלא שם'); return; }
         if (!phoneLines.length) { alert('נא להזין לפחות מספר טלפון אחד'); return; }
         const primaryDisp = phoneLines[0];
@@ -1585,7 +1602,8 @@
             phones: phonesPayload,
             field,
             from_moshav,
-            extra_info
+            extra_info,
+            recommender
           })
         });
         const data = await r.json().catch(() => ({}));

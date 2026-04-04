@@ -253,11 +253,15 @@
       </div>
       <div class="form-row">
         <label for="restFormExtra">מידע נוסף</label>
-        <textarea id="restFormExtra" name="restFormExtra" placeholder="כשרות, שעות, המלצות…"></textarea>
+        <textarea id="restFormExtra" name="restFormExtra"></textarea>
       </div>
       <div class="form-row">
         <label for="restFormWebsite">אתר — כתובת URL</label>
         <input type="url" id="restFormWebsite" name="restFormWebsite" placeholder="https://…" inputmode="url" autocomplete="url">
+      </div>
+      <div class="form-row">
+        <label for="restFormRecommender">שם הממליצ.ה</label>
+        <input type="text" id="restFormRecommender" name="restFormRecommender" autocomplete="name">
       </div>
       <div class="modal-actions">
         <button type="button" class="btn" id="btnRestaurantCancel">ביטול</button>
@@ -325,7 +329,7 @@
     function matchRow(r, q) {
       if (!q) return true;
       const nq = normalize(q);
-      const parts = [r.name, r.restaurant_type, r.location, r.extra_info, r.website].map(function(x) { return normalize(x); });
+      const parts = [r.name, r.restaurant_type, r.location, r.extra_info, r.website, r.recommender].map(function(x) { return normalize(x); });
       return parts.some(function(p) { return p && p.includes(nq); });
     }
 
@@ -579,7 +583,8 @@
         (a.restaurant_type || '') !== (b.restaurant_type || '') ||
         (a.location || '') !== (b.location || '') ||
         (a.extra_info || '') !== (b.extra_info || '') ||
-        String(a.website || '').trim() !== String(b.website || '').trim();
+        String(a.website || '').trim() !== String(b.website || '').trim() ||
+        (a.recommender || '') !== (b.recommender || '');
     }
 
     function patchRestaurant(rid, data) {
@@ -593,6 +598,7 @@
       if ('location' in data) row.location = data.location;
       if ('extra_info' in data) row.extra_info = data.extra_info;
       if ('website' in data) row.website = data.website;
+      if ('recommender' in data) row.recommender = data.recommender;
       restaurants.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'he'); });
       buildTypeFilter();
       applyFilters();
@@ -620,6 +626,7 @@
         const typ = escapeHtml((r.restaurant_type || '').trim());
         const loc = escapeHtml((r.location || '').trim());
         const extra = (r.extra_info || '').trim();
+        const rec = (r.recommender || '').trim();
         const siteHref = websiteHref(r.website);
         let html = '<article class="card" data-id="' + id + '">';
         html += '<div class="name-row">';
@@ -631,6 +638,7 @@
         if (typ) html += '<div class="rest-type">' + typ + '</div>';
         if (loc) html += '<div class="rest-location"><strong>מיקום:</strong> ' + loc + '</div>';
         if (extra) html += '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(extra) + '</div>';
+        if (rec) html += '<div class="extra-info-display recommender-display"><span class="extra-info-label">ממליץ.ה:</span> ' + escapeHtml(rec) + '</div>';
         if (canEdit) {
           html += '<div class="card-actions">' +
             '<button type="button" class="btn edit-rest-btn" data-id="' + id + '">ערוך</button>' +
@@ -680,6 +688,7 @@
       document.getElementById('restFormType').value = '';
       document.getElementById('restFormLocation').value = '';
       document.getElementById('restFormExtra').value = '';
+      document.getElementById('restFormRecommender').value = '';
       document.getElementById('restFormWebsite').value = '';
       document.getElementById('restFormType').setAttribute('required', '');
       document.getElementById('restFormLocation').setAttribute('required', '');
@@ -701,6 +710,7 @@
       document.getElementById('restFormType').value = r.restaurant_type || '';
       document.getElementById('restFormLocation').value = r.location || '';
       document.getElementById('restFormExtra').value = r.extra_info || '';
+      document.getElementById('restFormRecommender').value = r.recommender || '';
       document.getElementById('restFormWebsite').value = r.website || '';
       document.getElementById('restFormType').removeAttribute('required');
       document.getElementById('restFormLocation').removeAttribute('required');
@@ -742,13 +752,14 @@
       const restaurant_type = typeEl.value.trim();
       const location = locEl.value.trim();
       const extra_info = document.getElementById('restFormExtra').value.trim();
+      const recommender = document.getElementById('restFormRecommender').value.trim();
       const website = websiteEl.value.trim();
       if (!editId) {
         try {
           const r = await fetch(API + 'api/restaurants', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, restaurant_type, location, note: '', extra_info, website })
+            body: JSON.stringify({ name, restaurant_type, location, note: '', extra_info, website, recommender })
           });
           const data = await r.json().catch(function() { return {}; });
           if (!r.ok || !data.ok) {
@@ -768,7 +779,8 @@
         restaurant_type: restaurant_type || '',
         location: location || '',
         extra_info: extra_info,
-        website: website || ''
+        website: website || '',
+        recommender: recommender
       });
       closeRestaurantModal();
     }
@@ -808,7 +820,8 @@
                 location: entry.location || '',
                 note: entry.note || '',
                 extra_info: entry.extra_info || '',
-                website: String(entry.website || '').trim()
+                website: String(entry.website || '').trim(),
+                recommender: entry.recommender || ''
               })
             });
             if (!rPatch.ok) {

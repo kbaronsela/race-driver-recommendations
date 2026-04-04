@@ -132,6 +132,7 @@ def _entry_to_stored(row):
         "from_moshav": bool(row.get("from_moshav")),
         "note": (row.get("note") or "").strip(),
         "extra_info": (row.get("extra_info") or "").strip(),
+        "recommender": (row.get("recommender") or "").strip(),
     }
     phones = row.get("phones")
     if isinstance(phones, list) and len(phones) > 1:
@@ -351,6 +352,7 @@ def add_restaurant():
         "note": (data.get("note") or "").strip(),
         "extra_info": (data.get("extra_info") or "").strip(),
         "website": (data.get("website") or "").strip(),
+        "recommender": (data.get("recommender") or "").strip(),
     }
     rows.append(row)
     save_restaurants(rows)
@@ -368,7 +370,7 @@ def patch_restaurant(rid):
     if idx < 0:
         return jsonify({"ok": False, "error": "לא נמצא"}), 404
     row = rows[idx]
-    for key in ("name", "restaurant_type", "location", "note", "extra_info", "website"):
+    for key in ("name", "restaurant_type", "location", "note", "extra_info", "website", "recommender"):
         if key in data:
             row[key] = (data.get(key) or "").strip() if isinstance(data.get(key), str) else str(data.get(key) or "")
     if not (row.get("name") or "").strip():
@@ -410,6 +412,7 @@ def add_entry():
     from_moshav = bool(data.get("from_moshav"))
     # note is internal only; not accepted from the web UI
     extra_info = (data.get("extra_info") or "").strip()
+    recommender = (data.get("recommender") or "").strip()
     if not phone and phone_display:
         phone = "".join(c for c in phone_display if c.isdigit())
     if not name or not (phone or phone_display):
@@ -424,6 +427,7 @@ def add_entry():
         "from_moshav": from_moshav,
         "note": "",
         "extra_info": extra_info,
+        "recommender": recommender,
     }
     ph = data.get("phones")
     if isinstance(ph, list) and len(ph) > 1:
@@ -453,6 +457,7 @@ def patch_entry(key):
         or "phone" in data
         or "phone_display" in data
         or "extra_info" in data
+        or "recommender" in data
         or "phones" in data
     ):
         ed = ud.get("edits", {})
@@ -470,6 +475,8 @@ def patch_entry(key):
             ed[key]["phone_display"] = (data.get("phone") or "").strip()
         if "extra_info" in data:
             ed[key]["extra_info"] = (data.get("extra_info") or "").strip()
+        if "recommender" in data:
+            ed[key]["recommender"] = (data.get("recommender") or "").strip()
         if "phones" in data:
             ph = data.get("phones")
             if isinstance(ph, list) and len(ph) > 1:

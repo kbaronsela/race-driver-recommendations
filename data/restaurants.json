@@ -1,39 +1,30 @@
 [
   {
     "id": "r-9b450769095a",
-    "name": "300 בבצת",
-    "restaurant_type": "מסעדה",
-    "location": "",
+    "name": "300 גרם",
+    "restaurant_type": "בשרים",
+    "location": "בוסתן הגליל",
     "note": "חילוץ LLM (אימות כללים) · תמי בנארצי · 15/05/2022, 9:53",
-    "extra_info": "מסעדת 300 בבצת.",
-    "website": ""
+    "extra_info": "",
+    "website": "https://300gramchef.co.il/"
   },
   {
     "id": "r-88e34b0e7df6",
     "name": "good morning sunshine",
     "restaurant_type": "בית קפה",
-    "location": "",
+    "location": "רעננה קדימה נתניה",
     "note": "חילוץ LLM (אימות כללים) · ענבל יבין פרטל · 08/01/2020, 10:18",
     "extra_info": "יש בית קפה good morning sunshine",
-    "website": ""
+    "website": "https://www.sunshine.co.il/"
   },
   {
     "id": "r-a050a2300eeb",
-    "name": "IRO מרח׳ הבנים",
-    "restaurant_type": "מסעדה",
-    "location": "",
+    "name": "IRO",
+    "restaurant_type": "סושי אירועים",
+    "location": "הוד השרון",
     "note": "חילוץ LLM (אימות כללים) · חלי סלוצקי לוינטל · 06/04/2024, 16:02",
-    "extra_info": "מסעדת IRO מרח׳ הבנים",
-    "website": ""
-  },
-  {
-    "id": "r-78ab9d718a82",
-    "name": "sante",
-    "restaurant_type": "ביסטרו",
-    "location": "אושילנד",
-    "note": "חילוץ LLM (אימות כללים) · ליאת ריקליס אורן · 27/06/2023, 19:26",
-    "extra_info": "עובדים נרשמים לכלל המחלקות - ניהול, בר, אירוח ומלצרות",
-    "website": ""
+    "extra_info": "אירועים IRO מרח׳ הבנים",
+    "website": "https://irosushi.co.il/"
   },
   {
     "id": "r-3e4b377e6e23",
@@ -42,7 +33,7 @@
     "location": "טירה",
     "note": "חן ארזי מרקו · 24/12/2022, 16:30",
     "extra_info": "היינו ב-TIMO בטירה; מסעדה איטלקית ממש משפחתית נחמדה וטעימה. מומלץ.",
-    "website": ""
+    "website": "https://timo-italiano.com/digital-menu/index.html#/minified:qn"
   },
   {
     "id": "r-8a078f0dd154",
@@ -54,112 +45,67 @@
     "website": ""
   },
   {
-    "id": "r-71a764ab3b51",
-    "name": "אבו חסן של המסעדה",
-    "restaurant_type": "",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · ריקי הורן · 11/01/2024, 17:47",
-    "extra_info": "בכניסה",
-    "website": ""
-  },
-  {
     "id": "r-c2a1a12ec63a",
     "name": "אדום",
     "restaurant_type": "מסעדה",
-    "location": "בתחנת הרכבת הישנה",
+    "location": "ירושלים",
     "note": "חילוץ LLM (אימות כללים) · ריס פריבר · 10/08/2025, 14:33",
     "extra_info": "*מסעדה ״אדום״ בתחנת הרכבת הישנה, *״פונדק עין כרם״ ליד המעיין, בראסרי בעין כרם, נהדרת תמיד *בית התה של יאן ( היום נקראת טלביה) מתחת לתיאטרון ירושלים, *פוקאצ׳ה בר- נהדרת תמיד",
-    "website": ""
+    "website": "https://www.adom.rest/"
   },
   {
     "id": "r-2a8f69a9014a",
     "name": "אל דנטה",
     "restaurant_type": "איטלקית",
-    "location": "אושיסקין, ירושלים",
+    "location": "ירושלים",
     "note": "מירי מרגולין · 10/08/2025, 12:50",
     "extra_info": "מסעדה איטלקית קטנה וחמודה עם כשרות (אל דנטה).",
-    "website": ""
+    "website": "https://al-dente.co.il/"
   },
   {
     "id": "r-a4e854479beb",
-    "name": "בבת חן",
+    "name": "מקום בלב",
     "restaurant_type": "קפה / מסעדה",
-    "location": "",
+    "location": "גבעת חן רעננה",
     "note": "חילוץ LLM (אימות כללים) · שרה בוגן · 08/07/2024, 9:55",
     "extra_info": "מקום בלב, נעים ומיוחד",
-    "website": ""
+    "website": "https://www.makombalev-raanana.co.il/"
   },
   {
     "id": "r-abc0a2d75a4d",
-    "name": "בופה באושילנד",
-    "restaurant_type": "מסעדה",
-    "location": "",
+    "name": "בופה",
+    "restaurant_type": "מתחם מסעדות",
+    "location": "כפר סבא",
     "note": "חילוץ LLM (אימות כללים) · שולמית קורן תאונה · 17/06/2022, 7:40",
     "extra_info": "מסעדת בופה באושילנד",
-    "website": ""
+    "website": "https://buffet.co.il/"
   },
   {
     "id": "r-2364042bb010",
-    "name": "ביי דה ויי- בית הקפה בתחנת הדלק",
+    "name": "ביי דה ויי Buy The Way",
     "restaurant_type": "בית קפה",
-    "location": "בתחנת הדלק",
+    "location": "רעננה כפר סבא",
     "note": "חילוץ LLM (אימות כללים) · בילי טילמן · 10/10/2025, 11:28",
     "extra_info": "ביי דה ויי- בית הקפה בתחנת הדלק",
-    "website": ""
-  },
-  {
-    "id": "r-61887e37fffd",
-    "name": "בית התה של יאן",
-    "restaurant_type": "בית קפה",
-    "location": "מתחת לתיאטרון ירושלים",
-    "note": "חילוץ LLM (אימות כללים) · ריס פריבר · 10/08/2025, 14:33",
-    "extra_info": "היום נקראת טלביה",
-    "website": ""
+    "website": "https://buytheway-btw.com/"
   },
   {
     "id": "r-3dcf2445c06d",
-    "name": "בית קפה אסף ארטיזנל",
+    "name": "אסף ארטיזנל",
     "restaurant_type": "בית קפה",
-    "location": "התומר",
+    "location": "רמת השרון",
     "note": "חילוץ LLM (אימות כללים) · יהודית אשל · 25/12/2025, 8:18",
-    "extra_info": "רמהש",
-    "website": ""
+    "extra_info": "",
+    "website": "https://artisanal.co.il/"
   },
   {
     "id": "r-6788f6025a35",
-    "name": "ברלה בבית ברל באחד מימי השישי",
-    "restaurant_type": "קפה",
-    "location": "",
+    "name": "ברל'ה",
+    "restaurant_type": "עגלת קפה",
+    "location": "בית ברל",
     "note": "חילוץ LLM (אימות כללים) · דפנה דיליאון פז · 23/12/2025, 10:56",
-    "extra_info": "שיעור יוגה, 500₪ ל10 מפגשים, 55₪ אורח.ת",
-    "website": ""
-  },
-  {
-    "id": "r-47c9e9b3a82f",
-    "name": "ברלה- בית ברל",
-    "restaurant_type": "בית קפה",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · ענבר לאוב · 27/11/2025, 16:35",
-    "extra_info": "תביאו מזרנים ובואו...8:45",
-    "website": ""
-  },
-  {
-    "id": "r-07ade11bd6ba",
-    "name": "ברסרי בעין כרם",
-    "restaurant_type": "בראסרי",
-    "location": "עין כרם, ירושלים",
-    "note": "ריס פריבר · 10/08/2025, 14:33",
-    "extra_info": "בצ'אט נכתב ״בראסרי בעין כרם״; נהדרת תמיד — ציטוט מהמלצת ריס פריבר.",
-    "website": ""
-  },
-  {
-    "id": "r-82ed3a931516",
-    "name": "ג'ורג' וג'ון",
-    "restaurant_type": "מסעדה",
-    "location": "תל אביב",
-    "note": "חילוץ LLM (אימות כללים) · יעני (מעין) דברת · 23/07/2022, 10:24",
-    "extra_info": "מקום 9 במזרח התיכון, שעה 18:00",
-    "website": ""
+    "extra_info": "",
+    "website": "https://coffeetrail.co.il/coffeecart/berale/"
   },
   {
     "id": "r-8cba0d4f21f7",
@@ -169,15 +115,6 @@
     "note": "איילה בר · 23/03/2020 · אזכורים נוספים בקבוצה 2025–2026",
     "extra_info": "מסעדה איטלקית; הומלצה בקבוצה — טעים, טרי ובמחיר סביר. הוזכרה גם בהקשר משלוחים (כפר סבא).",
     "website": "https://goomba.co.il/"
-  },
-  {
-    "id": "r-0edc812826d3",
-    "name": "דג על הדן של משפחתי",
-    "restaurant_type": "מסעדה",
-    "location": "ממושב בית הילל",
-    "note": "חילוץ LLM (אימות כללים) · נורית שער · 16/12/2023, 21:10",
-    "extra_info": "שלם, מנוקי, 700-1.800 גרם, 59 שקלים לק״ג, 75 שקלים לק״ג למעושן",
-    "website": ""
   },
   {
     "id": "r-f0bfcdc25234",
@@ -190,183 +127,111 @@
   },
   {
     "id": "r-e8fa9315736f",
-    "name": "המפלט האחרון - מסעדת דגים מעולה",
+    "name": "המפלט האחרון",
     "restaurant_type": "מסעדת דגים",
-    "location": "",
+    "location": "אילת",
     "note": "חילוץ LLM (אימות כללים) · ציפי שקד · 02/05/2021, 12:04",
     "extra_info": "המפלט האחרון - מסעדת דגים מעולה",
-    "website": ""
-  },
-  {
-    "id": "r-94364fef9ec3",
-    "name": "המקסים",
-    "restaurant_type": "בית קפה",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · דנה עלי רז · 01/11/2022, 13:30",
-    "extra_info": "☕️",
-    "website": ""
+    "website": "https://www.hamiflat-eilat.co.il/"
   },
   {
     "id": "r-c0b47e8b3e3b",
     "name": "טלביה",
-    "restaurant_type": "בית תה",
-    "location": "מתחת לתיאטרון ירושלים",
+    "restaurant_type": "מסעדה",
+    "location": "ירושלים",
     "note": "ריס פריבר · 10/08/2025, 14:33",
     "extra_info": "לשעבר ״בית התה של יאן״; היום נקרא טלביה; באותה רשימת המלצות ירושלים.",
-    "website": ""
+    "website": "https://www.talbiye.com/"
   },
   {
     "id": "r-9d6ab0c93886",
     "name": "מג׳די",
-    "restaurant_type": "מסעדה",
+    "restaurant_type": "מזרחי",
     "location": "כפר סבא",
     "note": "חילוץ LLM (אימות כללים) · דורין ליבר · 09/07/2024, 8:05",
     "extra_info": "מסעדת מג׳די בכפר סבא",
-    "website": ""
-  },
-  {
-    "id": "r-287d6433fae8",
-    "name": "מנטה ריי על הים",
-    "restaurant_type": "",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · ענת הנדלר · 28/08/2024, 14:28",
-    "extra_info": "מסעדת מנטה ריי על הים",
-    "website": ""
-  },
-  {
-    "id": "r-6e579c3d6ea8",
-    "name": "מסעדה טובה",
-    "restaurant_type": "מסעדה",
-    "location": "בקניון ערים",
-    "note": "חילוץ LLM (אימות כללים) · יעל לנדאו · 04/12/2021, 10:58",
-    "extra_info": "הקניון מגעיל",
-    "website": ""
-  },
-  {
-    "id": "r-8ba3b94c1069",
-    "name": "מסעדה לאוכל ולבילוי",
-    "restaurant_type": "מסעדה",
-    "location": "כפר סבא",
-    "note": "חילוץ LLM (אימות כללים) · בילי טילמן · 29/03/2026, 15:58",
-    "extra_info": "3.4***",
-    "website": ""
+    "website": "https://www.majdi.co.il/"
   },
   {
     "id": "r-3af76072f4a8",
-    "name": "מסעדת ג'קו א",
-    "restaurant_type": "מסעדה",
+    "name": "ג'קו",
+    "restaurant_type": "מסעדת דגים",
     "location": "נתניה",
     "note": "חילוץ LLM (אימות כללים) · תמי בנארצי · 19/05/2025, 19:09",
     "extra_info": "מסעדת ג'קו א.ת. נתניה",
-    "website": ""
-  },
-  {
-    "id": "r-7edfd6900635",
-    "name": "נואר לא רחוק",
-    "restaurant_type": "קפה",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · דורין זיו · 24/06/2023, 21:36",
-    "extra_info": "גם קפה נואר לא רחוק :)",
-    "website": ""
+    "website": "https://www.jacko.co.il/"
   },
   {
     "id": "r-bfee2a53d569",
     "name": "נומי",
-    "restaurant_type": "קפה / בית קפה",
+    "restaurant_type": "בית קפה",
     "location": "כפר מונש",
     "note": "חילוץ LLM (אימות כללים) · +972 54-663-3531 · 24/08/2023, 19:52 | +972 54-663-3531 · 24/08/2023, 19:52",
     "extra_info": "קפה מלצ'ט בתל מונד. קפה נומי בכפר מונש | קפה נומי בכפר מונש; באותה הודעה עם קפה מלצ'ט בתל מונד.",
-    "website": ""
-  },
-  {
-    "id": "r-6c84a355bb40",
-    "name": "נחמדה פלוס",
-    "restaurant_type": "מסעדה",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · גלי אשכני יערי · 20/11/2020, 19:16",
-    "extra_info": "מסעדה נחמדה פלוס",
-    "website": ""
-  },
-  {
-    "id": "r-3f2d1489c137",
-    "name": "עגלת קפה שנראית מתוקה מאד",
-    "restaurant_type": "קפה",
-    "location": "ליד הדואר ובית צוקרמן",
-    "note": "חילוץ LLM (אימות כללים) · נעמה יוגב · 24/06/2021, 20:35",
-    "extra_info": "עגלת קפה שנראית מתוקה מאד. ליד הדואר ובית צוקרמן",
-    "website": ""
+    "website": "https://www.instagram.com/nomi.monash/"
   },
   {
     "id": "r-7a311487555c",
     "name": "פונדק עין כרם",
-    "restaurant_type": "פונדק / פונדק / מסעדה",
-    "location": "ליד המעיין | עין כרם, ירושלים",
+    "restaurant_type": "איטלקית",
+    "location": "ירושלים",
     "note": "חילוץ LLM (אימות כללים) · ריס פריבר · 10/08/2025, 14:33 | ריס פריבר · 10/08/2025, 14:33",
     "extra_info": "*מסעדה ״אדום״ בתחנת הרכבת הישנה, *״פונדק עין כרם״ ליד המעיין, בראסרי בעין כרם, נהדרת תמיד *בית התה של יאן ( היום נקראת טלביה) מתחת לתיאטרון ירושלים, *פוקאצ׳ה בר- נהדרת תמיד | ליד המעיין; באותה הודעה עם ״אדום״ בתחנת הרכבת הישנה ושאר המלצות ירושלים.",
-    "website": ""
-  },
-  {
-    "id": "r-833870273c46",
-    "name": "פוקאצ'ה",
-    "restaurant_type": "פוקאצ'ה",
-    "location": "ירושלים",
-    "note": "חילוץ LLM (אימות כללים) · ריס פריבר · 10/08/2025, 14:33",
-    "extra_info": "בר-נהדרת תמיד",
-    "website": ""
+    "website": "https://pundak-ein-karem.wp.2eat.co.il/"
   },
   {
     "id": "r-5c888626e735",
     "name": "פוקאצ'ה בר",
-    "restaurant_type": "מסעדה",
+    "restaurant_type": "איטלקית",
     "location": "ירושלים",
     "note": "ריס פריבר · 10/08/2025, 14:33",
     "extra_info": "נהדרת תמיד; באותה הודעה עם אדום, פונדק עין כרם, ברסרי בעין כרם וטלביה.",
-    "website": ""
+    "website": "https://bar.focaccia.co/"
   },
   {
     "id": "r-85261f049e02",
-    "name": "פיאנו / זיגי",
+    "name": "זיגי מאשרום",
     "restaurant_type": "פיצה",
-    "location": "משלוחים למושב",
+    "location": "כפר סבא משלוחים למושב",
     "note": "שרון גולן · 2020",
     "extra_info": "הוזכרו בהקשר פיצה למושב.",
-    "website": ""
+    "website": "https://www.changmaiz.co.il/"
   },
   {
     "id": "r-22e639c08ca5",
     "name": "צ'אנג מאי",
-    "restaurant_type": "מסעדה",
+    "restaurant_type": "אסייתית",
     "location": "זכרון יעקב",
     "note": "חילוץ LLM (אימות כללים) · נירה שטרן · 03/04/2024, 14:17",
     "extra_info": "מצויינת",
-    "website": ""
+    "website": "https://www.changmaiz.co.il/"
   },
   {
     "id": "r-fbd72a1042ea",
     "name": "קפה אלה",
-    "restaurant_type": "קפה",
+    "restaurant_type": "פטיסרי",
     "location": "תעשיה עמק חפר",
     "note": "חילוץ LLM (אימות כללים) · בילי סטמפל · 29/09/2021, 23:40",
     "extra_info": "קפה אלה באזור תעשיה עמק חפר.",
-    "website": ""
+    "website": "https://www.ella-patisserie.co.il/"
   },
   {
     "id": "r-14da03160637",
-    "name": "קפה גן סיפור",
+    "name": "גן סיפור",
     "restaurant_type": "קפה",
-    "location": "הוד השרון | הוד",
+    "location": "הוד השרון",
     "note": "חילוץ LLM (אימות כללים) · שרון בנג'ו · 24/05/2022, 21:49 | חילוץ LLM (אימות כללים) · +972 52-553-1453 · 17/07/2023, 16:52 | חילוץ LLM (אימות כללים) · +972 54-663-3531 · 01/02/2025, 9:32 | חילוץ LLM (אימות כללים) · מירי מרגולין · 22/03/2025, 20:02 | חילוץ LLM (אימות כללים) · זהר בסטיאנס · 03/09/2025, 8:16",
     "extra_info": "קפה גן סיפור | בפארק האקולוגי בהוד השרון יש עגלה ופארק יפיפה. בהוד\"ש, פארק 4 העונות יש את קפה גן סיפור | הוד\"ש",
-    "website": ""
+    "website": "https://www.gansipur.co.il/%D7%94%D7%95%D7%93%D7%94%D7%A9%D7%A8%D7%95%D7%9F"
   },
   {
     "id": "r-53b5bde0d765",
-    "name": "קפה גראציה",
-    "restaurant_type": "קפה",
+    "name": "גרציא",
+    "restaurant_type": "ביסטרו",
     "location": "קיבוץ העוגן",
     "note": "חילוץ LLM (אימות כללים) · יעל לנדאו · 24/01/2023, 15:18",
     "extra_info": "נהדר!",
-    "website": ""
+    "website": "https://www.gratzia.co.il/"
   },
   {
     "id": "r-9acf040619a0",
@@ -375,24 +240,24 @@
     "location": "גליל ים",
     "note": "חילוץ LLM (אימות כללים) · ענת הנדלר · 22/03/2025, 21:08",
     "extra_info": "ממש נחמד",
-    "website": ""
+    "website": "https://www.micasacafe.co.il/"
   },
   {
     "id": "r-89eadf386e30",
-    "name": "קפה מלצ'ט",
+    "name": "בית מלצ'ט",
     "restaurant_type": "קפה",
-    "location": "תל מונד | 09-773-3663",
+    "location": "תל מונד",
     "note": "חילוץ LLM (אימות כללים) · +972 54-663-3531 · 24/08/2023, 19:52 | חילוץ LLM (אימות כללים) · +972 54-665-6331 · 28/01/2025, 9:10",
     "extra_info": "קפה מלצ'ט בתל מונד. קפה נומי בכפר מונש | https://g.co/kgs/nMLD4MN",
-    "website": ""
+    "website": "https://www.beitmelchett.co.il/about/"
   },
   {
-    "id": "r-306a9bc1e162",
-    "name": "שהילדים",
-    "restaurant_type": "בית קפה",
-    "location": "",
-    "note": "חילוץ LLM (אימות כללים) · מאיה סופר · 17/03/2026, 12:02",
-    "extra_info": "בזום",
-    "website": ""
+    "id": "EWRoZ8oC1M_htYTa",
+    "name": "היישה",
+    "restaurant_type": "פאב מסעדה",
+    "location": "כפר סבא",
+    "note": "",
+    "extra_info": "",
+    "website": "https://hakubia.co.il/"
   }
 ]

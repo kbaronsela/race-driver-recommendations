@@ -1235,6 +1235,69 @@
       return p.slice(-10) || p || (entry && entry._key) || '';
     }
 
+    const LS_VOTE_ENTRY = 'rec_vote_e_';
+
+    function getEntryVoteState(key) {
+      try {
+        const v = localStorage.getItem(LS_VOTE_ENTRY + key);
+        if (v === 'like' || v === 'dislike') return v;
+      } catch (e) { /* ignore */ }
+      return 'none';
+    }
+
+    function setEntryVoteState(key, next) {
+      try {
+        if (next === 'none' || !next) localStorage.removeItem(LS_VOTE_ENTRY + key);
+        else localStorage.setItem(LS_VOTE_ENTRY + key, next);
+      } catch (e) { /* ignore */ }
+    }
+
+    function syncEntryVoteCountsInData(key, likes, dislikes) {
+      const k = String(key);
+      function patch(arr) {
+        if (!arr) return;
+        arr.forEach(function(e) {
+          if (String(e._key || normKey(e)) === k) {
+            e.likes = likes;
+            e.dislikes = dislikes;
+          }
+        });
+      }
+      patch(entries);
+      patch(baseEntries);
+    }
+
+    async function submitEntryVote(key, prev, next) {
+      try {
+        const r = await fetch(API + 'api/entries/' + encodeURIComponent(key) + '/vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prev: prev, next: next })
+        });
+        const data = await r.json().catch(function() { return {}; });
+        if (!r.ok || !data.ok) {
+          alert((data && data.error) ? data.error : 'לא ניתן לעדכן את ההצבעה');
+          return;
+        }
+        setEntryVoteState(key, next);
+        syncEntryVoteCountsInData(key, data.likes, data.dislikes);
+        applyFilters();
+      } catch (e) {
+        alert('שגיאת רשת — ודא שהאתר נטען דרך השרת');
+      }
+    }
+
+    function handleEntryVoteClick(key, kind) {
+      const prev = getEntryVoteState(key);
+      let next;
+      if (kind === 'like') {
+        next = prev === 'like' ? 'none' : 'like';
+      } else {
+        next = prev === 'dislike' ? 'none' : 'dislike';
+      }
+      submitEntryVote(key, prev, next);
+    }
+
     function render(list) {
       const listEl = document.getElementById('list');
       if (!list.length) {
@@ -1275,6 +1338,12 @@
         const moshavMark = e.from_moshav ? '<span class="moshav-badge" role="img" aria-label="מהמושב" title="מהמושב"><span class="moshav-badge-star" aria-hidden="true">★</span><span class="moshav-badge-text">מהמושב</span></span>' : '';
         const extraInfoHtml = (e.extra_info || '').trim() ? '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(e.extra_info) + '</div>' : '';
         const recommenderHtml = (e.recommender || '').trim() ? '<div class="extra-info-display recommender-display"><span class="extra-info-label">ממליץ.ה:</span> ' + escapeHtml(e.recommender) + '</div>' : '';
+        const likes = Number(e.likes) || 0;
+        const dislikes = Number(e.dislikes) || 0;
+        const vstate = getEntryVoteState(key);
+        const voteRow = '<div class="recommendation-votes">' +
+          '<button type="button" class="vote-btn vote-like' + (vstate === 'like' ? ' is-active' : '') + '" data-vote-kind="like" data-key="' + escapeAttr(key) + '" aria-pressed="' + (vstate === 'like' ? 'true' : 'false') + '" aria-label="לייק">👍<span class="vote-count">' + likes + '</span></button>' +
+          '<button type="button" class="vote-btn vote-dislike' + (vstate === 'dislike' ? ' is-active' : '') + '" data-vote-kind="dislike" data-key="' + escapeAttr(key) + '" aria-pressed="' + (vstate === 'dislike' ? 'true' : 'false') + '" aria-label="דיסלייק">👎<span class="vote-count">' + dislikes + '</span></button></div>';
         let actions = '';
         if (canEdit) {
           actions = `<div class="card-actions">
@@ -1294,6 +1363,7 @@
           ${phoneBlock}
           ${extraInfoHtml}
           ${recommenderHtml}
+          ${voteRow}
           ${actions}
         </article>`;
       }).join('');
@@ -1312,6 +1382,12 @@
       listEl.querySelectorAll('.pick-wa-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
           openPickPhoneModal('wa', this.dataset.key);
+        });
+      });
+
+      listEl.querySelectorAll('.recommendation-votes .vote-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          handleEntryVoteClick(this.dataset.key, this.dataset.voteKind);
         });
       });
 

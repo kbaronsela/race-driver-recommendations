@@ -578,6 +578,69 @@
       return String(r._serverKey || r.id || '');
     }
 
+    var LS_VOTE_REST = 'rec_vote_r_';
+
+    function getRestaurantVoteState(rid) {
+      try {
+        var v = localStorage.getItem(LS_VOTE_REST + rid);
+        if (v === 'like' || v === 'dislike') return v;
+      } catch (e) { /* ignore */ }
+      return 'none';
+    }
+
+    function setRestaurantVoteState(rid, next) {
+      try {
+        if (next === 'none' || !next) localStorage.removeItem(LS_VOTE_REST + rid);
+        else localStorage.setItem(LS_VOTE_REST + rid, next);
+      } catch (e) { /* ignore */ }
+    }
+
+    function syncRestaurantVoteCountsInData(rid, likes, dislikes) {
+      var k = String(rid);
+      function patch(arr) {
+        if (!arr) return;
+        arr.forEach(function(r) {
+          if (restaurantKey(r) === k) {
+            r.likes = likes;
+            r.dislikes = dislikes;
+          }
+        });
+      }
+      patch(restaurants);
+      patch(baseRestaurants);
+    }
+
+    async function submitRestaurantVote(rid, prev, next) {
+      try {
+        var r = await fetch(API + 'api/restaurants/' + encodeURIComponent(rid) + '/vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prev: prev, next: next })
+        });
+        var data = await r.json().catch(function() { return {}; });
+        if (!r.ok || !data.ok) {
+          alert((data && data.error) ? data.error : 'לא ניתן לעדכן את ההצבעה');
+          return;
+        }
+        setRestaurantVoteState(rid, next);
+        syncRestaurantVoteCountsInData(rid, data.likes, data.dislikes);
+        applyFilters();
+      } catch (e) {
+        alert('שגיאת רשת — ודא שהאתר נטען דרך השרת');
+      }
+    }
+
+    function handleRestaurantVoteClick(rid, kind) {
+      var prev = getRestaurantVoteState(rid);
+      var next;
+      if (kind === 'like') {
+        next = prev === 'like' ? 'none' : 'like';
+      } else {
+        next = prev === 'dislike' ? 'none' : 'dislike';
+      }
+      submitRestaurantVote(rid, prev, next);
+    }
+
     function restaurantChanged(a, b) {
       return (a.name || '') !== (b.name || '') ||
         (a.restaurant_type || '') !== (b.restaurant_type || '') ||
@@ -621,7 +684,8 @@
         return;
       }
       listEl.innerHTML = list.map(function(r) {
-        const id = escapeAttr(r._serverKey || r.id || '');
+        const idRaw = String(r._serverKey || r.id || '');
+        const id = escapeAttr(idRaw);
         const name = escapeHtml(r.name || '');
         const typ = escapeHtml((r.restaurant_type || '').trim());
         const loc = escapeHtml((r.location || '').trim());
@@ -639,6 +703,12 @@
         if (loc) html += '<div class="rest-location"><strong>מיקום:</strong> ' + loc + '</div>';
         if (extra) html += '<div class="extra-info-display"><span class="extra-info-label">מידע נוסף:</span> ' + escapeHtml(extra) + '</div>';
         if (rec) html += '<div class="extra-info-display recommender-display"><span class="extra-info-label">ממליץ.ה:</span> ' + escapeHtml(rec) + '</div>';
+        var likes = Number(r.likes) || 0;
+        var dislikes = Number(r.dislikes) || 0;
+        var rvst = getRestaurantVoteState(idRaw);
+        html += '<div class="recommendation-votes">' +
+          '<button type="button" class="vote-btn vote-like' + (rvst === 'like' ? ' is-active' : '') + '" data-vote-kind="like" data-vote-rid="' + escapeAttr(idRaw) + '" aria-pressed="' + (rvst === 'like' ? 'true' : 'false') + '" aria-label="לייק">👍<span class="vote-count">' + likes + '</span></button>' +
+          '<button type="button" class="vote-btn vote-dislike' + (rvst === 'dislike' ? ' is-active' : '') + '" data-vote-kind="dislike" data-vote-rid="' + escapeAttr(idRaw) + '" aria-pressed="' + (rvst === 'dislike' ? 'true' : 'false') + '" aria-label="דיסלייק">👎<span class="vote-count">' + dislikes + '</span></button></div>';
         if (canEdit) {
           html += '<div class="card-actions">' +
             '<button type="button" class="btn edit-rest-btn" data-id="' + id + '">ערוך</button>' +
@@ -648,6 +718,12 @@
         html += '</article>';
         return html;
       }).join('');
+
+      listEl.querySelectorAll('.recommendation-votes .vote-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          handleRestaurantVoteClick(this.dataset.voteRid, this.dataset.voteKind);
+        });
+      });
 
       if (canEdit) {
         listEl.querySelectorAll('.edit-rest-btn').forEach(function(btn) {

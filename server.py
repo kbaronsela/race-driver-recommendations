@@ -17,6 +17,7 @@ CONFIG_PATH = APP_DIR / "config.json"
 USER_DATA_PATH = DATA_DIR / "user_data.json"
 ENTRIES_PATH = DATA_DIR / "entries.json"
 RESTAURANTS_PATH = DATA_DIR / "restaurants.json"
+VOTES_PATH = DATA_DIR / "recommendation_votes.json"
 
 app = Flask(__name__, static_folder=APP_DIR, static_url_path="")
 
@@ -120,7 +121,83 @@ def merge_entries():
         row["_key"] = norm_phone(row.get("phone")) or key
         row["_added"] = True
         result.append(row)
+    votes = load_votes()
+    ent_votes = votes.get("entries") or {}
+    if not isinstance(ent_votes, dict):
+        ent_votes = {}
+    for row in result:
+        k = str(row.get("_key", ""))
+        v = ent_votes.get(k) if isinstance(ent_votes.get(k), dict) else {}
+        row["likes"] = max(0, int(v.get("likes", 0) or 0))
+        row["dislikes"] = max(0, int(v.get("dislikes", 0) or 0))
     return result
+
+
+def load_votes():
+    if not VOTES_PATH.exists():
+        return {"entries": {}, "restaurants": {}}
+    with open(VOTES_PATH, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    if not isinstance(data, dict):
+        return {"entries": {}, "restaurants": {}}
+    data.setdefault("entries", {})
+    data.setdefault("restaurants", {})
+    if not isinstance(data["entries"], dict):
+        data["entries"] = {}
+    if not isinstance(data["restaurants"], dict):
+        data["restaurants"] = {}
+    return data
+
+
+def save_votes(data):
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(VOTES_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def _vote_delta(prev, next_):
+    valid = frozenset(("none", "like", "dislike"))
+    if prev not in valid or next_ not in valid:
+        return None
+    if prev == next_:
+        return (0, 0)
+    dl = dd = 0
+    if prev == "like":
+        dl -= 1
+    elif prev == "dislike":
+        dd -= 1
+    if next_ == "like":
+        dl += 1
+    elif next_ == "dislike":
+        dd += 1
+    return (dl, dd)
+
+
+def _mutate_vote_bucket(bucket, item_key, prev, next_):
+    delta = _vote_delta(prev, next_)
+    if delta is None:
+        return None
+    dl, dd = delta
+    if dl == 0 and dd == 0:
+        cur = bucket.get(item_key)
+        if isinstance(cur, dict):
+            return (
+                max(0, int(cur.get("likes", 0) or 0)),
+                max(0, int(cur.get("dislikes", 0) or 0)),
+            )
+        return (0, 0)
+    cur = bucket.get(item_key)
+    if not isinstance(cur, dict):
+        cur = {"likes": 0, "dislikes": 0}
+    else:
+        cur = {
+            "likes": max(0, int(cur.get("likes", 0) or 0)),
+            "dislikes": max(0, int(cur.get("dislikes", 0) or 0)),
+        }
+    likes = max(0, cur["likes"] + dl)
+    dislikes = max(0, cur["dislikes"] + dd)
+    bucket[item_key] = {"likes": likes, "dislikes": dislikes}
+    return (likes, dislikes)
 
 
 def _entry_to_stored(row):
@@ -329,9 +406,17 @@ def get_restaurants():
     rows = load_restaurants()
     config = load_config()
     has_edit_mode = bool(config.get("password_hash"))
+    votes = load_votes()
+    rest_votes = votes.get("restaurants") or {}
+    if not isinstance(rest_votes, dict):
+        rest_votes = {}
     out = []
     for r in rows:
         d = {k: v for k, v in r.items() if not str(k).startswith("_")}
+        rid = str(d.get("id", ""))
+        v = rest_votes.get(rid) if isinstance(rest_votes.get(rid), dict) else {}
+        d["likes"] = max(0, int(v.get("likes", 0) or 0))
+        d["dislikes"] = max(0, int(v.get("dislikes", 0) or 0))
         out.append(d)
     return jsonify({"restaurants": out, "has_edit_mode": has_edit_mode})
 
@@ -502,6 +587,59 @@ def delete_entry(key):
         save_user_data(ud)
         flush_entries_to_disk()
     return jsonify({"ok": True})
+
+
+@app.route("/api/entries/<key>/vote", methods=["POST"])
+def vote_entry(key):
+    """לייק/דיסלייק לרשומת בעל מקצוע (לפי מפתח טלפון). prev/next: none | like | dislike."""
+    key = key.replace("%2B", "+")
+    data = request.get_json() or {}
+    prev = (data.get("prev") or "none").strip() or "none"
+    next_ = (data.get("next") or "none").strip() or "none"
+    allowed = frozenset(("none", "like", "dislike"))
+    if prev not in allowed or next_ not in allowed:
+        return jsonify({"ok": False, "error": "ערכי prev/next לא תקינים"}), 400
+    valid_keys = {str(e.get("_key", "")) for e in merge_entries()}
+    if key not in valid_keys:
+        return jsonify({"ok": False, "error": "לא נמצא"}), 404
+    votes = load_votes()
+    bucket = votes.setdefault("entries", {})
+    if not isinstance(bucket, dict):
+        bucket = {}
+        votes["entries"] = bucket
+    out = _mutate_vote_bucket(bucket, key, prev, next_)
+    if out is None:
+        return jsonify({"ok": False, "error": "בקשה לא תקינה"}), 400
+    likes, dislikes = out
+    save_votes(votes)
+    return jsonify({"ok": True, "likes": likes, "dislikes": dislikes})
+
+
+@app.route("/api/restaurants/<rid>/vote", methods=["POST"])
+def vote_restaurant(rid):
+    """לייק/דיסלייק למסעדה."""
+    rid = rid.replace("%2B", "+")
+    data = request.get_json() or {}
+    prev = (data.get("prev") or "none").strip() or "none"
+    next_ = (data.get("next") or "none").strip() or "none"
+    allowed = frozenset(("none", "like", "dislike"))
+    if prev not in allowed or next_ not in allowed:
+        return jsonify({"ok": False, "error": "ערכי prev/next לא תקינים"}), 400
+    rows = load_restaurants()
+    valid_ids = {str(r.get("id", "")) for r in rows if isinstance(r, dict)}
+    if rid not in valid_ids:
+        return jsonify({"ok": False, "error": "לא נמצא"}), 404
+    votes = load_votes()
+    bucket = votes.setdefault("restaurants", {})
+    if not isinstance(bucket, dict):
+        bucket = {}
+        votes["restaurants"] = bucket
+    out = _mutate_vote_bucket(bucket, rid, prev, next_)
+    if out is None:
+        return jsonify({"ok": False, "error": "בקשה לא תקינה"}), 400
+    likes, dislikes = out
+    save_votes(votes)
+    return jsonify({"ok": True, "likes": likes, "dislikes": dislikes})
 
 
 @app.route("/")

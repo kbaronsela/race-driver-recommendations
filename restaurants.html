@@ -191,6 +191,7 @@
             <button type="button" class="btn" id="btnLogout">התנתק</button>
           </div>
         </div>
+        <p class="site-sidebar-credit">© 2026 קרן ברון-סלע</p>
       </div>
       </div>
     </aside>
@@ -928,8 +929,8 @@
         const data = await r.json();
         restaurants = data.restaurants || [];
         hasEditMode = data.has_edit_mode === true;
-        const foot = document.querySelector('.site-sidebar-footer');
-        if (foot) foot.style.display = hasEditMode ? '' : 'none';
+        const authFoot = document.querySelector('.sidebar-auth');
+        if (authFoot) authFoot.style.display = hasEditMode ? '' : 'none';
         if (!hasEditMode) {
           document.getElementById('loginArea').classList.add('hidden');
           document.getElementById('loggedArea').classList.add('hidden');
@@ -951,8 +952,8 @@
           if (r2.ok) {
             restaurants = await r2.json();
             hasEditMode = false;
-            const foot2 = document.querySelector('.site-sidebar-footer');
-            if (foot2) foot2.style.display = 'none';
+            const auth2 = document.querySelector('.sidebar-auth');
+            if (auth2) auth2.style.display = 'none';
             document.getElementById('loginArea').classList.add('hidden');
             document.getElementById('loggedArea').classList.add('hidden');
             restaurants.forEach(function(x) { x._serverKey = x.id; });

@@ -3,7 +3,84 @@
     "0527472780": {
       "likes": 0,
       "dislikes": 0
+    },
+    "0503265800": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0522650180": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0533240309": {
+      "likes": 0,
+      "dislikes": 0
+    },
+    "0522843850": {
+      "likes": 0,
+      "dislikes": 0
+    },
+    "0507632042": {
+      "likes": 0,
+      "dislikes": 0
+    },
+    "0523897821": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0505303429": {
+      "likes": 0,
+      "dislikes": 0
+    },
+    "0507991843": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0525875858": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0544283300": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "0502577725": {
+      "likes": 1,
+      "dislikes": 0
     }
   },
-  "restaurants": {}
+  "restaurants": {
+    "r-89eadf386e30": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-3af76072f4a8": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-8cba0d4f21f7": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-14da03160637": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-e8fa9315736f": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-7a311487555c": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-22e639c08ca5": {
+      "likes": 1,
+      "dislikes": 0
+    },
+    "r-8a078f0dd154": {
+      "likes": 1,
+      "dislikes": 0
+    }
+  }
 }

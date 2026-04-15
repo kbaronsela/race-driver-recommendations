@@ -63,6 +63,22 @@ def norm_phone(p):
     return "".join(c for c in str(p) if c.isdigit())[-10:] or str(p)
 
 
+def entry_norm_phone_keys(e):
+    """Normalized phone keys for an entry (primary + secondary lines)."""
+    keys = set()
+    for val in (e.get("phone"), e.get("phone_display")):
+        k = norm_phone(val)
+        if k:
+            keys.add(k)
+    ph = e.get("phones")
+    if isinstance(ph, list):
+        for x in ph:
+            k = norm_phone(x)
+            if k:
+                keys.add(k)
+    return keys
+
+
 def merge_entries():
     base = []
     if ENTRIES_PATH.exists():
@@ -517,6 +533,13 @@ def add_entry():
     ph = data.get("phones")
     if isinstance(ph, list) and len(ph) > 1:
         row["phones"] = [str(p).strip() for p in ph if str(p).strip()]
+    new_keys = entry_norm_phone_keys(row)
+    existing_list = merge_entries()
+    for existing in existing_list:
+        if new_keys & entry_norm_phone_keys(existing):
+            return jsonify(
+                {"ok": False, "error": "מספר הטלפון כבר קיים ברשימת אנשי הקשר."}
+            ), 400
     added.append(row)
     ud["added"] = added
     save_user_data(ud)

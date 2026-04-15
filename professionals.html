@@ -395,9 +395,15 @@
     <div class="modal-inner">
       <h3>הוספת המלצה</h3>
       <div class="form-row">
-        <label for="addVcfFile">ייבוא מכרטיס איש קשר (VCF)</label>
-        <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" style="font:inherit;max-width:100%;">
-        <p class="modal-hint" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">מייצאים כרטיס מאנדרואיד, אייפון או אנשי קשר במחשב — השם, הטלפונים והמידע הנוסף ימולאו אוטומטית. לאחר מכן יש לבחור את תחום העיסוק. אפשר תמיד למלא או לערוך הכל ידנית.</p>
+        <span id="addContactPickerLabel">מאנשי הקשר במכשיר</span>
+        <button type="button" class="btn btn-primary" id="btnAddPickContact" style="margin-top:0.35rem;">בחר איש קשר מהטלפון…</button>
+        <p id="addContactPickerHint" class="modal-hint" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">נפתח בוחר האנשי קשר של המערכת (זמין בכרום ובאנדרואיד; דורש HTTPS או localhost). לאחר הבחירה יש לבחור תחום עיסוק. אפשר תמיד למלא ידנית.</p>
+        <p id="addContactPickerNoApi" class="modal-hint hidden" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">בדפדפן או במכשיר זה אין בוחר אנשי קשר מובנה — השתמשו בייבוא קובץ למטה או במילוי ידני.</p>
+        <details class="add-vcf-fallback" style="margin-top:0.65rem;">
+          <summary style="cursor:pointer;font-size:0.95rem;color:var(--muted);">או ייבוא מקובץ כרטיס (VCF)</summary>
+          <label for="addVcfFile" style="display:block;margin-top:0.5rem;">קובץ VCF</label>
+          <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" style="font:inherit;max-width:100%;margin-top:0.25rem;">
+        </details>
       </div>
       <div class="form-row">
         <label for="addName">שם <span class="form-required" aria-hidden="true">*</span></label>
@@ -869,6 +875,22 @@
       return d.length >= 10 ? d.slice(-10) : d;
     }
 
+    /** האם אחד ממספרי השורות כבר מופיע ברשומה קיימת (כל מספרי כל איש קשר) */
+    function isPhoneAlreadyInEntries(phoneLines) {
+      const lines = phoneLines || [];
+      for (let i = 0; i < lines.length; i++) {
+        const k = phoneDedupeKey(digitsOnlyPhone(lines[i]));
+        if (!k) continue;
+        for (let j = 0; j < entries.length; j++) {
+          const plist = getPhonesList(entries[j]);
+          for (let p = 0; p < plist.length; p++) {
+            if (phoneDedupeKey(plist[p].digits) === k) return true;
+          }
+        }
+      }
+      return false;
+    }
+
     /** רשימת { display, digits } לכל מספרי הרשומה (phone + מערך phones) */
     function getPhonesList(entry) {
       const raw = [];
@@ -1009,6 +1031,21 @@
       return s.replace(/\s+/g, ' ');
     }
 
+    function dedupePhoneDisplayLines(rawTels) {
+      const seen = new Set();
+      const out = [];
+      (rawTels || []).forEach(function(t) {
+        const disp = telDisplayFromVcfValue(t);
+        if (!disp) return;
+        const d = digitsOnlyPhone(disp);
+        const k = phoneDedupeKey(d);
+        if (!k || seen.has(k)) return;
+        seen.add(k);
+        out.push(disp);
+      });
+      return out;
+    }
+
     function formatNField(nVal) {
       const p = String(nVal || '').split(';');
       const family = (p[0] || '').trim();
@@ -1092,15 +1129,7 @@
         });
 
         const name = fn || formatNField(nRaw) || '';
-        const phoneLines = [];
-        const seen = new Set();
-        tels.forEach(function(t) {
-          const d = digitsOnlyPhone(t);
-          const k = phoneDedupeKey(d);
-          if (!k || seen.has(k)) return;
-          seen.add(k);
-          phoneLines.push(t);
-        });
+        const phoneLines = dedupePhoneDisplayLines(tels);
 
         const score = phoneLines.length * 10 + (name ? 5 : 0);
         if (!best || score > best._score) {
@@ -1136,6 +1165,62 @@
         phonesEl.value = parsed.phoneLines.join('\n');
       }
       if (parsed.extraInfo) extraEl.value = parsed.extraInfo;
+    }
+
+    function formatContactAddressEntry(a) {
+      if (a == null) return '';
+      if (typeof a === 'string') return String(a).trim();
+      const lines = [];
+      if (Array.isArray(a.addressLine)) {
+        a.addressLine.forEach(function(x) {
+          const t = String(x || '').trim();
+          if (t) lines.push(t);
+        });
+      }
+      if (a.recipient && String(a.recipient).trim()) lines.push(String(a.recipient).trim());
+      if (a.organization && String(a.organization).trim()) lines.push(String(a.organization).trim());
+      const cityBits = [a.dependentLocality, a.city, a.region, a.postalCode, a.country].map(function(x) {
+        return x ? String(x).trim() : '';
+      }).filter(Boolean);
+      if (cityBits.length) lines.push(cityBits.join(', '));
+      return lines.join(' · ');
+    }
+
+    function parsedContactFromPickerContacts(contacts) {
+      if (!contacts || !contacts.length) return null;
+      const c = contacts[0];
+      const nameParts = Array.isArray(c.name) ? c.name : [];
+      const name = nameParts.map(function(x) { return String(x || '').trim(); }).filter(Boolean).join(' ');
+      const phoneLines = dedupePhoneDisplayLines(c.tel || []);
+      const emails = Array.isArray(c.email) ? c.email.map(function(e) { return String(e || '').trim(); }).filter(Boolean) : [];
+      const extraParts = [];
+      if (emails.length) extraParts.push('אימייל: ' + emails.join(', '));
+      if (Array.isArray(c.address) && c.address.length) {
+        const adrStrs = c.address.map(formatContactAddressEntry).filter(Boolean);
+        if (adrStrs.length) extraParts.push('כתובת: ' + adrStrs.join(' · '));
+      }
+      const extraInfo = extraParts.join(' · ');
+      if (!name && (!phoneLines || !phoneLines.length) && !extraInfo) return null;
+      return { name: name, phoneLines: phoneLines, extraInfo: extraInfo };
+    }
+
+    function updateAddContactPickerUi() {
+      const supported = typeof navigator !== 'undefined' && navigator.contacts && typeof navigator.contacts.select === 'function';
+      const btn = document.getElementById('btnAddPickContact');
+      const hintOk = document.getElementById('addContactPickerHint');
+      const hintNo = document.getElementById('addContactPickerNoApi');
+      if (!btn) return;
+      if (supported) {
+        btn.disabled = false;
+        btn.removeAttribute('title');
+        if (hintOk) hintOk.classList.remove('hidden');
+        if (hintNo) hintNo.classList.add('hidden');
+      } else {
+        btn.disabled = true;
+        btn.setAttribute('title', 'לא זמין בדפדפן זה — השתמשו בייבוא VCF או במילוי ידני');
+        if (hintOk) hintOk.classList.add('hidden');
+        if (hintNo) hintNo.classList.remove('hidden');
+      }
     }
 
     function toIntlTel(digits) {
@@ -1845,6 +1930,7 @@
       document.getElementById('addPhonesTextarea').value = '';
       var vcfIn = document.getElementById('addVcfFile');
       if (vcfIn) vcfIn.value = '';
+      updateAddContactPickerUi();
       if (addFieldCombobox) {
         addFieldCombobox.setCommittedExternal(null, true);
         document.getElementById('addFieldCustom').classList.add('hidden');
@@ -1859,6 +1945,30 @@
     document.getElementById('btnSave').addEventListener('click', saveAllChanges);
 
     document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
+
+    document.getElementById('btnAddPickContact').addEventListener('click', async function() {
+      if (!navigator.contacts || typeof navigator.contacts.select !== 'function') {
+        alert('בדפדפן או במכשיר זה אין בוחר אנשי קשר מובנה. אפשר להשתמש בייבוא קובץ VCF למטה או למלא את הפרטים ידנית.');
+        return;
+      }
+      try {
+        const contacts = await navigator.contacts.select(['name', 'email', 'tel', 'address'], { multiple: false });
+        const parsed = parsedContactFromPickerContacts(contacts);
+        if (!parsed) {
+          alert('לא נבחר איש קשר או שאין בו פרטים לייבוא.');
+          return;
+        }
+        applyVcfToAddForm(parsed);
+        if (!parsed.phoneLines || !parsed.phoneLines.length) {
+          alert('לא נמצאו מספרי טלפון באיש הקשר — הזינו אותם ידנית בשדה הטלפון.');
+        }
+        var fieldInput = document.getElementById('addFieldInput');
+        if (fieldInput) setTimeout(function() { fieldInput.focus(); }, 50);
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+        alert('שגיאה בבחירת איש קשר: ' + (err && err.message ? err.message : err));
+      }
+    });
 
     document.getElementById('addVcfFile').addEventListener('change', function() {
       const f = this.files && this.files[0];
@@ -1919,8 +2029,7 @@
         const primaryDisp = phoneLines[0];
         const primaryDig = digitsOnlyPhone(primaryDisp);
         if (!primaryDig) { alert('לא ניתן לזהות ספרות במספר הראשון'); return; }
-        const newKey = phoneDedupeKey(primaryDig) || primaryDig;
-        if (newKey && entries.some(e => (e._key || normKey(e)) === newKey)) {
+        if (isPhoneAlreadyInEntries(phoneLines)) {
           alert('מספר הטלפון כבר קיים ברשימת אנשי הקשר.');
           return;
         }
@@ -2189,6 +2298,7 @@
 
     loadFields().then(function() {
       initFieldComboboxes();
+      updateAddContactPickerUi();
       return load();
     }).then(function() {
       bindLoginHandlers();

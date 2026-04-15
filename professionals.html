@@ -237,7 +237,89 @@
     .form-row label { display: block; margin-bottom: 0.35rem; color: var(--muted); font-size: 0.9rem; }
     .form-row input, .form-row select, .form-row .field-combobox-input { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font: inherit; box-sizing: border-box; }
     .form-row input[type="checkbox"] { width: auto; }
-    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; }
+    .modal-actions { margin-top: 1.25rem; display: flex; gap: 0.5rem; justify-content: flex-end; flex-direction: row; }
+    /* חלון הוספה — קומפקטי, גלילה כשצריך (גם במחשב) */
+    #modalAdd.modal {
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    #modalAdd .modal-add-inner {
+      padding: 1rem 1.1rem;
+      margin: 0.85rem auto;
+      max-height: none;
+      max-width: 400px;
+    }
+    @media (min-width: 481px) {
+      #modalAdd .modal-add-inner {
+        max-height: min(92vh, 720px);
+        overflow-y: auto;
+      }
+    }
+    #modalAdd .modal-add-inner h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+    }
+    #modalAdd .modal-add-inner .form-row {
+      margin-bottom: 0.55rem;
+    }
+    #modalAdd .modal-add-inner .form-row label {
+      margin-bottom: 0.2rem;
+      font-size: 0.85rem;
+    }
+    #modalAdd .modal-add-inner .form-row input,
+    #modalAdd .modal-add-inner .form-row textarea,
+    #modalAdd .modal-add-inner .form-row .field-combobox-input {
+      padding: 0.4rem 0.5rem;
+    }
+    #modalAdd .modal-add-inner .form-row--contact-pick {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.6rem;
+    }
+    #modalAdd .modal-add-inner .form-row--contact-pick .add-contact-pick-label {
+      flex: 1 1 100%;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    #modalAdd .modal-add-inner .form-row--contact-pick #btnAddPickContact {
+      margin-top: 0;
+    }
+    #modalAdd .modal-add-inner .add-vcf-fallback {
+      margin-top: 0.35rem;
+      flex: 1 1 100%;
+    }
+    #modalAdd .modal-add-inner .modal-actions {
+      margin-top: 0.65rem;
+    }
+    #modalAdd .modal-add-inner .modal-actions .btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    #modalAdd .modal-add-inner .add-vcf-fallback summary {
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--muted);
+      list-style: none;
+    }
+    #modalAdd .modal-add-inner .add-vcf-fallback summary::-webkit-details-marker { display: none; }
+    #modalAdd .modal-add-inner .add-vcf-file-label {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    #modalAdd .modal-add-inner .add-vcf-file-input { font: inherit; max-width: 100%; margin-top: 0.2rem; }
+    #modalAdd .modal-add-inner .add-phones-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      font: inherit;
+      min-height: 4.25rem;
+      resize: vertical;
+    }
     .login-wrap { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
     .login-wrap input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); font: inherit; }
     .hidden { display: none !important; }
@@ -263,6 +345,8 @@
       .modal-inner { max-height: 90vh; overflow-y: auto; margin: auto; }
       .modal-actions { flex-wrap: wrap; }
       .modal-actions .btn { min-width: 0; flex: 1 1 auto; }
+      #modalAdd.modal { align-items: flex-end; }
+      #modalAdd .modal-add-inner { margin-bottom: 0; max-height: min(88vh, 720px); }
       /* סינון תחום + מהמושב באותה שורה, בלי ריווח נוסף */
       .filter-row {
         flex-wrap: nowrap;
@@ -303,6 +387,9 @@
       .modal-inner { padding: 1.25rem; border-radius: 12px 12px 0 0; }
       .modal-actions { flex-direction: column; }
       .modal-actions .btn { width: 100%; }
+      #modalAdd .modal-add-inner { padding: 1rem; }
+      #modalAdd .modal-add-inner .modal-actions { flex-direction: row; }
+      #modalAdd .modal-add-inner .modal-actions .btn { width: auto; flex: 1 1 0; }
     }
 
     /* Prevent horizontal overflow on small screens */
@@ -392,17 +479,15 @@
   </div>
 
   <div id="modalAdd" class="modal hidden">
-    <div class="modal-inner">
+    <div class="modal-inner modal-add-inner">
       <h3>הוספת המלצה</h3>
-      <div class="form-row">
-        <span id="addContactPickerLabel">מאנשי הקשר במכשיר</span>
-        <button type="button" class="btn btn-primary" id="btnAddPickContact" style="margin-top:0.35rem;">בחר איש קשר מהטלפון…</button>
-        <p id="addContactPickerHint" class="modal-hint" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">נפתח בוחר האנשי קשר של המערכת (זמין בכרום ובאנדרואיד; דורש HTTPS או localhost). לאחר הבחירה יש לבחור תחום עיסוק. אפשר תמיד למלא ידנית.</p>
-        <p id="addContactPickerNoApi" class="modal-hint hidden" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">בדפדפן או במכשיר זה אין בוחר אנשי קשר מובנה — השתמשו בייבוא קובץ למטה או במילוי ידני.</p>
-        <details class="add-vcf-fallback" style="margin-top:0.65rem;">
-          <summary style="cursor:pointer;font-size:0.95rem;color:var(--muted);">או ייבוא מקובץ כרטיס (VCF)</summary>
-          <label for="addVcfFile" style="display:block;margin-top:0.5rem;">קובץ VCF</label>
-          <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" style="font:inherit;max-width:100%;margin-top:0.25rem;">
+      <div class="form-row form-row--contact-pick">
+        <span class="add-contact-pick-label" id="addContactPickerLabel">מאנשי הקשר במכשיר</span>
+        <button type="button" class="btn btn-primary" id="btnAddPickContact">בחר איש קשר…</button>
+        <details class="add-vcf-fallback">
+          <summary>או VCF</summary>
+          <label for="addVcfFile" class="add-vcf-file-label">קובץ</label>
+          <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" class="add-vcf-file-input">
         </details>
       </div>
       <div class="form-row">
@@ -410,9 +495,8 @@
         <input type="text" id="addName" name="addName" required autocomplete="name" aria-required="true">
       </div>
       <div class="form-row">
-        <label for="addPhonesTextarea">טלפון — שורה לכל מספר <span class="form-required" aria-hidden="true">*</span></label>
-        <p class="modal-hint" style="margin:0 0 0.35rem;font-size:0.9rem;opacity:0.85;">השורה הראשית היא המספר הראשי לזיהוי כפילויות.</p>
-        <textarea id="addPhonesTextarea" name="addPhones" rows="4" required aria-required="true" style="width:100%;box-sizing:border-box;font:inherit;" placeholder="050-1234567&#10;03-9876543"></textarea>
+        <label for="addPhonesTextarea" title="השורה הראשונה משמשת לזיהוי כפילויות">טלפון — שורה לכל מספר <span class="form-required" aria-hidden="true">*</span></label>
+        <textarea id="addPhonesTextarea" name="addPhones" rows="3" required aria-required="true" class="add-phones-textarea" placeholder="050-1234567&#10;03-9876543"></textarea>
       </div>
       <div class="form-row">
         <label for="addFieldInput">תחום עיסוק <span class="form-required" aria-hidden="true">*</span></label>
@@ -1207,19 +1291,13 @@
     function updateAddContactPickerUi() {
       const supported = typeof navigator !== 'undefined' && navigator.contacts && typeof navigator.contacts.select === 'function';
       const btn = document.getElementById('btnAddPickContact');
-      const hintOk = document.getElementById('addContactPickerHint');
-      const hintNo = document.getElementById('addContactPickerNoApi');
       if (!btn) return;
       if (supported) {
         btn.disabled = false;
         btn.removeAttribute('title');
-        if (hintOk) hintOk.classList.remove('hidden');
-        if (hintNo) hintNo.classList.add('hidden');
       } else {
         btn.disabled = true;
-        btn.setAttribute('title', 'לא זמין בדפדפן זה — השתמשו בייבוא VCF או במילוי ידני');
-        if (hintOk) hintOk.classList.add('hidden');
-        if (hintNo) hintNo.classList.remove('hidden');
+        btn.setAttribute('title', 'לא זמין בדפדפן זה — פתחו «או VCF» למטה או מלאו ידנית');
       }
     }
 

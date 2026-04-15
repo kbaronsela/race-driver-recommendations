@@ -1130,6 +1130,46 @@
       return out;
     }
 
+    /** ספרות בלבד של מספר ישראלי לאחר נירמול — לתצוגה מקומית עם מקפים אם מתאים */
+    function formatIlNationalDigits(digitsOnly) {
+      const d = digitsOnlyPhone(digitsOnly);
+      if (!d || d[0] !== '0') return '';
+      if (/^05[0-9]\d{7}$/.test(d)) {
+        return d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6);
+      }
+      if (/^0[2-9]\d{7}$/.test(d)) {
+        return d.slice(0, 2) + '-' + d.slice(2, 5) + '-' + d.slice(5);
+      }
+      if (/^0[2-9]\d{8}$/.test(d)) {
+        return d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6);
+      }
+      return d;
+    }
+
+    /**
+     * נירמול מספר מבוחר אנשי קשר (אנדרואיד/כרום): 972/+972 → 0…, מובייל בלי 0 → 05…, תצוגה אחידה.
+     */
+    function normalizePhoneDisplayFromContactPicker(raw) {
+      const s0 = telDisplayFromVcfValue(String(raw || ''));
+      if (!s0) return '';
+      let d = digitsOnlyPhone(s0);
+      if (!d) return s0.replace(/\s+/g, ' ').trim();
+
+      if (d.startsWith('972')) {
+        const nsn = d.slice(3);
+        if (nsn.length >= 8 && nsn.length <= 9 && nsn[0] !== '0') {
+          d = '0' + nsn;
+        }
+      } else if (d.length === 9 && d[0] === '5') {
+        d = '0' + d;
+      }
+
+      const formatted = formatIlNationalDigits(d);
+      if (formatted) return formatted;
+      if (d[0] === '0') return d;
+      return s0.replace(/\s+/g, ' ').trim();
+    }
+
     function formatNField(nVal) {
       const p = String(nVal || '').split(';');
       const family = (p[0] || '').trim();
@@ -1275,7 +1315,8 @@
       const c = contacts[0];
       const nameParts = Array.isArray(c.name) ? c.name : [];
       const name = nameParts.map(function(x) { return String(x || '').trim(); }).filter(Boolean).join(' ');
-      const phoneLines = dedupePhoneDisplayLines(c.tel || []);
+      const rawTels = (c.tel || []).map(function(t) { return normalizePhoneDisplayFromContactPicker(t); }).filter(Boolean);
+      const phoneLines = dedupePhoneDisplayLines(rawTels);
       const emails = Array.isArray(c.email) ? c.email.map(function(e) { return String(e || '').trim(); }).filter(Boolean) : [];
       const extraParts = [];
       if (emails.length) extraParts.push('אימייל: ' + emails.join(', '));

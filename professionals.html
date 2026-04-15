@@ -246,10 +246,35 @@
       -webkit-overflow-scrolling: touch;
     }
     #modalAdd .modal-add-inner {
+      position: relative;
       padding: 1rem 1.1rem;
       margin: 0.85rem auto;
       max-height: none;
       max-width: 400px;
+    }
+    #modalAdd .modal-add-close {
+      position: absolute;
+      top: 0.4rem;
+      left: 0.4rem;
+      z-index: 2;
+      width: 1.85rem;
+      height: 1.85rem;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    #modalAdd .modal-add-close:hover {
+      background: #f1f5f9;
+      color: var(--text);
     }
     @media (min-width: 481px) {
       #modalAdd .modal-add-inner {
@@ -279,11 +304,8 @@
       align-items: center;
       gap: 0.35rem 0.6rem;
     }
-    #modalAdd .modal-add-inner .form-row--contact-pick .add-contact-pick-label {
-      flex: 1 1 100%;
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.85rem;
+    #modalAdd .modal-add-inner .form-row--contact-pick .add-contact-picker-wrap {
+      flex: 0 0 auto;
     }
     #modalAdd .modal-add-inner .form-row--contact-pick #btnAddPickContact {
       margin-top: 0;
@@ -480,12 +502,14 @@
 
   <div id="modalAdd" class="modal hidden">
     <div class="modal-inner modal-add-inner">
+      <button type="button" class="modal-add-close" id="btnAddClose" aria-label="סגור">×</button>
       <h3>הוספת המלצה</h3>
       <div class="form-row form-row--contact-pick">
-        <span class="add-contact-pick-label" id="addContactPickerLabel">מאנשי הקשר במכשיר</span>
-        <button type="button" class="btn btn-primary" id="btnAddPickContact">בחר איש קשר…</button>
+        <span id="addContactPickerBtnWrap" class="add-contact-picker-wrap hidden">
+          <button type="button" class="btn btn-primary" id="btnAddPickContact">בחר איש קשר…</button>
+        </span>
         <details class="add-vcf-fallback">
-          <summary>או VCF</summary>
+          <summary>ייבוא VCF</summary>
           <label for="addVcfFile" class="add-vcf-file-label">קובץ</label>
           <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" class="add-vcf-file-input">
         </details>
@@ -521,7 +545,6 @@
         <input type="text" id="addRecommender" name="addRecommender" autocomplete="name">
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn" id="btnAddCancel">ביטול</button>
         <button type="button" class="btn btn-primary" id="btnAddSubmit">הוסף</button>
       </div>
     </div>
@@ -1130,30 +1153,15 @@
       return out;
     }
 
-    /** ספרות בלבד של מספר ישראלי לאחר נירמול — לתצוגה מקומית עם מקפים אם מתאים */
-    function formatIlNationalDigits(digitsOnly) {
-      const d = digitsOnlyPhone(digitsOnly);
-      if (!d || d[0] !== '0') return '';
-      if (/^05[0-9]\d{7}$/.test(d)) {
-        return d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6);
-      }
-      if (/^0[2-9]\d{7}$/.test(d)) {
-        return d.slice(0, 2) + '-' + d.slice(2, 5) + '-' + d.slice(5);
-      }
-      if (/^0[2-9]\d{8}$/.test(d)) {
-        return d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6);
-      }
-      return d;
-    }
-
     /**
-     * נירמול מספר מבוחר אנשי קשר (אנדרואיד/כרום): 972/+972 → 0…, מובייל בלי 0 → 05…, תצוגה אחידה.
+     * נירמול מספר מבוחר אנשי קשר (אנדרואיד/כרום): ספרות בלבד (בלי מקפים/רווחים),
+     * 972/+972 → 0…, מובייל בלי 0 → 05…
      */
     function normalizePhoneDisplayFromContactPicker(raw) {
       const s0 = telDisplayFromVcfValue(String(raw || ''));
       if (!s0) return '';
       let d = digitsOnlyPhone(s0);
-      if (!d) return s0.replace(/\s+/g, ' ').trim();
+      if (!d) return '';
 
       if (d.startsWith('972')) {
         const nsn = d.slice(3);
@@ -1164,10 +1172,7 @@
         d = '0' + d;
       }
 
-      const formatted = formatIlNationalDigits(d);
-      if (formatted) return formatted;
-      if (d[0] === '0') return d;
-      return s0.replace(/\s+/g, ' ').trim();
+      return d;
     }
 
     function formatNField(nVal) {
@@ -1331,14 +1336,15 @@
 
     function updateAddContactPickerUi() {
       const supported = typeof navigator !== 'undefined' && navigator.contacts && typeof navigator.contacts.select === 'function';
+      const wrap = document.getElementById('addContactPickerBtnWrap');
       const btn = document.getElementById('btnAddPickContact');
-      if (!btn) return;
+      if (!wrap || !btn) return;
       if (supported) {
+        wrap.classList.remove('hidden');
         btn.disabled = false;
         btn.removeAttribute('title');
       } else {
-        btn.disabled = true;
-        btn.setAttribute('title', 'לא זמין בדפדפן זה — פתחו «או VCF» למטה או מלאו ידנית');
+        wrap.classList.add('hidden');
       }
     }
 
@@ -2063,7 +2069,10 @@
     });
     document.getElementById('btnSave').addEventListener('click', saveAllChanges);
 
-    document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
+    function closeModalAdd() {
+      document.getElementById('modalAdd').classList.add('hidden');
+    }
+    document.getElementById('btnAddClose').addEventListener('click', closeModalAdd);
 
     document.getElementById('btnAddPickContact').addEventListener('click', async function() {
       if (!navigator.contacts || typeof navigator.contacts.select !== 'function') {
@@ -2188,9 +2197,9 @@
     });
     document.getElementById('modalAdd').addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
-        document.getElementById('btnAddCancel').click();
+        closeModalAdd();
       } else if (e.key === 'Enter') {
-        if (e.target.id === 'btnAddCancel') return;
+        if (e.target.id === 'btnAddClose') return;
         if (e.target.tagName === 'TEXTAREA' && !e.ctrlKey) return;
         if (e.target.id === 'addFieldInput' && addFieldCombobox && addFieldCombobox.isListOpen()) return;
         e.preventDefault();
@@ -2198,7 +2207,7 @@
       }
     });
     document.getElementById('modalAdd').addEventListener('click', function(e) {
-      if (e.target === this) document.getElementById('btnAddCancel').click();
+      if (e.target === this) closeModalAdd();
     });
 
     function openEditFieldModal(key, currentField) {

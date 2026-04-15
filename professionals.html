@@ -395,6 +395,11 @@
     <div class="modal-inner">
       <h3>הוספת המלצה</h3>
       <div class="form-row">
+        <label for="addVcfFile">ייבוא מכרטיס איש קשר (VCF)</label>
+        <input type="file" id="addVcfFile" accept=".vcf,text/vcard,text/x-vcard,application/vcard,.vcard" style="font:inherit;max-width:100%;">
+        <p class="modal-hint" style="margin:0.35rem 0 0;font-size:0.9rem;opacity:0.85;">מייצאים כרטיס מאנדרואיד, אייפון או אנשי קשר במחשב — השם, הטלפונים והמידע הנוסף ימולאו אוטומטית. לאחר מכן יש לבחור את תחום העיסוק. אפשר תמיד למלא או לערוך הכל ידנית.</p>
+      </div>
+      <div class="form-row">
         <label for="addName">שם <span class="form-required" aria-hidden="true">*</span></label>
         <input type="text" id="addName" name="addName" required autocomplete="name" aria-required="true">
       </div>
@@ -908,6 +913,229 @@
         out.push(line);
       });
       return out;
+    }
+
+    /** שורות RFC 5545 — קיפול רווח/טאב לשורה הקודמת */
+    function unfoldVcfLines(raw) {
+      const s = String(raw || '').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+      const parts = s.split('\n');
+      const out = [];
+      for (let i = 0; i < parts.length; i++) {
+        let line = parts[i];
+        if (line === '') continue;
+        while (i + 1 < parts.length && /^[ \t]/.test(parts[i + 1])) {
+          line += parts[i + 1].slice(1);
+          i++;
+        }
+        out.push(line);
+      }
+      return out;
+    }
+
+    function splitVcfIntoCards(unfolded) {
+      const cards = [];
+      let cur = null;
+      unfolded.forEach(function(line) {
+        if (/^BEGIN:VCARD/i.test(line)) {
+          cur = [];
+          return;
+        }
+        if (/^END:VCARD/i.test(line)) {
+          if (cur) cards.push(cur);
+          cur = null;
+          return;
+        }
+        if (cur) cur.push(line);
+      });
+      return cards;
+    }
+
+    function vcfFirstSegmentName(namePart) {
+      const seg = (namePart.split(';')[0] || '').replace(/^ITEM\d+\./i, '');
+      return seg.toUpperCase();
+    }
+
+    function decodeQuotedPrintableVcf(value) {
+      let s = String(value || '').replace(/=\r?\n/g, '').replace(/\n/g, '');
+      const bytes = [];
+      for (let i = 0; i < s.length; i++) {
+        if (s[i] === '=' && i + 2 < s.length && /[0-9A-F]{2}/i.test(s.slice(i + 1, i + 3))) {
+          bytes.push(parseInt(s.slice(i + 1, i + 3), 16));
+          i += 2;
+        } else {
+          bytes.push(s.charCodeAt(i) & 0xff);
+        }
+      }
+      try {
+        return new TextDecoder('utf-8').decode(new Uint8Array(bytes));
+      } catch (e) {
+        return s;
+      }
+    }
+
+    function unescapeVcfValue(s) {
+      const str = String(s || '');
+      let out = '';
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] === '\\' && i + 1 < str.length) {
+          const n = str[i + 1];
+          if (n === 'n' || n === 'N') { out += '\n'; i++; continue; }
+          if (n === ',') { out += ','; i++; continue; }
+          if (n === ';') { out += ';'; i++; continue; }
+          if (n === '\\') { out += '\\'; i++; continue; }
+        }
+        out += str[i];
+      }
+      return out;
+    }
+
+    function parseVcfPropertyLine(line) {
+      const idx = line.indexOf(':');
+      if (idx === -1) return null;
+      const namePart = line.slice(0, idx);
+      let value = line.slice(idx + 1);
+      if (/ENCODING=QUOTED-PRINTABLE/i.test(namePart)) {
+        value = decodeQuotedPrintableVcf(value);
+      }
+      value = unescapeVcfValue(value);
+      return { namePart: namePart, base: vcfFirstSegmentName(namePart), value: value };
+    }
+
+    function telDisplayFromVcfValue(val) {
+      let s = String(val || '').trim();
+      if (!s) return '';
+      const m = /^tel:(.*)$/i.exec(s);
+      if (m) s = m[1].trim();
+      return s.replace(/\s+/g, ' ');
+    }
+
+    function formatNField(nVal) {
+      const p = String(nVal || '').split(';');
+      const family = (p[0] || '').trim();
+      const given = (p[1] || '').trim();
+      const add = (p[2] || '').trim();
+      const prefix = (p[3] || '').trim();
+      const suffix = (p[4] || '').trim();
+      const parts = [];
+      if (prefix) parts.push(prefix);
+      if (given) parts.push(given);
+      if (add) parts.push(add);
+      if (family) parts.push(family);
+      if (suffix) parts.push(suffix);
+      return parts.join(' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function formatAdr(adrVal) {
+      const p = String(adrVal || '').split(';');
+      const po = (p[0] || '').trim();
+      const ext = (p[1] || '').trim();
+      const street = (p[2] || '').trim();
+      const locality = (p[3] || '').trim();
+      const region = (p[4] || '').trim();
+      const postal = (p[5] || '').trim();
+      const country = (p[6] || '').trim();
+      const bits = [];
+      if (street) bits.push(street);
+      if (locality) bits.push(locality);
+      if (region) bits.push(region);
+      if (postal) bits.push(postal);
+      if (country) bits.push(country);
+      if (po && po !== '""') bits.push(po);
+      if (ext && ext !== '""') bits.push(ext);
+      return bits.filter(Boolean).join(', ');
+    }
+
+    /** מחזיר { name, phoneLines, extraInfo } או null אם לא ניתן לפרסר */
+    function parseVcfText(raw) {
+      const unfolded = unfoldVcfLines(raw);
+      const cards = splitVcfIntoCards(unfolded);
+      if (!cards.length) {
+        const only = unfolded.filter(function(l) { return !/^BEGIN:VCARD/i.test(l) && !/^END:VCARD/i.test(l); });
+        if (only.length) cards.push(only);
+      }
+      if (!cards.length) return null;
+
+      let best = null;
+      for (let c = 0; c < cards.length; c++) {
+        const lines = cards[c];
+        let fn = '';
+        let nRaw = '';
+        const tels = [];
+        const emails = [];
+        let org = '';
+        let title = '';
+        let note = '';
+        let url = '';
+        let adr = '';
+
+        lines.forEach(function(line) {
+          const colon = line.indexOf(':');
+          if (colon === -1) return;
+          const head0 = line.slice(0, colon);
+          const firstSeg = head0.split(';')[0].replace(/^ITEM\d+\./i, '');
+          if (firstSeg.toUpperCase() === 'PHOTO') return;
+          const prop = parseVcfPropertyLine(line);
+          if (!prop) return;
+          const b = prop.base;
+          const v = prop.value;
+          if (b === 'FN' && v) fn = v.trim();
+          else if (b === 'N' && v) nRaw = v;
+          else if (b === 'TEL') {
+            const disp = telDisplayFromVcfValue(v);
+            if (disp) tels.push(disp);
+          } else if (b === 'EMAIL' && v) emails.push(v.trim());
+          else if (b === 'ORG' && v) org = v.replace(/\\n/g, ' ').trim();
+          else if (b === 'TITLE' && v) title = v.trim();
+          else if (b === 'NOTE' && v) note = v.trim();
+          else if (b === 'URL' && v) url = v.trim();
+          else if (b === 'ADR' && v) adr = formatAdr(v);
+        });
+
+        const name = fn || formatNField(nRaw) || '';
+        const phoneLines = [];
+        const seen = new Set();
+        tels.forEach(function(t) {
+          const d = digitsOnlyPhone(t);
+          const k = phoneDedupeKey(d);
+          if (!k || seen.has(k)) return;
+          seen.add(k);
+          phoneLines.push(t);
+        });
+
+        const score = phoneLines.length * 10 + (name ? 5 : 0);
+        if (!best || score > best._score) {
+          const extraParts = [];
+          if (emails.length) extraParts.push('אימייל: ' + emails.join(', '));
+          if (org) extraParts.push('ארגון: ' + org);
+          if (title) extraParts.push('תפקיד: ' + title);
+          if (adr) extraParts.push('כתובת: ' + adr);
+          if (url) extraParts.push('אתר: ' + url);
+          if (note) extraParts.push('הערה: ' + note);
+          best = {
+            name: name,
+            phoneLines: phoneLines,
+            extraInfo: extraParts.join(' · '),
+            _score: score
+          };
+        }
+      }
+
+      if (!best) return null;
+      delete best._score;
+      if (!best.name && (!best.phoneLines || !best.phoneLines.length) && !best.extraInfo) return null;
+      return best;
+    }
+
+    function applyVcfToAddForm(parsed) {
+      if (!parsed) return;
+      const nameEl = document.getElementById('addName');
+      const phonesEl = document.getElementById('addPhonesTextarea');
+      const extraEl = document.getElementById('addExtraInfo');
+      if (parsed.name) nameEl.value = parsed.name;
+      if (parsed.phoneLines && parsed.phoneLines.length) {
+        phonesEl.value = parsed.phoneLines.join('\n');
+      }
+      if (parsed.extraInfo) extraEl.value = parsed.extraInfo;
     }
 
     function toIntlTel(digits) {
@@ -1615,6 +1843,8 @@
     document.getElementById('btnAdd').addEventListener('click', function() {
       document.getElementById('addName').value = '';
       document.getElementById('addPhonesTextarea').value = '';
+      var vcfIn = document.getElementById('addVcfFile');
+      if (vcfIn) vcfIn.value = '';
       if (addFieldCombobox) {
         addFieldCombobox.setCommittedExternal(null, true);
         document.getElementById('addFieldCustom').classList.add('hidden');
@@ -1629,6 +1859,34 @@
     document.getElementById('btnSave').addEventListener('click', saveAllChanges);
 
     document.getElementById('btnAddCancel').addEventListener('click', () => document.getElementById('modalAdd').classList.add('hidden'));
+
+    document.getElementById('addVcfFile').addEventListener('change', function() {
+      const f = this.files && this.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        try {
+          const text = String(reader.result || '');
+          const parsed = parseVcfText(text);
+          if (!parsed) {
+            alert('לא ניתן לקרוא את קובץ ה־VCF. ודא שזה כרטיס איש קשר תקין (.vcf).');
+            return;
+          }
+          applyVcfToAddForm(parsed);
+          if (!parsed.phoneLines || !parsed.phoneLines.length) {
+            alert('הכרטיס נטען. לא נמצאו מספרי טלפון — הזן אותם ידנית בשדה הטלפון.');
+          }
+          var fieldInput = document.getElementById('addFieldInput');
+          if (fieldInput) setTimeout(function() { fieldInput.focus(); }, 50);
+        } catch (err) {
+          alert('שגיאה בקריאת הכרטיס: ' + (err && err.message ? err.message : err));
+        }
+      };
+      reader.onerror = function() {
+        alert('לא ניתן לקרוא את הקובץ.');
+      };
+      reader.readAsText(f, 'UTF-8');
+    });
 
     async function doAddSubmit() {
       try {

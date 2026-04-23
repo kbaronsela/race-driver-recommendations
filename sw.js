@@ -1,4 +1,4 @@
-const VERSION = 'race-pwa-2';
+const VERSION = 'race-pwa-3';
 const PRECACHE = [
   'index.html',
   'manifest.json',

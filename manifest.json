@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "המלצות נ״מ",
+  "short_name": "המלצות נ״מ",
+  "description": "המלצות, בעלי מקצוע, מסעדות ומידע מהקהילה",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f0f4fb",
+  "theme_color": "#0d9488",
+  "icons": [
+    {
+      "src": "assets/pwa-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

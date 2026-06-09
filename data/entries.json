@@ -3283,15 +3283,6 @@
     "recommender": ""
   },
   {
-    "name": "יורם",
-    "phone": "0508343013",
-    "field": "מוסך",
-    "from_moshav": true,
-    "note": "שבוע טוב  מחפשת המלצה למוסך לטיפול רכב מסוג סקודה | מישהי מכירה שירות של טסט שלוקחים את הרכב מהבית ומחזירים אותו 🙏? | המלצה לזמר לשירי ארץ ישראל 🙏🏻 | המלצה לבית קפה טעים על הים? לבראנצ הרצליה/נתניה… | וגם המלצה לצלם מגנטים",
-    "extra_info": "",
-    "recommender": ""
-  },
-  {
     "name": "ד״ר דפנה שפט",
     "phone": "0523359300",
     "field": "רפואה",
@@ -3328,7 +3319,7 @@
     "recommender": ""
   },
   {
-    "name": "צחי טכנאי כביסה",
+    "name": "צחי ולנציה טכנאי כביסה",
     "phone": "0522941354",
     "field": "טכנאי מכשירי חשמל",
     "from_moshav": false,
@@ -5629,6 +5620,60 @@
     "from_moshav": true,
     "note": "",
     "extra_info": "מטפלת בנשים, אנדומטריוזיס וגיל המעבר",
+    "recommender": ""
+  },
+  {
+    "name": "סרגיי מעבר לזכוכית",
+    "phone": "0542101241",
+    "field": "מקלחונים",
+    "from_moshav": false,
+    "note": "",
+    "extra_info": "מראות, מקלחונים... סופר מקצועי",
+    "recommender": ""
+  },
+  {
+    "name": "יניב פארי",
+    "phone": "0587967797",
+    "field": "פרקטים, טפטים, וילונות",
+    "from_moshav": false,
+    "note": "",
+    "extra_info": "",
+    "recommender": ""
+  },
+  {
+    "name": "רחלי",
+    "phone": "052-9251835",
+    "field": "אדריכלית",
+    "from_moshav": false,
+    "note": "",
+    "extra_info": "",
+    "recommender": ""
+  },
+  {
+    "name": "מאור  אבוטבול",
+    "phone": "0502166898",
+    "field": "נקיון",
+    "from_moshav": false,
+    "note": "",
+    "extra_info": "ניקוי ספות, שטיחים, מזגנים, ריפוד רכב. בוגר מגדלור. https://sparkle-sofa-booking.lovable.app/",
+    "recommender": "גיורא לוי מגדלור"
+  },
+  {
+    "name": "L C Home",
+    "phone": "0505698804",
+    "field": "בית חכם",
+    "from_moshav": false,
+    "note": "",
+    "extra_info": "מערכות סאונד, מערכות חוץ, בית חכם, רשת ביתית...",
+    "recommender": "דיקלה אלמגור"
+  },
+  {
+    "name": "איתי כהן דרוקר",
+    "phone": "0545499508",
+    "field": "חשמל",
+    "from_moshav": true,
+    "note": "",
+    "extra_info": "חשמלאי מוסמך",
     "recommender": ""
   }
 ]

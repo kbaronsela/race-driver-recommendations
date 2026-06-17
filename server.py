@@ -9,7 +9,7 @@ import os
 import re
 import secrets
 from pathlib import Path
-from flask import Flask, request, jsonify, send_from_directory, Response
+from flask import Flask, request, jsonify, send_from_directory, Response, redirect
 
 APP_DIR = Path(__file__).resolve().parent
 DATA_DIR = APP_DIR / "data"
@@ -18,6 +18,7 @@ USER_DATA_PATH = DATA_DIR / "user_data.json"
 ENTRIES_PATH = DATA_DIR / "entries.json"
 RESTAURANTS_PATH = DATA_DIR / "restaurants.json"
 VOTES_PATH = DATA_DIR / "recommendation_votes.json"
+MISHAKHEI_YALDUT_DIR = APP_DIR / "mishakhei-yaldut"
 
 app = Flask(__name__, static_folder=APP_DIR, static_url_path="")
 
@@ -667,7 +668,12 @@ def vote_restaurant(rid):
 
 @app.route("/")
 def index():
-    return send_from_directory(APP_DIR, "index.html")
+    return redirect("/recommendations.html")
+
+
+@app.route("/recommendations.html")
+def recommendations_page():
+    return send_from_directory(APP_DIR, "recommendations.html")
 
 
 @app.route("/professionals.html")
@@ -703,6 +709,22 @@ def view_restaurants_page():
 @app.route("/data/<path:path>")
 def data(path):
     return send_from_directory(DATA_DIR, path)
+
+
+@app.route("/mishakhei-yaldut")
+def mishakhei_yaldut_noslash():
+    return redirect("/mishakhei-yaldut/", 301)
+
+
+@app.route("/mishakhei-yaldut/")
+def mishakhei_yaldut_index():
+    """PWA Sentence Game — אייקון קוביות; manifest + service worker."""
+    return send_from_directory(MISHAKHEI_YALDUT_DIR, "index.html")
+
+
+@app.route("/mishakhei-yaldut/<path:filename>")
+def mishakhei_yaldut_files(filename):
+    return send_from_directory(MISHAKHEI_YALDUT_DIR, filename)
 
 
 if __name__ == "__main__":

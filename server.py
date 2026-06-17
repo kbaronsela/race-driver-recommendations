@@ -676,6 +676,11 @@ def recommendations_page():
     return send_from_directory(APP_DIR, "recommendations.html")
 
 
+@app.route("/about.html")
+def about_page():
+    return send_from_directory(APP_DIR, "about.html")
+
+
 @app.route("/professionals.html")
 def professionals_page():
     return send_from_directory(APP_DIR, "professionals.html")

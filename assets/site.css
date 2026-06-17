@@ -356,7 +356,8 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
   .header-row--with-menu {
     position: relative;
     justify-content: center;
-    margin-bottom: 0.65rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
     padding-inline: 0.15rem;
   }
 

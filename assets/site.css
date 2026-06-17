@@ -354,13 +354,21 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
   }
 
   .header-row--with-menu {
-    justify-content: flex-start;
+    position: relative;
+    justify-content: center;
     margin-bottom: 0.65rem;
     padding-inline: 0.15rem;
   }
 
+  .header-row--with-menu .site-sidebar-menu-toggle {
+    position: absolute;
+    inset-inline-start: 0.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   .header-row--with-menu .header-logos-wrap {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-width: 0;
     justify-content: center;
   }

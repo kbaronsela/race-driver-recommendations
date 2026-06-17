@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // כשנפתח כ-PWA (standalone) — עבור ישר לעמוד ההמלצות.
+    // כשנפתח מהדפדפן כ"דף הבית" — הישאר כאן.
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+      location.replace('recommendations.html');
+    }
+  </script>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/pwa-icon-192.png">
   <meta name="theme-color" content="#0d9488">

@@ -1,6 +1,6 @@
-const VERSION = 'race-pwa-3';
+const VERSION = 'race-pwa-4';
 const PRECACHE = [
-  'index.html',
+  'recommendations.html',
   'manifest.json',
   'assets/pwa-icon-192.png',
   'assets/pwa-icon-512.png',
@@ -49,6 +49,6 @@ self.addEventListener('fetch', (event) => {
         return caches.match(request);
       })
       .catch(() => caches.match(request))
-      .then((res) => res || caches.match('index.html'))
+      .then((res) => res || caches.match('recommendations.html'))
   );
 });

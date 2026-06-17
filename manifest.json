@@ -5,7 +5,7 @@
   "description": "המלצות, בעלי מקצוע, מסעדות ומידע מהקהילה",
   "lang": "he",
   "dir": "rtl",
-  "start_url": "index.html",
+  "start_url": "recommendations.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f0f4fb",

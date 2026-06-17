@@ -354,22 +354,25 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
   }
 
   .header-row--with-menu {
-    position: relative;
-    justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
     padding-inline: 0.15rem;
+    gap: 0.5rem;
   }
 
   .header-row--with-menu .site-sidebar-menu-toggle {
-    position: absolute;
-    inset-inline-start: 0.15rem;
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
+    top: auto;
+    transform: none;
+    inset-inline-start: auto;
+    flex-shrink: 0;
   }
 
   .header-row--with-menu .header-logos-wrap {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     min-width: 0;
     justify-content: center;
   }

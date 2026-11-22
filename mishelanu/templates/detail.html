@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}{{ b.name }} — mishelanu{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block content %}
+<article>
+  <a class="back" href="{{ url_for('index') }}">חזרה לאינדקס</a>
+
+  {% if images %}
+  <img class="detail-main" id="mainImage" src="{{ url_for('uploads', filename=images[0].file) }}" alt="{{ b.name }}">
+  {% endif %}
+
+  <header class="detail-head">
+    <h1>{{ b.name }}</h1>
+    {% if b.field %}<p class="detail-field">{{ b.field }}</p>{% endif %}
+  </header>
+
+  <div class="actions">
+    <a class="btn btn-primary" href="tel:{{ digits(b.phone) }}">התקשרות</a>
+    <a class="btn" href="https://wa.me/{{ wa_number(b.phone) }}" target="_blank" rel="noopener">וואטסאפ</a>
+    {% set navigate = waze_url(b) %}
+    {% if navigate %}<a class="btn" href="{{ navigate }}" target="_blank" rel="noopener">ניווט</a>{% endif %}
+  </div>
+
+  {% if images|length > 1 %}
+  <div class="thumbs">
+    {% for im in images %}
+    <button type="button" class="thumb{% if loop.first %} is-active{% endif %}" data-full="{{ url_for('uploads', filename=im.file) }}" aria-label="תמונה {{ loop.index }}">
+      <img src="{{ url_for('uploads', filename=im.thumb) }}" alt="">
+    </button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if b.description %}
+  <section class="text">{{ b.description|text }}</section>
+  {% endif %}
+
+  <dl class="facts">
+    <div><dt>טלפון</dt><dd dir="ltr">{{ b.phone }}</dd></div>
+    {% if b.address %}<div><dt>כתובת</dt><dd>{{ b.address }}</dd></div>{% endif %}
+  </dl>
+
+  {% if b.lat is not none and b.lng is not none %}
+  <h2 class="section-title">מיקום</h2>
+  <a class="mini-map-link" href="{{ url_for('map_page', focus=b.id) }}" aria-label="פתיחת המפה המלאה">
+    <div id="miniMap" class="mini-map"></div>
+  </a>
+  {% endif %}
+
+  {% if is_admin %}
+  <div class="admin-bar">
+    <a class="btn" href="{{ url_for('edit', bid=b.id) }}">עריכה</a>
+    <form method="post" action="{{ url_for('delete', bid=b.id) }}" data-confirm="למחוק את הכרטיס? אי אפשר לשחזר.">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-danger" type="submit">מחיקה</button>
+    </form>
+  </div>
+  {% elif admin_ready %}
+  <p class="admin-hint"><a href="{{ url_for('edit', bid=b.id) }}">עריכה (למנהל/ת)</a></p>
+  {% endif %}
+</article>
+{% endblock %}
+{% block scripts %}
+{% if b.lat is not none and b.lng is not none %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endif %}
+<script>
+  (function () {
+    var main = document.getElementById('mainImage');
+    var thumbs = document.querySelectorAll('.thumb');
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (main) main.src = btn.getAttribute('data-full');
+        thumbs.forEach(function (other) { other.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+      });
+    });
+
+    document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!window.confirm(form.getAttribute('data-confirm'))) event.preventDefault();
+      });
+    });
+
+    var mini = document.getElementById('miniMap');
+    if (!mini || typeof L === 'undefined') return;
+    var at = [{{ b.lat }}, {{ b.lng }}];
+    var map = L.map(mini, { scrollWheelZoom: false, dragging: false }).setView(at, 16);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    L.marker(at).addTo(map);
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}mishelanu{% endblock %}</title>
+  <meta name="description" content="אינדקס בעלי מקצוע ועסקים בשדה ורבורג">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="application-name" content="mishelanu">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="mishelanu">
+  <link rel="manifest" href="{{ url_for('manifest') }}">
+  <link rel="icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+  <script src="{{ url_for('static', filename='js/pwa.js') }}" defer></script>
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block bodyclass %}{% endblock %}" data-sw="{{ url_for('sw') }}">
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">mishelanu</a>
+    <nav class="topnav">
+      <a class="btn" href="{{ url_for('map_page') }}">מפה</a>
+      <a class="btn btn-primary" href="{{ url_for('add') }}">הוספה</a>
+    </nav>
+  </header>
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+{% block scripts %}{% endblock %}
+</html>

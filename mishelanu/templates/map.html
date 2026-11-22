@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}מפת המושב — mishelanu{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block bodyclass %}map-view{% endblock %}
+{% block content %}
+<div class="map-bar">
+  <span>{% if points|length == 1 %}נקודה אחת על המפה{% else %}{{ points|length }} נקודות על המפה{% endif %}</span>
+  <a href="{{ url_for('index') }}">חזרה לרשימה</a>
+</div>
+<div id="moshavMap" class="moshav-map"
+     data-points='{{ points|tojson }}'
+     data-focus="{{ focus_id if focus_id is not none else '' }}"
+     data-uploads="{{ url_for('uploads', filename='') }}"
+     data-home-lat="{{ home_lat }}" data-home-lng="{{ home_lng }}"></div>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/moshav-map.js') }}"></script>
+{% endblock %}

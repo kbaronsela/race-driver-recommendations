@@ -1,0 +1,6 @@
+# נוצרים בזמן הרצה — לא נשלחים לגיט
+data/
+uploads/
+config.json
+__pycache__/
+*.pyc

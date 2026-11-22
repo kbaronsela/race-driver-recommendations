@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}{{ heading }} — mishelanu{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ heading }}</h1>
+
+{% if errors %}
+<p class="form-errors">הטופס לא נשמר. נא לתקן את השדות המסומנים.</p>
+{% endif %}
+
+<form class="form" method="post" action="{{ action }}" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="hp" aria-hidden="true">
+    <label>אתר <input type="text" name="contact_website" tabindex="-1" autocomplete="off"></label>
+  </div>
+
+  <label>
+    שם בעל המקצוע או העסק <span class="req" aria-hidden="true">*</span>
+    <input name="name" maxlength="80" required value="{{ values.name }}">
+  </label>
+  {% if errors.name %}<p class="error">{{ errors.name }}</p>{% endif %}
+
+  <label>
+    תחום
+    <input name="field" list="field-list" maxlength="60" value="{{ values.field }}" placeholder="למשל: אינסטלציה">
+    <datalist id="field-list">
+      {% for f in fields %}<option value="{{ f }}"></option>{% endfor %}
+    </datalist>
+  </label>
+
+  <label>
+    טלפון <span class="req" aria-hidden="true">*</span>
+    <input name="phone" type="tel" dir="ltr" required value="{{ values.phone }}">
+  </label>
+  {% if errors.phone %}<p class="error">{{ errors.phone }}</p>{% endif %}
+
+  <label>
+    כתובת במושב
+    <input name="address" maxlength="200" value="{{ values.address }}" placeholder="למשל: הברוש 12">
+  </label>
+
+  <label>
+    על העסק — טקסט חופשי
+    <textarea name="description" rows="7" maxlength="4000" placeholder="מה העסק מציע, שעות פעילות וכו׳">{{ values.description }}</textarea>
+  </label>
+
+  <fieldset>
+    <legend>תמונות</legend>
+    {% if images %}
+    <div class="existing">
+      {% for im in images %}
+      <label>
+        <img src="{{ url_for('uploads', filename=im.thumb) }}" alt="">
+        <span><input type="checkbox" name="remove_images" value="{{ im.id }}"> מחיקה</span>
+      </label>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <input type="file" name="images" accept="image/*" multiple>
+    <p class="hint">עד 8 תמונות, עד 12MB לכל אחת (JPEG, PNG, WebP).</p>
+    {% if errors.images %}<p class="error">{{ errors.images }}</p>{% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>מיקום במפה</legend>
+    <p class="hint">כדי שהעסק יופיע במפת המושב — לחצו על המפה במקום שבו הוא נמצא.</p>
+    <div id="picker" class="picker-map"
+         data-home-lat="{{ home_lat }}" data-home-lng="{{ home_lng }}"
+         data-start-lat="{{ '' if values.lat is none else values.lat }}"
+         data-start-lng="{{ '' if values.lng is none else values.lng }}"></div>
+    <input type="hidden" name="lat" id="lat" value="{{ '' if values.lat is none else values.lat }}">
+    <input type="hidden" name="lng" id="lng" value="{{ '' if values.lng is none else values.lng }}">
+    <button type="button" class="btn" id="clearLocation">ניקוי הסימון</button>
+    {% if errors.location %}<p class="error">{{ errors.location }}</p>{% endif %}
+  </fieldset>
+
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit">שמירה</button>
+    <a href="{{ url_for('index') }}">ביטול</a>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/location-picker.js') }}"></script>
+{% endblock %}

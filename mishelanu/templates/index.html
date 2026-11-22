@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}mishelanu — אינדקס בעלי מקצוע בשדה ורבורג{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>בעלי מקצוע ועסקים בשדה ורבורג</h1>
+  <p>חיפוש לפי שם, תחום או כתובת</p>
+</section>
+
+<form class="search" method="get" action="{{ url_for('index') }}" role="search">
+  <input type="search" name="q" value="{{ q }}" placeholder="מי או מה מחפשים?" aria-label="חיפוש באינדקס">
+  <button class="btn btn-primary" type="submit">חיפוש</button>
+</form>
+
+{% if chips %}
+<nav class="chips" aria-label="סינון לפי תחום">
+  <a class="chip{% if not field %} is-active{% endif %}" href="{{ url_for('index', q=q or None) }}">הכל</a>
+  {% for f in chips %}
+  <a class="chip{% if f.name == field %} is-active{% endif %}" href="{{ url_for('index', q=q or None, field=f.name) }}">{{ f.name }}</a>
+  {% endfor %}
+</nav>
+{% endif %}
+
+<p class="count">
+  {% if rows|length == 1 %}תוצאה אחת{% else %}{{ rows|length }} תוצאות{% endif %}
+  {% if q or field %}<a href="{{ url_for('index') }}">ניקוי החיפוש</a>{% endif %}
+</p>
+
+{% if rows %}
+<ul class="cards">
+  {% for r in rows %}
+  <li>
+    <a class="card" href="{{ url_for('detail', bid=r.id) }}">
+      <span class="card-thumb">
+        {% if r.thumb %}<img src="{{ url_for('uploads', filename=r.thumb) }}" alt="" loading="lazy">
+        {% else %}<span class="card-initial">{{ r.name[0] }}</span>{% endif %}
+      </span>
+      <span class="card-body">
+        <span class="card-name">{{ r.name }}</span>
+        {% if r.field %}<span class="card-field">{{ r.field }}</span>{% endif %}
+        {% if r.address %}<span class="card-address">{{ r.address }}</span>{% endif %}
+      </span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% elif q or field %}
+<div class="empty">
+  <p>אין תוצאות{% if q %} לחיפוש ״{{ q }}״{% endif %}.</p>
+  <p>אולי בעל המקצוע עוד לא נמצא באינדקס?</p>
+  <a class="btn" href="{{ url_for('add') }}">הוספה לאינדקס</a>
+</div>
+{% else %}
+<div class="empty">
+  <p>האינדקס עוד ריק.</p>
+  <a class="btn btn-primary" href="{{ url_for('add') }}">הוספת בעל המקצוע הראשון</a>
+</div>
+{% endif %}
+{% endblock %}

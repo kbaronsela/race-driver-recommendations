@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}כניסת מנהל/ת — mishelanu{% endblock %}
+{% block content %}
+<section class="login-card">
+  <h1>כניסת מנהל/ת</h1>
+  <p class="muted">אחרי הכניסה אפשר לערוך ולמחוק כרטיסים — מתחת לכל עמוד של בעל מקצוע.</p>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('login') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="next" value="{{ target }}">
+    <label>
+      שם משתמש
+      <input name="username" autocomplete="username" required autofocus>
+    </label>
+    <label>
+      סיסמה
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-primary" type="submit">כניסה</button>
+  </form>
+  <p><a href="{{ url_for('index') }}">חזרה לרשימה</a></p>
+</section>
+{% endblock %}

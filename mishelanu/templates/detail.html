@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <article>
-  <a class="back" href="{{ url_for('index') }}">חזרה לאינדקס</a>
+  <a class="back" href="{{ url_for('index') }}">חזרה לרשימה</a>
 
   {% if images %}
   <img class="detail-main" id="mainImage" src="{{ url_for('uploads', filename=images[0].file) }}" alt="{{ b.name }}">

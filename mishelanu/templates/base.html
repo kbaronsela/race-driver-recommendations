@@ -26,6 +26,11 @@
     <nav class="topnav">
       <a class="btn" href="{{ url_for('map_page') }}">מפה</a>
       <a class="btn btn-primary" href="{{ url_for('add') }}">הוספה</a>
+      {% if is_admin %}
+      <a class="btn btn-quiet" href="{{ url_for('logout') }}">יציאה</a>
+      {% elif admin_ready and request.endpoint != 'login' %}
+      <a class="btn btn-quiet" href="{{ url_for('login') }}">כניסה</a>
+      {% endif %}
     </nav>
   </header>
   <main class="page">

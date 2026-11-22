@@ -65,7 +65,7 @@
 
   <fieldset>
     <legend>מיקום במפה</legend>
-    <p class="hint">כדי שהעסק יופיע במפת המושב — לחצו על המפה במקום שבו הוא נמצא.</p>
+    <p class="hint">כדי שהעסק יופיע במפת המושב — אפשר לסמן אותו בלחיצה על המפה. אם נכתבה כתובת, המפה עוברת אליה אוטומטית, ואפשר לתקן בלחיצה.</p>
     <div id="picker" class="picker-map"
          data-home-lat="{{ home_lat }}" data-home-lng="{{ home_lng }}"
          data-start-lat="{{ '' if values.lat is none else values.lat }}"
@@ -73,6 +73,7 @@
     <input type="hidden" name="lat" id="lat" value="{{ '' if values.lat is none else values.lat }}">
     <input type="hidden" name="lng" id="lng" value="{{ '' if values.lng is none else values.lng }}">
     <button type="button" class="btn" id="clearLocation">ניקוי הסימון</button>
+    <p class="hint" id="locationStatus" role="status" aria-live="polite"></p>
     {% if errors.location %}<p class="error">{{ errors.location }}</p>{% endif %}
   </fieldset>
 
@@ -84,5 +85,6 @@
 {% endblock %}
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/address.js') }}"></script>
 <script src="{{ url_for('static', filename='js/location-picker.js') }}"></script>
 {% endblock %}

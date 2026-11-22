@@ -6,8 +6,9 @@ mishelanu — אינדקס בעלי מקצוע בשדה ורבורג.
 הרצה מקומית:   python mishelanu/app.py   ואז לפתוח http://localhost:5002
 פריסה:         gunicorn app:app   (מתוך התיקייה mishelanu)
 
-מנהל/ת האתר (עריכה ומחיקה): משתני סביבה MISHELANU_USER ו־MISHELANU_PASSWORD,
-או הרצת  python mishelanu/set_password.py  שיוצר את config.json.
+מנהל/ת האתר (עריכה ומחיקה): כניסה בעמוד /login. פרטי הכניסה מוגדרים במשתני סביבה
+MISHELANU_USER ו־MISHELANU_PASSWORD, או על ידי  python mishelanu/set_password.py  שיוצר את config.json.
+כשהאתר מוצפן (HTTPS) כדאי להגדיר MISHELANU_SECURE_COOKIES=1.
 """
 import hashlib
 import hmac
@@ -15,12 +16,13 @@ import json
 import os
 import re
 import secrets
+import time
 from functools import wraps
 from pathlib import Path
 from urllib.parse import quote
 
-from flask import (Flask, Response, abort, g, redirect, render_template,
-                   request, send_from_directory, url_for)
+from flask import (Flask, abort, g, redirect, render_template, request, session,
+                   send_from_directory, url_for)
 from markupsafe import Markup, escape
 
 import db
@@ -28,6 +30,7 @@ import media
 
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config.json"
+SECRET_PATH = db.DATA_DIR / "secret_key"
 
 # מרכז המושב שדה ורבורג לפי OpenStreetMap — נקודת ההתחלה של המפה
 HOME_LAT, HOME_LNG = 32.2061, 34.9048
@@ -44,8 +47,25 @@ LIST_SELECT = """
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("MISHELANU_SECURE_COOKIES") == "1"
 
 db.init_db()
+
+
+def load_secret_key():
+    """המפתח שחותם על עוגיית ההתחברות. נשמר בתיקיית הנתונים כדי שההתחברות תשרוד הפעלה מחדש."""
+    try:
+        key = SECRET_PATH.read_bytes()
+    except OSError:
+        key = b""
+    if len(key) < 32:
+        key = secrets.token_bytes(32)
+        SECRET_PATH.write_bytes(key)
+    return key
+
+
+app.secret_key = load_secret_key()
 
 
 # ---------------------------------------------------------------- עזרים לתבניות
@@ -65,11 +85,15 @@ def wa_number(phone):
 
 
 def waze_url(row):
-    """קישור לניווט ב-Waze: לפי מיקום על המפה, ואם אין — לפי הכתובת."""
+    """קישור ל-Waze בפורמט הרשמי (https://waze.com/ul): ניווט לפי מיקום שנשמר, ואם אין — חיפוש הכתובת.
+
+    במחשב Waze נפתח כמפה באתר; בטלפון עם האפליקציה הוא נפתח באפליקציה ומתחיל לנווט.
+    """
     if row["lat"] is not None and row["lng"] is not None:
-        return f"https://waze.com/ll/{row['lat']},{row['lng']}?navigate=yes"
+        point = quote(f"{row['lat']},{row['lng']}", safe="")
+        return f"https://waze.com/ul?ll={point}&navigate=yes"
     if row["address"]:
-        return "https://waze.com/?q=" + quote(f"{row['address']}, שדה ורבורג")
+        return "https://waze.com/ul?q=" + quote(f"{row['address']}, שדה ורבורג")
     return None
 
 
@@ -226,37 +250,61 @@ def load_admin():
 
 
 def is_admin():
-    admin = load_admin()
-    auth = request.authorization
-    if not admin or not auth:
-        return False
-    same_user = hmac.compare_digest(
-        (auth.username or "").encode(), str(admin["user"]).encode()
-    )
-    same_password = hmac.compare_digest(
-        password_hash(admin["user"], auth.password or "").encode(),
-        str(admin["password_hash"]).encode(),
-    )
-    return same_user and same_password
+    return bool(session.get("admin")) and load_admin() is not None
 
 
 def require_admin(view):
     @wraps(view)
     def wrapped(*args, **kwargs):
-        admin = load_admin()
-        if not admin:
+        if not load_admin():
             return render_template(
                 "error.html", title="אין הרשאה",
                 message="עריכה ומחיקה זמינות רק למנהל/ת האתר.",
                 back=url_for("index"),
             ), 403
-        if is_admin():
-            return view(*args, **kwargs)
-        return Response(
-            "Login required", 401, {"WWW-Authenticate": 'Basic realm="mishelanu"'}
-        )
+        if not is_admin():
+            return redirect(url_for("login", next=request.path))
+        return view(*args, **kwargs)
 
     return wrapped
+
+
+def is_safe_target(path):
+    """רק נתיב פנימי באתר — כדי שאחרי הכניסה אי אפשר יהיה להפנות לאתר אחר."""
+    return isinstance(path, str) and path.startswith("/") and not path.startswith("//")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = ""
+    if request.method == "POST":
+        check_csrf_or_abort()
+        admin = load_admin()
+        user = (request.form.get("username") or "").strip()
+        password = request.form.get("password") or ""
+        allowed = admin is not None and all([
+            hmac.compare_digest(user.encode(), str(admin["user"]).encode()),
+            hmac.compare_digest(
+                password_hash(admin["user"], password).encode(),
+                str(admin["password_hash"]).encode(),
+            ),
+        ])
+        if allowed:
+            session.clear()
+            session["admin"] = True
+            target = request.form.get("next") or ""
+            return redirect(target if is_safe_target(target) else url_for("index"))
+        time.sleep(0.4)  # האטה קלה למי שמנסה לנחש סיסמה
+        error = "שם המשתמש או הסיסמה שגויים."
+    return render_template(
+        "login.html", error=error, target=request.args.get("next", "")
+    )
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
 
 
 @app.context_processor
@@ -479,7 +527,7 @@ def bad_request(_e):
     return render_template(
         "error.html", title="הטופס לא נשלח",
         message="תוקף הטופס פג. נא לחזור, לרענן את הדף ולנסות שוב.",
-        back=url_for("add"),
+        back=url_for("index"),
     ), 400
 
 
@@ -497,7 +545,7 @@ def too_large(_e):
     return render_template(
         "error.html", title="הקבצים גדולים מדי",
         message="התמונות שנבחרו גדולות מדי. נא לבחור פחות תמונות, או תמונות קטנות יותר.",
-        back=url_for("add"),
+        back=url_for("index"),
     ), 413
 
 

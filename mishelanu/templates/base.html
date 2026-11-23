@@ -19,24 +19,58 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
   <script src="{{ url_for('static', filename='js/pwa.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/site-sidebar.js') }}" defer></script>
   {% block head %}{% endblock %}
 </head>
 <body class="{% block bodyclass %}{% endblock %}" data-sw="{{ url_for('sw') }}">
-  <header class="topbar">
-    <a class="brand" href="{{ url_for('index') }}">משלנו</a>
-    <nav class="topnav">
-      <a class="btn" href="{{ url_for('map_page') }}">מפה</a>
-      <a class="btn btn-primary" href="{{ url_for('add') }}">הוספה</a>
-      {% if is_admin %}
-      <a class="btn btn-quiet" href="{{ url_for('logout') }}">יציאה</a>
-      {% elif admin_ready and request.endpoint != 'login' %}
-      <a class="btn btn-quiet" href="{{ url_for('login') }}">כניסה</a>
-      {% endif %}
-    </nav>
-  </header>
-  <main class="page">
-    {% block content %}{% endblock %}
-  </main>
+  <div class="site-shell">
+    <aside class="site-sidebar" aria-label="ניווט ראשי">
+      <div class="site-sidebar-panel" id="site-sidebar-panel">
+        <a class="site-sidebar-section-title site-sidebar-section-link{% if request.endpoint == 'index' %} is-current{% endif %}"
+           href="{{ url_for('index') }}"{% if request.endpoint == 'index' %} aria-current="page"{% endif %}>
+          <span class="section-emoji" aria-hidden="true">⭐</span><span class="section-label">משלנו</span>
+        </a>
+
+        <nav class="site-sidebar-nav site-sidebar-nav-main" aria-label="משלנו">
+          <a href="{{ url_for('add') }}"{% if request.endpoint == 'add' %} class="is-current" aria-current="page"{% endif %}>
+            <span class="nav-emoji" aria-hidden="true">✍️</span><span class="nav-label">הצטרפות לאינדקס</span>
+          </a>
+          <a href="{{ url_for('map_page') }}"{% if request.endpoint == 'map_page' %} class="is-current" aria-current="page"{% endif %}>
+            <span class="nav-emoji" aria-hidden="true">🗺️</span><span class="nav-label">מפה</span>
+          </a>
+        </nav>
+
+        <div class="site-sidebar-footer">
+          <div class="sidebar-auth">
+            {% if is_admin %}
+            <div class="logged-row">
+              <span class="muted">מחובר/ת</span>
+              <a class="btn" href="{{ url_for('logout') }}">התנתק</a>
+            </div>
+            {% elif admin_ready and request.endpoint != 'login' %}
+            <div class="login-wrap">
+              <a class="btn" href="{{ url_for('login') }}">כניסה</a>
+            </div>
+            {% endif %}
+          </div>
+          <p class="site-sidebar-credit">© 2026 קרן סלע</p>
+        </div>
+      </div>
+    </aside>
+
+    <main class="site-main">
+      <div class="menu-row">
+        <button type="button" class="site-sidebar-menu-toggle" id="site-sidebar-menu-btn"
+                aria-expanded="false" aria-controls="site-sidebar-panel" aria-label="פתח תפריט ניווט">
+          <span class="site-sidebar-menu-toggle-emoji" aria-hidden="true">☰</span>
+          <span class="site-sidebar-menu-toggle-text">תפריט</span>
+        </button>
+      </div>
+      <div class="page">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
 </body>
 {% block scripts %}{% endblock %}
 </html>

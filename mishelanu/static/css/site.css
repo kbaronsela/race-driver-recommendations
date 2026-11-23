@@ -8,6 +8,8 @@
   --accent-dark: #0b7a70;
   --danger: #b91c1c;
   --radius: 16px;
+  --sidebar-w: 228px;
+  --sidebar-edge: rgba(255, 255, 255, 0.09);
 }
 
 * { box-sizing: border-box; }
@@ -22,29 +24,360 @@ body {
 a { color: var(--accent-dark); }
 img { max-width: 100%; }
 
-/* פס עליון */
-.topbar {
+/* תפריט צד — אותה נראות כמו התפריט של אתר ההמלצות */
+.site-shell { display: flex; min-height: 100vh; flex-direction: row; }
+
+.site-sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: linear-gradient(165deg, #0f172a 0%, #1e3a5f 52%, #0c4a6e 100%);
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
   position: sticky;
   top: 0;
+  align-self: flex-start;
+  min-height: 100vh;
+  box-shadow: inset 1px 0 0 var(--sidebar-edge);
   z-index: 20;
+}
+
+.site-sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.site-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.site-sidebar-nav-main {
+  flex: 0 0 auto;
+  padding: 0.1rem 0.75rem 0.45rem;
+}
+
+.site-sidebar-section-title {
+  margin: 0 0.75rem;
+  padding: 0.7rem 0.9rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  height: 61px;
-  padding: 0 1rem;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+  gap: 0.55rem;
+  flex-wrap: wrap;
 }
-.brand {
-  color: var(--text);
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+
+.site-sidebar-section-title .section-emoji {
+  font-size: 1.15em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.site-sidebar-section-title .section-label {
+  flex: 1;
+  min-width: 0;
+}
+
+a.site-sidebar-section-title.site-sidebar-section-link {
   text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-.topnav { display: flex; gap: 0.5rem; }
+a.site-sidebar-section-title.site-sidebar-section-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+a.site-sidebar-section-title.site-sidebar-section-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+a.site-sidebar-section-title.site-sidebar-section-link.is-current {
+  background: rgba(13, 148, 136, 0.45);
+  color: #fff;
+}
+
+.site-sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.site-sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.site-sidebar-nav a.is-current {
+  background: rgba(13, 148, 136, 0.45);
+  color: #fff;
+}
+
+.site-sidebar-nav a .nav-emoji {
+  flex-shrink: 0;
+  font-size: 1.15em;
+  line-height: 1;
+}
+
+.site-sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 0.75rem 1.25rem;
+  border-top: 1px solid var(--sidebar-edge);
+}
+
+.sidebar-auth .btn {
+  width: 100%;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f1f5f9;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.sidebar-auth .btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.sidebar-auth .login-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-auth .logged-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+}
+
+.sidebar-auth .muted {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.site-sidebar-credit {
+  margin: 0.9rem 0 0;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.site-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* כפתור תפריט — מוצג רק בטלפון */
+.menu-row { display: none; }
+
+.site-sidebar-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: auto;
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  color: var(--text, #0f172a);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.site-sidebar-menu-toggle:hover {
+  background: var(--accent-dim, rgba(15, 92, 85, 0.08));
+  border-color: var(--accent, #0d9488);
+}
+
+.site-sidebar-menu-toggle:focus-visible {
+  outline: 2px solid var(--accent, #0d9488);
+  outline-offset: 2px;
+}
+
+.site-sidebar-menu-toggle-emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.site-sidebar-menu-toggle-text {
+  letter-spacing: -0.02em;
+}
+
+.site-sidebar-panel-header { display: none; }
+.site-sidebar-close { display: none; }
+
+@media (max-width: 768px) {
+  .site-shell { flex-direction: column; }
+
+  .site-sidebar {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+  }
+
+  .menu-row {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.6rem 1rem 0;
+  }
+
+  .site-sidebar-menu-toggle {
+    display: inline-flex;
+    padding: 0.42rem 0.75rem;
+    min-width: 0;
+    min-height: 2.6rem;
+    border-radius: 10px;
+    gap: 0.4rem;
+  }
+
+  .site-sidebar-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    max-height: none;
+    margin: 0;
+    padding: 0.85rem 0.75rem;
+    padding-top: max(0.85rem, env(safe-area-inset-top));
+    overflow-x: hidden;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+    background: linear-gradient(165deg, #0f172a 0%, #1e3a5f 52%, #0c4a6e 100%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    flex: none;
+  }
+
+  .site-sidebar-panel.site-sidebar-panel-open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .site-sidebar-panel-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-shrink: 0;
+    margin: 0 0 0.65rem;
+    padding-bottom: 0.15rem;
+  }
+
+  .site-sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .site-sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .site-sidebar-close:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+
+  .site-sidebar-close-icon {
+    font-size: 1.65rem;
+    line-height: 1;
+    font-weight: 300;
+    margin-top: -0.1em;
+  }
+
+  a.site-sidebar-section-title.site-sidebar-section-link {
+    display: flex;
+    flex: 0 0 auto;
+    width: auto;
+    justify-content: flex-start;
+    margin: 0.25rem 0.65rem 0.1rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.92rem;
+  }
+
+  .site-sidebar-nav-main {
+    flex: 0 0 auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 0.25rem 0.65rem;
+    gap: 0.2rem;
+  }
+
+  .site-sidebar-nav a {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .site-sidebar-footer {
+    width: 100%;
+    margin-top: 0;
+    padding: 0.65rem 0.75rem 0.5rem;
+    border-top: 1px solid var(--sidebar-edge);
+  }
+
+  .sidebar-auth .btn {
+    width: auto;
+    min-width: 120px;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  body.site-sidebar-menu-open {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
 
 .btn {
   display: inline-flex;
@@ -64,7 +397,6 @@ img { max-width: 100%; }
 }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-danger { color: var(--danger); }
-.btn-quiet { border-color: transparent; background: none; color: var(--muted); font-weight: 500; }
 
 /* כניסת מנהל/ת */
 .login-card {
@@ -276,11 +608,18 @@ img { max-width: 100%; }
 
 /* מפת המושב */
 body.map-view { overflow: hidden; }
+body.map-view .site-main {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+body.map-view .menu-row { flex: 0 0 auto; }
 body.map-view .page {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   max-width: none;
-  height: calc(100dvh - 61px);
   padding: 0;
 }
 .map-bar {

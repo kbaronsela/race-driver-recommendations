@@ -262,7 +262,7 @@ img { max-width: 100%; }
 .req { color: var(--danger); }
 .hint { margin: 0.4rem 0; color: var(--muted); font-size: 0.92rem; font-weight: 400; }
 .error { margin: 0.3rem 0 0; color: var(--danger); font-size: 0.92rem; font-weight: 500; }
-.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.hp { display: none; }
 .picker-map { height: 320px; border-radius: 12px; }
 .picker-map + input + input + .btn { margin-top: 0.6rem; }
 .existing { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem; }

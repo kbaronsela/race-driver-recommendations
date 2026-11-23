@@ -49,6 +49,8 @@ app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = os.environ.get("MISHELANU_SECURE_COOKIES") == "1"
+# שם משלו, כדי שלא להתנגש עם עוגיות של אתר אחר שרץ על אותה כתובת
+app.config["SESSION_COOKIE_NAME"] = "mishelanu_session"
 
 db.init_db()
 
@@ -263,7 +265,8 @@ def require_admin(view):
                 back=url_for("index"),
             ), 403
         if not is_admin():
-            return redirect(url_for("login", next=request.path))
+            # הנתיב המלא, כולל הקידומת כשהאתר רץ מתוך שרת אחר (למשל /mishelanu)
+            return redirect(url_for("login", next=request.script_root + request.path))
         return view(*args, **kwargs)
 
     return wrapped

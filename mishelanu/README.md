@@ -35,8 +35,20 @@ python mishelanu/app.py
 
 ## פריסה
 
-הנתונים נשמרים בקבצים, ולכן דרוש אחסון שנשמר בין הפעלות: PythonAnywhere, או Render עם דיסק.
+הנתונים נשמרים בקבצים, ולכן דרוש אחסון שנשמר בין הפעלות. האתר רץ על PythonAnywhere, מתוך אותו שרת
+של אתר ההמלצות, בנתיב `/mishelanu/` — החיבור נמצא בסוף הקובץ `server.py` שבתיקיית השורש.
+
+### עדכון על PythonAnywhere
+
+1. במסוף Bash: `cd ~/race-driver-recommendations && git pull`
+2. באותו מסוף: `source venv/bin/activate && pip install -r requirements.txt`
+3. בלשונית Web, ב-Environment variables: `MISHELANU_USER`, `MISHELANU_PASSWORD`,
+   וגם `MISHELANU_SECURE_COOKIES=1` (האתר מוצפן).
+4. ללחוץ על Reload, ולפתוח `https://racedriver.pythonanywhere.com/mishelanu/`
+
+הנתונים והתמונות נשמרים שם בתיקיות `mishelanu/data` ו-`mishelanu/uploads`, ואינם נמחקים בעדכון.
+אם mishelanu לא נטען — אתר ההמלצות ממשיך לעבוד כרגיל, ובנתיב `/mishelanu/` מופיעה הודעה שהאתר אינו זמין.
 
 ## קישור מהאתר הקיים
 
-להוסיף בתפריט של האתר הקיים קישור לכתובת של mishelanu. אין צורך בשום חיבור אחר בין האתרים.
+להוסיף בתפריט של האתר הקיים קישור ל-`/mishelanu/`. אין צורך בשום חיבור אחר בין האתרים.

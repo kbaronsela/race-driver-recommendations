@@ -7,7 +7,6 @@
 {% block content %}
 <div class="map-bar">
   <span>{% if points|length == 1 %}נקודה אחת על המפה{% else %}{{ points|length }} נקודות על המפה{% endif %}</span>
-  <a href="{{ url_for('index') }}">חזרה לרשימה</a>
 </div>
 <div id="moshavMap" class="moshav-map"
      data-points='{{ points|tojson }}'

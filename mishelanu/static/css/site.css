@@ -559,7 +559,8 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
-.mini-map { height: 100%; pointer-events: none; }
+/* השכבות של המפה כלואות בתוך הקופסה שלה, כדי שהתפריט הנפתח יישאר מעליהן */
+.mini-map { height: 100%; pointer-events: none; position: relative; z-index: 0; }
 
 .admin-bar { display: flex; gap: 0.5rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
 .admin-bar form { margin: 0; }
@@ -599,7 +600,7 @@ a.site-sidebar-section-title.site-sidebar-section-link.is-current {
 .hint { margin: 0.4rem 0; color: var(--muted); font-size: 0.92rem; font-weight: 400; }
 .error { margin: 0.3rem 0 0; color: var(--danger); font-size: 0.92rem; font-weight: 500; }
 .hp { display: none; }
-.picker-map { height: 320px; border-radius: 12px; }
+.picker-map { height: 320px; border-radius: 12px; position: relative; z-index: 0; }
 .picker-map + input + input + .btn { margin-top: 0.6rem; }
 .existing { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.6rem; }
 .existing label { display: grid; justify-items: center; gap: 0.2rem; font-size: 0.85rem; font-weight: 500; }
@@ -637,7 +638,7 @@ body.map-view .page {
   color: var(--muted);
 }
 .map-bar a { font-weight: 600; }
-.moshav-map { flex: 1; min-height: 0; }
+.moshav-map { flex: 1; min-height: 0; position: relative; z-index: 0; }
 .moshav-map .pop-field { color: var(--muted); }
 .moshav-map .pop-thumb {
   display: block;

@@ -251,14 +251,16 @@ img { max-width: 100%; }
 }
 .form textarea { resize: vertical; }
 .form input[type="file"] { width: 100%; font-weight: 400; }
-.form fieldset {
-  margin: 0;
+.form .panel { display: grid; gap: 0.3rem; }
+.form .panel-label { font-weight: 600; }
+.form .panel-body {
+  display: grid;
+  gap: 0.6rem;
   padding: 0.9rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
 }
-.form legend { padding: 0 0.3rem; font-weight: 700; }
 .req { color: var(--danger); }
 /* החרטום שהדפדפן מצייר ליד שדה עם רשימת הצעות — לא עושה כלום ברוב הדפדפנים, ולכן מוסתר */
 .form input[list]::-webkit-calendar-picker-indicator { display: none; }

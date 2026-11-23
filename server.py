@@ -8,6 +8,7 @@ import hashlib
 import os
 import re
 import secrets
+import sys
 from pathlib import Path
 from flask import Flask, request, jsonify, send_from_directory, Response, redirect
 
@@ -730,6 +731,33 @@ def mishakhei_yaldut_index():
 @app.route("/mishakhei-yaldut/<path:filename>")
 def mishakhei_yaldut_files(filename):
     return send_from_directory(MISHAKHEI_YALDUT_DIR, filename)
+
+
+# ---------------------------------------------------------------------------
+# האתר "mishelanu" (אינדקס בעלי מקצוע) רץ מתוך אותו שרת, בנתיב /mishelanu/
+# הקבצים והנתונים שלו נמצאים בתיקייה mishelanu/ ואינם מעורבים באתר הקיים.
+# אם הוא לא נטען — האתר הקיים ממשיך לעבוד כרגיל.
+MISHELANU_DIR = APP_DIR / "mishelanu"
+try:
+    sys.path.insert(0, str(MISHELANU_DIR))
+    from app import app as mishelanu_app  # mishelanu/app.py
+    from werkzeug.middleware.dispatcher import DispatcherMiddleware
+except Exception as error:  # noqa: BLE001
+    print(f"mishelanu did not load: {error!r}", file=sys.stderr)
+    mishelanu_app = None
+
+if mishelanu_app is None:
+    @app.route("/mishelanu/", defaults={"_path": ""})
+    @app.route("/mishelanu/<path:_path>")
+    def mishelanu_unavailable(_path):
+        return Response(
+            "mishelanu is not available right now.",
+            503, mimetype="text/plain; charset=utf-8",
+        )
+else:
+    app.wsgi_app = DispatcherMiddleware(
+        app.wsgi_app, {"/mishelanu": mishelanu_app.wsgi_app}
+    )
 
 
 if __name__ == "__main__":

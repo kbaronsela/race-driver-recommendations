@@ -22,12 +22,11 @@
   </label>
   {% if errors.name %}<p class="error">{{ errors.name }}</p>{% endif %}
 
-  <label>
+  <label class="field-label">
     <span>תחום <span class="req" aria-hidden="true">*</span></span>
-    <input name="field" list="field-list" maxlength="60" required value="{{ values.field }}" placeholder="למשל: אינסטלציה">
-    <datalist id="field-list">
-      {% for f in fields %}<option value="{{ f }}"></option>{% endfor %}
-    </datalist>
+    <input name="field" maxlength="60" required value="{{ values.field }}"
+           placeholder="למשל: אינסטלציה" autocomplete="off" data-fields='{{ fields|tojson }}'>
+    <div class="suggest" id="fieldSuggest" hidden></div>
   </label>
   {% if errors.field %}<p class="error">{{ errors.field }}</p>{% endif %}
 
@@ -91,5 +90,6 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/address.js') }}"></script>
+<script src="{{ url_for('static', filename='js/field-suggest.js') }}"></script>
 <script src="{{ url_for('static', filename='js/location-picker.js') }}"></script>
 {% endblock %}

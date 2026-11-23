@@ -57,8 +57,6 @@
       <button class="btn btn-danger" type="submit">מחיקה</button>
     </form>
   </div>
-  {% elif admin_ready %}
-  <p class="admin-hint"><a href="{{ url_for('edit', bid=b.id) }}">עריכה (למנהל/ת)</a></p>
   {% endif %}
 </article>
 {% endblock %}

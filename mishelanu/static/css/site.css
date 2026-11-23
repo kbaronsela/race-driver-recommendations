@@ -260,6 +260,8 @@ img { max-width: 100%; }
 }
 .form legend { padding: 0 0.3rem; font-weight: 700; }
 .req { color: var(--danger); }
+/* החרטום שהדפדפן מצייר ליד שדה עם רשימת הצעות — לא עושה כלום ברוב הדפדפנים, ולכן מוסתר */
+.form input[list]::-webkit-calendar-picker-indicator { display: none; }
 .hint { margin: 0.4rem 0; color: var(--muted); font-size: 0.92rem; font-weight: 400; }
 .error { margin: 0.3rem 0 0; color: var(--danger); font-size: 0.92rem; font-weight: 500; }
 .hp { display: none; }

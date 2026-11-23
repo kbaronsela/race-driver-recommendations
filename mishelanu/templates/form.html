@@ -17,21 +17,22 @@
   </div>
 
   <label>
-    שם בעל המקצוע או העסק <span class="req" aria-hidden="true">*</span>
+    <span>שם בעל המקצוע או העסק <span class="req" aria-hidden="true">*</span></span>
     <input name="name" maxlength="80" required value="{{ values.name }}">
   </label>
   {% if errors.name %}<p class="error">{{ errors.name }}</p>{% endif %}
 
   <label>
-    תחום
-    <input name="field" list="field-list" maxlength="60" value="{{ values.field }}" placeholder="למשל: אינסטלציה">
+    <span>תחום <span class="req" aria-hidden="true">*</span></span>
+    <input name="field" list="field-list" maxlength="60" required value="{{ values.field }}" placeholder="למשל: אינסטלציה">
     <datalist id="field-list">
       {% for f in fields %}<option value="{{ f }}"></option>{% endfor %}
     </datalist>
   </label>
+  {% if errors.field %}<p class="error">{{ errors.field }}</p>{% endif %}
 
   <label>
-    טלפון <span class="req" aria-hidden="true">*</span>
+    <span>טלפון <span class="req" aria-hidden="true">*</span></span>
     <input name="phone" type="tel" dir="ltr" required value="{{ values.phone }}">
   </label>
   {% if errors.phone %}<p class="error">{{ errors.phone }}</p>{% endif %}

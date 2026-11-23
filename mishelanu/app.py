@@ -361,6 +361,8 @@ def read_form():
         values[key] = (request.form.get(key) or "").strip()[:limit]
     if not values["name"]:
         errors["name"] = "נא למלא שם."
+    if not values["field"]:
+        errors["field"] = "נא למלא תחום."
     if len(digits(values["phone"])) < 9:
         errors["phone"] = "נא למלא מספר טלפון תקין."
     if request.form.get("lat") or request.form.get("lng"):

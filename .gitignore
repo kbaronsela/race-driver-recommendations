@@ -30,3 +30,8 @@ Thumbs.db
 # Temporary / build
 *.tmp.jpg
 *.log
+
+# נתונים אישיים מקבוצת הוואטסאפ — לא נשלחים לגיט ולא מוגשים מהאתר
+*.zip
+whatsapp_extract/
+whatsapp_test_zip_out/

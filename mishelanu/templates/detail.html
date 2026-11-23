@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ b.name }} — mishelanu{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">
 {% endblock %}
 {% block content %}
 <article>
@@ -64,7 +64,7 @@
 {% endblock %}
 {% block scripts %}
 {% if b.lat is not none and b.lng is not none %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 {% endif %}
 <script>
   (function () {

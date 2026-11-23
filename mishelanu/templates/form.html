@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ heading }} — mishelanu{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">
 {% endblock %}
 {% block content %}
 <h1 class="page-title">{{ heading }}</h1>
@@ -84,7 +84,7 @@
 </form>
 {% endblock %}
 {% block scripts %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/address.js') }}"></script>
 <script src="{{ url_for('static', filename='js/location-picker.js') }}"></script>
 {% endblock %}

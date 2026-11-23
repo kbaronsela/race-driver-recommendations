@@ -612,6 +612,7 @@ body.map-view .site-main {
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  align-items: stretch;
 }
 body.map-view .menu-row { flex: 0 0 auto; }
 body.map-view .page {
@@ -619,8 +620,11 @@ body.map-view .page {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  width: 100%;
   max-width: none;
-  padding: 0;
+  align-self: stretch;
+  margin: 0;
+  padding: 0 0 2.5rem; /* המפה לא מגיעה עד תחתית המסך */
 }
 .map-bar {
   display: flex;

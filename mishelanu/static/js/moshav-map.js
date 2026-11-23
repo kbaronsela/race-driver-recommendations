@@ -40,16 +40,28 @@
     markers[point.id] = L.marker([point.lat, point.lng]).addTo(map).bindPopup(box);
   });
 
-  if (focusId && markers[focusId]) {
-    map.setView(markers[focusId].getLatLng(), 17);
-    markers[focusId].openPopup();
-  } else if (points.length) {
-    var bounds = L.latLngBounds(points.map(function (point) { return [point.lat, point.lng]; }));
-    map.fitBounds(bounds, { maxZoom: 16, padding: [30, 30] });
-  } else {
-    map.setView(
-      [parseFloat(el.getAttribute('data-home-lat')), parseFloat(el.getAttribute('data-home-lng'))],
-      15
-    );
+  function applyView() {
+    if (focusId && markers[focusId]) {
+      map.setView(markers[focusId].getLatLng(), 17);
+      markers[focusId].openPopup();
+    } else if (points.length) {
+      var bounds = L.latLngBounds(points.map(function (point) { return [point.lat, point.lng]; }));
+      map.fitBounds(bounds, { maxZoom: 16, padding: [30, 30] });
+    } else {
+      map.setView(
+        [parseFloat(el.getAttribute('data-home-lat')), parseFloat(el.getAttribute('data-home-lng'))],
+        15
+      );
+    }
   }
+
+  // המפה נבנית לפני שהדפדפן מסיים לסדר את הגדלים, ואז היא נשארת צרה.
+  // מודדים מחדש אחרי התייצבות הדף, ורק אז קובעים את התצוגה; וכך גם בכל שינוי גודל.
+  requestAnimationFrame(function () {
+    setTimeout(function () {
+      map.invalidateSize();
+      applyView();
+    }, 80);
+  });
+  window.addEventListener('resize', function () { map.invalidateSize(); });
 })();

@@ -40,14 +40,18 @@
   }
 
   function place(latlng) {
+    // מקבל גם [lat, lng] וגם {lat, lng} — כדי שאף קריאה לא תפיל את הסקריפט
+    var at = Array.isArray(latlng)
+      ? { lat: latlng[0], lng: latlng[1] }
+      : { lat: latlng.lat, lng: latlng.lng };
     if (!marker) {
-      marker = L.marker(latlng, { draggable: true }).addTo(map);
+      marker = L.marker(at, { draggable: true }).addTo(map);
       marker.on('dragend', function () { manual(marker.getLatLng()); });
     } else {
-      marker.setLatLng(latlng);
+      marker.setLatLng(at);
     }
-    latInput.value = latlng.lat.toFixed(6);
-    lngInput.value = latlng.lng.toFixed(6);
+    latInput.value = Number(at.lat).toFixed(6);
+    lngInput.value = Number(at.lng).toFixed(6);
   }
 
   function manual(latlng) {

@@ -20,39 +20,44 @@
 </nav>
 {% endif %}
 
-<p class="count">
-  {% if rows|length == 1 %}תוצאה אחת{% else %}{{ rows|length }} תוצאות{% endif %}
-  {% if q or field %}<a href="{{ url_for('index') }}">ניקוי החיפוש</a>{% endif %}
-</p>
+<div id="results">
+  <p class="count" aria-live="polite">
+    {% if rows|length == 1 %}תוצאה אחת{% else %}{{ rows|length }} תוצאות{% endif %}
+    {% if q or field %}<a href="{{ url_for('index') }}">ניקוי החיפוש</a>{% endif %}
+  </p>
 
-{% if rows %}
-<ul class="cards">
-  {% for r in rows %}
-  <li>
-    <a class="card" href="{{ url_for('detail', bid=r.id) }}">
-      <span class="card-thumb">
-        {% if r.thumb %}<img src="{{ url_for('uploads', filename=r.thumb) }}" alt="" loading="lazy">
-        {% else %}<span class="card-initial">{{ r.name[0] }}</span>{% endif %}
-      </span>
-      <span class="card-body">
-        <span class="card-name">{{ r.name }}</span>
-        {% if r.field %}<span class="card-field">{{ r.field }}</span>{% endif %}
-        {% if r.address %}<span class="card-address">{{ r.address }}</span>{% endif %}
-      </span>
-    </a>
-  </li>
-  {% endfor %}
-</ul>
-{% elif q or field %}
-<div class="empty">
-  <p>אין תוצאות{% if q %} לחיפוש ״{{ q }}״{% endif %}.</p>
-  <p>אולי בעל המקצוע עוד לא נמצא באינדקס?</p>
-  <a class="btn" href="{{ url_for('add') }}">הוספה לאינדקס</a>
+  {% if rows %}
+  <ul class="cards">
+    {% for r in rows %}
+    <li>
+      <a class="card" href="{{ url_for('detail', bid=r.id) }}">
+        <span class="card-thumb">
+          {% if r.thumb %}<img src="{{ url_for('uploads', filename=r.thumb) }}" alt="" loading="lazy">
+          {% else %}<span class="card-initial">{{ r.name[0] }}</span>{% endif %}
+        </span>
+        <span class="card-body">
+          <span class="card-name">{{ r.name }}</span>
+          {% if r.field %}<span class="card-field">{{ r.field }}</span>{% endif %}
+          {% if r.address %}<span class="card-address">{{ r.address }}</span>{% endif %}
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% elif q or field %}
+  <div class="empty">
+    <p>אין תוצאות{% if q %} לחיפוש ״{{ q }}״{% endif %}.</p>
+    <p>אולי בעל המקצוע עוד לא נמצא באינדקס?</p>
+    <a class="btn" href="{{ url_for('add') }}">הוספה לאינדקס</a>
+  </div>
+  {% else %}
+  <div class="empty">
+    <p>האינדקס עוד ריק.</p>
+    <a class="btn btn-primary" href="{{ url_for('add') }}">הוספת בעל המקצוע הראשון</a>
+  </div>
+  {% endif %}
 </div>
-{% else %}
-<div class="empty">
-  <p>האינדקס עוד ריק.</p>
-  <a class="btn btn-primary" href="{{ url_for('add') }}">הוספת בעל המקצוע הראשון</a>
-</div>
-{% endif %}
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/live-search.js') }}" defer></script>
 {% endblock %}

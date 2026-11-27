@@ -9,13 +9,15 @@
   var lastRequest = 0;
 
   function searchUrl() {
+    // הכתובת של הטופס עצמו כבר מודעת לנתיב שבו האתר רץ (למשל /mishelanu/)
+    var base = form.getAttribute('action') || '/';
     // שומר על פרמטרים קיימים (כמו סינון תחום) ומחליף רק את החיפוש
     var params = new URLSearchParams(location.search);
     var value = input.value.trim();
     if (value) params.set('q', value);
     else params.delete('q');
     var query = params.toString();
-    return '/' + (query ? '?' + query : '');
+    return base + (query ? '?' + query : '');
   }
 
   function update() {

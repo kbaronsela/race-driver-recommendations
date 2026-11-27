@@ -396,11 +396,36 @@ def index():
     q = (request.args.get("q") or "").strip()[:100]
     field = (request.args.get("field") or "").strip()[:60]
     rows = list_businesses(q, field or None)
-    # תחומים נפוצים מוצגים ככפתורי סינון; תחום פעיל מוצג תמיד
-    chips = [f for f in list_fields() if f["count"] > 1][:16]
-    if field and field not in [f["name"] for f in chips]:
-        chips.append({"name": field, "count": len(rows)})
-    return render_template("index.html", q=q, field=field, rows=rows, chips=chips)
+    return render_template("index.html", q=q, field=field, rows=rows)
+
+
+def phone_key(phone):
+    """מפתח השוואה למספר טלפון: ספרות בלבד, קידומת בין־לאומית מתורגמת לקידומת 0."""
+    key = digits(phone)
+    if key.startswith("972"):
+        key = "0" + key[3:]
+    return key
+
+
+def find_phone_owner(phone, exclude_id=None):
+    """מחזיר את הרשומה שבבעלותה המספר, או None אם הוא פנוי."""
+    key = phone_key(phone)
+    if not key:
+        return None
+    for row in query("SELECT id, name, phone FROM businesses"):
+        if exclude_id is not None and row["id"] == exclude_id:
+            continue
+        if phone_key(row["phone"]) == key:
+            return row
+    return None
+
+
+def phone_taken_message(owner):
+    """הודעת שגיאה כשמנסים לרשום מספר שכבר נמצא באינדקס."""
+    name = (owner["name"] or "").strip()
+    return ("המספר כבר קיים באינדקס" +
+            (f" (בכרטיס של {name})" if name else "") +
+            ". לעריכה או מחיקה של הפרטים — ניתן לפנות למנהל/ת האתר.")
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -415,12 +440,16 @@ def add():
         if len(files) > MAX_IMAGES:
             errors["images"] = f"אפשר להעלות עד {MAX_IMAGES} תמונות."
         if not errors:
-            try:
-                bid = create_business(values, files)
-            except media.ImageError as exc:
-                errors["images"] = str(exc)
+            owner = find_phone_owner(values["phone"])
+            if owner is not None:
+                errors["phone"] = phone_taken_message(owner)
             else:
-                return redirect(url_for("detail", bid=bid))
+                try:
+                    bid = create_business(values, files)
+                except media.ImageError as exc:
+                    errors["images"] = str(exc)
+                else:
+                    return redirect(url_for("detail", bid=bid))
     return render_template(
         "form.html",
         **form_context("הוספה לאינדקס", url_for("add"), values, errors, []),
@@ -449,14 +478,18 @@ def edit(bid):
         if len(files) > MAX_IMAGES:
             errors["images"] = f"אפשר להעלות עד {MAX_IMAGES} תמונות."
         if not errors:
-            try:
-                update_business(
-                    bid, values, files, request.form.getlist("remove_images")
-                )
-            except media.ImageError as exc:
-                errors["images"] = str(exc)
+            owner = find_phone_owner(values["phone"], exclude_id=bid)
+            if owner is not None:
+                errors["phone"] = phone_taken_message(owner)
             else:
-                return redirect(url_for("detail", bid=bid))
+                try:
+                    update_business(
+                        bid, values, files, request.form.getlist("remove_images")
+                    )
+                except media.ImageError as exc:
+                    errors["images"] = str(exc)
+                else:
+                    return redirect(url_for("detail", bid=bid))
     else:
         values = dict(row)
     return render_template(

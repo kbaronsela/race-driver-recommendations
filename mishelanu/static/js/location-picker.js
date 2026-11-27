@@ -150,6 +150,19 @@
     return done;
   }
 
+  /* נעילת כפתור השמירה אחרי לחיצה ראשונה — מונע שליחה כפולה ורשומות כפולות */
+  var submitButton = form.querySelector('button[type="submit"]');
+  function lockSubmit() {
+    if (submitButton) submitButton.disabled = true;
+  }
+  function unlockSubmit() {
+    if (submitButton) submitButton.disabled = false;
+  }
+  form.addEventListener('submit', function () {
+    lockSubmit();
+    setTimeout(unlockSubmit, 6000); // נפתח מחדש אם השליחה נכשלה (למשל שדה חסר)
+  });
+
   /* אם לוחצים על "שמירה" בזמן שהחיפוש עוד רץ — ממתינים לו (עד 5 שניות) כדי שהמיקום יישמר. */
   function waitForLookup(event) {
     if (!pending || waiting) return;
@@ -159,6 +172,7 @@
     Promise.race([pending, guard]).then(function () {
       pending = null;
       waiting = false;
+      unlockSubmit();
       if (form.requestSubmit) form.requestSubmit();
       else form.submit();
     });

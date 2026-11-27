@@ -11,15 +11,6 @@
   <button class="btn btn-primary" type="submit">חיפוש</button>
 </form>
 
-{% if chips %}
-<nav class="chips" aria-label="סינון לפי תחום">
-  <a class="chip{% if not field %} is-active{% endif %}" href="{{ url_for('index', q=q or None) }}">הכל</a>
-  {% for f in chips %}
-  <a class="chip{% if f.name == field %} is-active{% endif %}" href="{{ url_for('index', q=q or None, field=f.name) }}">{{ f.name }}</a>
-  {% endfor %}
-</nav>
-{% endif %}
-
 <div id="results">
   <p class="count" aria-live="polite">
     {% if rows|length == 1 %}תוצאה אחת{% else %}{{ rows|length }} תוצאות{% endif %}

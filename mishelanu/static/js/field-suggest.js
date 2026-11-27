@@ -18,7 +18,7 @@
     var out = [];
     fields.forEach(function (name) {
       if (name === typed || seen[name] || out.length >= 6) return;
-      if (name.indexOf(typed) !== -1) {
+      if (name.indexOf(typed) === 0) {   // רק תחילת מילה, כמו החיפוש באינדקס
         seen[name] = true;
         out.push(name);
       }

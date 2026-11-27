@@ -1,6 +1,6 @@
 /* Service Worker של mishelanu: קבצי הבסיס שמורים לעבודה ללא רשת, ותמונות שכבר נצפו נשארות בזיכרון.
    כשמשנים קבצים בתיקיית static — לעדכן את VERSION כדי שהשינוי יגיע לטלפונים. */
-var VERSION = 'mishelanu-v13';
+var VERSION = 'mishelanu-v14';
 var PRECACHE = [
   './',
   './manifest.json',

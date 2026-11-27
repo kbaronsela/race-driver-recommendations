@@ -136,14 +136,18 @@ def query(sql, args=()):
 
 
 def list_businesses(q=None, field=None):
-    """חיפוש: כל מילה צריכה להופיע בשם, בתחום, בטקסט או בכתובת."""
+    """חיפוש: כל מילה צריכה להופיע בתחילת מילה כלשהי בשם, בתחום או בכתובת.
+
+    החיפוש לא רץ על הטקסט החופשי (בבקשת משתמשות), ומצמידים רווח לתחילת כל עמודה
+    ומחפשים "רווח + מילה" — כך LIKE מתאים רק לתחילת מילים ולא לאותיות באמצען.
+    """
     where, args = [], []
+    text_columns = "' ' || b.name || ' ' || b.field || ' ' || b.address"
     for word in (q or "").split():
-        pattern = f"%{word}%"
-        where.append(
-            "(b.name LIKE ? OR b.field LIKE ? OR b.description LIKE ? OR b.address LIKE ?)"
-        )
-        args += [pattern] * 4
+        safe = word.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        pattern = f"% {safe}%"
+        where.append(f"({text_columns} LIKE ? ESCAPE '\\')")
+        args.append(pattern)
     if field:
         where.append("b.field = ?")
         args.append(field)
